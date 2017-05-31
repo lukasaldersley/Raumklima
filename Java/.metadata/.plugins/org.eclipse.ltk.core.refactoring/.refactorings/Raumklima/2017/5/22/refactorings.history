@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring accessors="true" comment="Delete 6 elements from project &apos;Raumklima&apos;&#x0D;&#x0A;- Original project: &apos;Raumklima&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     ArduinoSensorValueCSV.class&#x0D;&#x0A;     ArduinoSensorValueCSV.ctxt&#x0D;&#x0A;     ArduinoSensorValueCSV.java&#x0D;&#x0A;     ArduinoSerialComm.class&#x0D;&#x0A;     ArduinoSerialComm.ctxt&#x0D;&#x0A;     ArduinoSerialComm.java" description="Delete elements" element1="ArduinoSerialComm.ctxt" element2="ArduinoSensorValueCSV.class" element3="ArduinoSensorValueCSV.ctxt" element4="ArduinoSerialComm.java" element5="ArduinoSerialComm.class" element6="ArduinoSensorValueCSV.java" elements="0" flags="589830" id="org.eclipse.jdt.ui.delete" resources="6" stamp="1496236765011" subPackages="false" version="1.0"/>
+</session>
