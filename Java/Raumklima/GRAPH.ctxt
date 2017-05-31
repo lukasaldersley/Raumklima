@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=GRAPH
+comment1.params=
+comment1.target=GRAPH()
+comment2.params=in
+comment2.target=void\ delay(long)
+comment3.params=in
+comment3.target=void\ send(double[])
+numComments=4

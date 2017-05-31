@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.params=
+comment0.target=Repurpose()
+comment1.params=inhalt\ fileName
+comment1.target=void\ log(java.lang.String,\ java.lang.String)
+comment2.params=fileName
+comment2.target=void\ ln(java.lang.String)
+numComments=3

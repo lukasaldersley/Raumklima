@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.params=
+comment0.target=SERIAL_INTERFACE()
+comment1.params=portNumber\ baudrate\ dataBits\ stopBits\ parity
+comment1.target=void\ setup(int,\ int,\ int,\ int,\ java.lang.String)
+comment2.params=message
+comment2.target=void\ write(java.lang.String)
+comment3.params=
+comment3.target=java.lang.String\ read()
+comment4.params=
+comment4.target=void\ run()
+numComments=5

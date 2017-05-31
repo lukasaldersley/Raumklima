@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.params=title
+comment0.target=CombinedXYPlotDemo1(java.lang.String)
+comment0.text=\r\n\ Constructs\ a\ new\ demonstration\ application.\r\n\r\n\ @param\ title\ \ the\ frame\ title.\r\n
+comment1.params=
+comment1.target=org.jfree.chart.JFreeChart\ createCombinedChart()
+comment1.text=\r\n\ Creates\ a\ combined\ chart.\r\n\r\n\ @return\ the\ combined\ chart.\r\n
+comment2.params=
+comment2.target=org.jfree.data.xy.XYDataset\ createDataset1()
+comment2.text=\r\n\ Creates\ a\ sample\ dataset.\r\n\r\n\ @return\ Series\ 1.\r\n
+comment3.params=args
+comment3.target=void\ main(java.lang.String[])
+comment3.text=\r\n\ Starting\ point\ for\ the\ demonstration\ application.\r\n\r\n\ @param\ args\ \ ignored.\r\n
+numComments=4

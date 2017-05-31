@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.params=port\ baud\ bits\ trenner\ parity\ gui
+comment0.target=ArduinoSerialComm(int,\ int,\ int,\ int,\ int,\ GUI)
+comment1.params=
+comment1.target=void\ run()
+comment2.params=in
+comment2.target=void\ delay(long)
+numComments=3

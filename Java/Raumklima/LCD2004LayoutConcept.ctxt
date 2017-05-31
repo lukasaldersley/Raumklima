@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.params=args
+comment0.target=void\ main(java.lang.String[])
+comment1.params=
+comment1.target=LCD2004LayoutConcept()
+comment2.params=e
+comment2.target=void\ keyTyped(java.awt.event.KeyEvent)
+comment3.params=e
+comment3.target=void\ keyTyped(java.awt.event.KeyEvent)
+comment4.params=e
+comment4.target=void\ keyTyped(java.awt.event.KeyEvent)
+comment5.params=e
+comment5.target=void\ keyTyped(java.awt.event.KeyEvent)
+comment6.params=e
+comment6.target=void\ actionPerformed(java.awt.event.ActionEvent)
+numComments=7

@@ -1,0 +1,54 @@
+package SCHULE.W_SEMINAR;
+import java.io.*;
+public class Repurpose
+{
+    BufferedReader br;
+    String zeile;
+    String name="F:\\CODE\\JAVA\\LOG.CSV";
+    String name1="F:\\CODE\\JAVA\\LOG_OK.CSV";
+    private FileWriter writer;
+    private File file;
+    public Repurpose(){
+        try{
+            br = new BufferedReader(new FileReader(name));
+            br.readLine();
+            zeile=br.readLine();
+            while(zeile!=null||zeile!=""){
+                zeile.replace(',','.');
+                String[] arr=zeile.split(";");
+                arr[3]=String.valueOf(7.44+Double.parseDouble(arr[3]));
+                zeile=arr[0]+";"+arr[1]+";"+arr[2]+";"+arr[3]+";"+arr[4]+";"+arr[5]+";"+arr[6];
+                zeile.replace('.',',');
+                log(zeile,name1);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void log(String inhalt,String fileName) {
+        file = new File(fileName);
+        try {
+            writer = new FileWriter(file,true);//true damit an die bestehende datei angegängt wird, sonst würde Sie überschrieben
+            writer.write(inhalt);
+            writer.flush();
+            writer.close();
+            ln(fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void ln(String fileName) {
+        file = new File(fileName);
+        try {
+            writer = new FileWriter(file,true);//true damit an die bestehende datei angegängt wird, sonst würde Sie überschrieben
+            writer.write(System.getProperty("line.separator"));
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
