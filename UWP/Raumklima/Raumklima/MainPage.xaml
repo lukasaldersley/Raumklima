@@ -8,6 +8,17 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBox Text="W-Seminar Projekt Raumklima" BorderThickness="0" FontStyle="Italic" FontSize="20" FontWeight="Bold" Grid.Row="0" IsReadOnly="True" IsHitTestVisible="False"/>
+        <TextBox Text="Bitte Bluetooth-Gerät auswählen" Grid.Row="1" IsReadOnly="True" IsHitTestVisible="False"/>
+        <ScrollViewer x:Name="scroller" Grid.Row="2">
+            <StackPanel x:Name="stackPanel">
+                
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>
