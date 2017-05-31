@@ -1,3 +1,5 @@
+package Raumklima;
+
 import java.awt.Font;
 
 import org.jfree.chart.ChartPanel;
