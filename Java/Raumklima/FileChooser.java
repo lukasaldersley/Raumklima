@@ -1,4 +1,3 @@
-package SCHULE.W_SEMINAR;
 import java.io.*;
 import java.awt.*;
 import java.awt.event.*;

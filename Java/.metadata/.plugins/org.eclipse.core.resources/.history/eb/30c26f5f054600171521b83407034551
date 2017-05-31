@@ -1,3 +1,5 @@
+package SCHULE.W_SEMINAR;
+
 import org.jfree.*;
 import javax.swing.*;
 import javax.swing.filechooser.*;

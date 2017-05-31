@@ -1,4 +1,3 @@
-package SCHULE.W_SEMINAR;
 import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.*;

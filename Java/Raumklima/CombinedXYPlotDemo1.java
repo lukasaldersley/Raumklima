@@ -1,5 +1,3 @@
-package SCHULE.W_SEMINAR;
-
 import java.awt.Font;
 
 import org.jfree.chart.ChartPanel;
