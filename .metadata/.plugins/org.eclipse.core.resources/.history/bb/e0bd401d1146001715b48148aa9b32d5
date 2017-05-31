@@ -1,0 +1,12 @@
+/AnalogInputExample.class
+/AnalogListenExample.class
+/GpioInputAllExample.class
+/GpioInputExample.class
+/GpioListenAllExample.class
+/GpioListenExample.class
+/GpioOutputExample.class
+/I2CExample.class
+/SerialExample.class
+/SoftPwmExample.class
+/SpiExample.class
+/SystemInfoExample.class
