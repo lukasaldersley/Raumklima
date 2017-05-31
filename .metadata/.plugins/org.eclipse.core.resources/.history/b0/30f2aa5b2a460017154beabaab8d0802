@@ -1,10 +1,10 @@
 package Raumklima;
 
+import org.jfree.*;
 import org.jfree.chart.*;
 import org.jfree.chart.annotations.*;
 import org.jfree.chart.axis.*;
 import org.jfree.chart.plot.*;
-import org.jfree.chart.panel.*;
 import org.jfree.chart.renderer.xy.*;
 import org.jfree.data.xy.*;
 import org.jfree.ui.*;
@@ -13,7 +13,7 @@ import javax.swing.filechooser.*;
 import java.io.*;
 import java.awt.*;
 /**
- * This class theoretically should display all of the recorded graphs from the SD card
+ * This class theoretically should display all of the recorded graphs from the sd card
  * 
  * @author Lukas Aldersley
  * @version 0.9.0.0
@@ -106,6 +106,11 @@ public class CSV_GUI_CROSSHAIR
         // create dataset 1...
         XYSeries series1 = new XYSeries("Batterie Spannung");
         XYSeries series2 = new XYSeries("Helligkeit");
+        XYSeries series3 = new XYSeries("Luftfeuchtigkeit");
+        XYSeries series4 = new XYSeries("Temperatur (DHT)");
+        XYSeries series5 = new XYSeries("Hic (DHT)");
+        XYSeries series6 = new XYSeries("Temperatur (BMP)");
+        XYSeries series7 = new XYSeries("Luftdruck");
         try{
             br.readLine();
             String zeile=br.readLine();
@@ -114,12 +119,17 @@ public class CSV_GUI_CROSSHAIR
                 zeile.replace(',', '.');
                 System.out.println(zeile);
                 String[] zwso=zeile.split(";");
-                double[] zwsp=new double[2];
-                for(int i=0;i<2;i++){
+                double[] zwsp=new double[7];
+                for(int i=0;i<7;i++){
                     zwsp[i]=Double.parseDouble(zwso[i]);
                 }
                 series1.add(counter,zwsp[0]);
                 series2.add(counter,zwsp[1]);
+                series3.add(counter,zwsp[2]);
+                series4.add(counter,zwsp[3]);
+                series5.add(counter,zwsp[4]);
+                series6.add(counter,zwsp[5]);
+                series7.add(counter,zwsp[6]);
                 counter++;
                 zeile=br.readLine();
             }
@@ -132,6 +142,11 @@ public class CSV_GUI_CROSSHAIR
         final XYSeriesCollection collection = new XYSeriesCollection();
         collection.addSeries(series1);
         collection.addSeries(series2);
+        collection.addSeries(series3);
+        collection.addSeries(series4);
+        collection.addSeries(series5);
+        collection.addSeries(series6);
+        collection.addSeries(series7);
         return collection;
 
     }
