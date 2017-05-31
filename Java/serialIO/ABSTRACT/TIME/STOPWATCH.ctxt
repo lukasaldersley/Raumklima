@@ -1,0 +1,24 @@
+#BlueJ class context
+comment0.params=
+comment0.target=STOPWATCH()
+comment1.params=ms
+comment1.target=void\ warte(int)
+comment10.params=
+comment10.target=int\ intAusgeben()
+comment2.params=
+comment2.target=void\ starten()
+comment3.params=
+comment3.target=void\ stoppen()
+comment4.params=
+comment4.target=long\ langAusgeben()
+comment5.params=
+comment5.target=void\ konsoleAusgeben()
+comment6.params=
+comment6.target=void\ test()
+comment7.params=
+comment7.target=java.lang.String\ stringAusgeben()
+comment8.params=
+comment8.target=java.lang.String\ retS()
+comment9.params=
+comment9.target=java.lang.String\ retSa()
+numComments=11

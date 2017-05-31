@@ -1,0 +1,17 @@
+package serialIO.ABSTRACT.TIME;
+public class WAIT
+{
+    public WAIT()
+    {
+        ;
+    }
+    
+    public static void wait(long time){
+        try{
+            Thread.sleep(time);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+}

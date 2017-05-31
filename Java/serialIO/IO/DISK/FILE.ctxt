@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.params=loc\ cont\ add
+comment0.target=void\ WRITE(java.lang.String,\ java.lang.String,\ boolean)
+comment1.params=fileName\ inhalt\ add
+comment1.target=void\ log(java.lang.String,\ java.lang.String,\ boolean)
+comment2.params=fileName\ add
+comment2.target=void\ ln(java.lang.String,\ boolean)
+numComments=3

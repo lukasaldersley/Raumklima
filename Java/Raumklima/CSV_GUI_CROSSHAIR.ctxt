@@ -2,5 +2,13 @@
 comment0.params=
 comment0.target=CSV_GUI_CROSSHAIR()
 comment1.params=
-comment1.target=void\ showOpenDialog()
-numComments=2
+comment1.target=org.jfree.chart.JFreeChart\ createCombinedChart()
+comment1.text=\r\n\ Creates\ a\ combined\ chart.\r\n\r\n\ @return\ the\ combined\ chart.\r\n
+comment2.params=
+comment2.target=org.jfree.data.xy.XYDataset\ createDataset1()
+comment2.text=\r\n\ Creates\ a\ sample\ dataset.\r\n\r\n\ @return\ Series\ 1.\r\n
+comment3.params=
+comment3.target=void\ initJFileChooser()
+comment4.params=
+comment4.target=int\ showOpenDialog()
+numComments=5

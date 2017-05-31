@@ -1,0 +1,100 @@
+package serialIO;
+
+import java.io.*;
+import java.net.*;
+import java.nio.channels.*;
+import java.util.Scanner;
+
+public class UPDATER {
+	private static String localVersion;
+	private static String serverVersion;
+	private static FileWriter writer;
+	private static File file;
+	Socket server = null;
+
+	public static void main(String[] args) {
+		if (installed()) {
+			getVersions();
+			if (localVersion != serverVersion) {
+				update();
+			}
+		} else {
+			install();
+		}
+	}
+
+	private static boolean installed() {
+		File datei = new File("Application.jar");
+		return datei.exists();
+	}
+
+	private static void install() {
+		try (ReadableByteChannel in = Channels.newChannel(new URL("http://1.1.1.1/Application.jar").openStream()); // pumuckl112.selfhost.eu
+				FileChannel out = new FileOutputStream("Application.jar").getChannel()) {
+			out.transferFrom(in, 0, Long.MAX_VALUE);
+			write("AppVersion.dll", serverVersion);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void update() {
+		File jetzt = new File("Application.jar");
+		jetzt.delete();
+		install();
+	}
+
+	public static void getVersions() {
+		try {
+			FileReader fr = new FileReader("AppVersion.dll");
+			@SuppressWarnings("resource")
+			BufferedReader br = new BufferedReader(fr);
+			localVersion = br.readLine();
+
+			URL url = new URL("http://1.1.1.1/AppVersion.dll");// pumuckl112.selfhost.eu
+			BufferedReader br1 = new BufferedReader(new InputStreamReader(url.openStream()));
+			serverVersion = br1.readLine();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@SuppressWarnings("resource")
+	public String serverAnswer(String address, String name, String command) {
+		String ergebnis = "";
+		try {
+			server = new Socket(address, 4321);
+			PrintWriter out = new PrintWriter(server.getOutputStream(), true);
+			Scanner in = new Scanner(server.getInputStream());
+
+			out.println(name);
+			out.println(command);
+			while (in.hasNext()) {
+				// save(in.nextLine());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (server != null) {
+				try {
+					server.close();
+				} catch (IOException e) {
+					// log(" "+e.toString());
+				}
+			}
+		}
+		return ergebnis;
+	}
+
+	public static void write(String pfad, String inhalt) {
+		file = new File(pfad);
+		try {
+			writer = new FileWriter(file);
+			writer.write(inhalt);
+			writer.flush();
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
