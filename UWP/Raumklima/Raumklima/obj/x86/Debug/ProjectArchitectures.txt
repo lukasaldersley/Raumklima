@@ -1,0 +1,1 @@
+C:\Raumklima\UWP\Raumklima\Raumklima\Raumklima.csproj;x86
