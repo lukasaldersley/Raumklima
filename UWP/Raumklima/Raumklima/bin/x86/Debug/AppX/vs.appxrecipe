@@ -19,7 +19,7 @@
     <DeployOptionalPackages>false</DeployOptionalPackages>
     <WindowsSdkPath>C:\Program Files %28x86%29\Windows Kits\10\</WindowsSdkPath>
     <LayoutDir>C:\Raumklima\UWP\Raumklima\Raumklima\bin\x86\Debug\AppX</LayoutDir>
-    <RegisteredManifestChecksum>ED40C45301293006019412BDA2084C3ABB4C6B130A4AE11C5350A65A74790F07</RegisteredManifestChecksum>
+    <RegisteredManifestChecksum>96714766B30AC9D04D683B96520E3769E837FFE0ACED04D73C6079539D765265</RegisteredManifestChecksum>
     <RegisteredPackageMoniker>55590b57-daba-45db-9349-a346e556e4a1_1.0.0.0_x86__fakvsts9m0576</RegisteredPackageMoniker>
     <RegisteredUserModeAppID>55590b57-daba-45db-9349-a346e556e4a1_fakvsts9m0576!App</RegisteredUserModeAppID>
     <RegisteredPackageID>55590b57-daba-45db-9349-a346e556e4a1</RegisteredPackageID>
@@ -31,13 +31,13 @@
     <AppXManifest Include="C:\Raumklima\UWP\Raumklima\Raumklima\bin\x86\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-05-31T21:32:14.602</Modified>
+      <Modified>2017-06-01T20:26:10.807</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Raumklima\UWP\Raumklima\Raumklima\bin\x86\Debug\Raumklima.exe">
       <PackagePath>entrypoint\Raumklima.exe</PackagePath>
-      <Modified>2017-05-31T21:32:10.537</Modified>
+      <Modified>2017-06-01T20:25:57.291</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alder\.nuget\packages\Microsoft.CSharp\4.0.1\lib\netcore50\Microsoft.CSharp.dll">
       <PackagePath>Microsoft.CSharp.dll</PackagePath>
@@ -535,7 +535,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Raumklima\UWP\Raumklima\Raumklima\bin\x86\Debug\Raumklima.xr.xml">
       <PackagePath>Raumklima.xr.xml</PackagePath>
-      <Modified>2017-05-31T21:28:16.006</Modified>
+      <Modified>2017-06-01T20:25:56.812</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\UnionMetadata\10.0.15063.0\Windows.winmd">
       <PackagePath>WinMetadata\Windows.winmd</PackagePath>
@@ -544,11 +544,11 @@
     <AppxPackagedFile Include="C:\Raumklima\UWP\Raumklima\Raumklima\bin\x86\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-05-31T21:28:24.388</Modified>
+      <Modified>2017-06-01T20:26:07.368</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Raumklima\UWP\Raumklima\Raumklima\bin\x86\Debug\Core\Raumklima.exe">
       <PackagePath>Raumklima.exe</PackagePath>
-      <Modified>2017-05-31T21:32:14.599</Modified>
+      <Modified>2017-06-01T20:26:10.794</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

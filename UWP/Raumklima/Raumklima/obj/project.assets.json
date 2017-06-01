@@ -1,7 +1,7 @@
 {
   "version": 2,
   "targets": {
-    "UAP,Version=v10.0.10586": {
+    "UAP,Version=v10.0.14393": {
       "Microsoft.CSharp/4.0.1": {
         "type": "package",
         "dependencies": {
@@ -2204,7 +2204,7 @@
         }
       }
     },
-    "UAP,Version=v10.0.10586/win10-arm": {
+    "UAP,Version=v10.0.14393/win10-arm": {
       "Microsoft.CSharp/4.0.1": {
         "type": "package",
         "dependencies": {
@@ -4490,7 +4490,7 @@
         }
       }
     },
-    "UAP,Version=v10.0.10586/win10-arm-aot": {
+    "UAP,Version=v10.0.14393/win10-arm-aot": {
       "Microsoft.CSharp/4.0.1": {
         "type": "package",
         "dependencies": {
@@ -6815,7 +6815,7 @@
         }
       }
     },
-    "UAP,Version=v10.0.10586/win10-x64": {
+    "UAP,Version=v10.0.14393/win10-x64": {
       "Microsoft.CSharp/4.0.1": {
         "type": "package",
         "dependencies": {
@@ -9110,7 +9110,7 @@
         }
       }
     },
-    "UAP,Version=v10.0.10586/win10-x64-aot": {
+    "UAP,Version=v10.0.14393/win10-x64-aot": {
       "Microsoft.CSharp/4.0.1": {
         "type": "package",
         "dependencies": {
@@ -11444,7 +11444,7 @@
         }
       }
     },
-    "UAP,Version=v10.0.10586/win10-x86": {
+    "UAP,Version=v10.0.14393/win10-x86": {
       "Microsoft.CSharp/4.0.1": {
         "type": "package",
         "dependencies": {
@@ -13739,7 +13739,7 @@
         }
       }
     },
-    "UAP,Version=v10.0.10586/win10-x86-aot": {
+    "UAP,Version=v10.0.14393/win10-x86-aot": {
       "Microsoft.CSharp/4.0.1": {
         "type": "package",
         "dependencies": {
@@ -24337,7 +24337,7 @@
     }
   },
   "projectFileDependencyGroups": {
-    "UAP,Version=v10.0.10586": [
+    "UAP,Version=v10.0.14393": [
       "Microsoft.NETCore.UniversalWindowsPlatform >= 5.3.3"
     ]
   },
@@ -24353,10 +24353,10 @@
       "outputPath": "C:\\Raumklima\\UWP\\Raumklima\\Raumklima\\obj\\",
       "projectStyle": "PackageReference",
       "originalTargetFrameworks": [
-        "uap10.0.10586"
+        "uap10.0.14393"
       ],
       "frameworks": {
-        "uap10.0.10586": {
+        "uap10.0.14393": {
           "projectReferences": {}
         }
       }
@@ -24368,7 +24368,7 @@
       }
     },
     "frameworks": {
-      "uap10.0.10586": {
+      "uap10.0.14393": {
         "dependencies": {
           "Microsoft.NETCore.UniversalWindowsPlatform": {
             "target": "Package",

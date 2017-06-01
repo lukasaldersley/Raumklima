@@ -211,4 +211,3 @@ C:\Raumklima\UWP\Raumklima\Raumklima\obj\x86\Debug\MultipleQualifiersPerDimensio
 C:\Raumklima\UWP\Raumklima\Raumklima\obj\x86\Debug\resources.en-us.resfiles
 C:\Raumklima\UWP\Raumklima\Raumklima\obj\x86\Debug\resources.en-us.resfiles.intermediate
 C:\Raumklima\UWP\Raumklima\Raumklima\obj\x86\Debug\ProjectArchitectures.txt
-C:\Raumklima\UWP\Raumklima\Raumklima\obj\x86\Debug\Raumklima.csprojResolveAssemblyReference.cache
