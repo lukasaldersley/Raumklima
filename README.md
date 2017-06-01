@@ -21,3 +21,4 @@ Noch zu tun ist:
   - Java Crosshairs zum laufen bringen
   - Viel Testen
   - Code Optimieren
+  - Platine Optimieren und zum ätzen designen
