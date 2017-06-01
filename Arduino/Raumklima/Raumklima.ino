@@ -70,6 +70,7 @@ double BMP180_Temperature = 0.0;
 double BME280_Airpressure = 0.0;
 double BME280_Temperature = 0.0;
 double BME280_Humidity = 0.0;
+double RTC_Temperature=0.0;
 double Loudness = 0.0;
 double Brightness = 0.0;
 
@@ -78,7 +79,7 @@ double Brightness = 0.0;
 
 //INITIALISATION-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void setup() {
-  Serial2.begin(9600);//INITIALIZE SERIAL COMMUNICATION WITH BLUETOOTH MODULE
+  Serial2.begin(115200);//INITIALIZE SERIAL COMMUNICATION WITH BLUETOOTH MODULE
   Serial.begin(115200);
   Serial.println("INITING");
 
@@ -95,19 +96,19 @@ void setup() {
   fileName = getTimeName();
   Serial.println(fileName);
 
-  Serial.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness");
+  Serial.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness");
 
 
   file = SD.open(fileName, FILE_WRITE);
   if (file) {
-    file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness");
+    file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness");
     file.close();
   }
   else {//RETRY ONCE MORE
     file = SD.open(fileName, FILE_WRITE);
     if (file) {
       Serial.println("SD FAILED ONCE While writing the titles");
-      file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness");
+      file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness");
       file.close();
     }
     else {
@@ -125,11 +126,16 @@ void getSensorData() {
   getBMEValues();
   getBMPValues();
   getDHTValues();
+  getRTCValues();
   getLoudnessValues();
   getBrightnessValues();
   getTemperatureValues();
   getHumidityValues();
   getPressureValues();
+}
+
+void getRTCValues(){
+  RTC_Temperature=RTC.temperature()/4.0;
 }
 
 void getBMEValues() {
@@ -181,7 +187,7 @@ void getPressureValues() {
 }
 
 void getTemperatureValues() {
-  TOTAL_Temperature = (DHT_Temperature + BMP180_Temperature + BME280_Temperature) / 3;
+  TOTAL_Temperature = (DHT_Temperature + BMP180_Temperature + BME280_Temperature+RTC_Temperature) / 4;
 }
 
 void getHumidityValues() {
@@ -214,6 +220,8 @@ void constructSendoffString() {
   sendoff += DHT_Heat_Index;
   sendoff += ";";
   sendoff += DHT_Humidity;
+  sendoff += ";";
+  sendoff += RTC_Temperature;
   sendoff += ";";
   sendoff += TOTAL_Temperature;
   sendoff += ";";
@@ -259,7 +267,14 @@ void printDataToUART0() { //Main Serial Port
 }
 
 void printDataToUART2() { //BT-Module
-  Serial2.println(sendoff);
+  int x=((int)(sendoff.length()));
+  Serial.println(x);
+  for(int i=x;i<140;i++){//sollten 140 zeichen sein
+    sendoff+="X";
+  }
+  x=((int)(sendoff.length()));
+  Serial.println(x);
+  Serial2.print(sendoff);
 }
 
 //CRUCIAL SYSTEM METHODS------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

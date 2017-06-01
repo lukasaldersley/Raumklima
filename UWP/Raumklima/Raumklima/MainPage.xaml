@@ -11,25 +11,13 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="10"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBox Text="W-Seminar Projekt: Raumklima" BorderThickness="0" FontStyle="Italic" FontSize="20" FontWeight="Bold" Grid.Row="0" IsReadOnly="True" IsHitTestVisible="False"/>
         <TextBox Text="Bitte Bluetooth-Gerät auswählen" Grid.Row="1" IsReadOnly="True" IsHitTestVisible="False" BorderThickness="0"/>
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="2"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Button x:Name="FindDevicesButton" Content="Finde Geräte" Click="FindDevicesButton_Click" Grid.Column="0"/>
-            <Button x:Name="ConnectToDeviceButton" Content="Verbinde zum ausgewählten Gerät" Click="ConnectToDeviceButton_Click" Grid.Column="2"/>
-        </Grid>
-        <ComboBox x:Name="picker" Grid.Row="4" SelectedIndex="0">
-            <TextBox Text="Bitte Gerät auswählen (sofern vorhanden)" IsHitTestVisible="False" IsReadOnly="True"/>
-        </ComboBox>
-        <TextBlock x:Name="info" Text="" Grid.Row="5"/>
+        <Button x:Name="ConnectToDeviceButton" Content="Verbinde zum ausgewählten Gerät" Click="ConnectToDeviceButton_Click" Grid.Row="3"/>
+            <TextBlock x:Name="info" Text="" Grid.Row="4"/>
     </Grid>
 </Page>
