@@ -10,12 +10,12 @@ Dieses Projekt soll sich in mehrere teile gliedern:
   - Eine Auswertungs App für die Universelle Windows Platform (UWP) (war nicht angefragt möchte ich aber persönlich haben; vermutlich nur für Live-daten und vorher Aufgezeichnete daten von der sd-karte, keine direkte aufzeichung in der App
   
 Der Aktuelle entwicklungsstatus ist: 
-  - Die Arduino-Software funktioniert (ohne LCD-Ausgabe; wurde zum debuggen entfernt)
-  - Die Java Software kann die aufgezeichneten Daten Zeichnen, die von Herr Sonnauer Angefragte Funktionalität mit den Crosshairs       funktioniert nur mit einem datensatz, wie es mit mehreren funktioniert habe ich noch nicht herausgefunden.
-  - Die UWP App funktioniert noch nicht wirklich (erst diese Woche angefangen), ich glaube dass die BT-Verbindung schon steht, bin mir aber nicht sicher
+  - Die Arduino-Software funktioniert (noch keine möglichkeit einstellungen am gerät selbst vorzunehmen)
+  - Die Java Software kann die aufgezeichneten Daten Zeichnen, die vom Auftraggeber (Fachschaft Physik) Angefragte Funktionalität mit den Crosshairs funktioniert nur mit einem datensatz, wie es mit mehreren funktioniert habe ich noch nicht herausgefunden.
+  - Die UWP App funktioniert noch nicht wirklich (erst diese Woche angefangen), BT-verbindung funktioniert prinnzipiell, in/outputstream verarbeitung nicht wie gewünscht
   
 Noch zu tun ist:
-  - Die beiden LCD-Displays im Arduino Code wieder einfügen
+  - das sekundäre LCD-Display (für Einstellungen) im Arduino Code wieder einfügen
   - UWP zum laufen Bringen
   - Java JFreeChart verstehen
   - Java Crosshairs zum laufen bringen
