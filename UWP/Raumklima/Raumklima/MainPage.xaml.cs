@@ -19,6 +19,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using System.Diagnostics;
 
 // Die Elementvorlage "Leere Seite" wird unter https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x407 dokumentiert.
 
@@ -30,76 +31,107 @@ namespace Raumklima
     public sealed partial class MainPage : Page
     {
         private StreamSocket _socket;
-
         private RfcommDeviceService _service;
+
         public MainPage()
         {
             this.InitializeComponent();
-            //DataReader reader = new DataReader(_socket.InputStream);
         }
 
         private async void ConnectToDeviceButton_Click(object sender, RoutedEventArgs e)
         {
-            info.Text = string.Empty;
-            try
-            {
-                var devices =
-                await DeviceInformation.FindAllAsync(
-                RfcommDeviceService.GetDeviceSelector(
-                RfcommServiceId.SerialPort));
-
-                DeviceInformation[] dev = devices.ToArray();
-                for (int i = 0; i < dev.Length; i++)
-                {
-                    info.Text += dev[i].Name + "\n";
-                }
-
-                var device = devices.Single(x => x.Name == "Dev B");
-                _service = await RfcommDeviceService.FromIdAsync(
-                device.Id);
-
-                _socket = new StreamSocket();
-
-                await _socket.ConnectAsync(
-                _service.ConnectionHostName,
-                _service.ConnectionServiceName,
-                SocketProtectionLevel.
-                BluetoothEncryptionAllowNullAuthentication);
-
-                DataReader reader = new DataReader(_socket.InputStream);
-                while (true)
-                {
-                    info.Text += reader.ReadByte();
-                    //info.Text += reader.ReadString(140);//maximal 113(glaub ich aber zur sicherkeit mehr); wird zum schluss mit XXXXXX aufgefüllt
-                }
-            }
-            catch (Exception ex)
-            {
-                info.Text += ex.Message + "\n";
-                info.Text += ex.StackTrace + "\n";
-                info.Text += ex.Source + "\n";
-            }
+            await Send();
         }
 
-
-        private async void btnDisconnect_Click(object sender,
-        RoutedEventArgs e)
+        private async Task Send()
         {
-            info.Text = string.Empty;
+            if (await Connect())
+            {
+                Debug.WriteLine("SUCCEDED...DATA SHOULD BE ON THE WAY");
+                Debug.WriteLine("CLEARING TEXTFIELD");
+                info.Text = string.Empty;
+                Debug.WriteLine("DONE");
+                /*try
+                {*/
+                    Debug.WriteLine("GETTING DATA STREAM");
+                    var str = _socket.InputStream.AsStreamForRead();
+                    Debug.WriteLine("DONE");
+
+                    Debug.WriteLine("CREATING VARIABLE");
+                    var receivedStrings = "";
+                    Debug.WriteLine("DONE");
+
+                    Debug.WriteLine("CREATING STREAMREADER");
+                    StreamReader read = new StreamReader(str);
+                    Debug.WriteLine("DONE");
+
+                    Debug.WriteLine("READING THE FIRST LINE");
+                receivedStrings = read.Read().ToString();
+                    Debug.WriteLine("DONE");
+                    Debug.WriteLine("!"+receivedStrings+"!");
+                    while (receivedStrings != null || receivedStrings != "")
+                    {
+                        Debug.WriteLine("LOOPING");
+                        info.Text += receivedStrings + "\n";
+                        Debug.WriteLine("!" + receivedStrings + "!");
+                        receivedStrings = read.ReadLine();
+                    }
+                    Debug.WriteLine("LEFT LOOP");
+                    return;
+                /*}
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("SOMETHING BROKE:");
+                    Debug.WriteLine("\t" + ex.Message + "\n\t" + ex.Source + "\n\t" + ex.StackTrace + "\n\t" + ex.InnerException + "\n\t" + ex.HResult + "\n\t" + ex.HelpLink + "\n\t" + ex.Data);
+                    info.Text += ex.Message;
+                    info.Text += "\n" + ex.Source + "\n" + ex.StackTrace;
+                }*/
+            }
+            else
+            {
+                Debug.WriteLine("FAIL");
+            }
+        }
+
+        private async Task<Boolean> Connect()
+        {
+            info.Text = "CONNECTING";
 
             try
             {
-                await _socket.CancelIOAsync();
-                _socket.Dispose();
-                _socket = null;
-                _service.Dispose();
-                _service = null;
+                Debug.WriteLine("GETTING DEVICES");
+                var devices = await DeviceInformation.FindAllAsync(RfcommDeviceService.GetDeviceSelector(RfcommServiceId.SerialPort));
+                Debug.WriteLine("DONE");
+
+                Debug.WriteLine("SELECTING DEVICE");
+                var device = devices.Single(x => x.Name == "Dev B");
+                Debug.WriteLine("DONE");
+
+                Debug.WriteLine("GETTING DEV FROM ID");
+                _service = await RfcommDeviceService.FromIdAsync(device.Id);
+                Debug.WriteLine("DONE");
+
+                Debug.WriteLine("CREATING STREAMSOCKET");
+                _socket = new StreamSocket();
+                Debug.WriteLine("DONE");
+
+                Debug.WriteLine("CONNECTING");
+                await _socket.ConnectAsync(_service.ConnectionHostName,_service.ConnectionServiceName,SocketProtectionLevel.BluetoothEncryptionAllowNullAuthentication);
+                Debug.WriteLine("DONE");
+
+                Debug.WriteLine("SETTING RESULT TEXT");
+                info.Text = "SUCCESS";
+                Debug.WriteLine("DONE");
             }
             catch (Exception ex)
             {
-                info.Text = ex.Message;
+                info.Text += ex.Message;
+                info.Text += "\n" + ex.Source + "\n" + ex.StackTrace;
+                return false;
             }
+            return true;
         }
+
 
         private void GoToEperimentalPage(object sender, RoutedEventArgs e)
         {

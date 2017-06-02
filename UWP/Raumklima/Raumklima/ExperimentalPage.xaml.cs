@@ -27,15 +27,15 @@ namespace Raumklima
     /// </summary>
     public sealed partial class ExperimentalPage : Page
     {
-        byte[] buff;
+
+        private StreamSocket _socket;
+        private RfcommDeviceService _service;
+
         public ExperimentalPage()
         {
             this.InitializeComponent();
         }
 
-        private StreamSocket _socket;
-
-        private RfcommDeviceService _service;
 
         private async void btnSend_Click(object sender,
         RoutedEventArgs e)
