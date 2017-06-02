@@ -97,30 +97,42 @@ void setup() {
   analogWrite(DIRECT_LCD_CONTRAST_PIN,128);
   analogWrite(DIRECT_LCD_BACKLIGHT_PIN,255);
 
-  directLcd.begin(16,2);
+  directLcd.begin(20,4);
   directLcd.clear();
-  directLcd.print("HALLO WELT!");
+  directLcd.print("Initialisieren...");
 
   pinMode(3, INPUT_PULLUP); //ich hab den widerstand auf dem board vergessen deswegen der interne
   attachInterrupt(1, alwaysInterruptButton_Push, FALLING);
 
+    directLcd.setCursor(0,1);
+    directLcd.print("SD-Karte: ");
   if (!SD.begin(SD_PIN)) { //readWrite Sample   //INITIALIZE SD-CARD
     Serial.println("SD-FAIL");
+    directLcd.print("FAIL");
   }
   else {
     Serial.println("SD-Success");
+    directLcd.print("OK");
   }
 
   fileName = getTimeName();
   Serial.println(fileName);
+  directLcd.setCursor(0,2);
+  directLcd.print("DATEINAME fuer CSV:");
+  directLcd.setCursor(0,3);
+  directLcd.print(fileName);
 
   Serial.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness");
 
-
+delay(500);
+directLcd.clear();
+directLcd.print("SD-Schreibzugriff:");
+directLcd.setCursor(0,1);
   file = SD.open(fileName, FILE_WRITE);
   if (file) {
     file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness");
     file.close();
+    directLcd.print("OK");
   }
   else {//RETRY ONCE MORE
     file = SD.open(fileName, FILE_WRITE);
@@ -128,15 +140,30 @@ void setup() {
       Serial.println("SD FAILED ONCE While writing the titles");
       file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness");
       file.close();
+      directLcd.print("OK");
     }
     else {
       Serial.println("SD FAILED twice While writing the titles");
+      directLcd.print("FAIL-Aufzeichnung nicht möglich");
     }
   }
 
+directLcd.setCursor(0,2);
+directLcd.print("DHT-Sensor: ");
   dht.begin();
+  directLcd.print("OK");
+  directLcd.setCursor(0,3);
+  directLcd.print("BMP180/BME280: ");
   BMP180.begin();
   BME280.begin();
+  directLcd.print("OK");
+  delay(500);
+  directLcd.clear();
+  directLcd.print("FERTIG");
+  directLcd.setCursor(0,2);
+  directLcd.print("DATEINAME fuer CSV:");
+  directLcd.setCursor(0,3);
+  directLcd.print(fileName);
 }
 
 //GET SENSOR DATA-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
