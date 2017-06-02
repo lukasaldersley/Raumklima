@@ -27,6 +27,7 @@ namespace Raumklima
     /// </summary>
     public sealed partial class ExperimentalPage : Page
     {
+        byte[] buff;
         public ExperimentalPage()
         {
             this.InitializeComponent();
@@ -50,7 +51,7 @@ namespace Raumklima
 
             if (noOfCharsSent != 0)
             {
-                tbError.Text = noOfCharsSent.ToString();
+                tbError.Text += noOfCharsSent.ToString();
             }
         }
         private async Task<uint> Send(string msg)
@@ -66,13 +67,24 @@ namespace Raumklima
                 // Launch an async task to 
                 //complete the write operation
                 var store = writer.StoreAsync().AsTask();
+                
+                var str=_socket.InputStream.AsStreamForRead();
 
-                DataReader reader = new DataReader(_socket.InputStream);
-                reader.
-                byte xByte = reader.ReadByte();
-                String xStr = xByte.ToString();
+                var receivedStrings = "";
 
-                tbError.Text += "\n" + xStr + "\n";
+                StreamReader read = new StreamReader(str);
+
+                receivedStrings = read.ReadLine();
+
+                /*str.Read(buff, 0, (int)(str.Length));
+
+                for( int i = 0; i < buff.Length; i++)
+                {
+                    receivedStrings += buff[i];
+                }*/
+
+
+                tbError.Text += "<!>\n" + receivedStrings + "\n</!>";
 
                 return await store;
             }
