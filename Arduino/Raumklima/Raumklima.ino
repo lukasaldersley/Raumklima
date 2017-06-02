@@ -103,7 +103,7 @@ void setup() {
   directLcd.print("Initialisieren...");
 
   pinMode(3,INPUT); //ich hab den widerstand auf dem board vergessen deswegen der interne
-  attachInterrupt(1, alwaysInterruptButton_Push, HIGH);
+  attachInterrupt(1, alwaysInterruptButton_Push, RISING);
 
   directLcd.setCursor(0, 1);
   directLcd.print("SD-Karte: ");
@@ -398,7 +398,7 @@ void loop() {
     directLcd.print("/");
     directLcd.print(BME280_Temperature);
     directLcd.setCursor(0, 2);
-    directLcd.print("RTC/DHT22: ");
+    directLcd.print("RTC/DHT: ");
     directLcd.print(RTC_Temperature);
     directLcd.print("/");
     directLcd.print(DHT_Temperature);
@@ -472,13 +472,13 @@ void alwaysInterruptButton_Push() {
   if (directLcdEnabled) {
     analogWrite(DIRECT_LCD_BACKLIGHT_PIN, 0);
     analogWrite(DIRECT_LCD_CONTRAST_PIN, 255);
-    delay(500);
+    //delay(1000);
     directLcdEnabled=false;
   }
   else {
     analogWrite(DIRECT_LCD_CONTRAST_PIN, 128);
     analogWrite(DIRECT_LCD_BACKLIGHT_PIN, 255);
-    delay(500);
+    //delay(1000);
     directLcdEnabled=true;
   }
 }
