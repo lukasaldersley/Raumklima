@@ -102,8 +102,8 @@ void setup() {
   directLcd.clear();
   directLcd.print("Initialisieren...");
 
-  pinMode(3, INPUT_PULLUP); //ich hab den widerstand auf dem board vergessen deswegen der interne
-  attachInterrupt(1, alwaysInterruptButton_Push, LOW);
+  pinMode(3,INPUT); //ich hab den widerstand auf dem board vergessen deswegen der interne
+  attachInterrupt(1, alwaysInterruptButton_Push, HIGH);
 
   directLcd.setCursor(0, 1);
   directLcd.print("SD-Karte: ");
@@ -472,13 +472,14 @@ void alwaysInterruptButton_Push() {
   if (directLcdEnabled) {
     analogWrite(DIRECT_LCD_BACKLIGHT_PIN, 0);
     analogWrite(DIRECT_LCD_CONTRAST_PIN, 255);
+    delay(500);
     directLcdEnabled=false;
   }
   else {
     analogWrite(DIRECT_LCD_CONTRAST_PIN, 128);
     analogWrite(DIRECT_LCD_BACKLIGHT_PIN, 255);
+    delay(500);
     directLcdEnabled=true;
   }
-  delay(500);
 }
 
