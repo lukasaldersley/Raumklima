@@ -28,11 +28,11 @@ public class CSV_GUI_CROSSHAIR
     ChartPanel panel;
     BufferedReader br;
     int counter=0;
-    
+
     public static void main(String[] args){
         new CSV_GUI_CROSSHAIR();
     }
-    
+
     public CSV_GUI_CROSSHAIR()
     {
         initJFileChooser();
@@ -47,7 +47,7 @@ public class CSV_GUI_CROSSHAIR
         RefineryUtilities.centerFrameOnScreen(frame);
         frame.setVisible(true);
     }
-    
+
     private JFreeChart createCombinedChart() {
 
         // create subplot 1...
@@ -61,14 +61,6 @@ public class CSV_GUI_CROSSHAIR
         annotation.setFont(new Font("SansSerif", Font.PLAIN, 9));
         annotation.setRotationAngle(Math.PI / 4.0);
         subplot1.addAnnotation(annotation);
-
-        /*// create subplot 2...
-        final XYDataset data2 = createDataset2();
-        final XYItemRenderer renderer2 = new StandardXYItemRenderer();
-        final NumberAxis rangeAxis2 = new NumberAxis("Range 2");
-        rangeAxis2.setAutoRangeIncludesZero(false);
-        final XYPlot subplot2 = new XYPlot(data2, null, rangeAxis2, renderer2);
-        subplot2.setRangeAxisLocation(AxisLocation.TOP_OR_LEFT);*/
 
         // parent plot...
         CombinedDomainXYPlot plot = new CombinedDomainXYPlot(new NumberAxis("Domain"));
@@ -92,9 +84,11 @@ public class CSV_GUI_CROSSHAIR
      */
     private XYDataset createDataset1() {
         int returnVal = showOpenDialog();
+        final XYSeriesCollection collection = new XYSeriesCollection();
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             try{
-                br=new BufferedReader(new FileReader(fileChooser.getSelectedFile()));
+                csvFile=fileChooser.getSelectedFile();
+                br=new BufferedReader(new FileReader(csvFile));
             }
             catch(Exception ex){
                 ex.printStackTrace();
@@ -104,24 +98,41 @@ public class CSV_GUI_CROSSHAIR
             System.exit(-1);
         }
         // create dataset 1...
-        XYSeries series1 = new XYSeries("Batterie Spannung");
-        XYSeries series2 = new XYSeries("Helligkeit");
+        //XYSeries series1 = new XYSeries("Batterie Spannung");
+        //XYSeries series2 = new XYSeries("Helligkeit");
         try{
-            br.readLine();
             String zeile=br.readLine();
+            String[] zwspS=zeile.split(";");
+            XYSeries[] series=new XYSeries[zwspS.length];
+            for(int i=0;i<zwspS.length;i++){
+                series[i]=new XYSeries(zwspS[i]);
+            }
+            zeile=br.readLine();
+            zeile=br.readLine();
+            zeile=br.readLine();
             while(zeile!=null||zeile!=""){
+                if(zeile==null||zeile==""){
+                    break;
+                }
                 System.out.println(zeile);
                 zeile.replace(',', '.');
                 System.out.println(zeile);
                 String[] zwso=zeile.split(";");
-                double[] zwsp=new double[2];
-                for(int i=0;i<2;i++){
+                double[] zwsp=new double[zwspS.length];
+                for(int i=0;i<zwspS.length;i++){
                     zwsp[i]=Double.parseDouble(zwso[i]);
+                    series[i].add(counter,zwsp[i]);
                 }
-                series1.add(counter,zwsp[0]);
-                series2.add(counter,zwsp[1]);
+                //series1.add(counter,zwsp[0]);
+                //series2.add(counter,zwsp[1]);
                 counter++;
                 zeile=br.readLine();
+                if(zeile==null||zeile==""){
+                    break;
+                }
+            }
+            for(int i=0;i<zwspS.length;i++){
+                collection.addSeries(series[i]);
             }
         }
         catch(Exception e){
@@ -129,9 +140,8 @@ public class CSV_GUI_CROSSHAIR
         }
         //series1.add(10.0, 12353.3);
 
-        final XYSeriesCollection collection = new XYSeriesCollection();
-        collection.addSeries(series1);
-        collection.addSeries(series2);
+        //collection.addSeries(series1);
+        //collection.addSeries(series2);
         return collection;
 
     }
