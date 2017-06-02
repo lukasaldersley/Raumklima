@@ -100,5 +100,10 @@ namespace Raumklima
                 info.Text = ex.Message;
             }
         }
+
+        private void GoToEperimentalPage(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(ExperimentalPage));
+        }
     }
 }

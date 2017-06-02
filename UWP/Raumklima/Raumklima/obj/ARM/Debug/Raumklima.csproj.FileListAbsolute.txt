@@ -121,7 +121,6 @@ C:\Raumklima\UWP\Raumklima\Raumklima\bin\ARM\Debug\System.Xml.ReaderWriter.dll
 C:\Raumklima\UWP\Raumklima\Raumklima\bin\ARM\Debug\System.Xml.XDocument.dll
 C:\Raumklima\UWP\Raumklima\Raumklima\bin\ARM\Debug\System.Xml.XmlDocument.dll
 C:\Raumklima\UWP\Raumklima\Raumklima\bin\ARM\Debug\System.Xml.XmlSerializer.dll
-C:\Raumklima\UWP\Raumklima\Raumklima\obj\ARM\Debug\Raumklima.csprojResolveAssemblyReference.cache
 C:\Raumklima\UWP\Raumklima\Raumklima\obj\ARM\Debug\App.g.i.cs
 C:\Raumklima\UWP\Raumklima\Raumklima\obj\ARM\Debug\App.g.cs
 C:\Raumklima\UWP\Raumklima\Raumklima\obj\ARM\Debug\MainPage.g.i.cs
@@ -211,3 +210,9 @@ C:\Raumklima\UWP\Raumklima\Raumklima\obj\ARM\Debug\MultipleQualifiersPerDimensio
 C:\Raumklima\UWP\Raumklima\Raumklima\obj\ARM\Debug\resources.en-us.resfiles
 C:\Raumklima\UWP\Raumklima\Raumklima\obj\ARM\Debug\resources.en-us.resfiles.intermediate
 C:\Raumklima\UWP\Raumklima\Raumklima\obj\ARM\Debug\ProjectArchitectures.txt
+C:\Raumklima\UWP\Raumklima\Raumklima\obj\ARM\Debug\ExperimentalPage.g.i.cs
+C:\Raumklima\UWP\Raumklima\Raumklima\obj\ARM\Debug\ExperimentalPage.g.cs
+C:\Raumklima\UWP\Raumklima\Raumklima\obj\ARM\Debug\ExperimentalPage.xaml
+C:\Raumklima\UWP\Raumklima\Raumklima\obj\ARM\Debug\ExperimentalPage.xbf
+C:\Raumklima\UWP\Raumklima\Raumklima\bin\ARM\Debug\ExperimentalPage.xbf
+C:\Raumklima\UWP\Raumklima\Raumklima\obj\ARM\Debug\Raumklima.csprojResolveAssemblyReference.cache
