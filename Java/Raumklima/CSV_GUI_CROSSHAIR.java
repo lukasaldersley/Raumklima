@@ -1,5 +1,35 @@
 package Raumklima;
 
+import java.awt.BasicStroke;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.LayoutManager;
+import java.awt.Paint;
+import java.awt.Stroke;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Rectangle2D;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartMouseEvent;
+import org.jfree.chart.ChartMouseListener;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.panel.CrosshairOverlay;
+import org.jfree.chart.panel.Overlay;
+import org.jfree.chart.plot.Crosshair;
+import org.jfree.chart.plot.Plot;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.data.general.DatasetUtilities;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.RectangleAnchor;
+import org.jfree.ui.RectangleEdge;
 import org.jfree.chart.*;
 import org.jfree.chart.annotations.*;
 import org.jfree.chart.axis.*;
@@ -12,79 +42,71 @@ import javax.swing.*;
 import javax.swing.filechooser.*;
 import java.io.*;
 import java.awt.*;
-/**
- * This class theoretically should display all of the recorded graphs from the SD card
- * 
- * @author Lukas Aldersley
- * @version 0.9.0.0
- */
-public class CSV_GUI_CROSSHAIR
-{
+
+public class CSV_GUI_CROSSHAIR implements ChartMouseListener{
     JFileChooser fileChooser;
     File csvFile;
     JFrame jFileChooserWindow;
-    ApplicationFrame frame;
-    JFreeChart chart;
-    ChartPanel panel;
     BufferedReader br;
     int counter=0;
 
-    public static void main(String[] args){
-        new CSV_GUI_CROSSHAIR();
-    }
+    JFrame window;
+    private ChartPanel chartPanel;
+    private Crosshair xCrosshair;
+    private Crosshair[] yCrosshairs;
+    private int numberOfGraphs;
 
-    public CSV_GUI_CROSSHAIR()
-    {
+    private JPanel jPanel;
+    public CSV_GUI_CROSSHAIR(String string) {
+        window=new JFrame(string);
+        window.setVisible(true);
+        window.setSize(680,450);
+        JLabel status=new JLabel("Bitte Warten");
+        window.add(status);
+        window.repaint();
+        window.setLocationRelativeTo(null);
+        try{
+            window.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
         initJFileChooser();
-        frame=new ApplicationFrame("CombinedDomainXYPlot Demo");
+        jPanel=new JPanel(new BorderLayout());
+        JFreeChart jFreeChart = createChart(createDataset());
+        chartPanel = new ChartPanel(jFreeChart);
+        chartPanel.addChartMouseListener((ChartMouseListener)this);
+        CrosshairOverlay crosshairOverlay = new CrosshairOverlay();
+        xCrosshair = new Crosshair(Double.NaN, (Paint)Color.GRAY, (Stroke)new BasicStroke(0.0f));
+        xCrosshair.setLabelVisible(true);
+        crosshairOverlay.addDomainCrosshair(xCrosshair);
+        yCrosshairs = new Crosshair[numberOfGraphs];
+        for (int i = 0; i < numberOfGraphs; ++i) {
+            yCrosshairs[i] = new Crosshair(Double.NaN, (Paint)Color.GRAY, (Stroke)new BasicStroke(0.0f));
+            yCrosshairs[i].setLabelVisible(true);
+            if (i % 2 != 0) {
+                yCrosshairs[i].setLabelAnchor(RectangleAnchor.TOP_RIGHT);
+            }
+            crosshairOverlay.addRangeCrosshair(yCrosshairs[i]);
+        }
+        chartPanel.addOverlay((Overlay)crosshairOverlay);
+        jPanel.add((Component)chartPanel);
 
-        chart=createCombinedChart();
-        panel = new ChartPanel(chart, true, true, true, false, true);
-        panel.setPreferredSize(new java.awt.Dimension(1500, 800));
-        frame.setContentPane(panel);
-
-        frame.pack();
-        RefineryUtilities.centerFrameOnScreen(frame);
-        frame.setVisible(true);
+        //window.setContentPane(CrosshairOverlayDemo2.createDemoPanel());
+        //window.setContentPane(jPanel);
+        window.remove(status);
+        window.add(jPanel);
+        window.pack();
+        window.setCursor(Cursor.getDefaultCursor());
     }
 
-    private JFreeChart createCombinedChart() {
-
-        // create subplot 1...
-        XYDataset data1 = createDataset1();
-        XYItemRenderer renderer1 = new StandardXYItemRenderer();
-        NumberAxis rangeAxis1 = new NumberAxis("Range 1");
-        XYPlot subplot1 = new XYPlot(data1, null, rangeAxis1, renderer1);
-        subplot1.setRangeAxisLocation(AxisLocation.BOTTOM_OR_LEFT);
-
-        final XYTextAnnotation annotation = new XYTextAnnotation("Hello!", 50.0, 10000.0);
-        annotation.setFont(new Font("SansSerif", Font.PLAIN, 9));
-        annotation.setRotationAngle(Math.PI / 4.0);
-        subplot1.addAnnotation(annotation);
-
-        // parent plot...
-        CombinedDomainXYPlot plot = new CombinedDomainXYPlot(new NumberAxis("Domain"));
-        plot.setGap(10.0);
-
-        // add the subplots...
-        plot.add(subplot1, 1);
-        //plot.add(subplot2, 1);
-        plot.setOrientation(PlotOrientation.VERTICAL);
-
-        // return a new chart containing the overlaid plot...
-        return new JFreeChart("CombinedDomainXYPlot Demo",
-            JFreeChart.DEFAULT_TITLE_FONT, plot, true);
-
+    private JFreeChart createChart(XYDataset xYDataset) {
+        JFreeChart jFreeChart = ChartFactory.createXYLineChart((String)"CrosshairOverlayDemo2", (String)"X", (String)"Y", (XYDataset)xYDataset);
+        return jFreeChart;
     }
 
-    /**
-     * Creates a sample dataset.
-     *
-     * @return Series 1.
-     */
-    private XYDataset createDataset1() {
+    private XYDataset createDataset() {
         int returnVal = showOpenDialog();
-        final XYSeriesCollection collection = new XYSeriesCollection();
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             try{
                 csvFile=fileChooser.getSelectedFile();
@@ -97,53 +119,69 @@ public class CSV_GUI_CROSSHAIR
         else{
             System.exit(-1);
         }
-        // create dataset 1...
-        //XYSeries series1 = new XYSeries("Batterie Spannung");
-        //XYSeries series2 = new XYSeries("Helligkeit");
+
+        XYSeriesCollection xYSeriesCollection = new XYSeriesCollection();
+        XYSeries[] xYSeries;
+
         try{
             String zeile=br.readLine();
-            String[] zwspS=zeile.split(";");
-            XYSeries[] series=new XYSeries[zwspS.length];
-            for(int i=0;i<zwspS.length;i++){
-                series[i]=new XYSeries(zwspS[i]);
+            String[] titleStrings=zeile.split(";");
+
+            numberOfGraphs=titleStrings.length;
+
+            xYSeries=new XYSeries[numberOfGraphs];
+
+            for (int i = 0; i < numberOfGraphs; ++i) {
+                xYSeries[i] = new XYSeries((Comparable)((Object)(titleStrings[i])));
             }
-            zeile=br.readLine();
-            zeile=br.readLine();
+
             zeile=br.readLine();
             while(zeile!=null||zeile!=""){
                 if(zeile==null||zeile==""){
                     break;
                 }
                 System.out.println(zeile);
-                zeile.replace(',', '.');
+                zeile=zeile.replace("NAN","0,00");
+                zeile=zeile.replace(',', '.');
                 System.out.println(zeile);
                 String[] zwso=zeile.split(";");
-                double[] zwsp=new double[zwspS.length];
-                for(int i=0;i<zwspS.length;i++){
+                double[] zwsp=new double[numberOfGraphs];
+                for(int i=0;i<numberOfGraphs;i++){
                     zwsp[i]=Double.parseDouble(zwso[i]);
-                    series[i].add(counter,zwsp[i]);
+                    xYSeries[i].add(counter,zwsp[i]);
                 }
-                //series1.add(counter,zwsp[0]);
-                //series2.add(counter,zwsp[1]);
                 counter++;
                 zeile=br.readLine();
                 if(zeile==null||zeile==""){
                     break;
                 }
             }
-            for(int i=0;i<zwspS.length;i++){
-                collection.addSeries(series[i]);
+
+            for (int i = 0; i < numberOfGraphs; ++i) {
+                xYSeriesCollection.addSeries(xYSeries[i]);
             }
         }
-        catch(Exception e){
-            e.printStackTrace();
+        catch(Exception ex){
+            ex.printStackTrace();
         }
-        //series1.add(10.0, 12353.3);
+        return xYSeriesCollection;
+    }
 
-        //collection.addSeries(series1);
-        //collection.addSeries(series2);
-        return collection;
+    public void chartMouseClicked(ChartMouseEvent chartMouseEvent) {
+        ;
+    }
 
+    public void chartMouseMoved(ChartMouseEvent chartMouseEvent) {
+        Rectangle2D rectangle2D = chartPanel.getScreenDataArea();
+        JFreeChart jFreeChart = chartMouseEvent.getChart();
+        XYPlot xYPlot = (XYPlot)jFreeChart.getPlot();
+        ValueAxis valueAxis = xYPlot.getDomainAxis();
+        double d = valueAxis.java2DToValue((double)chartMouseEvent.getTrigger().getX(), rectangle2D, RectangleEdge.BOTTOM);
+        this.xCrosshair.setValue(d);
+        for (int i = 0; i < 4; ++i) {
+            double d2 = DatasetUtilities.findYValue((XYDataset)xYPlot.getDataset(), (int)i, (double)d);
+            this.yCrosshairs[i].setValue(d2);
+        }
     }
 
     private void initJFileChooser(){
@@ -158,4 +196,15 @@ public class CSV_GUI_CROSSHAIR
     public int showOpenDialog(){
         return fileChooser.showOpenDialog(jFileChooserWindow);
     }
+
+    public static void main(String[] arrstring) {
+        SwingUtilities.invokeLater(new Runnable(){
+
+                @Override
+                public void run() {
+                    new CSV_GUI_CROSSHAIR("JFreeChart: CrosshairOverlayDemo2.java");
+                }
+            });
+    }
 }
+

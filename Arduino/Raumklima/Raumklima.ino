@@ -187,7 +187,7 @@ void getRTCValues() {
 
 void getBMEValues() {
   BME280_Temperature = BME280.readTemperature();
-  BME280_Airpressure = BME280.readPressure() / 100.00;
+  BME280_Airpressure = BME280.readPressure() / 1000.00;
   BME280_Humidity = BME280.readHumidity();
 }
 
@@ -227,6 +227,7 @@ void getBMPValues() {
   delay(BMPReadingDelay);
   BMPReadingDelay = BMP180.getPressure(BMP180_Airpressure, BMP180_Temperature);
   delay(BMPReadingDelay);
+  BMP180_Airpressure/=10.00;
 }
 
 void getPressureValues() {
@@ -243,6 +244,7 @@ void getHumidityValues() {
 
 void getBrightnessValues() {
   Brightness = analogRead(BRIGHTNESS_PIN);
+  Brightness=map(Brightness,0,1023,100,0);
 }
 
 void getLoudnessValues() {
