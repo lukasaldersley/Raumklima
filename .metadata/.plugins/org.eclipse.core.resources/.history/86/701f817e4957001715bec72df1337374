@@ -16,7 +16,7 @@ import org.jfree.data.general.*;
 import org.jfree.data.xy.*;
 import org.jfree.ui.*;
 
-public class CSV_GUI_CROSSHAIR_1 implements ChartMouseListener, KeyListener, ComponentListener{
+public class CSV_GUI_CROSSHAIR implements ChartMouseListener, KeyListener, ComponentListener, WindowStateListener, WindowListener{
     public static int OPEN_KEY_ID=78;//O
     public static int OPEN_NEW_KEY_ID=79;//N
     public static int CLOSE_KEY_ID=87;//W
@@ -55,9 +55,9 @@ public class CSV_GUI_CROSSHAIR_1 implements ChartMouseListener, KeyListener, Com
     private String name;
     private int number;
     private boolean shutdown=false;
-    private CSV_GUI_CROSSHAIR_1 nextOne=null;
-    private CSV_GUI_CROSSHAIR_1 previousOne=null;
-    public CSV_GUI_CROSSHAIR_1(String string,int integer,CSV_GUI_CROSSHAIR_1 newPrevious,CSV_GUI_CROSSHAIR_1 newNext) {
+    private CSV_GUI_CROSSHAIR nextOne=null;
+    private CSV_GUI_CROSSHAIR previousOne=null;
+    public CSV_GUI_CROSSHAIR(String string,int integer,CSV_GUI_CROSSHAIR newPrevious,CSV_GUI_CROSSHAIR newNext) {
         number=integer;
         name=string;
         if(number==1){
@@ -129,6 +129,7 @@ public class CSV_GUI_CROSSHAIR_1 implements ChartMouseListener, KeyListener, Com
             fullscreen=true;
             window.addKeyListener(this);
             window.addComponentListener(this);
+            window.addWindowStateListener(this);
             window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         }
         else{
@@ -136,15 +137,15 @@ public class CSV_GUI_CROSSHAIR_1 implements ChartMouseListener, KeyListener, Com
             jFileChooserWindow.dispose();
         }
     }
-    
-    public void setNextOne(CSV_GUI_CROSSHAIR_1 newNext){
+
+    public void setNextOne(CSV_GUI_CROSSHAIR newNext){
         nextOne=newNext;
     }
-    
-    public void setPreviousOne(CSV_GUI_CROSSHAIR_1 newPrevious){
+
+    public void setPreviousOne(CSV_GUI_CROSSHAIR newPrevious){
         previousOne=newPrevious;
     }
-    
+
     public void decrementInt(){
         number--;
         if(number==1){
@@ -270,7 +271,7 @@ public class CSV_GUI_CROSSHAIR_1 implements ChartMouseListener, KeyListener, Com
 
                 @Override
                 public void run() {
-                    new CSV_GUI_CROSSHAIR_1("Raumklima Auswertungssoftware",1,null,null);
+                    new CSV_GUI_CROSSHAIR("Raumklima Auswertungssoftware",1,null,null);
                 }
             });
     }
@@ -290,7 +291,7 @@ public class CSV_GUI_CROSSHAIR_1 implements ChartMouseListener, KeyListener, Com
                 window.pack();
                 window.setLocationRelativeTo(null);
             }
-            setNextOne(new CSV_GUI_CROSSHAIR_1(name,++number,this,null));
+            setNextOne(new CSV_GUI_CROSSHAIR(name,++number,this,null));
         }
         else if(event.getKeyCode()==OPEN_NEW_KEY_ID&&event.isControlDown()){//Strg+O ?ffnet eine neue instanz und schlie?t sich selbst
             System.out.println("STRG+O");
@@ -303,17 +304,25 @@ public class CSV_GUI_CROSSHAIR_1 implements ChartMouseListener, KeyListener, Com
                 window.pack();
                 window.setLocationRelativeTo(null);
             }
-            CSV_GUI_CROSSHAIR_1 zw=new CSV_GUI_CROSSHAIR_1(name,number,previousOne,nextOne);
-            previousOne.setNextOne(zw);
-            nextOne.setPreviousOne(zw);
+            CSV_GUI_CROSSHAIR zw=new CSV_GUI_CROSSHAIR(name,number,previousOne,nextOne);
+            if(previousOne!=null){
+                previousOne.setNextOne(zw);
+            }
+            if(nextOne!=null){
+                nextOne.setPreviousOne(zw);
+            }
             window.dispose();
             jFileChooserWindow.dispose();
         }
         else if(event.getKeyCode()==CLOSE_KEY_ID&&event.isControlDown()){//Strg+W schlie?t sich selbst
             System.out.println("STRG+W");
-            nextOne.decrementInt();
-            nextOne.setPreviousOne(previousOne);
-            previousOne.setNextOne(nextOne);
+            if(nextOne!=null){
+                nextOne.decrementInt();
+                nextOne.setPreviousOne(previousOne);
+            }
+            if(previousOne!=null){
+                previousOne.setNextOne(nextOne);
+            }
             window.dispose();
             jFileChooserWindow.dispose();
         }
@@ -388,5 +397,67 @@ public class CSV_GUI_CROSSHAIR_1 implements ChartMouseListener, KeyListener, Com
         // TODO Auto-generated method stub
 
     }
+
+	@Override
+	public void windowStateChanged(WindowEvent e) {
+		if(!fullscreen){
+        System.out.println("WINDOW SIZE: "+width+"x"+height);
+        width=window.getWidth();
+        height=window.getHeight();
+        nrOfRowElements=floor(width/370);
+        nrOfRows=floor(numberOfGraphs/nrOfRowElements)+1;
+        bottomPanel.setLayout(new GridLayout(0,nrOfRowElements*2,0,20));
+        bottomPanelHeight=35*nrOfRows;
+        bottomPanel.setPreferredSize(new Dimension(width,bottomPanelHeight));
+        jPanel.setPreferredSize(new Dimension(width,height-(60+bottomPanelHeight)));
+        window.repaint();
+        System.out.println("BOTTOMPANEL HEIGHT: "+bottomPanelHeight);
+        System.out.println("# of elementcombos per row: "+nrOfRowElements);
+        System.out.println("# of  rows: "+nrOfRows);
+        System.out.println();
+    }
+	}
+
+	@Override
+	public void windowActivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosed(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosing(WindowEvent arg0) {
+		window.dispose();
+		jFileChooserWindow.dispose();
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowOpened(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 }
 
