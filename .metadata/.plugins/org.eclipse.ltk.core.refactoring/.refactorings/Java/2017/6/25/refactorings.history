@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring accessors="true" comment="Delete element from project &apos;Java&apos;&#x0D;&#x0A;- Original project: &apos;Java&apos;&#x0D;&#x0A;- Original element: &apos;Java/serialIO&apos;&#x0D;&#x0A;- Delete subpackages" description="Delete element" element1="/&lt;serialIO.SERIAL" element2="/&lt;serialIO.IO.NETWORK" element3="/&lt;serialIO.IO.DISK" element4="/&lt;serialIO.IO.AUDIO" element5="/&lt;serialIO.IO" element6="/&lt;serialIO.ABSTRACT.TIME" element7="/&lt;serialIO.ABSTRACT.MATH" element8="/&lt;serialIO.ABSTRACT" element9="/&lt;serialIO" elements="9" flags="589830" id="org.eclipse.jdt.ui.delete" resources="0" stamp="1498166359418" subPackages="true" version="1.0"/>
+</session>
