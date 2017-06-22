@@ -2,7 +2,6 @@ package Raumklima.ArduinoStuff;
 
 import java.awt.event.*;
 import java.awt.*;
-import serialIO.IO.DISK.FILE;
 import javax.swing.*;
 public class LCD2004LayoutConcept implements ActionListener
 {
@@ -61,7 +60,7 @@ public class LCD2004LayoutConcept implements ActionListener
     
     public void actionPerformed(ActionEvent e){
         if(e.getSource()==button){
-            FILE.WRITE("LCD2004.txt","**********************",true);
+            /*FILE.WRITE("LCD2004.txt","**********************",true);
             FILE.WRITE("LCD2004.txt","*"+eins.getText()+"*",true);
             FILE.WRITE("LCD2004.txt","*"+zwei.getText()+"*",true);
             FILE.WRITE("LCD2004.txt","*"+drei.getText()+"*",true);
@@ -71,7 +70,7 @@ public class LCD2004LayoutConcept implements ActionListener
             FILE.WRITE("LCD2004.txt","",true);
             FILE.WRITE("LCD2004.txt","",true);
             FILE.WRITE("LCD2004.txt","",true);
-            FILE.WRITE("LCD2004.txt","",true);
+            FILE.WRITE("LCD2004.txt","",true);*/
         }
     }
 }

@@ -1,13 +1,10 @@
 package Raumklima;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.io.*;
-
 import javax.swing.*;
 import javax.swing.filechooser.*;
-
 import org.jfree.chart.*;
 import org.jfree.chart.axis.*;
 import org.jfree.chart.panel.*;
@@ -27,6 +24,9 @@ public class CSV_GUI_CROSSHAIR implements ChartMouseListener, KeyListener, Compo
     public static int TOGGLE_FULLSCREEN_MODE_KEY_ID=122;
     public static int REFRESH_FRAME_KEY_ID=116;
     public static String OPEN_SETTINGS_KEY_STRING="I";
+    public static int HEIGHT_OF_DATA_BLOCK=35;
+    public static int WIDTH_OF_DATA_BLOCK=370;
+
     private JFileChooser fileChooser;
     private File csvFile;
     private JFrame jFileChooserWindow;
@@ -37,63 +37,68 @@ public class CSV_GUI_CROSSHAIR implements ChartMouseListener, KeyListener, Compo
     private ChartPanel chartPanel;
     private Crosshair xCrosshair;
     private Crosshair[] yCrosshairs;
-    private int numberOfGraphs;
-
-    private JPanel jPanel;
-    private JPanel bottomPanel;
+    private JPanel chartJPanel;
+    private JPanel dataValuePanel;
     private JLabel[] boxDesc;
     private JTextField[] box;
+    private JPanel[] commonBox;
+    private int numberOfGraphs;
 
     private String[] titleStrings;
 
-    private GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-    private static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
-    private int ScreenWidth = gd.getDisplayMode().getWidth();
-    private int ScreenHeight = gd.getDisplayMode().getHeight();
-    private int width,height;
-    private int bottomPanelHeight;
+    private GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    //private static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
+    private int dataValuePanelHeight,chartJPanelHeight;
     private boolean fullscreen=false;
     private int nrOfRows;
-    private int nrOfRowElements;
+    private int nrOfRowElements=1;
     private JLabel status;
-    private String name;
+    private String windowName;
     private int number;
-    private boolean shutdown=false;
+    private boolean jFilePickerFailed=false;
     private CSV_GUI_CROSSHAIR nextOne=null;
     private CSV_GUI_CROSSHAIR previousOne=null;
     private JMenuBar menuBar;
     private JMenuItem help;
     private JMenuItem settings;
+    private int width,height;
     public CSV_GUI_CROSSHAIR(String string,int integer,CSV_GUI_CROSSHAIR newPrevious,CSV_GUI_CROSSHAIR newNext) {
         menuBar=new JMenuBar();
         help=new JMenuItem("Hilfe (F1)");
         settings=new JMenuItem("Einstellungen (Strg+"+OPEN_SETTINGS_KEY_STRING+")");
         menuBar.add(help);
         menuBar.add(settings);
+
         number=integer;
-        name=string;
+        windowName=string;
         if(number==1){
-            window=new JFrame(name);
+            window=new JFrame(windowName);
         }
         else{
-            window=new JFrame(name+" ("+number+")");
+            window=new JFrame(windowName+" ("+number+")");
         }
+
         window.setVisible(true);
         window.setSize(800,480);
+
         status=new JLabel("Bitte Warten");
-        window.add(status);
+        window.add(status,BorderLayout.CENTER);
+
         window.repaint();
         window.setLocationRelativeTo(null);
+
         try{
             window.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         }
         catch(Exception e){
             e.printStackTrace();
         }
+
         initJFileChooser();
-        jPanel=new JPanel(new BorderLayout());
+
+        chartJPanel=new JPanel();//new BorderLayout());
         JFreeChart jFreeChart = createChart(createDataset());
-        if(shutdown==false){
+        if(jFilePickerFailed==false){
             chartPanel = new ChartPanel(jFreeChart);
             chartPanel.addChartMouseListener((ChartMouseListener)this);
             CrosshairOverlay crosshairOverlay = new CrosshairOverlay();
@@ -110,45 +115,80 @@ public class CSV_GUI_CROSSHAIR implements ChartMouseListener, KeyListener, Compo
                 crosshairOverlay.addRangeCrosshair(yCrosshairs[i]);
             }
             chartPanel.addOverlay((Overlay)crosshairOverlay);
-            jPanel.add((Component)chartPanel);
+            chartJPanel.add(chartPanel);
 
-            bottomPanel=new JPanel();
+            dataValuePanel=new JPanel();
             box=new JTextField[numberOfGraphs];
             boxDesc=new JLabel[numberOfGraphs];
-            int zws=(int)(Math.floor(ScreenWidth/370))*2;
-            if(zws==0){
-                zws=1;
-            }
-            bottomPanel.setLayout(new GridLayout(0,zws,0,10));
+            commonBox=new JPanel[numberOfGraphs];
 
+            dataValuePanel.setLayout(new FlowLayout());
             for(int i=0;i<numberOfGraphs;i++){
                 box[i]=new JTextField();
                 boxDesc[i]=new JLabel("                "+titleStrings[i]+":");
-                bottomPanel.add(boxDesc[i]);
-                bottomPanel.add(box[i]);
+                commonBox[i]=new JPanel();
+                commonBox[i].add(boxDesc[i],BorderLayout.WEST);
+                commonBox[i].add(box[i],BorderLayout.EAST);
+                commonBox[i].setSize(370,35);
+                dataValuePanel.add(commonBox[i]);
             }
-            bottomPanelHeight=(int)(35*(Math.floor((numberOfGraphs-0.1)/(numberOfGraphs/(int)(Math.floor(ScreenWidth/370))*2))+1));
-            bottomPanel.setPreferredSize(new Dimension(ScreenWidth,bottomPanelHeight));
-            jPanel.setPreferredSize(new Dimension(ScreenWidth,ScreenHeight-(30+bottomPanelHeight)));
             window.remove(status);
-            window.add(jPanel, BorderLayout.NORTH);
-            window.add(bottomPanel,BorderLayout.SOUTH);
-            window.pack();
-            window.setLocationRelativeTo(null);
-            window.setCursor(Cursor.getDefaultCursor());
-            window.setMinimumSize(new Dimension(370,300));
+            //window.add(chartJPanel, BorderLayout.NORTH);
+            window.add(dataValuePanel);//,BorderLayout.SOUTH);
             window.setJMenuBar(menuBar);
+            window.setCursor(Cursor.getDefaultCursor());
+            window.setLocationRelativeTo(null);
+            window.setMinimumSize(new Dimension(370,300));
             device.setFullScreenWindow(window);
             fullscreen=true;
+
+            GroessenVerhaeltnisseBerechnen();
+
             window.addKeyListener(this);
             window.addComponentListener(this);
-            bottomPanel.addComponentListener(this);
+            dataValuePanel.addComponentListener(this);
             window.addWindowStateListener(this);
+
             window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         }
         else{
             window.dispose();
             jFileChooserWindow.dispose();
+        }
+    }
+
+    public void GroessenVerhaeltnisseBerechnen(){
+        width=window.getWidth();
+        height=window.getHeight();
+
+        System.out.println("Window Size: "+width+"x"+height);
+
+        nrOfRowElements=floor(width/WIDTH_OF_DATA_BLOCK);
+        nrOfRows=roof(numberOfGraphs/nrOfRowElements);
+
+        System.out.println("TextBox Layout: "+nrOfRowElements+"x"+nrOfRows);
+
+        dataValuePanelHeight=nrOfRows*HEIGHT_OF_DATA_BLOCK;
+        chartJPanelHeight=(height-dataValuePanelHeight)-30;//-30 ist abstand für die JMenuBar
+
+        System.out.println("DataValuePanelHeight="+dataValuePanelHeight);
+        System.out.println("ChartJPanelHeight="+chartJPanelHeight);
+
+        //chartJPanel.setPreferredSize(new Dimension(width, chartJPanelHeight));
+        //dataValuePanel.setPreferredSize(new Dimension(width,dataValuePanelHeight));
+
+        System.out.println("DataValuePanel Dimensions:"+dataValuePanel.getSize());
+        System.out.println("ChartJPanel Dimensions:"+chartJPanel.getSize());
+        System.out.println("\n\n");
+        window.pack();
+    }
+
+    public int roof(double in){
+        if((((int)(in))-in)==0.00){
+            return (int)(in);
+        }
+        else{
+            return (int)(in)+1;
         }
     }
 
@@ -163,10 +203,10 @@ public class CSV_GUI_CROSSHAIR implements ChartMouseListener, KeyListener, Compo
     public void decrementInt(){
         number--;
         if(number==1){
-            window.setTitle(name);
+            window.setTitle(windowName);
         }
         else{
-            window.setTitle(name+" ("+number+")");
+            window.setTitle(windowName+" ("+number+")");
         }
         if(nextOne!=null){
             nextOne.decrementInt();
@@ -192,7 +232,7 @@ public class CSV_GUI_CROSSHAIR implements ChartMouseListener, KeyListener, Compo
             }
         }
         else{
-            shutdown=true;
+            jFilePickerFailed=true;
             return xYSeriesCollection;
         }
 
@@ -300,26 +340,20 @@ public class CSV_GUI_CROSSHAIR implements ChartMouseListener, KeyListener, Compo
             System.out.println("STRG+N");
             if(fullscreen){
                 fullscreen=false;
-                bottomPanel.setPreferredSize(new Dimension(800,bottomPanelHeight));
-                jPanel.setPreferredSize(new Dimension(800,480-(30+bottomPanelHeight)));
                 device.setFullScreenWindow(null);
-                window.pack();
-                window.setLocationRelativeTo(null);
+                GroessenVerhaeltnisseBerechnen();
             }
-            setNextOne(new CSV_GUI_CROSSHAIR(name,++number,this,null));
+            setNextOne(new CSV_GUI_CROSSHAIR(windowName,++number,this,null));
         }
         else if(event.getKeyCode()==OPEN_NEW_KEY_ID&&event.isControlDown()){//Strg+O ?ffnet eine neue instanz und schlie?t sich selbst
             System.out.println("STRG+O");
             window.setVisible(false);
             if(fullscreen){
                 fullscreen=false;
-                bottomPanel.setPreferredSize(new Dimension(800,bottomPanelHeight));
-                jPanel.setPreferredSize(new Dimension(800,480-(30+bottomPanelHeight)));
                 device.setFullScreenWindow(null);
-                window.pack();
-                window.setLocationRelativeTo(null);
+                GroessenVerhaeltnisseBerechnen();
             }
-            CSV_GUI_CROSSHAIR zw=new CSV_GUI_CROSSHAIR(name,number,previousOne,nextOne);
+            CSV_GUI_CROSSHAIR zw=new CSV_GUI_CROSSHAIR(windowName,number,previousOne,nextOne);
             if(previousOne!=null){
                 previousOne.setNextOne(zw);
             }
@@ -351,21 +385,17 @@ public class CSV_GUI_CROSSHAIR implements ChartMouseListener, KeyListener, Compo
             System.out.println("F11");
             if(fullscreen){
                 fullscreen=false;
-                bottomPanel.setPreferredSize(new Dimension(800,bottomPanelHeight));
-                jPanel.setPreferredSize(new Dimension(800,480-(30+bottomPanelHeight)));
                 device.setFullScreenWindow(null);
-                window.pack();
-                window.setLocationRelativeTo(null);
+                GroessenVerhaeltnisseBerechnen();
             }
             else{
                 fullscreen=true;
-                bottomPanel.setPreferredSize(new Dimension(ScreenWidth,bottomPanelHeight));
-                jPanel.setPreferredSize(new Dimension(ScreenWidth,ScreenHeight-(30+bottomPanelHeight)));
                 device.setFullScreenWindow(window);
+                GroessenVerhaeltnisseBerechnen();
             }
         }
         if(event.getKeyCode()==REFRESH_FRAME_KEY_ID){
-            window.pack();
+            GroessenVerhaeltnisseBerechnen();
         }
     }
 
@@ -376,48 +406,14 @@ public class CSV_GUI_CROSSHAIR implements ChartMouseListener, KeyListener, Compo
     @Override
     public void componentResized(ComponentEvent arg0) {
         if(!fullscreen){
-            System.out.println("WINDOW SIZE: "+width+"x"+height);
-            width=window.getWidth();
-            height=window.getHeight();
-            System.out.println("WINDOW SIZE AFTER GET: "+width+"x"+height);
-            nrOfRowElements=floor(width/370);
-            nrOfRows=floor(numberOfGraphs/nrOfRowElements)+1;
-            bottomPanel.setLayout(new GridLayout(0,nrOfRowElements*2,0,10));
-            bottomPanelHeight=40*nrOfRows;
-            bottomPanel.setPreferredSize(new Dimension(width,bottomPanelHeight));
-            jPanel.setPreferredSize(new Dimension(width,height-(30+bottomPanelHeight)));
-            System.out.println("FUCKING JPANEL HEIGHT: "+width+"x"+(height-(30+bottomPanelHeight)));
-            jPanel.setSize(new Dimension(width,height-(30+bottomPanelHeight)));
-            window.repaint();
-            System.out.println("BOTTOMPANEL HEIGHT: "+bottomPanelHeight);
-            System.out.println("# of elementcombos per row: "+nrOfRowElements);
-            System.out.println("# of  rows: "+nrOfRows);
-            System.out.println(jPanel.getPreferredSize());
-            System.out.println(bottomPanel.getPreferredSize());
-            System.out.println();
-            //jpanel.doLayout();
-            jPanel.validate();
+            GroessenVerhaeltnisseBerechnen();
         }
     }
 
     @Override
     public void windowStateChanged(WindowEvent e) {
         if(!fullscreen){
-            System.out.println("WINDOW SIZE\n: "+width+"x"+height);
-            width=window.getWidth();
-            height=window.getHeight();
-            nrOfRowElements=floor(width/370);
-            nrOfRows=floor(numberOfGraphs/nrOfRowElements)+1;
-            bottomPanel.setLayout(new GridLayout(0,nrOfRowElements*2,0,10));
-            bottomPanelHeight=35*nrOfRows;
-            bottomPanel.setPreferredSize(new Dimension(width,bottomPanelHeight));
-            jPanel.setPreferredSize(new Dimension(width,height-(/*30+*/bottomPanelHeight)));
-            jPanel.setSize(new Dimension(width,height-(/*30+*/bottomPanelHeight)));
-            window.repaint();
-            System.out.println("BOTTOMPANEL HEIGHT: "+bottomPanelHeight);
-            System.out.println("# of elementcombos per row: "+nrOfRowElements);
-            System.out.println("# of  rows: "+nrOfRows);
-            System.out.println();
+            GroessenVerhaeltnisseBerechnen();
         }
     }
 
