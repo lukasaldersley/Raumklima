@@ -1,67 +1,66 @@
 package Raumklima;
 
-import java.awt.BasicStroke;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.LayoutManager;
-import java.awt.Paint;
-import java.awt.Stroke;
-import java.awt.event.MouseEvent;
-import java.awt.geom.Rectangle2D;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartMouseEvent;
-import org.jfree.chart.ChartMouseListener;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.panel.CrosshairOverlay;
-import org.jfree.chart.panel.Overlay;
-import org.jfree.chart.plot.Crosshair;
-import org.jfree.chart.plot.Plot;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.data.general.DatasetUtilities;
-import org.jfree.data.xy.XYDataset;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.ui.RectangleAnchor;
-import org.jfree.ui.RectangleEdge;
-import org.jfree.chart.*;
-import org.jfree.chart.annotations.*;
-import org.jfree.chart.axis.*;
-import org.jfree.chart.plot.*;
-import org.jfree.chart.panel.*;
-import org.jfree.chart.renderer.xy.*;
-import org.jfree.data.xy.*;
-import org.jfree.ui.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.geom.*;
+import java.io.*;
+
 import javax.swing.*;
 import javax.swing.filechooser.*;
-import java.io.*;
-import java.awt.*;
 
-public class CSV_GUI_CROSSHAIR implements ChartMouseListener{
-    JFileChooser fileChooser;
-    File csvFile;
-    JFrame jFileChooserWindow;
-    BufferedReader br;
-    int counter=0;
+import org.jfree.chart.*;
+import org.jfree.chart.axis.*;
+import org.jfree.chart.panel.*;
+import org.jfree.chart.plot.*;
+import org.jfree.data.general.*;
+import org.jfree.data.xy.*;
+import org.jfree.ui.*;
 
-    JFrame window;
+public class CSV_GUI_CROSSHAIR implements ChartMouseListener, KeyListener, ComponentListener{
+    private JFileChooser fileChooser;
+    private File csvFile;
+    private JFrame jFileChooserWindow;
+    private BufferedReader br;
+    private int counter=0;
+
+    private JFrame window;
     private ChartPanel chartPanel;
     private Crosshair xCrosshair;
     private Crosshair[] yCrosshairs;
     private int numberOfGraphs;
 
     private JPanel jPanel;
-    public CSV_GUI_CROSSHAIR(String string) {
-        window=new JFrame(string);
+    private JPanel bottomPanel;
+    private JLabel[] boxDesc;
+    private JTextField[] box;
+
+    String[] titleStrings;
+
+    GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    int ScreenWidth = gd.getDisplayMode().getWidth();
+    int ScreenHeight = gd.getDisplayMode().getHeight();
+    int width,height;
+    int bottomPanelHeight;
+    private boolean fullscreen=false;
+    private int nrOfRows;
+    private int nrOfRowElements;
+    JLabel status;
+    String name;
+    int number;
+    static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
+    public CSV_GUI_CROSSHAIR(String string,int integer) {
+    	number=integer;
+        name=string;
+        if(number==1){
+        window=new JFrame(name);
+        }
+        else{
+        	window=new JFrame(name+" ("+number+")");
+        }
+        window.setMaximumSize(new Dimension(370,300));
         window.setVisible(true);
-        window.setSize(680,450);
-        JLabel status=new JLabel("Bitte Warten");
+        window.setSize(800,480);
+        status=new JLabel("Bitte Warten");
         window.add(status);
         window.repaint();
         window.setLocationRelativeTo(null);
@@ -92,16 +91,39 @@ public class CSV_GUI_CROSSHAIR implements ChartMouseListener{
         chartPanel.addOverlay((Overlay)crosshairOverlay);
         jPanel.add((Component)chartPanel);
 
-        //window.setContentPane(CrosshairOverlayDemo2.createDemoPanel());
-        //window.setContentPane(jPanel);
+        bottomPanel=new JPanel();
+        box=new JTextField[numberOfGraphs];
+        boxDesc=new JLabel[numberOfGraphs];
+        int zws=(int)(Math.floor(ScreenWidth/370))*2;
+        if(zws==0){
+        	zws=1;
+        }
+        bottomPanel.setLayout(new GridLayout(0,zws,0,20));
+
+        for(int i=0;i<numberOfGraphs;i++){
+            box[i]=new JTextField();
+            boxDesc[i]=new JLabel("                "+titleStrings[i]+":");
+            bottomPanel.add(boxDesc[i]);
+            bottomPanel.add(box[i]);
+        }
+        bottomPanelHeight=(int)(35*(Math.floor((numberOfGraphs-0.1)/(numberOfGraphs/(int)(Math.floor(ScreenWidth/370))*2))+1));
+        bottomPanel.setPreferredSize(new Dimension(ScreenWidth,bottomPanelHeight));
+        jPanel.setPreferredSize(new Dimension(ScreenWidth,ScreenHeight-(30+bottomPanelHeight)));
         window.remove(status);
-        window.add(jPanel);
+        window.add(jPanel, BorderLayout.NORTH);
+        window.add(bottomPanel,BorderLayout.SOUTH);
         window.pack();
+        window.setLocationRelativeTo(null);
         window.setCursor(Cursor.getDefaultCursor());
+        device.setFullScreenWindow(window);
+        fullscreen=true;
+        window.addKeyListener(this);
+        window.addComponentListener(this);
+        window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     private JFreeChart createChart(XYDataset xYDataset) {
-        JFreeChart jFreeChart = ChartFactory.createXYLineChart((String)"CrosshairOverlayDemo2", (String)"X", (String)"Y", (XYDataset)xYDataset);
+        JFreeChart jFreeChart = ChartFactory.createXYLineChart((String)"RAUMKLIMA AUSWERTUNGSSOFTWARE", (String)"SAMPLES", (String)"VALUES", (XYDataset)xYDataset);
         return jFreeChart;
     }
 
@@ -117,7 +139,7 @@ public class CSV_GUI_CROSSHAIR implements ChartMouseListener{
             }
         }
         else{
-            System.exit(-1);
+            window.dispose();
         }
 
         XYSeriesCollection xYSeriesCollection = new XYSeriesCollection();
@@ -125,7 +147,7 @@ public class CSV_GUI_CROSSHAIR implements ChartMouseListener{
 
         try{
             String zeile=br.readLine();
-            String[] titleStrings=zeile.split(";");
+            titleStrings=zeile.split(";");
 
             numberOfGraphs=titleStrings.length;
 
@@ -140,10 +162,10 @@ public class CSV_GUI_CROSSHAIR implements ChartMouseListener{
                 if(zeile==null||zeile==""){
                     break;
                 }
-                System.out.println(zeile);
+                //System.out.println(zeile);
                 zeile=zeile.replace("NAN","0,00");
                 zeile=zeile.replace(',', '.');
-                System.out.println(zeile);
+                //System.out.println(zeile);
                 String[] zwso=zeile.split(";");
                 double[] zwsp=new double[numberOfGraphs];
                 for(int i=0;i<numberOfGraphs;i++){
@@ -168,7 +190,16 @@ public class CSV_GUI_CROSSHAIR implements ChartMouseListener{
     }
 
     public void chartMouseClicked(ChartMouseEvent chartMouseEvent) {
-        ;
+        Rectangle2D rectangle2D = chartPanel.getScreenDataArea();
+        JFreeChart jFreeChart = chartMouseEvent.getChart();
+        XYPlot xYPlot = (XYPlot)jFreeChart.getPlot();
+        ValueAxis valueAxis = xYPlot.getDomainAxis();
+        double d = valueAxis.java2DToValue((double)chartMouseEvent.getTrigger().getX(), rectangle2D, RectangleEdge.BOTTOM);
+        this.xCrosshair.setValue(d);
+        for (int i = 0; i < numberOfGraphs; ++i) {
+            double d2 = DatasetUtilities.findYValue((XYDataset)xYPlot.getDataset(), (int)i, (double)d);
+            box[i].setText(String.valueOf(d2));
+        }
     }
 
     public void chartMouseMoved(ChartMouseEvent chartMouseEvent) {
@@ -178,9 +209,9 @@ public class CSV_GUI_CROSSHAIR implements ChartMouseListener{
         ValueAxis valueAxis = xYPlot.getDomainAxis();
         double d = valueAxis.java2DToValue((double)chartMouseEvent.getTrigger().getX(), rectangle2D, RectangleEdge.BOTTOM);
         this.xCrosshair.setValue(d);
-        for (int i = 0; i < 4; ++i) {
+        for (int i = 0; i < numberOfGraphs; ++i) {
             double d2 = DatasetUtilities.findYValue((XYDataset)xYPlot.getDataset(), (int)i, (double)d);
-            this.yCrosshairs[i].setValue(d2);
+            yCrosshairs[i].setValue(d2);
         }
     }
 
@@ -197,14 +228,129 @@ public class CSV_GUI_CROSSHAIR implements ChartMouseListener{
         return fileChooser.showOpenDialog(jFileChooserWindow);
     }
 
-    public static void main(String[] arrstring) {
+    public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable(){
 
                 @Override
                 public void run() {
-                    new CSV_GUI_CROSSHAIR("JFreeChart: CrosshairOverlayDemo2.java");
+                    new CSV_GUI_CROSSHAIR("Raumklima Auswertungssoftware",1);
                 }
             });
+    }
+
+    //TODO nummern in der titelzeile sinnvoller machen
+    @Override
+    public void keyPressed(KeyEvent event) {
+        //System.out.println("PRESSED:"+event.getKeyCode()+"|"+event.getID());
+        System.out.println(event.getKeyCode());
+        if(event.getKeyCode()==78&&event.isControlDown()){//Strg+N öffnet eine neue instanz der software
+        	System.out.println("STRG+N");
+        	if(fullscreen){
+                fullscreen=false;
+                bottomPanel.setPreferredSize(new Dimension(800,bottomPanelHeight));
+                jPanel.setPreferredSize(new Dimension(800,480-(30+bottomPanelHeight)));
+                device.setFullScreenWindow(null);
+                window.pack();
+                window.setLocationRelativeTo(null);
+            }
+        	new CSV_GUI_CROSSHAIR(name,++number);
+        }
+        else if(event.getKeyCode()==79&&event.isControlDown()){//Strg+O öffnet eine neue instanz und schließt sich selbst
+        	System.out.println("STRG+O");
+        	window.setVisible(false);
+        	if(fullscreen){
+                fullscreen=false;
+                bottomPanel.setPreferredSize(new Dimension(800,bottomPanelHeight));
+                jPanel.setPreferredSize(new Dimension(800,480-(30+bottomPanelHeight)));
+                device.setFullScreenWindow(null);
+                window.pack();
+                window.setLocationRelativeTo(null);
+            }
+        	new CSV_GUI_CROSSHAIR(name,number);
+        	window.dispose();
+        }
+        else if(event.getKeyCode()==87&&event.isControlDown()){//Strg+W schließt sich selbst
+        	System.out.println("STRG+W");
+        	/*if(fullscreen){
+                fullscreen=false;
+                bottomPanel.setPreferredSize(new Dimension(800,bottomPanelHeight));
+                jPanel.setPreferredSize(new Dimension(800,480-(30+bottomPanelHeight)));
+                device.setFullScreenWindow(null);
+                window.pack();
+                window.setLocationRelativeTo(null);
+            }*/
+        	window.dispose();
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent event) {
+        //System.out.println("RELEASED:"+event.getKeyCode()+"|"+event.getID());
+        System.out.println(event.getKeyCode());
+        if(event.getKeyCode()==122){
+            System.out.println("F11");
+            if(fullscreen){
+                fullscreen=false;
+                bottomPanel.setPreferredSize(new Dimension(800,bottomPanelHeight));
+                jPanel.setPreferredSize(new Dimension(800,480-(30+bottomPanelHeight)));
+                device.setFullScreenWindow(null);
+                window.pack();
+                window.setLocationRelativeTo(null);
+            }
+            else{
+                fullscreen=true;
+                bottomPanel.setPreferredSize(new Dimension(ScreenWidth,bottomPanelHeight));
+                jPanel.setPreferredSize(new Dimension(ScreenWidth,ScreenHeight-(30+bottomPanelHeight)));
+                device.setFullScreenWindow(window);
+            }
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent event) {
+        //System.out.println("TYPED:"+event.getKeyCode()+"|"+event.getID());
+    }
+
+    @Override
+    public void componentHidden(ComponentEvent arg0) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void componentMoved(ComponentEvent arg0) {
+        // TODO Auto-generated method stub
+
+    }
+
+    public int floor(double in){
+        return (int)(in);
+    }
+
+    @Override
+    public void componentResized(ComponentEvent arg0) {
+        if(!fullscreen){
+            System.out.println("WINDOW SIZE: "+width+"x"+height);
+            width=window.getWidth();
+            height=window.getHeight();
+            nrOfRowElements=floor(width/370);
+            nrOfRows=floor(numberOfGraphs/nrOfRowElements)+1;
+            bottomPanel.setLayout(new GridLayout(0,nrOfRowElements*2,0,20));
+            bottomPanelHeight=35*nrOfRows;
+            bottomPanel.setPreferredSize(new Dimension(width,bottomPanelHeight));
+            jPanel.setPreferredSize(new Dimension(width,height-(60+bottomPanelHeight)));
+            window.repaint();
+            System.out.println("BOTTOMPANEL HEIGHT: "+bottomPanelHeight);
+            System.out.println("# of elementcombos per row: "+nrOfRowElements);
+            System.out.println("# of  rows: "+nrOfRows);
+            System.out.println();
+        }
+    }
+
+    @Override
+    public void componentShown(ComponentEvent arg0) {
+        // TODO Auto-generated method stub
+
     }
 }
 
