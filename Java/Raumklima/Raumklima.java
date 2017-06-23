@@ -218,9 +218,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             //finalise the mainWindow and revert the Cursor Back To Normal
             mainWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             mainWindow.setCursor(Cursor.getDefaultCursor());
-            toggleFullscreen();//experimental da 1x nicht korrekt darstellt, nach doppeltem 'F11' passts aber
-            //toggleFullscreen();
-            //toggleFullscreen();
+            toggleFullscreen();
         }
         else{
             exit();
@@ -382,7 +380,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         this.xCrosshair.setValue(d);
         for (int i = 0; i < numberOfGraphs; ++i) {
             double d2 = DatasetUtilities.findYValue((XYDataset)xYPlot.getDataset(), (int)i, (double)d);
-            //box[i].setText(String.valueOf(d2));
+            dataBoxes[i].setText(String.valueOf(d2));
         }
     }
 
