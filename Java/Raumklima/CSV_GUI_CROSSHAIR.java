@@ -133,7 +133,7 @@ public class CSV_GUI_CROSSHAIR implements ChartMouseListener, KeyListener, Compo
                 dataValuePanel.add(commonBox[i]);
             }
             window.remove(status);
-            //window.add(chartJPanel, BorderLayout.NORTH);
+            window.add(chartJPanel, BorderLayout.NORTH);
             window.add(dataValuePanel);//,BorderLayout.SOUTH);
             window.setJMenuBar(menuBar);
             window.setCursor(Cursor.getDefaultCursor());

@@ -2,16 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="event" key="selection"/>
+		<item value="//chartPanel.setPreferred" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="chartPanel.setPreferred"/>
+			<item value="jChartPanel"/>
 			<item value="arg0"/>
 			<item value="MenuItem"/>
 		</list>
 		<list key="replacehistory">
+			<item value="//chartPanel.setPreferred"/>
+			<item value="chartPanel"/>
 			<item value="event"/>
 			<item value="Menu"/>
 		</list>
