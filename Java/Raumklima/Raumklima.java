@@ -113,7 +113,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         //Initialise and setup FileChooser
         fileChooser=new JFileChooser();
-        fileChooser.setDialogTitle("Bitte CSV-Datei auswählen");
+        fileChooser.setDialogTitle("Bitte CSV-Datei ausw?hlen");
         fileChooser.setMultiSelectionEnabled(false);
         fileChooser.setFileFilter(new FileNameExtensionFilter("Aufgezeichnete Klimadaten (.csv/.CSV)","csv","CSV"));
 
@@ -121,13 +121,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         mainWindowMenuBar=new JMenuBar();
 
         fileMenu=new JMenu("Datei");
-        openDifferentPlotMenuItem=new JMenuItem("Datei öffnen (Strg+"+OPEN_NEW_PLOT_KEY_STRING+")");
+        openDifferentPlotMenuItem=new JMenuItem("Datei ?ffnen (Strg+"+OPEN_NEW_PLOT_KEY_STRING+")");
         openDifferentPlotMenuItem.addActionListener(this);
         fileMenu.add(openDifferentPlotMenuItem);
-        openNewWindowMenuItem=new JMenuItem("neues Fenster öffnen (Strg+"+OPEN_NEW_WINDOW_KEY_STRING+")");
+        openNewWindowMenuItem=new JMenuItem("neues Fenster ?ffnen (Strg+"+OPEN_NEW_WINDOW_KEY_STRING+")");
         openNewWindowMenuItem.addActionListener(this);
         fileMenu.add(openNewWindowMenuItem);
-        closeWindowMenuItem=new JMenuItem("Fenster schließen (Strg+"+CLOSE_WINDOW_KEY_STRING+")");
+        closeWindowMenuItem=new JMenuItem("Fenster schlie?en (Strg+"+CLOSE_WINDOW_KEY_STRING+")");
         closeWindowMenuItem.addActionListener(this);
         fileMenu.add(closeWindowMenuItem);
 
@@ -204,7 +204,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             mainWindow.remove(waitPanel);
 
             mainWindow.add(chartPanel,BorderLayout.NORTH);
-            //mainWindow.add(dataPanel,BorderLayout.SOUTH);
+            mainWindow.add(dataPanel,BorderLayout.SOUTH);//TODO zweifelsfalls entfernen
             
             fullscreenDimension.setSize(fullscreenDimension.width,(graphicsDevice.getDisplayMode().getHeight()-30)-HEIGHT_OF_DATA_BLOCK*dataPanelY);
 
