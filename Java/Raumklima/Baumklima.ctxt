@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.params=
-comment0.target=Raumklima()
+comment0.target=Baumklima()
 comment1.params=
 comment1.target=void\ toggleFullscreen()
 comment10.params=chartMouseEvent

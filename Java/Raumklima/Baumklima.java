@@ -14,7 +14,7 @@ import org.jfree.chart.plot.*;
 import org.jfree.data.general.*;
 import org.jfree.data.xy.*;
 import org.jfree.ui.*;
-public class Raumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener
+public class Baumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener
 {
     public static int OPEN_KEY_CODE=78;//O
     public static int OPEN_NEW_KEY_CODE=79;//N
@@ -70,7 +70,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private String[] dataValueDescriptors;
     private Dimension fullscreenDimension;
 
-    public Raumklima(){
+    public Baumklima(){
         //Initialise JFrames
         fileChooserWindow=new JFrame();
         settingsWindow=new JFrame();
@@ -143,7 +143,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         //setup the MainWindow
         mainWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        mainWindow.setTitle("Raumklima-Auswertungssoftware");
+        mainWindow.setTitle("Baumklima-Auswertungssoftware");
         mainWindow.setIconImage(logo);
         mainWindow.setMinimumSize(new Dimension(370,400));//mindestens 1 block der Textfelder MUSS draufpassen (370px)
 
@@ -454,12 +454,12 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
         if(event.isControlDown()){
             if(event.getExtendedKeyCode()==OPEN_KEY_CODE){
-                new Raumklima();
+                new Baumklima();
                 exit();
                 //TODO rearrange numbers
             }
             if(event.getExtendedKeyCode()==OPEN_NEW_KEY_CODE){
-                new Raumklima();
+                new Baumklima();
                 //TODO rearrange numbers
             }
             if(event.getExtendedKeyCode()==CLOSE_KEY_CODE){
@@ -492,7 +492,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     public static void main(String[] args){
-        new Raumklima();
+        new Baumklima();
     }
 
     @Override
