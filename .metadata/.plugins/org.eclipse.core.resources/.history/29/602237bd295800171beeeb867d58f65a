@@ -14,7 +14,7 @@ import org.jfree.chart.plot.*;
 import org.jfree.data.general.*;
 import org.jfree.data.xy.*;
 import org.jfree.ui.*;
-public class Baumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener
+public class Raumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener
 {
     public static int OPEN_KEY_CODE=78;//O
     public static int OPEN_NEW_KEY_CODE=79;//N
@@ -67,13 +67,8 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
     private boolean fullscreen=false;
     private String[] dataValueDescriptors;
     private Dimension fullscreenDimension;
-    
-    private JTextField[] dataBoxes;
-    private JLabel[] dataLabels;
-    private int dataPanelX=0;
-	private int dataPanelY;
 
-    public Baumklima(){
+    public Raumklima(){
         //Initialise JFrames
         fileChooserWindow=new JFrame();
         settingsWindow=new JFrame();
@@ -146,7 +141,7 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
 
         //setup the MainWindow
         mainWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        mainWindow.setTitle("Baumklima-Auswertungssoftware");
+        mainWindow.setTitle("Raumklima-Auswertungssoftware");
         mainWindow.setIconImage(logo);
         mainWindow.setMinimumSize(new Dimension(370,400));//mindestens 1 block der Textfelder MUSS draufpassen (370px)
 
@@ -157,6 +152,9 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
         catch(Exception e){
             e.printStackTrace();
         }
+
+        //Initialise the DataPanel
+        dataPanel=new JPanel();//TODO select a WindowManager
 
         //get the data and draw the graph
         //proceed only if successful otherwise exit
@@ -177,31 +175,18 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
                 crosshairOverlay.addRangeCrosshair(yCrosshairs[i]);
             }
             chartPanel.addOverlay((Overlay)crosshairOverlay);
-
-            //Initialise the DataPanel
-            dataPanelX=floor(fullscreenDimension.width/370);
-            dataPanelY=roof(numberOfGraphs/dataPanelX);
-            
-            if(dataPanelX*dataPanelY<numberOfGraphs){//Something went terribly WRONG!!!!
-            	System.out.println("HELP SPACIAL COLLISION OF numberOfGraphs and panelX/Y: "+numberOfGraphs+"|"+dataPanelX+"x"+dataPanelY);
-            }
-            
-            dataPanel=new JPanel(new GridLayout(dataPanelY,dataPanelX*2));
-            
-            dataLabels=new JLabel[numberOfGraphs];
-            dataBoxes=new JTextField[numberOfGraphs];
-            
-            for(int i=0;i<numberOfGraphs;i++){
-            	dataLabels[i]=new JLabel(dataValueDescriptors[i]);
-            	dataBoxes[i]=new JTextField();
-            	dataPanel.add(dataLabels[i]);
-            	dataPanel.add(dataBoxes[i]);
-            }
+            chartPanel.setPreferredSize(fullscreenDimension);
 
             //Remove the temporary WaitPanel
             mainWindow.remove(waitPanel);
 
             mainWindow.add(chartPanel,BorderLayout.NORTH);
+
+            //Set the Application in fullscreenMode (can be deactivate by hitting F11
+            //TODO make this adjustable from Settings
+            toggleFullscreen();
+
+            //TODO calculate Width and Height of the Individual Panels
 
             //make the program able to react by adding the ActionListeners
             mainWindow.addKeyListener(this);
@@ -213,25 +198,9 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
             //finalise the mainWindow and revert the Cursor Back To Normal
             mainWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             mainWindow.setCursor(Cursor.getDefaultCursor());
-            toggleFullscreen();//experimental da 1x nicht korrekt darstellt, nach doppeltem 'F11' passts aber
-            //toggleFullscreen();
-            //toggleFullscreen();
         }
         else{
             exit();
-        }
-    }
-
-    public int floor(double in){
-        return (int)in;
-    }
-
-    public int roof(double in){
-        if( ((int)(in))/in==0.0000000){
-            return (int)in;
-        }
-        else{
-            return (int)in+1;
         }
     }
 
@@ -245,10 +214,8 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void refreshPage(){
-    	chartPanel.setVisible(false);
         dataPanel.setVisible(false);
         dataPanel.setVisible(true);
-        chartPanel.setVisible(true);
         mainWindow.validate();
     }
 
@@ -402,7 +369,6 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
             chartPanel.setPreferredSize(fullscreenDimension);
     	}
         mainWindow.validate();
-        refreshPage();
     }
 
     @Override
@@ -412,14 +378,7 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
 
     @Override
     public void windowStateChanged(WindowEvent event) {
-    	if(!fullscreen){
-            chartPanel.setPreferredSize(new Dimension(mainWindow.getWidth(),mainWindow.getHeight()-60));
-        	}
-        	else{
-                chartPanel.setPreferredSize(fullscreenDimension);
-        	}
-            mainWindow.validate();
-            refreshPage();
+
     }
 
     @Override
@@ -491,12 +450,12 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
         }
         if(event.isControlDown()){
             if(event.getExtendedKeyCode()==OPEN_KEY_CODE){
-                new Baumklima();
+                new Raumklima();
                 exit();
                 //TODO rearrange numbers
             }
             if(event.getExtendedKeyCode()==OPEN_NEW_KEY_CODE){
-                new Baumklima();
+                new Raumklima();
                 //TODO rearrange numbers
             }
             if(event.getExtendedKeyCode()==CLOSE_KEY_CODE){
@@ -529,7 +488,7 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     public static void main(String[] args){
-        new Baumklima();
+        new Raumklima();
     }
 
     @Override

@@ -183,15 +183,6 @@ public class CSV_GUI_CROSSHAIR implements ChartMouseListener, KeyListener, Compo
         window.pack();
     }
 
-    public int roof(double in){
-        if((((int)(in))-in)==0.00){
-            return (int)(in);
-        }
-        else{
-            return (int)(in)+1;
-        }
-    }
-
     public void setNextOne(CSV_GUI_CROSSHAIR newNext){
         nextOne=newNext;
     }
@@ -401,6 +392,15 @@ public class CSV_GUI_CROSSHAIR implements ChartMouseListener, KeyListener, Compo
 
     public int floor(double in){
         return (int)(in);
+    }
+
+    public int roof(double in){
+        if((((int)(in))-in)==0.00){
+            return (int)(in);
+        }
+        else{
+            return (int)(in)+1;
+        }
     }
 
     @Override

@@ -37,7 +37,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     private JFileChooser fileChooser;
     private File csvFile;
-    private File configFile;
     private BufferedReader br;
     private int counter=0;
 
@@ -46,10 +45,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private JFrame helpWindow;
     private JFrame mainWindow;
 
-    private JPanel chartPanel;
     private JPanel dataPanel;
     private JPanel waitPanel;
-    private ChartPanel jChartPanel;
+    private ChartPanel chartPanel;
     private Crosshair xCrosshair;
     private Crosshair[] yCrosshairs;
 
@@ -69,6 +67,11 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private boolean fullscreen=false;
     private String[] dataValueDescriptors;
     private Dimension fullscreenDimension;
+    
+    private JTextField[] dataBoxes;
+    private JLabel[] dataLabels;
+    private int dataPanelX=0;
+	private int dataPanelY;
 
     public Raumklima(){
         //Initialise JFrames
@@ -155,15 +158,11 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             e.printStackTrace();
         }
 
-        //Initialise both of the soon needed Panels
-        dataPanel=new JPanel();//TODO select a WindowManager
-        chartPanel=new JPanel();
-
         //get the data and draw the graph
-        //proceed only if successfull otherwise exit
+        //proceed only if successful otherwise exit
         JFreeChart jFreeChart = createChart(createDataset());
         if(jFilePickerFailed==false){
-            jChartPanel = new ChartPanel(jFreeChart);
+            chartPanel = new ChartPanel(jFreeChart);
             CrosshairOverlay crosshairOverlay = new CrosshairOverlay();
             xCrosshair = new Crosshair(Double.NaN, (Paint)Color.GRAY, (Stroke)new BasicStroke(0.0f));
             xCrosshair.setLabelVisible(true);
@@ -177,34 +176,62 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 }
                 crosshairOverlay.addRangeCrosshair(yCrosshairs[i]);
             }
-            jChartPanel.addOverlay((Overlay)crosshairOverlay);
-            jChartPanel.setPreferredSize(fullscreenDimension);
-            chartPanel.add(jChartPanel);
+            chartPanel.addOverlay((Overlay)crosshairOverlay);
+
+            //Initialise the DataPanel
+            dataPanelX=floor(fullscreenDimension.width/370);
+            dataPanelY=roof(numberOfGraphs/dataPanelX);
+            
+            if(dataPanelX*dataPanelY<numberOfGraphs){//Something went terribly WRONG!!!!
+            	System.out.println("HELP SPACIAL COLLISION OF numberOfGraphs and panelX/Y: "+numberOfGraphs+"|"+dataPanelX+"x"+dataPanelY);
+            }
+            
+            dataPanel=new JPanel(new GridLayout(dataPanelY,dataPanelX*2));
+            
+            dataLabels=new JLabel[numberOfGraphs];
+            dataBoxes=new JTextField[numberOfGraphs];
+            
+            for(int i=0;i<numberOfGraphs;i++){
+            	dataLabels[i]=new JLabel(dataValueDescriptors[i]);
+            	dataBoxes[i]=new JTextField();
+            	dataPanel.add(dataLabels[i]);
+            	dataPanel.add(dataBoxes[i]);
+            }
 
             //Remove the temporary WaitPanel
             mainWindow.remove(waitPanel);
 
-            mainWindow.add(chartPanel);
-
-            //Set the Application in fullscreenMode (can be deactivate by hitting F11
-            //TODO make this adjustable from Settings
-            toggleFullscreen();
-
-            //TODO calculate Width and Height of the Individual Panels
+            mainWindow.add(chartPanel,BorderLayout.NORTH);
 
             //make the program able to react by adding the ActionListeners
             mainWindow.addKeyListener(this);
             mainWindow.addComponentListener(this);
             mainWindow.addWindowStateListener(this);
             mainWindow.addWindowListener(this);
-            jChartPanel.addChartMouseListener(this);
+            chartPanel.addChartMouseListener(this);
 
-            //finalize the mainWindow and revert the Cursor Back To Normal
+            //finalise the mainWindow and revert the Cursor Back To Normal
             mainWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             mainWindow.setCursor(Cursor.getDefaultCursor());
+            toggleFullscreen();//experimental da 1x nicht korrekt darstellt, nach doppeltem 'F11' passts aber
+            //toggleFullscreen();
+            //toggleFullscreen();
         }
         else{
             exit();
+        }
+    }
+
+    public int floor(double in){
+        return (int)in;
+    }
+
+    public int roof(double in){
+        if( ((int)(in))/in==0.0000000){
+            return (int)in;
+        }
+        else{
+            return (int)in+1;
         }
     }
 
@@ -218,7 +245,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void refreshPage(){
-        chartPanel.setVisible(false);
+    	chartPanel.setVisible(false);
         dataPanel.setVisible(false);
         dataPanel.setVisible(true);
         chartPanel.setVisible(true);
@@ -228,8 +255,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private void deactivateFullscreen(){
         graphicsDevice.setFullScreenWindow(null);
         fullscreen=false;
-        jChartPanel.setPreferredSize(new Dimension(mainWindow.getWidth()-30,mainWindow.getHeight()-60));
-        chartPanel.setPreferredSize(new Dimension(mainWindow.getHeight(),mainWindow.getWidth()-60));
+        chartPanel.setPreferredSize(new Dimension(mainWindow.getWidth(),mainWindow.getHeight()-60));
         mainWindow.validate();
         refreshPage();
     }
@@ -237,7 +263,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private void avtivateFullscreen(){
         graphicsDevice.setFullScreenWindow(mainWindow);
         fullscreen=true;
-        jChartPanel.setPreferredSize(fullscreenDimension);
         chartPanel.setPreferredSize(fullscreenDimension);
         refreshPage();
     }
@@ -323,7 +348,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     public void chartMouseClicked(ChartMouseEvent chartMouseEvent) {
-        Rectangle2D rectangle2D = jChartPanel.getScreenDataArea();
+        Rectangle2D rectangle2D = chartPanel.getScreenDataArea();
         JFreeChart jFreeChart = chartMouseEvent.getChart();
         XYPlot xYPlot = (XYPlot)jFreeChart.getPlot();
         ValueAxis valueAxis = xYPlot.getDomainAxis();
@@ -336,7 +361,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     public void chartMouseMoved(ChartMouseEvent chartMouseEvent) {
-        Rectangle2D rectangle2D = jChartPanel.getScreenDataArea();
+        Rectangle2D rectangle2D = chartPanel.getScreenDataArea();
         JFreeChart jFreeChart = chartMouseEvent.getChart();
         XYPlot xYPlot = (XYPlot)jFreeChart.getPlot();
         ValueAxis valueAxis = xYPlot.getDomainAxis();
@@ -370,9 +395,14 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     @Override
     public void componentResized(ComponentEvent event) {
-        jChartPanel.setPreferredSize(new Dimension(mainWindow.getWidth()-30,mainWindow.getHeight()-60));
-        chartPanel.setPreferredSize(new Dimension(mainWindow.getHeight(),mainWindow.getWidth()));
+    	if(!fullscreen){
+        chartPanel.setPreferredSize(new Dimension(mainWindow.getWidth(),mainWindow.getHeight()-60));
+    	}
+    	else{
+            chartPanel.setPreferredSize(fullscreenDimension);
+    	}
         mainWindow.validate();
+        refreshPage();
     }
 
     @Override
@@ -382,7 +412,14 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     @Override
     public void windowStateChanged(WindowEvent event) {
-
+    	if(!fullscreen){
+            chartPanel.setPreferredSize(new Dimension(mainWindow.getWidth(),mainWindow.getHeight()-60));
+        	}
+        	else{
+                chartPanel.setPreferredSize(fullscreenDimension);
+        	}
+            mainWindow.validate();
+            refreshPage();
     }
 
     @Override

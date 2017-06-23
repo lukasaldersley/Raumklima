@@ -14,7 +14,7 @@ import org.jfree.chart.plot.*;
 import org.jfree.data.general.*;
 import org.jfree.data.xy.*;
 import org.jfree.ui.*;
-public class Baumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener
+public class Raumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener
 {
     public static int OPEN_KEY_CODE=78;//O
     public static int OPEN_NEW_KEY_CODE=79;//N
@@ -73,7 +73,7 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
     private int dataPanelX=0;
 	private int dataPanelY;
 
-    public Baumklima(){
+    public Raumklima(){
         //Initialise JFrames
         fileChooserWindow=new JFrame();
         settingsWindow=new JFrame();
@@ -146,7 +146,7 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
 
         //setup the MainWindow
         mainWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        mainWindow.setTitle("Baumklima-Auswertungssoftware");
+        mainWindow.setTitle("Raumklima-Auswertungssoftware");
         mainWindow.setIconImage(logo);
         mainWindow.setMinimumSize(new Dimension(370,400));//mindestens 1 block der Textfelder MUSS draufpassen (370px)
 
@@ -180,12 +180,6 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
 
             //Initialise the DataPanel
             dataPanelX=floor(fullscreenDimension.width/370);
-            dataPanelY=roof(numberOfGraphs/dataPanelX);
-            
-            if(dataPanelX*dataPanelY<numberOfGraphs){//Something went terribly WRONG!!!!
-            	System.out.println("HELP SPACIAL COLLISION OF numberOfGraphs and panelX/Y: "+numberOfGraphs+"|"+dataPanelX+"x"+dataPanelY);
-            }
-            
             dataPanel=new JPanel(new GridLayout(dataPanelY,dataPanelX*2));
             
             dataLabels=new JLabel[numberOfGraphs];
@@ -213,7 +207,7 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
             //finalise the mainWindow and revert the Cursor Back To Normal
             mainWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             mainWindow.setCursor(Cursor.getDefaultCursor());
-            toggleFullscreen();//experimental da 1x nicht korrekt darstellt, nach doppeltem 'F11' passts aber
+            //toggleFullscreen();//experimental da 1x nicht korrekt darstellt, nach doppeltem 'F11' passts aber
             //toggleFullscreen();
             //toggleFullscreen();
         }
@@ -223,15 +217,15 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     public int floor(double in){
-        return (int)in;
+        return (int)(in);
     }
 
     public int roof(double in){
-        if( ((int)(in))/in==0.0000000){
-            return (int)in;
+        if((((int)(in))-in)==0.00){
+            return (int)(in);
         }
         else{
-            return (int)in+1;
+            return (int)(in)+1;
         }
     }
 
@@ -491,12 +485,12 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
         }
         if(event.isControlDown()){
             if(event.getExtendedKeyCode()==OPEN_KEY_CODE){
-                new Baumklima();
+                new Raumklima();
                 exit();
                 //TODO rearrange numbers
             }
             if(event.getExtendedKeyCode()==OPEN_NEW_KEY_CODE){
-                new Baumklima();
+                new Raumklima();
                 //TODO rearrange numbers
             }
             if(event.getExtendedKeyCode()==CLOSE_KEY_CODE){
@@ -529,7 +523,7 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     public static void main(String[] args){
-        new Baumklima();
+        new Raumklima();
     }
 
     @Override
