@@ -67,7 +67,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private boolean fullscreen=false;
     private String[] dataValueDescriptors;
     private Dimension fullscreenDimension;
-    private Dimension windowedTopPanelDimension;
     
     private JTextField[] dataBoxes;
     private JLabel[] dataLabels;
@@ -97,7 +96,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         //setup some very basic stuff
         fullscreenDimension=new Dimension(graphicsDevice.getDisplayMode().getWidth(),graphicsDevice.getDisplayMode().getHeight()-30);
-        windowedTopPanelDimension=new Dimension(graphicsDevice.getDisplayMode().getWidth(),graphicsDevice.getDisplayMode().getHeight()-30);
         try {
             logo = ImageIO.read(new File("../Resources/Weather.png"));
         } catch (IOException e) {
@@ -204,9 +202,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             mainWindow.remove(waitPanel);
 
             mainWindow.add(chartPanel,BorderLayout.NORTH);
-            //mainWindow.add(dataPanel,BorderLayout.SOUTH);
-            
-            fullscreenDimension.setSize(fullscreenDimension.width,(graphicsDevice.getDisplayMode().getHeight()-30)-HEIGHT_OF_DATA_BLOCK*dataPanelY);
 
             //make the program able to react by adding the ActionListeners
             mainWindow.addKeyListener(this);
@@ -250,18 +245,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void refreshPage(){
-    	dataPanelX=floor(mainWindow.getWidth()/370);
-        dataPanelY=roof(numberOfGraphs/dataPanelX);
-        if(dataPanelX*dataPanelY<numberOfGraphs){//Something went terribly WRONG!!!!
-        	System.out.println("HELP SPACIAL COLLISION OF numberOfGraphs and panelX/Y: "+numberOfGraphs+"|"+dataPanelX+"x"+dataPanelY);
-        }
-        
-        dataPanel.setLayout(new GridLayout(dataPanelY,dataPanelX*2));
-        
-        windowedTopPanelDimension.setSize(mainWindow.getWidth(),(mainWindow.getHeight()-30)-HEIGHT_OF_DATA_BLOCK*dataPanelY);
-        
-        chartPanel.setPreferredSize(windowedTopPanelDimension);
-    	
     	chartPanel.setVisible(false);
         dataPanel.setVisible(false);
         dataPanel.setVisible(true);

@@ -204,7 +204,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             mainWindow.remove(waitPanel);
 
             mainWindow.add(chartPanel,BorderLayout.NORTH);
-            //mainWindow.add(dataPanel,BorderLayout.SOUTH);
             
             fullscreenDimension.setSize(fullscreenDimension.width,(graphicsDevice.getDisplayMode().getHeight()-30)-HEIGHT_OF_DATA_BLOCK*dataPanelY);
 
