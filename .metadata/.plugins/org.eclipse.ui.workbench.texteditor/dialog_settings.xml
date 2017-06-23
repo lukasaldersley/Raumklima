@@ -2,18 +2,26 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="//chartPanel.setPreferred" key="selection"/>
+		<item value="openNewPlot()" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="openNew()"/>
+			<item value="OPEN_KEY_CODE"/>
+			<item value="OPEN_NEW_KEY_CODE"/>
+			<item value="OPEN_NEW_PLOT_KEY_CODE"/>
+			<item value="lineContents.length"/>
 			<item value="chartPanel.setPreferred"/>
 			<item value="jChartPanel"/>
 			<item value="arg0"/>
-			<item value="MenuItem"/>
 		</list>
 		<list key="replacehistory">
+			<item value="openNewPlot()"/>
+			<item value="OPEN_NEW_PLOT_KEY_CODE"/>
+			<item value="OPEN_NEW_WINDOW_KEY_CODE"/>
+			<item value="NUMBER_OF_KEY_COMBOS"/>
 			<item value="//chartPanel.setPreferred"/>
 			<item value="chartPanel"/>
 			<item value="event"/>

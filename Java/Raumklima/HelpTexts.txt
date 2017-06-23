@@ -1,0 +1,9 @@
+Dieses Fenster (Hilfe) öffnen: 
+Vollbildmodus umschalten: 
+Graphen aktualisieren: 
+Einstellungen öffnen: Strg+
+Neues Fenster öffnen: Strg+
+Fenster schließen: Strg+
+Datei öffnen: Strg+
+unteren Bildschirmteil ausblenden: Strg+
+Screenshot des Graphengereichs: Strg+

@@ -16,8 +16,8 @@ import org.jfree.data.xy.*;
 import org.jfree.ui.*;
 public class Raumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener
 {
-	public static int OPEN_NEW_PLOT_KEY_CODE=78;//O
-    public static int OPEN_NEW_WINDOW_KEY_CODE=79;//N
+	public static int OPEN_KEY_CODE=78;//O
+    public static int OPEN_NEW_PLOT_KEY_CODE=79;//N
     public static int CLOSE_KEY_CODE=87;//W
     public static int OPEN_SETTINGS_KEY_CODE=73;//I
     public static int EXPAND_COLLAPSE_BOTTOMPANEL_KEY_CODE=69;//E
@@ -80,6 +80,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 	private JButton[] helpWindowKeyChangeButton;
 	private JButton helpWindowCloseButton;
 	private JLabel[] helpWindowSubPanelText;
+	private JLabel[] helpWindowFillerText;
 
     public Raumklima(){
         //Initialise JFrames
@@ -128,13 +129,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         mainWindowMenuBar=new JMenuBar();
 
         fileMenu=new JMenu("Datei");
-        openDifferentPlotMenuItem=new JMenuItem("Datei öffnen (Strg+"+OPEN_NEW_PLOT_KEY_STRING+")");
+        openDifferentPlotMenuItem=new JMenuItem("Datei ?ffnen (Strg+"+OPEN_NEW_PLOT_KEY_STRING+")");
         openDifferentPlotMenuItem.addActionListener(this);
         fileMenu.add(openDifferentPlotMenuItem);
-        openNewWindowMenuItem=new JMenuItem("neues Fenster öffnen (Strg+"+OPEN_NEW_WINDOW_KEY_STRING+")");
+        openNewWindowMenuItem=new JMenuItem("neues Fenster ?ffnen (Strg+"+OPEN_NEW_WINDOW_KEY_STRING+")");
         openNewWindowMenuItem.addActionListener(this);
         fileMenu.add(openNewWindowMenuItem);
-        closeWindowMenuItem=new JMenuItem("Fenster schließen (Strg+"+CLOSE_WINDOW_KEY_STRING+")");
+        closeWindowMenuItem=new JMenuItem("Fenster schlie?en (Strg+"+CLOSE_WINDOW_KEY_STRING+")");
         closeWindowMenuItem.addActionListener(this);
         fileMenu.add(closeWindowMenuItem);
 
@@ -201,7 +202,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             helpWindowSubPanelText[7].setText(helpWindowSubPanelText[7].getText()+EXPAND_COLLAPSE_BOTTOMPANEL_KEY_STRING);
             helpWindowSubPanelText[8].setText(helpWindowSubPanelText[8].getText()+SAVE_GRAPH_KEY_STRING);
             for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
-            	for(int j=helpWindowSubPanelText[i].getText().length();j<45;j++){
+            	for(int j=helpWindowSubPanelText[i].getText().length();j<50;j++){
             		helpWindowSubPanelText[i].setText(helpWindowSubPanelText[i].getText()+" ");
             	}
             }
@@ -211,7 +212,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
         
         helpWindowCloseButton=new JButton("Schließen");
-        helpWindowCloseButton.addActionListener(this);
         helpWindow.add(helpWindowCloseButton);
 
         //get the data and draw the graph
@@ -462,6 +462,16 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     @Override
+    public void componentHidden(ComponentEvent event) {
+
+    }
+
+    @Override
+    public void componentMoved(ComponentEvent event) {
+
+    }
+
+    @Override
     public void componentResized(ComponentEvent event) {
         if(!fullscreen){
             chartPanel.setPreferredSize(new Dimension(mainWindow.getWidth(),mainWindow.getHeight()-60));
@@ -471,6 +481,11 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
         mainWindow.validate();
         refreshPage();
+    }
+
+    @Override
+    public void componentShown(ComponentEvent event) {
+
     }
 
     @Override
@@ -486,41 +501,57 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     @Override
+    public void windowActivated(WindowEvent event) {
+
+    }
+
+    @Override
+    public void windowClosed(WindowEvent event) {
+
+    }
+
+    @Override
     public void windowClosing(WindowEvent event) {
         exit();
     }
 
     @Override
+    public void windowDeactivated(WindowEvent event) {
+
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent event) {
+
+    }
+
+    @Override
+    public void windowIconified(WindowEvent event) {
+
+    }
+
+    @Override
+    public void windowOpened(WindowEvent event) {
+
+    }
+
+    @Override
     public void actionPerformed(ActionEvent event) {
         if(event.getSource()==openDifferentPlotMenuItem){
-            openNewPlot();
+            ;//TODO fileActions
         }
         if(event.getSource()==openNewWindowMenuItem){
-            openNewWindow();
+            ;
         }
         if(event.getSource()==closeWindowMenuItem){
-            closeWindow();
-        }
-        if(event.getSource()==helpWindowCloseButton){
-        	helpWindow.setVisible(false);
+            ;
         }
     }
-    
-    public void openNewPlot(){
-        new Raumklima();
-        exit();
-        //TODO rearrange numbers
+
+    @Override
+    public void keyPressed(KeyEvent event) {
+
     }
-    
-    public void openNewWindow(){
-        new Raumklima();
-        //TODO rearrange numbers
-        }
-    
-    public void closeWindow(){
-        exit();
-        //TODO rearrange numbers
-        }
 
     @Override
     public void keyReleased(KeyEvent event) {
@@ -537,20 +568,21 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             toggleHelpWindow();
         }
         if(event.isControlDown()){
-            if(event.getExtendedKeyCode()==OPEN_NEW_PLOT_KEY_CODE){
-                deactivateFullscreen();
-            	openNewPlot();
+            if(event.getExtendedKeyCode()==OPEN_KEY_CODE){
+                new Raumklima();
+                exit();
+                //TODO rearrange numbers
             }
-            if(event.getExtendedKeyCode()==OPEN_NEW_WINDOW_KEY_CODE){
-                deactivateFullscreen();
-            	openNewWindow();
+            if(event.getExtendedKeyCode()==OPEN_NEW_PLOT_KEY_CODE){
+                new Raumklima();
+                //TODO rearrange numbers
             }
             if(event.getExtendedKeyCode()==CLOSE_KEY_CODE){
-                deactivateFullscreen();
-            	closeWindow();
+                exit();
+                //TODO rearrange numbers
             }
             if(event.getExtendedKeyCode()==SAVE_GRAPH_KEY_CODE){
-            	;
+
             }
             if(event.getExtendedKeyCode()==EXPAND_COLLAPSE_BOTTOMPANEL_KEY_CODE){
                 if(dataPanel.isVisible()){
@@ -567,6 +599,11 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 toggleSettingsWindow();
             }
         }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent event) {
+
     }
 
     public static void main(String[] args){
@@ -592,47 +629,26 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     @Override
-    public void keyTyped(KeyEvent event) {}
+    public void mouseEntered(MouseEvent event) {
+        // TODO Auto-generated method stub
+
+    }
 
     @Override
-    public void mouseEntered(MouseEvent event) {}
+    public void mouseExited(MouseEvent event) {
+        // TODO Auto-generated method stub
+
+    }
 
     @Override
-    public void mouseExited(MouseEvent event) {}
+    public void mousePressed(MouseEvent event) {
+        // TODO Auto-generated method stub
+
+    }
 
     @Override
-    public void mousePressed(MouseEvent event) {}
+    public void mouseReleased(MouseEvent event) {
+        // TODO Auto-generated method stub
 
-    @Override
-    public void mouseReleased(MouseEvent event) {}
-
-    @Override
-    public void componentHidden(ComponentEvent event) {}
-
-    @Override
-    public void componentMoved(ComponentEvent event) {}
-
-    @Override
-    public void componentShown(ComponentEvent event) {}
-
-    @Override
-    public void windowActivated(WindowEvent event) {}
-
-    @Override
-    public void windowClosed(WindowEvent event) {}
-
-    @Override
-    public void windowDeactivated(WindowEvent event) {}
-
-    @Override
-    public void windowDeiconified(WindowEvent event) {}
-
-    @Override
-    public void windowIconified(WindowEvent event) {}
-
-    @Override
-    public void windowOpened(WindowEvent event) {}
-
-    @Override
-    public void keyPressed(KeyEvent event) {}
+    }
 }

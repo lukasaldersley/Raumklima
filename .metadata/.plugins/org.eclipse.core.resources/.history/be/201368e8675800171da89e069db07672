@@ -14,7 +14,7 @@ import org.jfree.chart.plot.*;
 import org.jfree.data.general.*;
 import org.jfree.data.xy.*;
 import org.jfree.ui.*;
-public class Raumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener
+public class Raumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener//TODO listener mögen nicht mehr nach öffnung des menüs
 {
 	public static int OPEN_NEW_PLOT_KEY_CODE=78;//O
     public static int OPEN_NEW_WINDOW_KEY_CODE=79;//N
@@ -538,15 +538,12 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
         if(event.isControlDown()){
             if(event.getExtendedKeyCode()==OPEN_NEW_PLOT_KEY_CODE){
-                deactivateFullscreen();
             	openNewPlot();
             }
             if(event.getExtendedKeyCode()==OPEN_NEW_WINDOW_KEY_CODE){
-                deactivateFullscreen();
             	openNewWindow();
             }
             if(event.getExtendedKeyCode()==CLOSE_KEY_CODE){
-                deactivateFullscreen();
             	closeWindow();
             }
             if(event.getExtendedKeyCode()==SAVE_GRAPH_KEY_CODE){
