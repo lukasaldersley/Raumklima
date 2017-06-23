@@ -34,7 +34,7 @@ public class CSV_GUI_CROSSHAIR implements ChartMouseListener, KeyListener, Compo
     private int counter=0;
 
     private JFrame window;
-    private ChartPanel chartPanel;
+    private ChartPanel jChartPanel;
     private Crosshair xCrosshair;
     private Crosshair[] yCrosshairs;
     private JPanel chartJPanel;
@@ -99,8 +99,8 @@ public class CSV_GUI_CROSSHAIR implements ChartMouseListener, KeyListener, Compo
         chartJPanel=new JPanel();//new BorderLayout());
         JFreeChart jFreeChart = createChart(createDataset());
         if(jFilePickerFailed==false){
-            chartPanel = new ChartPanel(jFreeChart);
-            chartPanel.addChartMouseListener((ChartMouseListener)this);
+            jChartPanel = new ChartPanel(jFreeChart);
+            jChartPanel.addChartMouseListener((ChartMouseListener)this);
             CrosshairOverlay crosshairOverlay = new CrosshairOverlay();
             xCrosshair = new Crosshair(Double.NaN, (Paint)Color.GRAY, (Stroke)new BasicStroke(0.0f));
             xCrosshair.setLabelVisible(true);
@@ -114,8 +114,8 @@ public class CSV_GUI_CROSSHAIR implements ChartMouseListener, KeyListener, Compo
                 }
                 crosshairOverlay.addRangeCrosshair(yCrosshairs[i]);
             }
-            chartPanel.addOverlay((Overlay)crosshairOverlay);
-            chartJPanel.add(chartPanel);
+            jChartPanel.addOverlay((Overlay)crosshairOverlay);
+            chartJPanel.add(jChartPanel);
 
             dataValuePanel=new JPanel();
             box=new JTextField[numberOfGraphs];
@@ -283,7 +283,7 @@ public class CSV_GUI_CROSSHAIR implements ChartMouseListener, KeyListener, Compo
     }
 
     public void chartMouseClicked(ChartMouseEvent chartMouseEvent) {
-        Rectangle2D rectangle2D = chartPanel.getScreenDataArea();
+        Rectangle2D rectangle2D = jChartPanel.getScreenDataArea();
         JFreeChart jFreeChart = chartMouseEvent.getChart();
         XYPlot xYPlot = (XYPlot)jFreeChart.getPlot();
         ValueAxis valueAxis = xYPlot.getDomainAxis();
@@ -296,7 +296,7 @@ public class CSV_GUI_CROSSHAIR implements ChartMouseListener, KeyListener, Compo
     }
 
     public void chartMouseMoved(ChartMouseEvent chartMouseEvent) {
-        Rectangle2D rectangle2D = chartPanel.getScreenDataArea();
+        Rectangle2D rectangle2D = jChartPanel.getScreenDataArea();
         JFreeChart jFreeChart = chartMouseEvent.getChart();
         XYPlot xYPlot = (XYPlot)jFreeChart.getPlot();
         ValueAxis valueAxis = xYPlot.getDomainAxis();

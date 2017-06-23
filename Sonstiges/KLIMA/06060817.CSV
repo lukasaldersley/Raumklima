@@ -1,0 +1,7 @@
+BME280_Temperature;BME280_Humidity;BME280_Airpressure;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness
+30,00;35,99;1001,18;28,84;999,42;27,60;27,96;49,30;29,25;28,92;1000,30;42,64;32,00;66,00
+30,01;35,77;1001,22;28,83;999,40;27,60;27,96;49,30;29,25;28,92;1000,31;42,54;31,00;64,00
+BME280_Temperature;BME280_Humidity;BME280_Airpressure;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness
+BME280_Temperature;BME280_Humidity;BME280_Airpressure;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness
+30,05;36,11;1001,33;28,87;999,50;27,70;28,19;50,90;29,25;28,97;1000,42;43,51;31,00;55,00
+30,06;35,96;1001,44;28,88;999,59;27,70;28,19;50,90;29,25;28,97;1000,51;43,43;31,00;59,00
