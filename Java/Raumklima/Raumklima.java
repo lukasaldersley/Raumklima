@@ -32,7 +32,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static String CLOSE_WINDOW_KEY_STRING="W";
     public static String REPAINT_KEY_STRING="F5";
     public static String TOGGLE_FULLSCREEN_KEY_STRING="F11";
-    public static int HEIGHT_OF_DATA_BLOCK=35;
+    public static int HEIGHT_OF_DATA_BLOCK=25;
     public static int WIDTH_OF_DATA_BLOCK=370;
 
     private JFileChooser fileChooser;
@@ -67,11 +67,12 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private boolean fullscreen=false;
     private String[] dataValueDescriptors;
     private Dimension fullscreenDimension;
-    
+    private Dimension windowedTopPanelDimension;
+
     private JTextField[] dataBoxes;
     private JLabel[] dataLabels;
     private int dataPanelX=0;
-	private int dataPanelY;
+    private int dataPanelY;
 
     public Raumklima(){
         //Initialise JFrames
@@ -96,6 +97,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         //setup some very basic stuff
         fullscreenDimension=new Dimension(graphicsDevice.getDisplayMode().getWidth(),graphicsDevice.getDisplayMode().getHeight()-30);
+        windowedTopPanelDimension=new Dimension(graphicsDevice.getDisplayMode().getWidth(),graphicsDevice.getDisplayMode().getHeight()-30);
         try {
             logo = ImageIO.read(new File("../Resources/Weather.png"));
         } catch (IOException e) {
@@ -111,7 +113,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         //Initialise and setup FileChooser
         fileChooser=new JFileChooser();
-        fileChooser.setDialogTitle("Bitte CSV-Datei auswählen");
+        fileChooser.setDialogTitle("Bitte CSV-Datei ausw?hlen");
         fileChooser.setMultiSelectionEnabled(false);
         fileChooser.setFileFilter(new FileNameExtensionFilter("Aufgezeichnete Klimadaten (.csv/.CSV)","csv","CSV"));
 
@@ -119,13 +121,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         mainWindowMenuBar=new JMenuBar();
 
         fileMenu=new JMenu("Datei");
-        openDifferentPlotMenuItem=new JMenuItem("Datei öffnen (Strg+"+OPEN_NEW_PLOT_KEY_STRING+")");
+        openDifferentPlotMenuItem=new JMenuItem("Datei ?ffnen (Strg+"+OPEN_NEW_PLOT_KEY_STRING+")");
         openDifferentPlotMenuItem.addActionListener(this);
         fileMenu.add(openDifferentPlotMenuItem);
-        openNewWindowMenuItem=new JMenuItem("neues Fenster öffnen (Strg+"+OPEN_NEW_WINDOW_KEY_STRING+")");
+        openNewWindowMenuItem=new JMenuItem("neues Fenster ?ffnen (Strg+"+OPEN_NEW_WINDOW_KEY_STRING+")");
         openNewWindowMenuItem.addActionListener(this);
         fileMenu.add(openNewWindowMenuItem);
-        closeWindowMenuItem=new JMenuItem("Fenster schließen (Strg+"+CLOSE_WINDOW_KEY_STRING+")");
+        closeWindowMenuItem=new JMenuItem("Fenster schlie?en (Strg+"+CLOSE_WINDOW_KEY_STRING+")");
         closeWindowMenuItem.addActionListener(this);
         fileMenu.add(closeWindowMenuItem);
 
@@ -180,28 +182,31 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
             //Initialise the DataPanel
             dataPanelX=floor(fullscreenDimension.width/370);
-            dataPanelY=roof(numberOfGraphs/dataPanelX);
-            
+            dataPanelY=roof((double)((double)numberOfGraphs/(double)dataPanelX));
+
             if(dataPanelX*dataPanelY<numberOfGraphs){//Something went terribly WRONG!!!!
-            	System.out.println("HELP SPACIAL COLLISION OF numberOfGraphs and panelX/Y: "+numberOfGraphs+"|"+dataPanelX+"x"+dataPanelY);
+                System.out.println("HELP SPACIAL COLLISION OF numberOfGraphs and panelX/Y: "+numberOfGraphs+"|"+dataPanelX+"x"+dataPanelY);
             }
-            
+
             dataPanel=new JPanel(new GridLayout(dataPanelY,dataPanelX*2));
-            
+
             dataLabels=new JLabel[numberOfGraphs];
             dataBoxes=new JTextField[numberOfGraphs];
-            
+
             for(int i=0;i<numberOfGraphs;i++){
-            	dataLabels[i]=new JLabel(dataValueDescriptors[i]);
-            	dataBoxes[i]=new JTextField();
-            	dataPanel.add(dataLabels[i]);
-            	dataPanel.add(dataBoxes[i]);
+                dataLabels[i]=new JLabel(dataValueDescriptors[i]);
+                dataBoxes[i]=new JTextField();
+                dataPanel.add(dataLabels[i]);
+                dataPanel.add(dataBoxes[i]);
             }
 
             //Remove the temporary WaitPanel
             mainWindow.remove(waitPanel);
 
             mainWindow.add(chartPanel,BorderLayout.NORTH);
+            mainWindow.add(dataPanel,BorderLayout.SOUTH);
+
+            fullscreenDimension.setSize(fullscreenDimension.width,(graphicsDevice.getDisplayMode().getHeight()-30)-HEIGHT_OF_DATA_BLOCK*dataPanelY);
 
             //make the program able to react by adding the ActionListeners
             mainWindow.addKeyListener(this);
@@ -227,7 +232,16 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     public int roof(double in){
-        if( ((int)(in))/in==0.0000000){
+        if( ((int)(in))-in==0.00000000){
+            return (int)in;
+        }
+        else{
+            return (int)in+1;
+        }
+    }
+    
+    public int roofA(double in){
+        if( ((int)(in))-in==0.00000000){
             return (int)in;
         }
         else{
@@ -245,7 +259,19 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void refreshPage(){
-    	chartPanel.setVisible(false);
+        dataPanelX=floor(mainWindow.getWidth()/370);
+        dataPanelY=roof((double)((double)numberOfGraphs/(double)dataPanelX));
+        if(dataPanelX*dataPanelY<numberOfGraphs){//Something went terribly WRONG!!!!
+            System.out.println("HELP SPACIAL COLLISION OF numberOfGraphs and panelX/Y: "+numberOfGraphs+"|"+dataPanelX+"x"+dataPanelY);
+        }
+
+        dataPanel.setLayout(new GridLayout(dataPanelY,dataPanelX*2));
+
+        windowedTopPanelDimension.setSize(mainWindow.getWidth(),(mainWindow.getHeight()-30)-HEIGHT_OF_DATA_BLOCK*dataPanelY);
+
+        chartPanel.setPreferredSize(windowedTopPanelDimension);
+
+        chartPanel.setVisible(false);
         dataPanel.setVisible(false);
         dataPanel.setVisible(true);
         chartPanel.setVisible(true);
@@ -395,12 +421,12 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     @Override
     public void componentResized(ComponentEvent event) {
-    	if(!fullscreen){
-        chartPanel.setPreferredSize(new Dimension(mainWindow.getWidth(),mainWindow.getHeight()-60));
-    	}
-    	else{
+        if(!fullscreen){
+            chartPanel.setPreferredSize(new Dimension(mainWindow.getWidth(),mainWindow.getHeight()-60));
+        }
+        else{
             chartPanel.setPreferredSize(fullscreenDimension);
-    	}
+        }
         mainWindow.validate();
         refreshPage();
     }
@@ -412,14 +438,14 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     @Override
     public void windowStateChanged(WindowEvent event) {
-    	if(!fullscreen){
+        if(!fullscreen){
             chartPanel.setPreferredSize(new Dimension(mainWindow.getWidth(),mainWindow.getHeight()-60));
-        	}
-        	else{
-                chartPanel.setPreferredSize(fullscreenDimension);
-        	}
-            mainWindow.validate();
-            refreshPage();
+        }
+        else{
+            chartPanel.setPreferredSize(fullscreenDimension);
+        }
+        mainWindow.validate();
+        refreshPage();
     }
 
     @Override
@@ -504,7 +530,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 //TODO rearrange numbers
             }
             if(event.getExtendedKeyCode()==SAVE_GRAPH_KEY_CODE){
-                
+
             }
             if(event.getExtendedKeyCode()==EXPAND_COLLAPSE_BOTTOMPANEL_KEY_CODE){
                 if(dataPanel.isVisible()){

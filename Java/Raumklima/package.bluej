@@ -1,7 +1,7 @@
 #BlueJ package file
 objectbench.height=100
 objectbench.width=910
-package.editor.height=850
+package.editor.height=490
 package.editor.width=1117
 package.editor.x=-7
 package.editor.y=0
@@ -45,10 +45,10 @@ target3.typeParameters=
 target3.width=160
 target3.x=450
 target3.y=20
-target4.editor.height=1056
-target4.editor.width=1936
-target4.editor.x=-8
-target4.editor.y=-8
+target4.editor.height=685
+target4.editor.width=1292
+target4.editor.x=-7
+target4.editor.y=2
 target4.height=50
 target4.name=Raumklima
 target4.naviview.expanded=true
