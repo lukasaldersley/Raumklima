@@ -1,4 +1,4 @@
-package Raumklima;//TODO Settings
+package Raumklima;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
@@ -95,25 +95,15 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private JScrollPane helpWindowScrollPane;
 
     private JTextField[] dataBoxes;
-
+    
     private Raumklima next;
     private Raumklima previous;
 
-    private String title="Raumklima-Auswertungssoftware";
+	private String title="Raumklima-Auswertungssoftware";
     private String[] dataValueDescriptors;
 
     public Raumklima(){
-        setup();
-    }
-
-    public Raumklima(int newTitleNumber, Raumklima newPrevious, Raumklima newNext) {
-        titleNumber=newTitleNumber;
-        previous=newPrevious;
-        next=newNext;
-        setup();
-    }
-
-    private void setup(){//Initialise JFrames
+        //Initialise JFrames
         fileChooserWindow=new JFrame();
         settingsWindow=new JFrame();
         helpWindow=new JFrame();
@@ -186,9 +176,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         //setup the MainWindow
         mainWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        mainWindow.setTitle(title);
         mainWindow.setIconImage(logo);
         mainWindow.setMinimumSize(new Dimension(370,400));//mindestens 1 block der Textfelder MUSS draufpassen (370px)
-        setTitle();
 
         //Set a Different Cursor to indicate The program is working
         try{
@@ -337,7 +327,11 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
     }
 
-    public int floor(double in){
+    public Raumklima(int titleNumber2, Raumklima previous2, Raumklima next2) {
+		// TODO Auto-generated constructor stub
+	}
+
+	public int floor(double in){
         return (int)in;
     }
 
@@ -571,58 +565,51 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void setPrevious(Raumklima newPrevious) {
-        previous=newPrevious;
-    }
+		previous=newPrevious;
+	}
 
-    private void setNext(Raumklima newNext) {
-        next=newNext;
-    }
+	private void setNext(Raumklima newNext) {
+		next=newNext;
+	}
 
     private void openNewPlot(){
-        mainWindow.setVisible(false);
         Raumklima neu=new Raumklima(titleNumber,previous,next);
-        if(next!=null){
-            next.setPrevious(neu);
-        }
-        if(previous!=null){
-            previous.setNext(neu);
-        }
+        previous.setNext(neu);
+        next.setPrevious(neu);
         exit();
     }
 
-    private void openNewWindow(){
-        next=new Raumklima(titleNumber+1,this,next);
+	private void openNewWindow(){
+        next=new Raumklima(titleNumber+1,this,null);
     }
 
     private void closeWindow(){
-        if(next!=null){
-            next.decrementTitleNumber();
-            next.setPrevious(previous);
-        }
-        if(previous!=null){
-            previous.setNext(next);
-        }
+    	if(next!=null){
+    		next.decrementTitleNumber();
+    	}
+    	next.setPrevious(previous);
+    	previous.setNext(next);
         exit();
     }
 
     private void decrementTitleNumber() {
-        titleNumber--;
-        setTitle();
-        if(next!=null){
-            next.decrementTitleNumber();
-        }
-    }
-
+    	titleNumber--;
+    	setTitle();
+    	if(next!=null){
+    		next.decrementTitleNumber();
+    	}
+	}
+    
     private void setTitle(){
-        if(titleNumber==1){
-            mainWindow.setTitle(title);
-        }
-        else{
-            mainWindow.setTitle(title+" ("+titleNumber+")");
-        }
+    	if(titleNumber==1){
+		mainWindow.setTitle(title);
+    }
+    	else{
+    		mainWindow.setTitle(title+" ("+titleNumber+")");
+    	}
     }
 
-    @Override
+	@Override
     public void keyReleased(KeyEvent event) {
         if(event.getExtendedKeyCode()==TOGGLE_FULLSCREEN_MODE_KEY_CODE)
         {
