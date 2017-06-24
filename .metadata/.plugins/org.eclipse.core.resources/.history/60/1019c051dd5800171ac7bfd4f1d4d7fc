@@ -21,13 +21,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static int CLOSE_KEY_CODE=87;//W
     public static int OPEN_SETTINGS_KEY_CODE=73;//I
     public static int EXPAND_COLLAPSE_BOTTOMPANEL_KEY_CODE=69;//E
+    public static int SAVE_GRAPH_KEY_CODE=83;//S
     public static int OPEN_HELP_KEY_CODE=112;//F1
     public static int TOGGLE_FULLSCREEN_MODE_KEY_CODE=122;//F11
     public static int REFRESH_FRAME_KEY_CODE=116;//F5
-    public static int HEIGHT_OF_DATA_BLOCK=25;
-    public static int WIDTH_OF_DATA_BLOCK=370;
-    public static int NUMBER_OF_KEY_COMBOS=8;
-    public static int NUMBER_OF_COPYRIGHT_NOTES;
     public static String OPEN_SETTINGS_KEY_STRING="I";
     public static String OPEN_HELP_KEY_STRING="F1";
     public static String OPEN_NEW_PLOT_KEY_STRING="O";
@@ -36,66 +33,55 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static String REPAINT_KEY_STRING="F5";
     public static String TOGGLE_FULLSCREEN_KEY_STRING="F11";
     public static String EXPAND_COLLAPSE_BOTTOMPANEL_KEY_STRING = "E";
+    public static String SAVE_GRAPH_KEY_STRING = "S";
+    public static int HEIGHT_OF_DATA_BLOCK=25;
+    public static int WIDTH_OF_DATA_BLOCK=370;
+    public static int NUMBER_OF_KEY_COMBOS=9;
+	public static int NUMBER_OF_COPYRIGHT_NOTES;
 
-    private boolean bottomPanelExpanded=true;
-    private boolean jFilePickerFailed=false;
-    private boolean fullscreen=false;
-
+    private JFileChooser fileChooser;
+    private File csvFile;
     private BufferedReader br;
+    private int counter=0;
 
+    private JFrame fileChooserWindow;
+    private JFrame settingsWindow;
+    private JFrame helpWindow;
+    private JFrame mainWindow;
+
+    private JPanel dataPanel;
+    private JPanel waitPanel;
     private ChartPanel chartPanel;
-
     private Crosshair xCrosshair;
     private Crosshair[] yCrosshairs;
 
-    private Dimension fullscreenDimension;
-    private Dimension windowedTopPanelDimension;
-
-    private File csvFile;
-
-    private GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-
-    private Image logo;
-
-    private int counter=0;
-    private int dataPanelX=0;
-    private int dataPanelY;
-    private int numberOfGraphs;
-
-    private JButton helpWindowCloseButton;
-
-    private JFileChooser fileChooser;
-
-    private JFrame fileChooserWindow;
-    private JFrame helpWindow;
-    private JFrame mainWindow;
-    private JFrame settingsWindow;
-
-    private JLabel[] copyrightNotes;
-    private JLabel[] dataLabels;
-    private JLabel[] helpWindowText;
-    private JLabel waitText;
-
+    private JMenuBar mainWindowMenuBar;
     private JMenu fileMenu;
+    private JMenuItem closeWindowMenuItem;
+    private JMenuItem openNewWindowMenuItem;
+    private JMenuItem openDifferentPlotMenuItem;
     private JMenu openHelpWindowMenu;
     private JMenu openSettingsWindowMenu;
     private JMenu toggleFullscreenModeMenu;
-
-    private JMenuBar mainWindowMenuBar;
-
-    private JMenuItem closeWindowMenuItem;
-    private JMenuItem openDifferentPlotMenuItem;
-    private JMenuItem openNewWindowMenuItem;
-
-    private JPanel dataPanel;
-    private JPanel helpPanel;
-    private JPanel waitPanel;
-
-    private JScrollPane helpWindowScrollPane;
+    private JLabel waitText;
+    private Image logo;
+    private boolean jFilePickerFailed=false;
+    private int numberOfGraphs;
+    private GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    private boolean fullscreen=false;
+    private String[] dataValueDescriptors;
+    private Dimension fullscreenDimension;
+    private Dimension windowedTopPanelDimension;
 
     private JTextField[] dataBoxes;
-
-    private String[] dataValueDescriptors;
+    private JLabel[] dataLabels;
+    private int dataPanelX=0;
+    private int dataPanelY;
+    private JButton helpWindowCloseButton;
+    private JLabel[] helpWindowText;
+    private JScrollPane helpWindowScrollPane;
+    private JPanel helpPanel;
+	private JLabel[] copyrightNotes;
 
     public Raumklima(){
         //Initialise JFrames
@@ -189,7 +175,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         helpWindow.setLocationRelativeTo(null);
         helpWindow.setTitle("Hilfe");
         helpPanel=new JPanel(new GridLayout(0,1));
-
+        
         br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("HelpTexts.txt")));
         try{
 
@@ -209,6 +195,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             helpWindowText[5].setText(helpWindowText[5].getText()+CLOSE_WINDOW_KEY_STRING);
             helpWindowText[6].setText(helpWindowText[6].getText()+OPEN_NEW_PLOT_KEY_STRING);
             helpWindowText[7].setText(helpWindowText[7].getText()+EXPAND_COLLAPSE_BOTTOMPANEL_KEY_STRING);
+            helpWindowText[8].setText(helpWindowText[8].getText()+SAVE_GRAPH_KEY_STRING);
             for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
                 for(int j=helpWindowText[i].getText().length();j<45;j++){
                     helpWindowText[i].setText(helpWindowText[i].getText()+" ");
@@ -220,7 +207,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             JLabel error=new JLabel("Ein Fehler ist aufgetreten und diese Seite konnte nicht geladen werden. Bitte laden Sie das Programm neu.");
             helpPanel.add(error);
         }
-
+        
+        
         //add Copyright notice
         br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("CopyrightNotes.txt")));
         try{
@@ -238,7 +226,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             JLabel error=new JLabel("Ein Fehler ist aufgetreten und diese Seite konnte nicht geladen werden. Bitte laden Sie das Programm neu.");
             helpPanel.add(error);
         }
-
+        
+        
+        
         helpWindowScrollPane.setViewportView(helpPanel);
         helpWindowScrollPane.setPreferredSize(new Dimension(helpWindow.getWidth(), helpWindow.getHeight()-53));
         helpWindow.add(helpWindowScrollPane,BorderLayout.NORTH);
@@ -247,9 +237,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         helpWindowCloseButton.addActionListener(this);
         helpWindowCloseButton.setPreferredSize(new Dimension(helpWindow.getWidth(),25));
         helpWindow.add(helpWindowCloseButton,BorderLayout.SOUTH);
-
+        
         helpWindow.validate();
         helpWindow.setResizable(false);
+
 
         //get the data and draw the graph
         //proceed only if successful otherwise exit
@@ -297,12 +288,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             mainWindow.add(chartPanel,BorderLayout.NORTH);
             mainWindow.add(dataPanel,BorderLayout.SOUTH);
 
-            if(bottomPanelExpanded){
-                fullscreenDimension.setSize(fullscreenDimension.width,(graphicsDevice.getDisplayMode().getHeight()-30)-HEIGHT_OF_DATA_BLOCK*dataPanelY);
-            }
-            else{
-                ;//remains the same
-            }
+            fullscreenDimension.setSize(fullscreenDimension.width,(graphicsDevice.getDisplayMode().getHeight()-30)-HEIGHT_OF_DATA_BLOCK*dataPanelY);
 
             //make the program able to react by adding the ActionListeners
             mainWindow.addKeyListener(this);
@@ -315,8 +301,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             mainWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             mainWindow.setCursor(Cursor.getDefaultCursor());
             toggleFullscreen();
-            //ChartUtilities.
-            chartPanel.getPopupMenu().remove(3);//den punkt speichern zum speichern des aktuellen Chartinhalts entfernen, da es sonst probleme mit dem vollbildmodus gibt wenn jemand darauf klickt.
         }
         else{
             exit();
@@ -345,7 +329,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
     }
 
-    private void toggleFullscreen(){
+    public void toggleFullscreen(){
         if(fullscreen){//if fullscreenMode is already enabled, disable it
             deactivateFullscreen();
         }
@@ -354,7 +338,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
     }
 
-    private void refreshPage(){//TODO extrema prüfen
+    private void refreshPage(){
         dataPanelX=floor(mainWindow.getWidth()/370);
         dataPanelY=roof((double)((double)numberOfGraphs/(double)dataPanelX));
         if(dataPanelX*dataPanelY<numberOfGraphs){//Something went terribly WRONG!!!!
@@ -362,20 +346,14 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
 
         dataPanel.setLayout(new GridLayout(dataPanelY,dataPanelX*2));
-        if(bottomPanelExpanded){
-            windowedTopPanelDimension.setSize(mainWindow.getWidth(),(mainWindow.getHeight()-30)-HEIGHT_OF_DATA_BLOCK*dataPanelY);
-        }
-        else{
-            windowedTopPanelDimension.setSize(mainWindow.getWidth(),mainWindow.getHeight()-30);
-        }
+
+        windowedTopPanelDimension.setSize(mainWindow.getWidth(),(mainWindow.getHeight()-30)-HEIGHT_OF_DATA_BLOCK*dataPanelY);
 
         chartPanel.setPreferredSize(windowedTopPanelDimension);
 
         chartPanel.setVisible(false);
-        if(bottomPanelExpanded){
-            dataPanel.setVisible(false);
-            dataPanel.setVisible(true);
-        }
+        dataPanel.setVisible(false);
+        dataPanel.setVisible(true);
         chartPanel.setVisible(true);
         mainWindow.validate();
     }
@@ -383,24 +361,15 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private void deactivateFullscreen(){
         graphicsDevice.setFullScreenWindow(null);
         fullscreen=false;
-        refreshPage();
-    }
-
-    private void toggleBottomPanel(){
-        if(bottomPanelExpanded){
-            bottomPanelExpanded=false;
-            dataPanel.setVisible(false);
-        }
-        else{
-            bottomPanelExpanded=true;
-            dataPanel.setVisible(true);
-        }
+        chartPanel.setPreferredSize(new Dimension(mainWindow.getWidth(),mainWindow.getHeight()-60));
+        mainWindow.validate();
         refreshPage();
     }
 
     private void avtivateFullscreen(){
         graphicsDevice.setFullScreenWindow(mainWindow);
         fullscreen=true;
+        chartPanel.setPreferredSize(fullscreenDimension);
         refreshPage();
     }
 
@@ -478,14 +447,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void exit(){
-        mainWindow.setVisible(false);
+    	mainWindow.setVisible(false);
         mainWindow.dispose();
         fileChooserWindow.dispose();
         settingsWindow.dispose();
         helpWindow.dispose();
     }
 
-    @Override
     public void chartMouseClicked(ChartMouseEvent chartMouseEvent) {
         Rectangle2D rectangle2D = chartPanel.getScreenDataArea();
         JFreeChart jFreeChart = chartMouseEvent.getChart();
@@ -499,7 +467,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
     }
 
-    @Override
     public void chartMouseMoved(ChartMouseEvent chartMouseEvent) {
         Rectangle2D rectangle2D = chartPanel.getScreenDataArea();
         JFreeChart jFreeChart = chartMouseEvent.getChart();
@@ -527,11 +494,25 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     @Override
     public void componentResized(ComponentEvent event) {
+        if(!fullscreen){
+            chartPanel.setPreferredSize(new Dimension(mainWindow.getWidth(),mainWindow.getHeight()-60));
+        }
+        else{
+            chartPanel.setPreferredSize(fullscreenDimension);
+        }
+        mainWindow.validate();
         refreshPage();
     }
 
     @Override
     public void windowStateChanged(WindowEvent event) {
+        if(!fullscreen){
+            chartPanel.setPreferredSize(new Dimension(mainWindow.getWidth(),mainWindow.getHeight()-60));
+        }
+        else{
+            chartPanel.setPreferredSize(fullscreenDimension);
+        }
+        mainWindow.validate();
         refreshPage();
     }
 
@@ -556,18 +537,18 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
     }
 
-    private void openNewPlot(){
+    public void openNewPlot(){
         new Raumklima();
         exit();
         //TODO rearrange numbers
     }
 
-    private void openNewWindow(){
+    public void openNewWindow(){
         new Raumklima();
         //TODO rearrange numbers
     }
 
-    private void closeWindow(){
+    public void closeWindow(){
         exit();
         //TODO rearrange numbers
     }
@@ -598,8 +579,17 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 deactivateFullscreen();
                 closeWindow();
             }
+            if(event.getExtendedKeyCode()==SAVE_GRAPH_KEY_CODE){
+                ;
+            }
             if(event.getExtendedKeyCode()==EXPAND_COLLAPSE_BOTTOMPANEL_KEY_CODE){
-                toggleBottomPanel();
+                if(dataPanel.isVisible()){
+                    dataPanel.setVisible(false);
+                }
+                else{
+                    dataPanel.setVisible(true);
+                }
+                //TODO viel zeug
             }
             if(event.getExtendedKeyCode()==OPEN_SETTINGS_KEY_CODE){
                 deactivateFullscreen();
