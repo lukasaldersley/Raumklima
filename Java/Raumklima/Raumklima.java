@@ -16,7 +16,7 @@ import org.jfree.data.xy.*;
 import org.jfree.ui.*;
 public class Raumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener
 {
-	public static int OPEN_NEW_PLOT_KEY_CODE=78;//O
+    public static int OPEN_NEW_PLOT_KEY_CODE=78;//O
     public static int OPEN_NEW_WINDOW_KEY_CODE=79;//N
     public static int CLOSE_KEY_CODE=87;//W
     public static int OPEN_SETTINGS_KEY_CODE=73;//I
@@ -33,10 +33,11 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static String REPAINT_KEY_STRING="F5";
     public static String TOGGLE_FULLSCREEN_KEY_STRING="F11";
     public static String EXPAND_COLLAPSE_BOTTOMPANEL_KEY_STRING = "E";
-	public static String SAVE_GRAPH_KEY_STRING = "S";
+    public static String SAVE_GRAPH_KEY_STRING = "S";
     public static int HEIGHT_OF_DATA_BLOCK=25;
     public static int WIDTH_OF_DATA_BLOCK=370;
-	public static int NUMBER_OF_KEY_COMBOS=9;
+    public static int NUMBER_OF_KEY_COMBOS=9;
+	public static int NUMBER_OF_COPYRIGHT_NOTES;
 
     private JFileChooser fileChooser;
     private File csvFile;
@@ -76,10 +77,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private JLabel[] dataLabels;
     private int dataPanelX=0;
     private int dataPanelY;
-	private JPanel[] helpWindowSubPanel;
-	private JButton[] helpWindowKeyChangeButton;
-	private JButton helpWindowCloseButton;
-	private JLabel[] helpWindowSubPanelText;
+    private JPanel[] helpWindowSubPanel;
+    private JButton[] helpWindowKeyChangeButton;
+    private JButton helpWindowCloseButton;
+    private JLabel[] helpWindowSubPanelText;
+    private JScrollPane helpWindowScrollPane;
+    private JPanel helpPanel;
+	private JLabel[] copyrightNotes;
 
     public Raumklima(){
         //Initialise JFrames
@@ -166,30 +170,32 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         catch(Exception e){
             e.printStackTrace();
         }
-        
+
         //Setup the HeplpPage
+        helpWindowScrollPane=new JScrollPane();
         helpWindow.setSize(480,500);
         helpWindow.setLocationRelativeTo(null);
-        helpWindow.setLayout(new GridLayout(0,1));
         helpWindow.setTitle("Hilfe");
+        helpPanel=new JPanel(new GridLayout(0,1));
         
         br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("HelpTexts.txt")));
         try{
-        	
+
             String line="";
             helpWindowSubPanel=new JPanel[NUMBER_OF_KEY_COMBOS];
             helpWindowSubPanelText=new JLabel[NUMBER_OF_KEY_COMBOS];
             helpWindowKeyChangeButton=new JButton[NUMBER_OF_KEY_COMBOS];
             for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
-            	line=br.readLine();
-        helpWindowSubPanel[i]=new JPanel(new FlowLayout());
-        helpWindowSubPanelText[i]=new JLabel(line);
-        helpWindowKeyChangeButton[i]=new JButton("Ändern");
-        helpWindowSubPanelText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
-        helpWindowKeyChangeButton[i].addActionListener(this);
-        helpWindowSubPanel[i].add(helpWindowSubPanelText[i],BorderLayout.WEST);
-        helpWindowSubPanel[i].add(helpWindowKeyChangeButton[i],BorderLayout.EAST);
-        helpWindow.add(helpWindowSubPanel[i]);
+                line=br.readLine();
+                helpWindowSubPanel[i]=new JPanel(new FlowLayout());
+                helpWindowSubPanelText[i]=new JLabel(line);
+                helpWindowKeyChangeButton[i]=new JButton("Ändern");
+                helpWindowSubPanelText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
+                helpWindowKeyChangeButton[i].addActionListener(this);
+                helpWindowSubPanel[i].add(helpWindowSubPanelText[i],BorderLayout.WEST);
+                helpWindowSubPanel[i].add(helpWindowKeyChangeButton[i],BorderLayout.EAST);
+                //helpWindow.add(helpWindowSubPanel[i]);
+                helpPanel.add(helpWindowSubPanel[i]);
             }
             helpWindowSubPanelText[0].setText(helpWindowSubPanelText[0].getText()+OPEN_HELP_KEY_STRING);
             helpWindowSubPanelText[1].setText(helpWindowSubPanelText[1].getText()+TOGGLE_FULLSCREEN_KEY_STRING);
@@ -201,18 +207,49 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             helpWindowSubPanelText[7].setText(helpWindowSubPanelText[7].getText()+EXPAND_COLLAPSE_BOTTOMPANEL_KEY_STRING);
             helpWindowSubPanelText[8].setText(helpWindowSubPanelText[8].getText()+SAVE_GRAPH_KEY_STRING);
             for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
-            	for(int j=helpWindowSubPanelText[i].getText().length();j<45;j++){
-            		helpWindowSubPanelText[i].setText(helpWindowSubPanelText[i].getText()+" ");
-            	}
+                for(int j=helpWindowSubPanelText[i].getText().length();j<45;j++){
+                    helpWindowSubPanelText[i].setText(helpWindowSubPanelText[i].getText()+" ");
+                }
             }
         }
         catch(Exception e){
             e.printStackTrace();
+            JLabel error=new JLabel("Ein Fehler ist aufgetreten und diese Seite konnte nicht geladen werden. Bitte laden Sie das Programm neu.");
+            helpPanel.add(error);
         }
         
+        
+        //add Copyright notice
+        br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("CopyrightNotes.txt")));
+        try{
+            String line="";
+            NUMBER_OF_COPYRIGHT_NOTES=Integer.parseInt(br.readLine());
+            copyrightNotes=new JLabel[NUMBER_OF_COPYRIGHT_NOTES];
+            for(int i=0;i<NUMBER_OF_COPYRIGHT_NOTES;i++){
+                line=br.readLine();
+                copyrightNotes[i]=new JLabel(line);
+                helpPanel.add(copyrightNotes[i]);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            JLabel error=new JLabel("Ein Fehler ist aufgetreten und diese Seite konnte nicht geladen werden. Bitte laden Sie das Programm neu.");
+            helpPanel.add(error);
+        }
+        
+        
+        
+        helpWindowScrollPane.setViewportView(helpPanel);
+        helpWindowScrollPane.setPreferredSize(new Dimension(helpWindow.getWidth(), helpWindow.getHeight()-60));
+        helpWindow.add(helpWindowScrollPane,BorderLayout.NORTH);
+
         helpWindowCloseButton=new JButton("Schließen");
         helpWindowCloseButton.addActionListener(this);
-        helpWindow.add(helpWindowCloseButton);
+        helpWindowCloseButton.setPreferredSize(new Dimension(helpWindow.getWidth(),25));
+        helpWindow.add(helpWindowCloseButton,BorderLayout.SOUTH);
+        
+        helpWindow.validate();
+
 
         //get the data and draw the graph
         //proceed only if successful otherwise exit
@@ -291,7 +328,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             return (int)in+1;
         }
     }
-    
+
     public int roofA(double in){
         if( ((int)(in))-in==0.00000000){
             return (int)in;
@@ -502,25 +539,35 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             closeWindow();
         }
         if(event.getSource()==helpWindowCloseButton){
-        	helpWindow.setVisible(false);
+            helpWindow.setVisible(false);
+        }
+
+        for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
+            if(event.getSource()==helpWindowKeyChangeButton[i]){
+                changeKeyCombo(i);
+            }
         }
     }
-    
+
+    private void changeKeyCombo(int i) {
+        // TODO Tastenkombi ändern
+    }
+
     public void openNewPlot(){
         new Raumklima();
         exit();
         //TODO rearrange numbers
     }
-    
+
     public void openNewWindow(){
         new Raumklima();
         //TODO rearrange numbers
-        }
-    
+    }
+
     public void closeWindow(){
         exit();
         //TODO rearrange numbers
-        }
+    }
 
     @Override
     public void keyReleased(KeyEvent event) {
@@ -539,18 +586,18 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         if(event.isControlDown()){
             if(event.getExtendedKeyCode()==OPEN_NEW_PLOT_KEY_CODE){
                 deactivateFullscreen();
-            	openNewPlot();
+                openNewPlot();
             }
             if(event.getExtendedKeyCode()==OPEN_NEW_WINDOW_KEY_CODE){
                 deactivateFullscreen();
-            	openNewWindow();
+                openNewWindow();
             }
             if(event.getExtendedKeyCode()==CLOSE_KEY_CODE){
                 deactivateFullscreen();
-            	closeWindow();
+                closeWindow();
             }
             if(event.getExtendedKeyCode()==SAVE_GRAPH_KEY_CODE){
-            	;
+                ;
             }
             if(event.getExtendedKeyCode()==EXPAND_COLLAPSE_BOTTOMPANEL_KEY_CODE){
                 if(dataPanel.isVisible()){

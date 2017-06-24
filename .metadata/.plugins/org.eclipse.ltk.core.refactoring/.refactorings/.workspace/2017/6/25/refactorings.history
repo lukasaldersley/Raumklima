@@ -1,4 +1,3 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Delete resource &apos;JFreeChart&apos;" deleteContents="true" description="Delete resource &apos;JFreeChart&apos;" element1="/JFreeChart" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1498046834025"/>
+<session version="1.0">&#x0A;<refactoring comment="Delete resource &apos;JFreeChart&apos;" deleteContents="true" description="Delete resource &apos;JFreeChart&apos;" element1="/JFreeChart" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1498046834025"/>&#x0A;<refactoring comment="Delete resource &apos;JFreeChart&apos;" deleteContents="false" description="Delete resource &apos;JFreeChart&apos;" element1="/JFreeChart" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1498306310127"/>
 </session>

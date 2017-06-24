@@ -6,4 +6,4 @@ Neues Fenster öffnen: Strg+
 Fenster schließen: Strg+
 Datei öffnen: Strg+
 unteren Bildschirmteil ausblenden: Strg+
-Screenshot des Graphengereichs: Strg+
+Screenshot des Graphenbereichs: Strg+
