@@ -337,11 +337,20 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
     }
 
-    private int floor(double in){
+    public int floor(double in){
         return (int)in;
     }
 
-    private int roof(double in){
+    public int roof(double in){
+        if( ((int)(in))-in==0.00000000){
+            return (int)in;
+        }
+        else{
+            return (int)in+1;
+        }
+    }
+
+    public int roofA(double in){
         if( ((int)(in))-in==0.00000000){
             return (int)in;
         }
@@ -409,7 +418,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         refreshPage();
     }
 
-    private int showOpenDialog(){
+    public int showOpenDialog(){
         return fileChooser.showOpenDialog(fileChooserWindow);
     }
 
