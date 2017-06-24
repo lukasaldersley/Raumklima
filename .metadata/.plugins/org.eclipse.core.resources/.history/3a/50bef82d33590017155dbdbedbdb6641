@@ -107,9 +107,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 	private JCheckBox pngCheckBox;
 	private JCheckBox jpgCheckBox;
 	private JCheckBox pdfCheckBox;
-	private JLabel rightPanelTitle;
-	private JButton[] rightPanelButtons;
-	private JPanel[] settingsWindowRightInnerPanel;
 
     public Raumklima(){
         setup();
@@ -214,7 +211,36 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         helpWindow.setTitle("Hilfe");
         helpPanel=new JPanel(new GridLayout(0,1));
 
-        //TODO
+        br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("HelpTexts.txt")));
+        try{
+
+            String line="";
+            helpWindowText=new JLabel[NUMBER_OF_KEY_COMBOS];
+            for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
+                line=br.readLine();
+                helpWindowText[i]=new JLabel(line);
+                helpWindowText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
+                helpPanel.add(helpWindowText[i]);
+            }
+            helpWindowText[0].setText(helpWindowText[0].getText()+OPEN_HELP_KEY_STRING);
+            helpWindowText[1].setText(helpWindowText[1].getText()+TOGGLE_FULLSCREEN_KEY_STRING);
+            helpWindowText[2].setText(helpWindowText[2].getText()+REPAINT_KEY_STRING);
+            helpWindowText[3].setText(helpWindowText[3].getText()+OPEN_SETTINGS_KEY_STRING);
+            helpWindowText[4].setText(helpWindowText[4].getText()+OPEN_NEW_WINDOW_KEY_STRING);
+            helpWindowText[5].setText(helpWindowText[5].getText()+CLOSE_WINDOW_KEY_STRING);
+            helpWindowText[6].setText(helpWindowText[6].getText()+OPEN_NEW_PLOT_KEY_STRING);
+            helpWindowText[7].setText(helpWindowText[7].getText()+EXPAND_COLLAPSE_BOTTOMPANEL_KEY_STRING);
+            for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
+                for(int j=helpWindowText[i].getText().length();j<45;j++){
+                    helpWindowText[i].setText(helpWindowText[i].getText()+" ");
+                }
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            JLabel error=new JLabel("Ein Fehler ist aufgetreten und diese Seite konnte nicht geladen werden. Bitte laden Sie das Programm neu.");
+            helpPanel.add(error);
+        }
 
         //add Copyright notice
         br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("CopyrightNotes.txt")));
@@ -247,8 +273,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         helpWindow.setResizable(false);
         
         //SettingsWindow
-        settingsWindow.setSize(650,320);
-        settingsWindow.setTitle("Einstellungen");
+        settingsWindow.setSize(480,500);
         settingsWindow.setLocationRelativeTo(null);
         settingsWindowLeftPanel=new JPanel();
         settingsWindowRightPanel=new JPanel();
@@ -256,28 +281,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         settingsWindowRightPanel.setLayout(new GridLayout(0,1));
         
         leftPanelTitle=new JLabel("Verendete Dateitypen:");
-        pngCheckBox=new JCheckBox(("PNG"));
-        pngCheckBox.addActionListener(this);
-        jpgCheckBox=new JCheckBox("JPG");
-        jpgCheckBox.addActionListener(this);
-        //pdfCheckBox=new JCheckBox();
-        //svgCheckBox=new JCheckBox();
+        pngCheckBox=new JCheckBox();
+        jpgCheckBox=new JCheckBox();
+        pdfCheckBox=new JCheckBox();
         //TODO prüfen ob in Config gesetzt
-        settingsWindowLeftPanel.add(leftPanelTitle);
-        settingsWindowLeftPanel.add(pngCheckBox);
-        settingsWindowLeftPanel.add(jpgCheckBox);
-        
-        settingsWindow.add(settingsWindowLeftPanel,BorderLayout.WEST);
-        
-        rightPanelTitle=new JLabel("Tastenkürzel:");
-        settingsWindowRightPanel.add(rightPanelTitle, BorderLayout.NORTH);
-        readInTextsForKeyCombos();
-        for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
-        settingsWindowRightPanel.add(settingsWindowRightInnerPanel[i], BorderLayout.SOUTH);
-        }
-        
-        settingsWindow.add(settingsWindowRightPanel, BorderLayout.EAST);
-        settingsWindow.validate();
         
 
         //get the data and draw the graph
@@ -344,56 +351,14 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             mainWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             mainWindow.setCursor(Cursor.getDefaultCursor());
             toggleFullscreen();
-            chartPanel.getPopupMenu().remove(3);//den punkt speichern zum speichern des aktuellen Chartinhalts entfernen, da es sonst probleme mit dem vollbildmodus gibt wenn jemand darauf klickt.
+            //chartPanel.getPopupMenu().remove(3);//den punkt speichern zum speichern des aktuellen Chartinhalts entfernen, da es sonst probleme mit dem vollbildmodus gibt wenn jemand darauf klickt.
         }
         else{
             exit();
         }
     }
 
-    private void readInTextsForKeyCombos() {
-    	br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("HelpTexts.txt")));
-        try{
-
-            String line="";
-            helpWindowText=new JLabel[NUMBER_OF_KEY_COMBOS];
-            rightPanelButtons=new JButton[NUMBER_OF_KEY_COMBOS];
-            settingsWindowRightInnerPanel=new JPanel[NUMBER_OF_KEY_COMBOS];
-            for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
-            	settingsWindowRightInnerPanel[i]=new JPanel(new BorderLayout());
-                line=br.readLine();
-                helpWindowText[i]=new JLabel(line);
-                helpWindowText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
-                helpPanel.add(helpWindowText[i]);
-                //die Gleichen elmente für die Einstellungsseite Verwenden
-                settingsWindowRightInnerPanel[i].add(helpWindowText[i],BorderLayout.WEST);
-                rightPanelButtons[i]=new JButton("Ändern");
-                rightPanelButtons[i].setPreferredSize(new Dimension(100,25));
-                rightPanelButtons[i].addActionListener(this);
-                settingsWindowRightInnerPanel[i].add(rightPanelButtons[i],BorderLayout.EAST);
-            }
-            helpWindowText[0].setText(helpWindowText[0].getText()+OPEN_HELP_KEY_STRING);
-            helpWindowText[1].setText(helpWindowText[1].getText()+TOGGLE_FULLSCREEN_KEY_STRING);
-            helpWindowText[2].setText(helpWindowText[2].getText()+REPAINT_KEY_STRING);
-            helpWindowText[3].setText(helpWindowText[3].getText()+OPEN_SETTINGS_KEY_STRING);
-            helpWindowText[4].setText(helpWindowText[4].getText()+OPEN_NEW_WINDOW_KEY_STRING);
-            helpWindowText[5].setText(helpWindowText[5].getText()+CLOSE_WINDOW_KEY_STRING);
-            helpWindowText[6].setText(helpWindowText[6].getText()+OPEN_NEW_PLOT_KEY_STRING);
-            helpWindowText[7].setText(helpWindowText[7].getText()+EXPAND_COLLAPSE_BOTTOMPANEL_KEY_STRING);
-            for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
-                for(int j=helpWindowText[i].getText().length();j<45;j++){
-                    helpWindowText[i].setText(helpWindowText[i].getText()+" ");
-                }
-            }
-        }
-        catch(Exception e){
-            e.printStackTrace();
-            JLabel error=new JLabel("Ein Fehler ist aufgetreten und diese Seite konnte nicht geladen werden. Bitte laden Sie das Programm neu.");
-            helpPanel.add(error);
-        }
-	}
-
-	private int floor(double in){
+    private int floor(double in){
         return (int)in;
     }
 

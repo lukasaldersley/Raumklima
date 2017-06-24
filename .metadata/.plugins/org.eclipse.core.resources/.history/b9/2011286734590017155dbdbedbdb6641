@@ -109,7 +109,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 	private JCheckBox pdfCheckBox;
 	private JLabel rightPanelTitle;
 	private JButton[] rightPanelButtons;
-	private JPanel[] settingsWindowRightInnerPanel;
+	private JPanel settingsWindowRightInnerPanel;
 
     public Raumklima(){
         setup();
@@ -247,18 +247,18 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         helpWindow.setResizable(false);
         
         //SettingsWindow
-        settingsWindow.setSize(650,320);
-        settingsWindow.setTitle("Einstellungen");
+        settingsWindow.setSize(480,500);
         settingsWindow.setLocationRelativeTo(null);
         settingsWindowLeftPanel=new JPanel();
         settingsWindowRightPanel=new JPanel();
         settingsWindowLeftPanel.setLayout(new GridLayout(0,1));
-        settingsWindowRightPanel.setLayout(new GridLayout(0,1));
+        settingsWindowRightPanel.setLayout(new BorderLayout());
+        settingsWindowRightInnerPanel=new JPanel(new GridLayout(0,2));
         
         leftPanelTitle=new JLabel("Verendete Dateitypen:");
-        pngCheckBox=new JCheckBox(("PNG"));
+        pngCheckBox=new JCheckBox();
         pngCheckBox.addActionListener(this);
-        jpgCheckBox=new JCheckBox("JPG");
+        jpgCheckBox=new JCheckBox();
         jpgCheckBox.addActionListener(this);
         //pdfCheckBox=new JCheckBox();
         //svgCheckBox=new JCheckBox();
@@ -271,10 +271,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         
         rightPanelTitle=new JLabel("Tastenkürzel:");
         settingsWindowRightPanel.add(rightPanelTitle, BorderLayout.NORTH);
+        settingsWindowRightPanel.add(settingsWindowRightInnerPanel, BorderLayout.SOUTH);
         readInTextsForKeyCombos();
-        for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
-        settingsWindowRightPanel.add(settingsWindowRightInnerPanel[i], BorderLayout.SOUTH);
-        }
         
         settingsWindow.add(settingsWindowRightPanel, BorderLayout.EAST);
         settingsWindow.validate();
@@ -358,19 +356,17 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             String line="";
             helpWindowText=new JLabel[NUMBER_OF_KEY_COMBOS];
             rightPanelButtons=new JButton[NUMBER_OF_KEY_COMBOS];
-            settingsWindowRightInnerPanel=new JPanel[NUMBER_OF_KEY_COMBOS];
             for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
-            	settingsWindowRightInnerPanel[i]=new JPanel(new BorderLayout());
                 line=br.readLine();
                 helpWindowText[i]=new JLabel(line);
                 helpWindowText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
                 helpPanel.add(helpWindowText[i]);
                 //die Gleichen elmente für die Einstellungsseite Verwenden
-                settingsWindowRightInnerPanel[i].add(helpWindowText[i],BorderLayout.WEST);
+                settingsWindowRightInnerPanel.add(helpWindowText[i]);
                 rightPanelButtons[i]=new JButton("Ändern");
-                rightPanelButtons[i].setPreferredSize(new Dimension(100,25));
+                rightPanelButtons[i].setPreferredSize(new Dimension(25,100));
                 rightPanelButtons[i].addActionListener(this);
-                settingsWindowRightInnerPanel[i].add(rightPanelButtons[i],BorderLayout.EAST);
+                settingsWindowRightInnerPanel.add(rightPanelButtons[i]);
             }
             helpWindowText[0].setText(helpWindowText[0].getText()+OPEN_HELP_KEY_STRING);
             helpWindowText[1].setText(helpWindowText[1].getText()+TOGGLE_FULLSCREEN_KEY_STRING);

@@ -247,8 +247,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         helpWindow.setResizable(false);
         
         //SettingsWindow
-        settingsWindow.setSize(650,320);
-        settingsWindow.setTitle("Einstellungen");
+        settingsWindow.setSize(480,500);
         settingsWindow.setLocationRelativeTo(null);
         settingsWindowLeftPanel=new JPanel();
         settingsWindowRightPanel=new JPanel();
