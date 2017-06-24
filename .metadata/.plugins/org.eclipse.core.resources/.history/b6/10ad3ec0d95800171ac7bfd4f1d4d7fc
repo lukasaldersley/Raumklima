@@ -16,8 +16,8 @@ import org.jfree.data.xy.*;
 import org.jfree.ui.*;
 public class Raumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener
 {
-    public static int OPEN_NEW_PLOT_KEY_CODE=79;//O
-    public static int OPEN_NEW_WINDOW_KEY_CODE=78;//N
+    public static int OPEN_NEW_PLOT_KEY_CODE=78;//O
+    public static int OPEN_NEW_WINDOW_KEY_CODE=79;//N
     public static int CLOSE_KEY_CODE=87;//W
     public static int OPEN_SETTINGS_KEY_CODE=73;//I
     public static int EXPAND_COLLAPSE_BOTTOMPANEL_KEY_CODE=69;//E
@@ -447,6 +447,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void exit(){
+    	System.out.println("EXIT");
     	mainWindow.setVisible(false);
         mainWindow.dispose();
         fileChooserWindow.dispose();

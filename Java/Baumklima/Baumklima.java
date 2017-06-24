@@ -16,8 +16,8 @@ import org.jfree.data.xy.*;
 import org.jfree.ui.*;
 public class Baumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener
 {
-    public static int OPEN_NEW_PLOT_KEY_CODE=78;//O
-    public static int OPEN_NEW_WINDOW_KEY_CODE=79;//N
+    public static int OPEN_NEW_PLOT_KEY_CODE=79;//O
+    public static int OPEN_NEW_WINDOW_KEY_CODE=78;//N
     public static int CLOSE_KEY_CODE=87;//W
     public static int OPEN_SETTINGS_KEY_CODE=73;//I
     public static int EXPAND_COLLAPSE_BOTTOMPANEL_KEY_CODE=69;//E
@@ -77,10 +77,8 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
     private JLabel[] dataLabels;
     private int dataPanelX=0;
     private int dataPanelY;
-    private JPanel[] helpWindowSubPanel;
-    private JButton[] helpWindowKeyChangeButton;
     private JButton helpWindowCloseButton;
-    private JLabel[] helpWindowSubPanelText;
+    private JLabel[] helpWindowText;
     private JScrollPane helpWindowScrollPane;
     private JPanel helpPanel;
 	private JLabel[] copyrightNotes;
@@ -159,7 +157,7 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
 
         //setup the MainWindow
         mainWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        mainWindow.setTitle("Baumklima-Auswertungssoftware");
+        mainWindow.setTitle("Raumklima-Auswertungssoftware");
         mainWindow.setIconImage(logo);
         mainWindow.setMinimumSize(new Dimension(370,400));//mindestens 1 block der Textfelder MUSS draufpassen (370px)
 
@@ -182,33 +180,25 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
         try{
 
             String line="";
-            helpWindowSubPanel=new JPanel[NUMBER_OF_KEY_COMBOS];
-            helpWindowSubPanelText=new JLabel[NUMBER_OF_KEY_COMBOS];
-            helpWindowKeyChangeButton=new JButton[NUMBER_OF_KEY_COMBOS];
+            helpWindowText=new JLabel[NUMBER_OF_KEY_COMBOS];
             for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
                 line=br.readLine();
-                helpWindowSubPanel[i]=new JPanel(new FlowLayout());
-                helpWindowSubPanelText[i]=new JLabel(line);
-                helpWindowKeyChangeButton[i]=new JButton("Ändern");
-                helpWindowSubPanelText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
-                helpWindowKeyChangeButton[i].addActionListener(this);
-                helpWindowSubPanel[i].add(helpWindowSubPanelText[i],BorderLayout.WEST);
-                helpWindowSubPanel[i].add(helpWindowKeyChangeButton[i],BorderLayout.EAST);
-                //helpWindow.add(helpWindowSubPanel[i]);
-                helpPanel.add(helpWindowSubPanel[i]);
+                helpWindowText[i]=new JLabel(line);
+                helpWindowText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
+                helpPanel.add(helpWindowText[i]);
             }
-            helpWindowSubPanelText[0].setText(helpWindowSubPanelText[0].getText()+OPEN_HELP_KEY_STRING);
-            helpWindowSubPanelText[1].setText(helpWindowSubPanelText[1].getText()+TOGGLE_FULLSCREEN_KEY_STRING);
-            helpWindowSubPanelText[2].setText(helpWindowSubPanelText[2].getText()+REPAINT_KEY_STRING);
-            helpWindowSubPanelText[3].setText(helpWindowSubPanelText[3].getText()+OPEN_SETTINGS_KEY_STRING);
-            helpWindowSubPanelText[4].setText(helpWindowSubPanelText[4].getText()+OPEN_NEW_WINDOW_KEY_STRING);
-            helpWindowSubPanelText[5].setText(helpWindowSubPanelText[5].getText()+CLOSE_WINDOW_KEY_STRING);
-            helpWindowSubPanelText[6].setText(helpWindowSubPanelText[6].getText()+OPEN_NEW_PLOT_KEY_STRING);
-            helpWindowSubPanelText[7].setText(helpWindowSubPanelText[7].getText()+EXPAND_COLLAPSE_BOTTOMPANEL_KEY_STRING);
-            helpWindowSubPanelText[8].setText(helpWindowSubPanelText[8].getText()+SAVE_GRAPH_KEY_STRING);
+            helpWindowText[0].setText(helpWindowText[0].getText()+OPEN_HELP_KEY_STRING);
+            helpWindowText[1].setText(helpWindowText[1].getText()+TOGGLE_FULLSCREEN_KEY_STRING);
+            helpWindowText[2].setText(helpWindowText[2].getText()+REPAINT_KEY_STRING);
+            helpWindowText[3].setText(helpWindowText[3].getText()+OPEN_SETTINGS_KEY_STRING);
+            helpWindowText[4].setText(helpWindowText[4].getText()+OPEN_NEW_WINDOW_KEY_STRING);
+            helpWindowText[5].setText(helpWindowText[5].getText()+CLOSE_WINDOW_KEY_STRING);
+            helpWindowText[6].setText(helpWindowText[6].getText()+OPEN_NEW_PLOT_KEY_STRING);
+            helpWindowText[7].setText(helpWindowText[7].getText()+EXPAND_COLLAPSE_BOTTOMPANEL_KEY_STRING);
+            helpWindowText[8].setText(helpWindowText[8].getText()+SAVE_GRAPH_KEY_STRING);
             for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
-                for(int j=helpWindowSubPanelText[i].getText().length();j<45;j++){
-                    helpWindowSubPanelText[i].setText(helpWindowSubPanelText[i].getText()+" ");
+                for(int j=helpWindowText[i].getText().length();j<45;j++){
+                    helpWindowText[i].setText(helpWindowText[i].getText()+" ");
                 }
             }
         }
@@ -240,7 +230,7 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
         
         
         helpWindowScrollPane.setViewportView(helpPanel);
-        helpWindowScrollPane.setPreferredSize(new Dimension(helpWindow.getWidth(), helpWindow.getHeight()-60));
+        helpWindowScrollPane.setPreferredSize(new Dimension(helpWindow.getWidth(), helpWindow.getHeight()-53));
         helpWindow.add(helpWindowScrollPane,BorderLayout.NORTH);
 
         helpWindowCloseButton=new JButton("Schließen");
@@ -249,6 +239,7 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
         helpWindow.add(helpWindowCloseButton,BorderLayout.SOUTH);
         
         helpWindow.validate();
+        helpWindow.setResizable(false);
 
 
         //get the data and draw the graph
@@ -456,6 +447,7 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void exit(){
+    	mainWindow.setVisible(false);
         mainWindow.dispose();
         fileChooserWindow.dispose();
         settingsWindow.dispose();
@@ -489,8 +481,10 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void toggleHelpWindow(){
-        mainWindow.setFocusable(helpWindow.isVisible());
-        helpWindow.setVisible(!helpWindow.isVisible());
+        helpWindow.setSize(helpWindow.getWidth()-10, helpWindow.getHeight());
+        helpWindow.setVisible(true);
+        helpWindow.setSize(helpWindow.getWidth()+10, helpWindow.getHeight());
+        helpWindow.validate();
     }
 
     private void toggleSettingsWindow(){
@@ -541,16 +535,6 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
         if(event.getSource()==helpWindowCloseButton){
             helpWindow.setVisible(false);
         }
-
-        for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
-            if(event.getSource()==helpWindowKeyChangeButton[i]){
-                changeKeyCombo(i);
-            }
-        }
-    }
-
-    private void changeKeyCombo(int i) {
-        // TODO Tastenkombi ändern
     }
 
     public void openNewPlot(){
@@ -579,7 +563,6 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
             refreshPage();
         }
         if(event.getExtendedKeyCode()==OPEN_HELP_KEY_CODE){
-            System.out.println("HELP");
             deactivateFullscreen();
             toggleHelpWindow();
         }
@@ -609,7 +592,6 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
                 //TODO viel zeug
             }
             if(event.getExtendedKeyCode()==OPEN_SETTINGS_KEY_CODE){
-                System.out.println("SETTINGS");
                 deactivateFullscreen();
                 toggleSettingsWindow();
             }
@@ -623,17 +605,14 @@ public class Baumklima implements ActionListener,WindowListener,WindowStateListe
     @Override
     public void mouseClicked(MouseEvent event) {
         if(event.getSource()==openSettingsWindowMenu){
-            System.out.println("SETTINGS");
             deactivateFullscreen();
             toggleSettingsWindow();
         }
         if(event.getSource()==openHelpWindowMenu){
-            System.out.println("HELP");
             deactivateFullscreen();
             toggleHelpWindow();
         }
         if(event.getSource()==toggleFullscreenModeMenu){
-            System.out.println("FULLSCREEN");
             toggleFullscreen();
         }
     }

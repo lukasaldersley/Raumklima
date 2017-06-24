@@ -16,8 +16,8 @@ import org.jfree.data.xy.*;
 import org.jfree.ui.*;
 public class Raumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener
 {
-    public static int OPEN_NEW_PLOT_KEY_CODE=79;//O
-    public static int OPEN_NEW_WINDOW_KEY_CODE=78;//N
+    public static int OPEN_NEW_PLOT_KEY_CODE=78;//O
+    public static int OPEN_NEW_WINDOW_KEY_CODE=79;//N
     public static int CLOSE_KEY_CODE=87;//W
     public static int OPEN_SETTINGS_KEY_CODE=73;//I
     public static int EXPAND_COLLAPSE_BOTTOMPANEL_KEY_CODE=69;//E
@@ -230,7 +230,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         
         
         helpWindowScrollPane.setViewportView(helpPanel);
-        helpWindowScrollPane.setPreferredSize(new Dimension(helpWindow.getWidth(), helpWindow.getHeight()-53));
+        helpWindowScrollPane.setPreferredSize(new Dimension(helpWindow.getWidth(), helpWindow.getHeight()-60));
         helpWindow.add(helpWindowScrollPane,BorderLayout.NORTH);
 
         helpWindowCloseButton=new JButton("Schlieﬂen");
@@ -239,7 +239,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         helpWindow.add(helpWindowCloseButton,BorderLayout.SOUTH);
         
         helpWindow.validate();
-        helpWindow.setResizable(false);
 
 
         //get the data and draw the graph
@@ -447,7 +446,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void exit(){
-    	mainWindow.setVisible(false);
         mainWindow.dispose();
         fileChooserWindow.dispose();
         settingsWindow.dispose();
@@ -481,10 +479,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void toggleHelpWindow(){
-        helpWindow.setSize(helpWindow.getWidth()-10, helpWindow.getHeight());
         helpWindow.setVisible(true);
-        helpWindow.setSize(helpWindow.getWidth()+10, helpWindow.getHeight());
-        helpWindow.validate();
+        helpWindow.setSize(helpWindow.getWidth()+1, helpWindow.getHeight());
+        helpWindow.setSize(helpWindow.getWidth()-1, helpWindow.getHeight());
     }
 
     private void toggleSettingsWindow(){
