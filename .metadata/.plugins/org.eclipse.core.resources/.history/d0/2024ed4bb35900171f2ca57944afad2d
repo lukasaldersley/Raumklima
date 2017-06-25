@@ -1,5 +1,5 @@
 package Raumklima;
-//TODO config wieder schreiben nachdem irgendeiner der werte geï¿½ndert wurde
+//TODO config wieder schreiben nachdem irgendeiner der werte geändert wurde
 //TODO concat CSV-files
 //TODO arduino Config
 //TODO updater
@@ -122,7 +122,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     private JFileChooser fileChooser;
 
-    private JFrame configureKeyComboWindow;
     private JFrame fileChooserWindow;
     private JFrame helpWindow;
     private JFrame mainWindow;
@@ -166,18 +165,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private String[] configRaw;
     private boolean savePng;
     private boolean saveJpeg;
-    private JFreeChart jFreeChart;
-    private JLabel[] configureKeyComboText;
-    private JTextField keyComboAusgabe;
-    private JButton changeKeyComboButton;
-    private JButton saveKeyComboButton;
-    private String[] keyComboText;
-    private boolean changeAltDown;
-    private boolean changeAltGrDown;
-    private boolean changeCtrlDown;
-    private boolean changeShiftDown;
-    private String changeKeyChar;
-    private int changeKeyCode;
+	private JFreeChart jFreeChart;
 
     public Raumklima(){
         setup();
@@ -327,13 +315,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         mainWindowMenuBar=new JMenuBar();
 
         fileMenu=new JMenu("Datei");
-        openDifferentPlotMenuItem=new JMenuItem("Datei ï¿½ffnen (Strg+"+ONPKEY_STRING+")");
+        openDifferentPlotMenuItem=new JMenuItem("Datei öffnen (Strg+"+ONPKEY_STRING+")");
         openDifferentPlotMenuItem.addActionListener(this);
         fileMenu.add(openDifferentPlotMenuItem);
-        openNewWindowMenuItem=new JMenuItem("neues Fenster ï¿½ffnen (Strg+"+ONWKEY_STRING+")");
+        openNewWindowMenuItem=new JMenuItem("neues Fenster öffnen (Strg+"+ONWKEY_STRING+")");
         openNewWindowMenuItem.addActionListener(this);
         fileMenu.add(openNewWindowMenuItem);
-        closeWindowMenuItem=new JMenuItem("Fenster schlieï¿½en (Strg+"+CWKEY_STRING+")");
+        closeWindowMenuItem=new JMenuItem("Fenster schließen (Strg+"+CWKEY_STRING+")");
         closeWindowMenuItem.addActionListener(this);
         fileMenu.add(closeWindowMenuItem);
 
@@ -367,7 +355,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
 
         //Setup the HeplpPage
-        keyComboText=new String[NUMBER_OF_KEY_COMBOS];
         helpWindowScrollPane=new JScrollPane();
         helpWindow.setSize(520,480);
         helpWindow.setLocationRelativeTo(null);
@@ -378,7 +365,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         helpWindowScrollPane.setPreferredSize(new Dimension(helpWindow.getWidth(), helpWindow.getHeight()-53));
         helpWindow.add(helpWindowScrollPane,BorderLayout.NORTH);
 
-        helpWindowCloseButton=new JButton("SchlieÃŸen");
+        helpWindowCloseButton=new JButton("Schließen");
         helpWindowCloseButton.addActionListener(this);
         helpWindowCloseButton.setPreferredSize(new Dimension(helpWindow.getWidth(),25));
         helpWindow.add(helpWindowCloseButton,BorderLayout.SOUTH);
@@ -416,7 +403,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         settingsWindow.add(settingsWindowLeftPanel,BorderLayout.WEST);
 
-        rightPanelTitle=new JLabel("TastenkÃ¼rzel:");
+        rightPanelTitle=new JLabel("Tastenkürzel:");
         rightPanelTitle.setFont(new Font(Font.SERIF,Font.BOLD, 16));
         settingsWindowRightPanel.add(rightPanelTitle, BorderLayout.NORTH);
         readInTextsForKeyCombos();
@@ -429,36 +416,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         //validiere das hilfefenster nochmals 
         helpWindow.validate();
-
-        //keyComboWindow
-        //beim Textfeld 5 wird noch der name der zu Ã¤ndernden tastenkombi eingefï¿½gt
-        try{
-            configureKeyComboWindow=new JFrame();
-            configureKeyComboWindow.setLayout(new GridLayout(0,1));
-            configureKeyComboWindow.setTitle("Tastenkombination Ã¤ndern");
-            configureKeyComboWindow.setSize(new Dimension(540,470));
-            configureKeyComboWindow.setLocationRelativeTo(null);
-            br = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("configureKeyComboText.txt")));
-            int anz=Integer.parseInt(br.readLine());
-            configureKeyComboText=new JLabel[anz];
-            for(int i=0;i<anz;i++){
-                configureKeyComboText[i]=new JLabel(br.readLine());
-                configureKeyComboWindow.add(configureKeyComboText[i]);
-            }
-            keyComboAusgabe=new JTextField();
-            keyComboAusgabe.setEditable(false);
-            keyComboAusgabe.setFocusable(false);
-            configureKeyComboWindow.add(keyComboAusgabe);
-            changeKeyComboButton=new JButton("Ã„ndern");
-            changeKeyComboButton.addActionListener(this);
-            configureKeyComboWindow.add(changeKeyComboButton);
-            saveKeyComboButton=new JButton("SchlieÃŸen");
-            saveKeyComboButton.addActionListener(this);
-            configureKeyComboWindow.add(saveKeyComboButton);
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
 
         //get the data and draw the graph
         //proceed only if successful otherwise exit
@@ -547,8 +504,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
                 settingsWindowRightInnerPanel[i]=new JPanel(new BorderLayout());
                 line=br.readLine();
-                keyComboText[i]=line;
-                line +=": ";
                 helpWindowText[i]=new JLabel(line);
                 helpWindowText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
                 helpPanel.add(helpWindowText[i]);
@@ -692,11 +647,11 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 }
             }
             for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
-                //die Gleichen elmente fÃ¼r die Einstellungsseite Verwenden
+                //die Gleichen elmente für die Einstellungsseite Verwenden
                 settingsWindowText[i]=new JLabel(helpWindowText[i].getText());
                 settingsWindowText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
                 settingsWindowRightInnerPanel[i].add(settingsWindowText[i],BorderLayout.WEST);
-                rightPanelButtons[i]=new JButton("Ã„ndern");
+                rightPanelButtons[i]=new JButton("Ändern");
                 rightPanelButtons[i].setPreferredSize(new Dimension(100,25));
                 rightPanelButtons[i].addActionListener(this);
                 settingsWindowRightInnerPanel[i].add(rightPanelButtons[i],BorderLayout.EAST);
@@ -731,7 +686,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
     }
 
-    //TODO layout Ãœberdenken
+    //TODO layout überdenken
     private void refreshPage(){
         dataPanelX=floor(mainWindow.getWidth()/370);
         dataPanelY=roof((double)((double)numberOfGraphs/(double)dataPanelX));
@@ -786,6 +741,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         return fileChooser.showOpenDialog(fileChooserWindow);
     }
 
+    //TODO
     private JFreeChart createChart(XYDataset xYDataset) {
         JFreeChart jFreeChart = ChartFactory.createXYLineChart(null,"Zeit","Werte",xYDataset);
         return jFreeChart;
@@ -861,7 +817,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         fileChooserWindow.dispose();
         settingsWindow.dispose();
         helpWindow.dispose();
-        configureKeyComboWindow.dispose();
     }
 
     @Override
@@ -900,7 +855,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void toggleSettingsWindow(){
-        //mainWindow.setFocusable(settingsWindow.isVisible());
+        mainWindow.setFocusable(settingsWindow.isVisible());
         settingsWindow.setVisible(!settingsWindow.isVisible());
     }
 
@@ -921,15 +876,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        if(event.getSource()==changeKeyComboButton){
-            configureKeyComboWindow.addKeyListener(this);
-            keyComboAusgabe.setText("Bereit");
-        }
-        if(event.getSource()==saveKeyComboButton){
-            configureKeyComboWindow.removeKeyListener(this);
-            mainWindow.addKeyListener(this);
-            configureKeyComboWindow.setVisible(false);
-        }
         if(event.getSource()==openDifferentPlotMenuItem){
             openNewPlot();
         }
@@ -943,39 +889,38 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             helpWindow.setVisible(false);
         }
         if(event.getSource()==jpegCheckBox){
-            if(pngCheckBox.isSelected()){
-                configRaw[74]="YES";
-                savePng=true;
-            }
-            else{
-                configRaw[74]="NO";
-                savePng=false;
-            }
+        	if(pngCheckBox.isSelected()){
+        		configRaw[74]="YES";
+        		savePng=true;
+        	}
+        	else{
+        		configRaw[74]="NO";
+        		savePng=false;
+        	}
         }
         if(event.getSource()==jpegCheckBox){
-            if(jpegCheckBox.isSelected()){
-                configRaw[76]="YES";
-                saveJpeg=true;
-            }
-            else{
-                configRaw[76]="NO";
-                saveJpeg=false;
-            }
+        	if(jpegCheckBox.isSelected()){
+        		configRaw[76]="YES";
+        		saveJpeg=true;
+        	}
+        	else{
+        		configRaw[76]="NO";
+        		saveJpeg=false;
+        	}
         }
         for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
-            if(event.getSource()==rightPanelButtons[i]){
-                openEditCeyComboWindow(i);
-            }
+        	if(event.getSource()==rightPanelButtons[i]){
+        		openEditCeyComboWindow(i);
+        	}
         }
     }
 
-    private void openEditCeyComboWindow(int in) {
-        mainWindow.removeKeyListener(this);
-        configureKeyComboText[5].setText(configureKeyComboText[5].getText()+keyComboText[in]);
-        configureKeyComboWindow.setVisible(true);
-    }
+    private void openEditCeyComboWindow(int i) {
+		// TODO Auto-generated method stub
+		
+	}
 
-    private void setPrevious(Raumklima newPrevious) {
+	private void setPrevious(Raumklima newPrevious) {
         previous=newPrevious;
     }
 
@@ -1047,31 +992,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     @Override
-    public void keyReleased(KeyEvent event) {
-        if(configureKeyComboWindow.isVisible()){
-            System.out.println("KeyReleased");
-            keyComboAusgabe.setText("");
-            if(event.isAltDown()){
-                keyComboAusgabe.setText("Alt+");
-                changeAltDown=true;
-            }
-            if(event.isAltGraphDown()){
-                keyComboAusgabe.setText(keyComboAusgabe.getText()+"AltGr+");
-                changeAltGrDown=true;
-            }
-            if(event.isControlDown()){
-                keyComboAusgabe.setText(keyComboAusgabe.getText()+"Strg+");
-                changeCtrlDown=true;
-            }
-            if(event.isShiftDown()){
-                keyComboAusgabe.setText(keyComboAusgabe.getText()+"Shift+");
-                changeShiftDown=true;
-            }
-            keyComboAusgabe.setText(keyComboAusgabe.getText()+event.getKeyChar());
-            changeKeyChar=String.valueOf(event.getKeyChar());
-            changeKeyCode=event.getExtendedKeyCode();
-        }
-    }
+    public void keyReleased(KeyEvent event) {}
 
     @Override
     public void keyTyped(KeyEvent event) {}
@@ -1115,7 +1036,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     @Override
     public void windowOpened(WindowEvent event) {}
 
-    //jedesmal wenn eine taste gedrï¿½ckt wird prï¿½fen ob alle bedingungen erfï¿½llt sind
+    //jedesmal wenn eine taste gedrückt wird prüfen ob alle bedingungen erfüllt sind
     @Override
     public void keyPressed(KeyEvent event) {
         if(event.getExtendedKeyCode()==TFM_KEY_CODE&&event.isAltDown()==TFMAR&&event.isAltGraphDown()==TFMAGR&&event.isControlDown()==TFMCR&&event.isShiftDown()==TFMSR){
@@ -1148,20 +1069,22 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             toggleSettingsWindow();
         }
         if(event.getExtendedKeyCode()==SGIKEY_CODE&&event.isAltDown()==SGIAR&&event.isAltGraphDown()==SGIAGR&&event.isControlDown()==SGICR&&event.isShiftDown()==SGISR){
-            if(saveJpeg){
-                try {
-                    ChartUtilities.saveChartAsJPEG(new File(csvFile.getName()+".jpeg"), jFreeChart, fullscreenDimension.width, fullscreenDimension.height);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(savePng){
-                try {
-                    ChartUtilities.saveChartAsPNG(new File(csvFile.getName()+".png"), jFreeChart, fullscreenDimension.width, fullscreenDimension.height);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+        	if(saveJpeg){
+        		try {
+					ChartUtilities.saveChartAsJPEG(new File(csvFile.getName()+".jpeg"), jFreeChart, fullscreenDimension.width, fullscreenDimension.height);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        	}
+        	if(savePng){
+        		try {
+					ChartUtilities.saveChartAsPNG(new File(csvFile.getName()+".png"), jFreeChart, fullscreenDimension.width, fullscreenDimension.height);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        	}
         }
     }
 }

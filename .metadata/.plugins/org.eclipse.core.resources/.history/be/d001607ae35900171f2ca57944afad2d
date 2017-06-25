@@ -166,18 +166,18 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private String[] configRaw;
     private boolean savePng;
     private boolean saveJpeg;
-    private JFreeChart jFreeChart;
-    private JLabel[] configureKeyComboText;
-    private JTextField keyComboAusgabe;
-    private JButton changeKeyComboButton;
-    private JButton saveKeyComboButton;
-    private String[] keyComboText;
-    private boolean changeAltDown;
-    private boolean changeAltGrDown;
-    private boolean changeCtrlDown;
-    private boolean changeShiftDown;
-    private String changeKeyChar;
-    private int changeKeyCode;
+	private JFreeChart jFreeChart;
+	private JLabel[] configureKeyComboText;
+	private JTextField keyComboAusgabe;
+	private JButton changeKeyComboButton;
+	private JButton saveKeyComboButton;
+	private String[] keyComboText;
+	private boolean changeAltDown;
+	private boolean changeAltGrDown;
+	private boolean changeCtrlDown;
+	private boolean changeShiftDown;
+	private String changeKeyChar;
+	private int changeKeyCode;
 
     public Raumklima(){
         setup();
@@ -429,35 +429,33 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         //validiere das hilfefenster nochmals 
         helpWindow.validate();
-
+        
         //keyComboWindow
         //beim Textfeld 5 wird noch der name der zu ändernden tastenkombi eingef�gt
         try{
-            configureKeyComboWindow=new JFrame();
-            configureKeyComboWindow.setLayout(new GridLayout(0,1));
-            configureKeyComboWindow.setTitle("Tastenkombination ändern");
-            configureKeyComboWindow.setSize(new Dimension(540,470));
-            configureKeyComboWindow.setLocationRelativeTo(null);
-            br = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("configureKeyComboText.txt")));
-            int anz=Integer.parseInt(br.readLine());
-            configureKeyComboText=new JLabel[anz];
-            for(int i=0;i<anz;i++){
-                configureKeyComboText[i]=new JLabel(br.readLine());
-                configureKeyComboWindow.add(configureKeyComboText[i]);
-            }
-            keyComboAusgabe=new JTextField();
-            keyComboAusgabe.setEditable(false);
-            keyComboAusgabe.setFocusable(false);
-            configureKeyComboWindow.add(keyComboAusgabe);
-            changeKeyComboButton=new JButton("Ändern");
-            changeKeyComboButton.addActionListener(this);
-            configureKeyComboWindow.add(changeKeyComboButton);
-            saveKeyComboButton=new JButton("Schließen");
-            saveKeyComboButton.addActionListener(this);
-            configureKeyComboWindow.add(saveKeyComboButton);
+        configureKeyComboWindow=new JFrame();
+        configureKeyComboWindow.setLayout(new GridLayout(0,1));
+        configureKeyComboWindow.setTitle("Tastenkombination ändern");
+        configureKeyComboWindow.setSize(new Dimension(540,470));
+        configureKeyComboWindow.setLocationRelativeTo(null);
+        br = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("configureKeyComboText.txt")));
+        int anz=Integer.parseInt(br.readLine());
+        configureKeyComboText=new JLabel[anz];
+        for(int i=0;i<anz;i++){
+        	configureKeyComboText[i]=new JLabel(br.readLine());
+        	configureKeyComboWindow.add(configureKeyComboText[i]);
+        }
+        keyComboAusgabe=new JTextField();
+        configureKeyComboWindow.add(keyComboAusgabe);
+        changeKeyComboButton=new JButton("Ändern");
+        changeKeyComboButton.addActionListener(this);
+        configureKeyComboWindow.add(changeKeyComboButton);
+        saveKeyComboButton=new JButton("Schließen");
+        saveKeyComboButton.addActionListener(this);
+        configureKeyComboWindow.add(saveKeyComboButton);
         }
         catch(Exception e){
-            e.printStackTrace();
+        	e.printStackTrace();
         }
 
         //get the data and draw the graph
@@ -921,15 +919,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        if(event.getSource()==changeKeyComboButton){
-            configureKeyComboWindow.addKeyListener(this);
-            keyComboAusgabe.setText("Bereit");
-        }
-        if(event.getSource()==saveKeyComboButton){
-            configureKeyComboWindow.removeKeyListener(this);
-            mainWindow.addKeyListener(this);
-            configureKeyComboWindow.setVisible(false);
-        }
+    	if(event.getSource()==changeKeyComboButton){
+    		configureKeyComboWindow.addKeyListener(this);
+    	}
+    	if(event.getSource()==saveKeyComboButton){
+    		configureKeyComboWindow.removeKeyListener(this);
+    		configureKeyComboWindow.setVisible(false);
+    	}
         if(event.getSource()==openDifferentPlotMenuItem){
             openNewPlot();
         }
@@ -943,39 +939,38 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             helpWindow.setVisible(false);
         }
         if(event.getSource()==jpegCheckBox){
-            if(pngCheckBox.isSelected()){
-                configRaw[74]="YES";
-                savePng=true;
-            }
-            else{
-                configRaw[74]="NO";
-                savePng=false;
-            }
+        	if(pngCheckBox.isSelected()){
+        		configRaw[74]="YES";
+        		savePng=true;
+        	}
+        	else{
+        		configRaw[74]="NO";
+        		savePng=false;
+        	}
         }
         if(event.getSource()==jpegCheckBox){
-            if(jpegCheckBox.isSelected()){
-                configRaw[76]="YES";
-                saveJpeg=true;
-            }
-            else{
-                configRaw[76]="NO";
-                saveJpeg=false;
-            }
+        	if(jpegCheckBox.isSelected()){
+        		configRaw[76]="YES";
+        		saveJpeg=true;
+        	}
+        	else{
+        		configRaw[76]="NO";
+        		saveJpeg=false;
+        	}
         }
         for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
-            if(event.getSource()==rightPanelButtons[i]){
-                openEditCeyComboWindow(i);
-            }
+        	if(event.getSource()==rightPanelButtons[i]){
+        		openEditCeyComboWindow(i);
+        	}
         }
     }
 
     private void openEditCeyComboWindow(int in) {
-        mainWindow.removeKeyListener(this);
-        configureKeyComboText[5].setText(configureKeyComboText[5].getText()+keyComboText[in]);
-        configureKeyComboWindow.setVisible(true);
-    }
+		configureKeyComboText[5].setText(configureKeyComboText[5].getText()+keyComboText[in]);
+		configureKeyComboWindow.setVisible(true);
+	}
 
-    private void setPrevious(Raumklima newPrevious) {
+	private void setPrevious(Raumklima newPrevious) {
         previous=newPrevious;
     }
 
@@ -1048,29 +1043,25 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     @Override
     public void keyReleased(KeyEvent event) {
-        if(configureKeyComboWindow.isVisible()){
-            System.out.println("KeyReleased");
-            keyComboAusgabe.setText("");
-            if(event.isAltDown()){
-                keyComboAusgabe.setText("Alt+");
-                changeAltDown=true;
-            }
-            if(event.isAltGraphDown()){
-                keyComboAusgabe.setText(keyComboAusgabe.getText()+"AltGr+");
-                changeAltGrDown=true;
-            }
-            if(event.isControlDown()){
-                keyComboAusgabe.setText(keyComboAusgabe.getText()+"Strg+");
-                changeCtrlDown=true;
-            }
-            if(event.isShiftDown()){
-                keyComboAusgabe.setText(keyComboAusgabe.getText()+"Shift+");
-                changeShiftDown=true;
-            }
-            keyComboAusgabe.setText(keyComboAusgabe.getText()+event.getKeyChar());
-            changeKeyChar=String.valueOf(event.getKeyChar());
-            changeKeyCode=event.getExtendedKeyCode();
-        }
+    		if(event.isAltDown()){
+    			keyComboAusgabe.setText("Alt+");
+    			changeAltDown=true;
+    		}
+    		if(event.isAltGraphDown()){
+    			keyComboAusgabe.setText(keyComboAusgabe.getText()+"AltGr+");
+    			changeAltGrDown=true;
+    		}
+    		if(event.isControlDown()){
+    			keyComboAusgabe.setText(keyComboAusgabe.getText()+"Strg+");
+    			changeCtrlDown=true;
+    		}
+    		if(event.isShiftDown()){
+    			keyComboAusgabe.setText(keyComboAusgabe.getText()+"Shift+");
+    			changeShiftDown=true;
+    		}
+    		keyComboAusgabe.setText(keyComboAusgabe.getText()+event.getKeyChar());
+    		changeKeyChar=String.valueOf(event.getKeyChar());
+    		changeKeyCode=event.getExtendedKeyCode();
     }
 
     @Override
@@ -1148,20 +1139,20 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             toggleSettingsWindow();
         }
         if(event.getExtendedKeyCode()==SGIKEY_CODE&&event.isAltDown()==SGIAR&&event.isAltGraphDown()==SGIAGR&&event.isControlDown()==SGICR&&event.isShiftDown()==SGISR){
-            if(saveJpeg){
-                try {
-                    ChartUtilities.saveChartAsJPEG(new File(csvFile.getName()+".jpeg"), jFreeChart, fullscreenDimension.width, fullscreenDimension.height);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(savePng){
-                try {
-                    ChartUtilities.saveChartAsPNG(new File(csvFile.getName()+".png"), jFreeChart, fullscreenDimension.width, fullscreenDimension.height);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+        	if(saveJpeg){
+        		try {
+					ChartUtilities.saveChartAsJPEG(new File(csvFile.getName()+".jpeg"), jFreeChart, fullscreenDimension.width, fullscreenDimension.height);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+        	}
+        	if(savePng){
+        		try {
+					ChartUtilities.saveChartAsPNG(new File(csvFile.getName()+".png"), jFreeChart, fullscreenDimension.width, fullscreenDimension.height);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+        	}
         }
     }
 }
