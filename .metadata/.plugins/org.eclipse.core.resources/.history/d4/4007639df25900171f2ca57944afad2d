@@ -183,17 +183,19 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private BufferedWriter bwr;
 
     /**
-     * the standard constructor (without the optional values of the second Constructor, which is only needed in order to make the numbering in the Title of the MainWindow work. This Constructor just calls the {@code setup()} Method.
+     * the standard constructor (without the optional values of the second Constructor, which is only needed in order to make the numbering in the Title of the MainWindow work
+     * This Constructor just calls the {@code setup()} Method.
      */
     public Raumklima(){
         setup();
     }
 
     /**
-     * the Secondary Constructor, which includes the "advanced" features (for the numbering scheme). This Constructor just calls the {@code setup()} Method.
+     * the Secondary Constructor, which includes the "advanced" features (for the numbering scheme)
      * @param newTitleNumber the number that should be displayed in the Titlebar on the MainWindow
-     * @param newPrevious the preceding instance of Raumklima (only used to update the numbering scheme if a window is closed or opened)
-     * @param newNext the following instance of Raumklima (only used to update the numbering scheme if a window is closed or opened)
+     * @param newPrevious the preceding instance of {@link Raumklima} (only used to update the numbering scheme if a window is closed or opened)
+     * @param newNext the following instance of {@link Raumklima} (only used to update the numbering scheme if a window is closed or opened)
+     * This Constructor just calls the {@code setup()} Method.
      */
     public Raumklima(int newTitleNumber, Raumklima newPrevious, Raumklima newNext) {
         titleNumber=newTitleNumber;

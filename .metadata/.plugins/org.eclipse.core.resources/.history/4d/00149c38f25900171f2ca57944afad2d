@@ -89,14 +89,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static final int VERSION=0;
 
     private boolean bottomPanelExpanded=false;
-    private boolean changeAltDown;
-    private boolean changeAltGrDown;
-    private boolean changeCtrlDown;
-    private boolean changeShiftDown;
     private boolean jFilePickerFailed=false;
     private boolean fullscreen=false;
-    private boolean saveJpeg;
-    private boolean savePng;
 
     private JButton helpWindowCloseButton;
     private JButton[] rightPanelButtons;
@@ -117,22 +111,16 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     private Image logo;
 
-    private int changeKeyCode;
     private int counter=0;
     private int dataPanelX=0;
     private int dataPanelY;
     private int numberOfGraphs;
     private int titleNumber=1;
 
-    private JButton changeKeyComboButton;
-    private JButton saveKeyComboButton;
-
     private JCheckBox jpegCheckBox;
     private JCheckBox pngCheckBox;
 
     private JFileChooser fileChooser;
-
-    private JFreeChart jFreeChart;
 
     private JFrame configureKeyComboWindow;
     private JFrame fileChooserWindow;
@@ -143,7 +131,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private JLabel leftPanelTitle;
     private JLabel rightPanelTitle;
     private JLabel waitText;
-    private JLabel[] configureKeyComboText;
     private JLabel[] copyrightNotes;
     private JLabel[] dataLabels;
     private JLabel[] helpWindowText;
@@ -170,31 +157,32 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private JScrollPane helpWindowScrollPane;
 
     private JTextField[] dataBoxes;
-    private JTextField keyComboAusgabe;
 
     private Raumklima next;
     private Raumklima previous;
 
-    private String changeKeyChar;
     private String title="Raumklima-Auswertungssoftware";
     private String[] dataValueDescriptors;
     private String[] configRaw;
+    private boolean savePng;
+    private boolean saveJpeg;
+    private JFreeChart jFreeChart;
+    private JLabel[] configureKeyComboText;
+    private JTextField keyComboAusgabe;
+    private JButton changeKeyComboButton;
+    private JButton saveKeyComboButton;
     private String[] keyComboText;
-    private BufferedWriter bwr;
+    private boolean changeAltDown;
+    private boolean changeAltGrDown;
+    private boolean changeCtrlDown;
+    private boolean changeShiftDown;
+    private String changeKeyChar;
+    private int changeKeyCode;
 
-    /**
-     * the standard constructor (without the optional values of the second Constructor, which is only needed in order to make the numbering in the Title of the MainWindow work. This Constructor just calls the {@code setup()} Method.
-     */
     public Raumklima(){
         setup();
     }
 
-    /**
-     * the Secondary Constructor, which includes the "advanced" features (for the numbering scheme). This Constructor just calls the {@code setup()} Method.
-     * @param newTitleNumber the number that should be displayed in the Titlebar on the MainWindow
-     * @param newPrevious the preceding instance of Raumklima (only used to update the numbering scheme if a window is closed or opened)
-     * @param newNext the following instance of Raumklima (only used to update the numbering scheme if a window is closed or opened)
-     */
     public Raumklima(int newTitleNumber, Raumklima newPrevious, Raumklima newNext) {
         titleNumber=newTitleNumber;
         previous=newPrevious;
@@ -230,11 +218,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try {
-            br = new BufferedReader(new FileReader(new File("config.txt")));
-        } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
-        }
+        br = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("config.txt")));
         configRaw=new String[NUMBER_OF_CONFIG_ENTRIES];
         try{
             for(int i=0;i<NUMBER_OF_CONFIG_ENTRIES;i++){
@@ -552,20 +536,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
         else{
             exit();
-        }
-    }
-
-    /**
-     * Writes the Configuration (which is saved in a {@link String} Array in Memory) to a File on the local Storage
-     */
-    private void writeConfigFile(){
-        try {
-            bwr = new BufferedWriter(new FileWriter(new File("config.txt")));
-            for(int i=0;i<NUMBER_OF_CONFIG_ENTRIES;i++){
-                bwr.write(configRaw[i]);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -1104,6 +1074,49 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     @Override
+    public void keyTyped(KeyEvent event) {}
+
+    @Override
+    public void mouseEntered(MouseEvent event) {}
+
+    @Override
+    public void mouseExited(MouseEvent event) {}
+
+    @Override
+    public void mousePressed(MouseEvent event) {}
+
+    @Override
+    public void mouseReleased(MouseEvent event) {}
+
+    @Override
+    public void componentHidden(ComponentEvent event) {}
+
+    @Override
+    public void componentMoved(ComponentEvent event) {}
+
+    @Override
+    public void componentShown(ComponentEvent event) {}
+
+    @Override
+    public void windowActivated(WindowEvent event) {}
+
+    @Override
+    public void windowClosed(WindowEvent event) {}
+
+    @Override
+    public void windowDeactivated(WindowEvent event) {}
+
+    @Override
+    public void windowDeiconified(WindowEvent event) {}
+
+    @Override
+    public void windowIconified(WindowEvent event) {}
+
+    @Override
+    public void windowOpened(WindowEvent event) {}
+
+    //jedesmal wenn eine taste gedr�ckt wird pr�fen ob alle bedingungen erf�llt sind
+    @Override
     public void keyPressed(KeyEvent event) {
         if(event.getExtendedKeyCode()==TFM_KEY_CODE&&event.isAltDown()==TFMAR&&event.isAltGraphDown()==TFMAGR&&event.isControlDown()==TFMCR&&event.isShiftDown()==TFMSR){
             toggleFullscreen();
@@ -1151,46 +1164,4 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             }
         }
     }
-
-    @Override
-    public void keyTyped(KeyEvent event) {}
-
-    @Override
-    public void mouseEntered(MouseEvent event) {}
-
-    @Override
-    public void mouseExited(MouseEvent event) {}
-
-    @Override
-    public void mousePressed(MouseEvent event) {}
-
-    @Override
-    public void mouseReleased(MouseEvent event) {}
-
-    @Override
-    public void componentHidden(ComponentEvent event) {}
-
-    @Override
-    public void componentMoved(ComponentEvent event) {}
-
-    @Override
-    public void componentShown(ComponentEvent event) {}
-
-    @Override
-    public void windowActivated(WindowEvent event) {}
-
-    @Override
-    public void windowClosed(WindowEvent event) {}
-
-    @Override
-    public void windowDeactivated(WindowEvent event) {}
-
-    @Override
-    public void windowDeiconified(WindowEvent event) {}
-
-    @Override
-    public void windowIconified(WindowEvent event) {}
-
-    @Override
-    public void windowOpened(WindowEvent event) {}
 }
