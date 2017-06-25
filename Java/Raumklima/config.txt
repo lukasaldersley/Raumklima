@@ -1,1 +1,39 @@
-test
+#new Plot
+79
+O
+#new Window
+78
+N
+#close window
+87
+W
+#settings
+73
+I
+#bottomPanel
+69
+E
+#help
+112
+F1
+#Fullscreen
+122
+F11
+#Refresh
+116
+F5
+#SaveAll
+83
+S
+#
+#DataTypes
+#PNG
+NO
+#JPEG
+NO
+#
+#General Status
+#FullscreenOnStartup
+YES
+#BottomPanelExpandedOnStartup
+YES

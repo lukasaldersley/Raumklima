@@ -1,4 +1,4 @@
-package Raumklima;//TODO config wieder schreiben nachdem irgendeiner der werte geändert wurde
+package Raumklima;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
@@ -192,7 +192,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         	else{
         		saveJpeg=false;
         	}
-        	if(configRaw[36].equals("YES")){
+        	if(configRaw[38].equals("YES")){
         		fullscreen=true;
         	}
         	else{
@@ -314,6 +314,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         jpegCheckBox.setSelected(saveJpeg);
         //pdfCheckBox=new JCheckBox();
         //svgCheckBox=new JCheckBox();
+        //TODO prüfen ob in Config gesetzt
         settingsWindowLeftPanel.add(leftPanelTitle);
         settingsWindowLeftPanel.add(pngCheckBox);
         settingsWindowLeftPanel.add(jpegCheckBox);
@@ -396,9 +397,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             mainWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             mainWindow.setCursor(Cursor.getDefaultCursor());
             if(fullscreen){
-            	fullscreen=!fullscreen;//damit das program den Vollbildmodus korrekterweise einschaltet
-            	//und nicht glaubt dass der Vollbildmodus schon an war und ihn deaktiviert
-            	//siehe oben beim config-lesenn und in der Config datei.
             toggleFullscreen();
             }
             if(!bottomPanelExpanded){

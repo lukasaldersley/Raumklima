@@ -1,4 +1,4 @@
-package Raumklima;//TODO config wieder schreiben nachdem irgendeiner der werte geändert wurde
+package Raumklima;//TODO Settings
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
@@ -29,7 +29,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static int WIDTH_OF_DATA_BLOCK=370;
     public static int NUMBER_OF_KEY_COMBOS=9;
     public static int NUMBER_OF_COPYRIGHT_NOTES;
-    public static int NUMBER_OF_CONFIG_ENTRIES=39;
     public static String OPEN_SETTINGS_KEY_STRING="I";
     public static String OPEN_HELP_KEY_STRING="F1";
     public static String OPEN_NEW_PLOT_KEY_STRING="O";
@@ -40,12 +39,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static String EXPAND_COLLAPSE_BOTTOMPANEL_KEY_STRING = "E";
     public static String SAVE_ALL_KEY_STRING="S";
 
-    private boolean bottomPanelExpanded=false;
+    private boolean bottomPanelExpanded=true;
     private boolean jFilePickerFailed=false;
     private boolean fullscreen=false;
-    
-    private JButton helpWindowCloseButton;
-	private JButton[] rightPanelButtons;
 
     private BufferedReader br;
 
@@ -69,8 +65,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private int numberOfGraphs;
     private int titleNumber=1;
 
-	private JCheckBox jpegCheckBox;
-	private JCheckBox pngCheckBox;
+    private JButton helpWindowCloseButton;
 
     private JFileChooser fileChooser;
 
@@ -79,12 +74,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private JFrame mainWindow;
     private JFrame settingsWindow;
 
-	private JLabel leftPanelTitle;
-	private JLabel rightPanelTitle;
-    private JLabel waitText;
     private JLabel[] copyrightNotes;
     private JLabel[] dataLabels;
     private JLabel[] helpWindowText;
+    private JLabel waitText;
 
     private JMenu fileMenu;
     private JMenu openHelpWindowMenu;
@@ -99,10 +92,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     private JPanel dataPanel;
     private JPanel helpPanel;
-	private JPanel settingsWindowLeftPanel;
-	private JPanel settingsWindowRightPanel;
     private JPanel waitPanel;
-	private JPanel[] settingsWindowRightInnerPanel;
 
     private JScrollPane helpWindowScrollPane;
 
@@ -113,9 +103,15 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     private String title="Raumklima-Auswertungssoftware";
     private String[] dataValueDescriptors;
-    private String[] configRaw;
-	private boolean savePng;
-	private boolean saveJpeg;
+	private JPanel settingsWindowLeftPanel;
+	private JPanel settingsWindowRightPanel;
+	private JLabel leftPanelTitle;
+	private JCheckBox pngCheckBox;
+	private JCheckBox jpgCheckBox;
+	private JCheckBox pdfCheckBox;
+	private JLabel rightPanelTitle;
+	private JButton[] rightPanelButtons;
+	private JPanel[] settingsWindowRightInnerPanel;
 
     public Raumklima(){
         setup();
@@ -157,53 +153,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             e.printStackTrace();
         }
         br = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("config.txt")));
-        configRaw=new String[NUMBER_OF_CONFIG_ENTRIES];
         try{
-        	for(int i=0;i<NUMBER_OF_CONFIG_ENTRIES;i++){
-        		configRaw[i]=br.readLine();
-        	}
-        	OPEN_NEW_PLOT_KEY_CODE=Integer.parseInt(configRaw[1]);
-        	OPEN_NEW_PLOT_KEY_STRING=configRaw[2];
-        	OPEN_NEW_WINDOW_KEY_CODE=Integer.parseInt(configRaw[4]);
-        	OPEN_NEW_WINDOW_KEY_STRING=configRaw[5];
-        	CLOSE_KEY_CODE=Integer.parseInt(configRaw[7]);
-        	CLOSE_WINDOW_KEY_STRING=configRaw[8];
-        	OPEN_SETTINGS_KEY_CODE=Integer.parseInt(configRaw[10]);
-        	OPEN_SETTINGS_KEY_STRING=configRaw[11];
-        	EXPAND_COLLAPSE_BOTTOMPANEL_KEY_CODE=Integer.parseInt(configRaw[13]);
-        	EXPAND_COLLAPSE_BOTTOMPANEL_KEY_STRING=configRaw[14];
-        	OPEN_HELP_KEY_CODE=Integer.parseInt(configRaw[16]);
-        	OPEN_HELP_KEY_STRING=configRaw[17];
-        	TOGGLE_FULLSCREEN_MODE_KEY_CODE=Integer.parseInt(configRaw[19]);
-        	TOGGLE_FULLSCREEN_KEY_STRING=configRaw[20];
-        	REFRESH_FRAME_KEY_CODE=Integer.parseInt(configRaw[22]);
-        	REPAINT_KEY_STRING=configRaw[23];
-        	SAVE_ALL_KEY_CODE=Integer.parseInt(configRaw[25]);
-        	SAVE_ALL_KEY_STRING=configRaw[26];
-        	if(configRaw[30].equals("YES")){
-        		savePng=true;
-        	}
-        	else{
-        		savePng=false;
-        	}
-        	if(configRaw[32].equals("YES")){
-        		saveJpeg=true;
-        	}
-        	else{
-        		saveJpeg=false;
-        	}
-        	if(configRaw[36].equals("YES")){
-        		fullscreen=true;
-        	}
-        	else{
-        		fullscreen=false;
-        	}
-        	if(configRaw[38].equals("YES")){
-        		bottomPanelExpanded=true;
-        	}
-        	else{
-        		bottomPanelExpanded=false;
-        	}
+            //System.out.println(br.readLine());
         }
         catch(Exception e){
             e.printStackTrace();
@@ -265,6 +216,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         helpWindow.setTitle("Hilfe");
         helpPanel=new JPanel(new GridLayout(0,1));
 
+        //TODO
+
         //add Copyright notice
         br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("CopyrightNotes.txt")));
         try{
@@ -308,15 +261,14 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         leftPanelTitle.setFont(new Font(Font.SERIF,Font.BOLD, 16));
         pngCheckBox=new JCheckBox(("PNG"));
         pngCheckBox.addActionListener(this);
-        	pngCheckBox.setSelected(savePng);
-        jpegCheckBox=new JCheckBox("JPEG");
-        jpegCheckBox.addActionListener(this);
-        jpegCheckBox.setSelected(saveJpeg);
+        jpgCheckBox=new JCheckBox("JPG");
+        jpgCheckBox.addActionListener(this);
         //pdfCheckBox=new JCheckBox();
         //svgCheckBox=new JCheckBox();
+        //TODO prüfen ob in Config gesetzt
         settingsWindowLeftPanel.add(leftPanelTitle);
         settingsWindowLeftPanel.add(pngCheckBox);
-        settingsWindowLeftPanel.add(jpegCheckBox);
+        settingsWindowLeftPanel.add(jpgCheckBox);
         
         settingsWindow.add(settingsWindowLeftPanel,BorderLayout.WEST);
         
@@ -395,15 +347,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             //finalise the mainWindow and revert the Cursor Back To Normal
             mainWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             mainWindow.setCursor(Cursor.getDefaultCursor());
-            if(fullscreen){
-            	fullscreen=!fullscreen;//damit das program den Vollbildmodus korrekterweise einschaltet
-            	//und nicht glaubt dass der Vollbildmodus schon an war und ihn deaktiviert
-            	//siehe oben beim config-lesenn und in der Config datei.
             toggleFullscreen();
-            }
-            if(!bottomPanelExpanded){
-            	toggleBottomPanel();
-            }
             chartPanel.getPopupMenu().remove(3);//den punkt speichern zum speichern des aktuellen Chartinhalts entfernen, da es sonst probleme mit dem vollbildmodus gibt wenn jemand darauf klickt.
         }
         else{

@@ -1,4 +1,4 @@
-package Raumklima;//TODO config wieder schreiben nachdem irgendeiner der werte geändert wurde
+package Raumklima;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
@@ -314,6 +314,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         jpegCheckBox.setSelected(saveJpeg);
         //pdfCheckBox=new JCheckBox();
         //svgCheckBox=new JCheckBox();
+        //TODO prüfen ob in Config gesetzt
         settingsWindowLeftPanel.add(leftPanelTitle);
         settingsWindowLeftPanel.add(pngCheckBox);
         settingsWindowLeftPanel.add(jpegCheckBox);

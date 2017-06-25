@@ -1,8 +1,9 @@
-Dieses Fenster (Hilfe) öffnen: 
+Fenster Hilfe öffnen: 
 Vollbildmodus umschalten: 
 Graphen aktualisieren: 
-(noch nicht) Einstellungen öffnen: Strg+
+Fenster Einstellungen öffnen: Strg+
 Neues Fenster öffnen: Strg+
 Fenster schließen: Strg+
 Datei öffnen: Strg+
 unteren Bildschirmteil ausblenden: Strg+
+Graphen Speichern (alle Dateitypen): Strg+
