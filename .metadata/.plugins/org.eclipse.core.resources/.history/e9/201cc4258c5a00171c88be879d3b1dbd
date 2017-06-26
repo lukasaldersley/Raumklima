@@ -256,7 +256,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             for(int i=0;i<NUMBER_OF_CONFIG_ENTRIES;i++){
                 configRaw[i]=br.readLine();
             }
-            //System.out.println(configRaw[9]);
+            System.out.println(configRaw[9]);
             CLOSW_WINDOW_KEY_CODE=Integer.parseInt(configRaw[9]);
             CWKEY_STRING=configRaw[10];
             OHKEY_CODE=Integer.parseInt(configRaw[16]);
@@ -418,15 +418,14 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             }
             keyComboAusgabe=new JTextField();
             keyComboAusgabe.setEditable(false);
-            //keyComboAusgabe.setFocusable(false);
+            keyComboAusgabe.setFocusable(false);
             configureKeyComboWindow.add(keyComboAusgabe);
-            changeKeyComboButton=new JButton("ändern");
+            changeKeyComboButton=new JButton("�ndern");
             changeKeyComboButton.addActionListener(this);
             configureKeyComboWindow.add(changeKeyComboButton);
-            saveKeyComboButton=new JButton("Schließen");
+            saveKeyComboButton=new JButton("Schlie�en");
             saveKeyComboButton.addActionListener(this);
             configureKeyComboWindow.add(saveKeyComboButton);
-            configureKeyComboWindow.validate();
         }
         catch(Exception e){
             e.printStackTrace();
@@ -542,13 +541,12 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             mainWindow.add(dataPanel,BorderLayout.SOUTH);
             
             //make the program able to react by adding the ActionListeners
-            //TODO
-            keyComboAusgabe.addKeyListener(this);
             mainWindow.addKeyListener(this);
             mainWindow.addComponentListener(this);
             mainWindow.addWindowStateListener(this);
             mainWindow.addWindowListener(this);
             chartPanel.addChartMouseListener(this);
+            configureKeyComboWindow.addKeyListener(this);
             mainWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
             if(bottomPanelExpanded){
@@ -1026,12 +1024,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         if(event.getSource()==changeKeyComboButton){
         	allowKeyComboChange=true;
             keyComboAusgabe.setText("Bereit");
-            keyComboAusgabe.requestFocus();
-            keyComboAusgabe.requestFocusInWindow();
-            keyComboAusgabe.grabFocus();
         }
         if(event.getSource()==saveKeyComboButton){
-        	//TOTO maybe
             configureKeyComboWindow.setVisible(false);
             if(currentlyEditedKeycombo==0){
             	;
@@ -1080,7 +1074,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void openEditCeyComboWindow(int in) {
-    	//TODO maybe
         //mainWindow.removeKeyListener(this);
         configureKeyComboText[5].setText(configureKeyComboText[5].getText()+editKeyComboWindowText[in]);
         configureKeyComboWindow.setVisible(true);
@@ -1162,7 +1155,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public void keyReleased(KeyEvent event) {
     	if(allowKeyComboChange){
     		allowKeyComboChange=false;
-            //System.out.println("KeyReleased");
+            System.out.println("KeyReleased");
             keyComboAusgabe.setText("");
             if(event.isAltDown()){
                 keyComboAusgabe.setText("Alt+");
@@ -1180,10 +1173,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 keyComboAusgabe.setText(keyComboAusgabe.getText()+"Shift+");
                 changeShiftDown=true;
             }
-            keyComboAusgabe.setText(keyComboAusgabe.getText()+String.valueOf(event.getKeyChar()));
-            System.out.print(event.getKeyChar());
-            System.out.println(":"+event.getExtendedKeyCode());
-            //TODO methode machen die das handelt: changeKeyChar=String.valueOf(event.getKeyChar());
+            keyComboAusgabe.setText(keyComboAusgabe.getText()+event.getKeyChar());
+            changeKeyChar=String.valueOf(event.getKeyChar());
             changeKeyCode=event.getExtendedKeyCode();
         }
     }

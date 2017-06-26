@@ -1182,7 +1182,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             }
             keyComboAusgabe.setText(keyComboAusgabe.getText()+String.valueOf(event.getKeyChar()));
             System.out.print(event.getKeyChar());
-            System.out.println(":"+event.getExtendedKeyCode());
+            System.out.print(":"+event.getExtendedKeyCode());
             //TODO methode machen die das handelt: changeKeyChar=String.valueOf(event.getKeyChar());
             changeKeyCode=event.getExtendedKeyCode();
         }

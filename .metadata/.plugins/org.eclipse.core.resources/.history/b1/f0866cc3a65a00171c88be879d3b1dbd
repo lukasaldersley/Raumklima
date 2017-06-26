@@ -1162,7 +1162,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public void keyReleased(KeyEvent event) {
     	if(allowKeyComboChange){
     		allowKeyComboChange=false;
-            //System.out.println("KeyReleased");
+            System.out.println("KeyReleased");
             keyComboAusgabe.setText("");
             if(event.isAltDown()){
                 keyComboAusgabe.setText("Alt+");
@@ -1182,8 +1182,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             }
             keyComboAusgabe.setText(keyComboAusgabe.getText()+String.valueOf(event.getKeyChar()));
             System.out.print(event.getKeyChar());
-            System.out.println(":"+event.getExtendedKeyCode());
-            //TODO methode machen die das handelt: changeKeyChar=String.valueOf(event.getKeyChar());
+            System.out.println(":"+String.valueOf(event.getKeyChar()));
+            changeKeyChar=String.valueOf(event.getKeyChar());
             changeKeyCode=event.getExtendedKeyCode();
         }
     }
