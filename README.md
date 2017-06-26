@@ -3,7 +3,7 @@ Software für ein Arduino-basiertes Gerät zur Überwachung des Raumklimas.
 
 Dieses Projekt wird/wurde durchgeführt im Rahmen eines W-Seminares von Lukas Aldersley am Josef-Effner-Gymnasium in Dachau.
 
-Funktionsfähige Software befindet sich im Ordner Release (als .jar oder als .ino Datei)
+Funktionsfähige Software befindet sich im Ordner Release (als .jar oder als .ino Datei. Die VERSION datei wird nur vom updater gebraucht.)
 
 Dieses Projekt soll sich in mehrere teile gliedern:
   - Den Code für den Arduino (vorraussichtlich ein Arduino MEGA2560 R3)
@@ -22,3 +22,6 @@ Noch zu tun ist:
   - Viel Testen
   - Code Optimieren
   - Platine Optimieren und zum ätzen designen
+  -JFrame Layout neu schreiben
+  -updater implementieren(hostnameprobleme lösen)
+  -tastenkombis ändern lassen (total garbage)
