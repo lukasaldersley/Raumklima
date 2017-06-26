@@ -88,7 +88,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static String TBPV_KEY_STRING = "E";
     public static String TFM_KEY_STRING="F11";
 
-    public static final int VERSION=1;
+    public static final int VERSION=0;
 
     private boolean bottomPanelExpanded=false;
     private boolean changeAltDown;

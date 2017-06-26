@@ -2,20 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="bottomPanelExpanded" key="selection"/>
+		<item value="exit" key="selection"/>
 		<item value="true" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="exit"/>
+			<item value="toggleSet"/>
+			<item value="createChart"/>
+			<item value="addActionListener"/>
 			<item value="bottomPanelExpanded"/>
 			<item value="fullscreen"/>
 			<item value="jpg"/>
 			<item value="keyRe"/>
-			<item value="openNew()"/>
-			<item value="OPEN_KEY_CODE"/>
-			<item value="OPEN_NEW_KEY_CODE"/>
-			<item value="OPEN_NEW_PLOT_KEY_CODE"/>
 		</list>
 		<list key="replacehistory">
 			<item value="jpeg"/>

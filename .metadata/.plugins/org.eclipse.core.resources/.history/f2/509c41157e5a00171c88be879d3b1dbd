@@ -88,7 +88,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static String TBPV_KEY_STRING = "E";
     public static String TFM_KEY_STRING="F11";
 
-    public static final int VERSION=1;
+    public static final int VERSION=0;
 
     private boolean bottomPanelExpanded=false;
     private boolean changeAltDown;
@@ -205,9 +205,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void setup(){//Initialise JFrames
-        if(checkIfUpdateAvailable()){
-            updateJar();
-        }
         fileChooserWindow=new JFrame();
         settingsWindow=new JFrame();
         helpWindow=new JFrame();
@@ -570,28 +567,23 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             FileOutputStream fos = new FileOutputStream("Raumklima.jar");
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             fos.close();
-            Runtime.getRuntime().exec("java -jar Raumklima.jar");
-            System.exit(0);
         }
         catch(Exception e){
             e.printStackTrace();
         }
     }
     
-    public boolean checkIfUpdateAvailable(){
+    public boolean CcheckIfUpdateAvailable(){
         try{
             URL website = new URL("https://raw.githubusercontent.com/lukasaldersley/Raumklima/master/Release/VERSION");
-            br=new  BufferedReader(new InputStreamReader(website.openStream()));
-            if(Integer.parseInt(br.readLine())>VERSION){
-            	return true;
-            }
-            else{
-            	return false;
-            }
+            br=new  BufferedReader(new StreamReader(website.openStream()));
+            ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+            FileOutputStream fos = new FileOutputStream("Raumklima.jar");
+            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+            fos.close();
         }
         catch(Exception e){
             e.printStackTrace();
-            return false;
         }
     }
 
