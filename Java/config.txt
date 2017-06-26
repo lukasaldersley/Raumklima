@@ -1,4 +1,4 @@
-﻿##Beispiel
+##Beispiel
 #KeyCode
 #KeyString
 #AltRequired
