@@ -624,7 +624,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      */
     private void writeConfigFile(){
         try {
-            bw = new BufferedWriter(new FileWriter(new File("config2.txt")));
+            bw = new BufferedWriter(new FileWriter(new File("config.txt")));
             for(int i=0;i<NUMBER_OF_CONFIG_ENTRIES;i++){
                 bw.write(configRaw[i]);
             }

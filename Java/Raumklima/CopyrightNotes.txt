@@ -2,6 +2,10 @@
 
 
 Java Programm:
+
+    Bei Fragen: lukasaldersley@outlook.com
+        oder Kommentar auf https://www.github.com/lukasaldersley/Raumklima
+
     Benutzte Bibliotheken:
         -JFreeChart (GNU LGPL)
         -Standard Java Bibliotheken (swing, awt, usw..)

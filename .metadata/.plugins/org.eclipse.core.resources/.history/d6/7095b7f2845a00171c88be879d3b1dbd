@@ -256,7 +256,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             for(int i=0;i<NUMBER_OF_CONFIG_ENTRIES;i++){
                 configRaw[i]=br.readLine();
             }
-            System.out.println(configRaw[9]);
             CLOSW_WINDOW_KEY_CODE=Integer.parseInt(configRaw[9]);
             CWKEY_STRING=configRaw[10];
             OHKEY_CODE=Integer.parseInt(configRaw[16]);
@@ -624,7 +623,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      */
     private void writeConfigFile(){
         try {
-            bw = new BufferedWriter(new FileWriter(new File("config2.txt")));
+            bw = new BufferedWriter(new FileWriter(new File("config.txt")));
             for(int i=0;i<NUMBER_OF_CONFIG_ENTRIES;i++){
                 bw.write(configRaw[i]);
             }
@@ -1071,7 +1070,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void openEditCeyComboWindow(int in) {
-        //mainWindow.removeKeyListener(this);
+        mainWindow.removeKeyListener(this);
         configureKeyComboText[5].setText(configureKeyComboText[5].getText()+editKeyComboWindowText[in]);
         configureKeyComboWindow.setVisible(true);
         currentlyEditedKeycombo=in;

@@ -90,7 +90,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     public static final int VERSION=1;
 
-    boolean allowKeyComboChange=false;
     private boolean bottomPanelExpanded=false;
     private boolean changeAltDown;
     private boolean changeAltGrDown;
@@ -183,8 +182,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private String[] dataValueDescriptors;
     private String[] configRaw;
     private String[] editKeyComboWindowText;
-    private BufferedWriter bw;
-	private int currentlyEditedKeycombo;
+    private BufferedWriter bwr;
 
     /**
      * the standard constructor (without the optional values of the second Constructor, which is only needed in order to make the numbering in the Title of the MainWindow work. This Constructor just calls the {@code setup()} Method.
@@ -238,7 +236,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         //setup some very basic stuff
         //setup some basic sizes
-        //TODO prï¿½fen
+        //TODO prüfen
         fullscreenDimension=new Dimension(graphicsDevice.getDisplayMode().getWidth(),graphicsDevice.getDisplayMode().getHeight()-30);
         windowedTopPanelDimension=new Dimension(graphicsDevice.getDisplayMode().getWidth(),graphicsDevice.getDisplayMode().getHeight()-30);
         //setup the logo
@@ -256,7 +254,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             for(int i=0;i<NUMBER_OF_CONFIG_ENTRIES;i++){
                 configRaw[i]=br.readLine();
             }
-            System.out.println(configRaw[9]);
             CLOSW_WINDOW_KEY_CODE=Integer.parseInt(configRaw[9]);
             CWKEY_STRING=configRaw[10];
             OHKEY_CODE=Integer.parseInt(configRaw[16]);
@@ -352,7 +349,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         //Initialise and setup FileChooser
         fileChooser=new JFileChooser();
-        fileChooser.setDialogTitle("Bitte CSV-Datei auswï¿½hlen");
+        fileChooser.setDialogTitle("Bitte CSV-Datei auswählen");
         fileChooser.setMultiSelectionEnabled(false);
         fileChooser.setFileFilter(new FileNameExtensionFilter("Aufgezeichnete Klimadaten (.csv/.CSV)","csv","CSV"));
 
@@ -360,13 +357,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         mainWindowMenuBar=new JMenuBar();
 
         fileMenu=new JMenu("Datei");
-        openDifferentPlotMenuItem=new JMenuItem("Datei ï¿½ffnen (Strg+"+ONPKEY_STRING+")");
+        openDifferentPlotMenuItem=new JMenuItem("Datei öffnen (Strg+"+ONPKEY_STRING+")");
         openDifferentPlotMenuItem.addActionListener(this);
         fileMenu.add(openDifferentPlotMenuItem);
-        openNewWindowMenuItem=new JMenuItem("neues Fenster ï¿½ffnen (Strg+"+ONWKEY_STRING+")");
+        openNewWindowMenuItem=new JMenuItem("neues Fenster öffnen (Strg+"+ONWKEY_STRING+")");
         openNewWindowMenuItem.addActionListener(this);
         fileMenu.add(openNewWindowMenuItem);
-        closeWindowMenuItem=new JMenuItem("Fenster schlieï¿½en (Strg+"+CWKEY_STRING+")");
+        closeWindowMenuItem=new JMenuItem("Fenster schließen (Strg+"+CWKEY_STRING+")");
         closeWindowMenuItem.addActionListener(this);
         fileMenu.add(closeWindowMenuItem);
 
@@ -406,7 +403,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         try{
             editKeyComboWindowText=new String[NUMBER_OF_KEY_COMBOS];
             configureKeyComboWindow.setLayout(new GridLayout(0,1));
-            configureKeyComboWindow.setTitle("Tastenkombination ï¿½ndern");
+            configureKeyComboWindow.setTitle("Tastenkombination Ändern");
             configureKeyComboWindow.setSize(new Dimension(540,470));
             configureKeyComboWindow.setLocationRelativeTo(null);
             br = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("configureKeyComboText.txt")));
@@ -420,10 +417,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             keyComboAusgabe.setEditable(false);
             keyComboAusgabe.setFocusable(false);
             configureKeyComboWindow.add(keyComboAusgabe);
-            changeKeyComboButton=new JButton("ï¿½ndern");
+            changeKeyComboButton=new JButton("Ändern");
             changeKeyComboButton.addActionListener(this);
             configureKeyComboWindow.add(changeKeyComboButton);
-            saveKeyComboButton=new JButton("Schlieï¿½en");
+            saveKeyComboButton=new JButton("Schließen");
             saveKeyComboButton.addActionListener(this);
             configureKeyComboWindow.add(saveKeyComboButton);
         }
@@ -443,7 +440,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         helpWindowScrollPane.setPreferredSize(new Dimension(helpWindow.getWidth(), helpWindow.getHeight()-53));
         helpWindow.add(helpWindowScrollPane,BorderLayout.NORTH);
 
-        helpWindowCloseButton=new JButton("Schlieï¿½en");
+        helpWindowCloseButton=new JButton("Schließen");
         helpWindowCloseButton.addActionListener(this);
         helpWindowCloseButton.setPreferredSize(new Dimension(helpWindow.getWidth(),25));
         helpWindow.add(helpWindowCloseButton,BorderLayout.SOUTH);
@@ -480,7 +477,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         settingsWindow.add(settingsWindowLeftPanel,BorderLayout.WEST);
 
-        rightPanelTitle=new JLabel("Tastenkï¿½rzel:");
+        rightPanelTitle=new JLabel("Tastenkürzel:");
         rightPanelTitle.setFont(new Font(Font.SERIF,Font.BOLD, 16));
         settingsWindowRightPanel.add(rightPanelTitle, BorderLayout.NORTH);
         readInTextsForKeyCombos();
@@ -598,10 +595,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
     }
     
-    /**
-     * Checks whether an Update is available
-     * @return true if an update is available, false if no update is available
-     */
     public boolean checkIfUpdateAvailable(){
         try{
             URL website = new URL("https://raw.githubusercontent.com/lukasaldersley/Raumklima/master/Release/VERSION");
@@ -624,9 +617,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      */
     private void writeConfigFile(){
         try {
-            bw = new BufferedWriter(new FileWriter(new File("config2.txt")));
+            bwr = new BufferedWriter(new FileWriter(new File("config.txt")));
             for(int i=0;i<NUMBER_OF_CONFIG_ENTRIES;i++){
-                bw.write(configRaw[i]);
+                bwr.write(configRaw[i]);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -856,7 +849,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         graphicsDevice.setFullScreenWindow(null);
         fullscreen=false;
         refreshPage();
-        writeConfigFile();
     }
 
     private void toggleBottomPanel(){
@@ -869,14 +861,12 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             dataPanel.setVisible(true);
         }
         refreshPage();
-        writeConfigFile();
     }
 
     private void avtivateFullscreen(){
         graphicsDevice.setFullScreenWindow(mainWindow);
         fullscreen=true;
         refreshPage();
-        writeConfigFile();
     }
 
     private int showOpenDialog(){
@@ -1019,15 +1009,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     @Override
     public void actionPerformed(ActionEvent event) {
         if(event.getSource()==changeKeyComboButton){
-        	allowKeyComboChange=true;
+            configureKeyComboWindow.addKeyListener(this);
             keyComboAusgabe.setText("Bereit");
         }
         if(event.getSource()==saveKeyComboButton){
+            configureKeyComboWindow.removeKeyListener(this);
+            mainWindow.addKeyListener(this);
             configureKeyComboWindow.setVisible(false);
-            if(currentlyEditedKeycombo==0){
-            	;
-            }
-            writeConfigFile();
         }
         if(event.getSource()==openDifferentPlotMenuItem){
             openNewPlot();
@@ -1050,7 +1038,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 configRaw[74]="NO";
                 savePng=false;
             }
-            writeConfigFile();
         }
         if(event.getSource()==jpegCheckBox){
             if(jpegCheckBox.isSelected()){
@@ -1061,7 +1048,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 configRaw[76]="NO";
                 saveJpeg=false;
             }
-            writeConfigFile();
         }
         for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
             if(event.getSource()==rightPanelButtons[i]){
@@ -1071,10 +1057,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void openEditCeyComboWindow(int in) {
-        //mainWindow.removeKeyListener(this);
+        mainWindow.removeKeyListener(this);
         configureKeyComboText[5].setText(configureKeyComboText[5].getText()+editKeyComboWindowText[in]);
         configureKeyComboWindow.setVisible(true);
-        currentlyEditedKeycombo=in;
     }
 
     private void setPrevious(Raumklima newPrevious) {
@@ -1150,8 +1135,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     @Override
     public void keyReleased(KeyEvent event) {
-    	if(allowKeyComboChange){
-    		allowKeyComboChange=false;
+        if(configureKeyComboWindow.isVisible()){
             System.out.println("KeyReleased");
             keyComboAusgabe.setText("");
             if(event.isAltDown()){
