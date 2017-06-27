@@ -1,4 +1,4 @@
-//#include <LowPower.h>
+  //#include <LowPower.h>
 #include <LiquidCrystal.h>
 #include "DS3232RTC.h"
 #include <TimeLib.h>
@@ -55,6 +55,7 @@ const int DIRECT_LCD_D7_PIN = 35;
 
 //GENERAL SYSTEM VARS--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 boolean directLcdEnabled = true;
+boolean indirectLcdEnabled=false;
 
 long baudrate = 115200;
 int changeScreenThreshold = 10;
@@ -63,6 +64,11 @@ int BMPReadingDelay = 0;
 
 String sendoff = "";
 String fileName = "";
+
+boolean physik=true;
+boolean recording=false;
+
+int settingsPage=0;
 
 //DEVICES--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 File file;
@@ -109,7 +115,9 @@ void setup() {
   directLcd.print("Initialisieren...");
 
   pinMode(3, INPUT); //ich hab den widerstand auf dem board vergessen deswegen der interne
-  attachInterrupt(1, alwaysInterruptButton_Push, RISING);
+  //attachInterrupt(1, alwaysInterruptButton_Push, RISING);
+  attachInterrupt(0,iterateSettings,FALLING);//TODO überlegen
+  attachInterrupt(1,increaseValue,FALLING);
 
   directLcd.setCursor(0, 1);
   directLcd.print("SD-Karte: ");
@@ -525,6 +533,19 @@ void sleeep6Hours() {
 //                  TIMER2_OFF, TIMER1_OFF, TIMER0_OFF, SPI_OFF, USART3_OFF,
   //                USART2_OFF, USART1_OFF, USART0_OFF, TWI_OFF);*/
 
+  }
+}
+
+void iterateMenu(){
+  if(settingsPage==0){
+    indirectLcdEnabled=true;
+    
+  }
+}
+
+increaseValue(){
+  if(settingsPage==1){
+    ;
   }
 }
 
