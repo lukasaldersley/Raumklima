@@ -1,3 +1,4 @@
+//#include <LowPower.h>
 #include <LiquidCrystal.h>
 #include "DS3232RTC.h"
 #include <TimeLib.h>
@@ -39,6 +40,8 @@ const int SD_PIN = 8;
 const int BRIGHTNESS_PIN = A2;
 const int LOUDNESS_PIN = A3;
 const int DHT_PIN = 4;
+const int MQ_2_PIN=A0;
+const int MQ_135_PIN=A1;
 
 const int DIRECT_LCD_RS_PIN = 49;
 const int DIRECT_LCD_E_PIN = 47;
@@ -48,6 +51,7 @@ const int DIRECT_LCD_D4_PIN = 41;
 const int DIRECT_LCD_D5_PIN = 39;
 const int DIRECT_LCD_D6_PIN = 37;
 const int DIRECT_LCD_D7_PIN = 35;
+
 
 //GENERAL SYSTEM VARS--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 boolean directLcdEnabled = true;
@@ -85,6 +89,8 @@ double BME280_Humidity = 0.0;
 double RTC_Temperature = 0.0;
 double Loudness = 0.0;
 double Brightness = 0.0;
+double MQ_2_Value=0.0;
+double MQ_135_Value=0.0;
 
 //METHODS--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -102,7 +108,7 @@ void setup() {
   directLcd.clear();
   directLcd.print("Initialisieren...");
 
-  pinMode(3,INPUT); //ich hab den widerstand auf dem board vergessen deswegen der interne
+  pinMode(3, INPUT); //ich hab den widerstand auf dem board vergessen deswegen der interne
   attachInterrupt(1, alwaysInterruptButton_Push, RISING);
 
   directLcd.setCursor(0, 1);
@@ -123,7 +129,7 @@ void setup() {
   directLcd.setCursor(0, 3);
   directLcd.print(fileName);
 
-  Serial.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness");
+  Serial.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness;MQ2;MQ135");
 
   delay(500);
   directLcd.clear();
@@ -131,7 +137,7 @@ void setup() {
   directLcd.setCursor(0, 1);
   file = SD.open(fileName, FILE_WRITE);
   if (file) {
-    file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness");
+    file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness;MQ2;MQ135");
     file.close();
     directLcd.print("OK");
   }
@@ -139,7 +145,7 @@ void setup() {
     file = SD.open(fileName, FILE_WRITE);
     if (file) {
       Serial.println("SD FAILED ONCE While writing the titles");
-      file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness");
+      file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness;MQ2;MQ135");
       file.close();
       directLcd.print("OK");
     }
@@ -179,6 +185,12 @@ void getSensorData() {
   getTemperatureValues();
   getHumidityValues();
   getPressureValues();
+  getGasValues();
+}
+
+void getGasValues(){
+  MQ_2_Value=analogRead(MQ_2_PIN)/10;
+  MQ_135_Value=analogRead(MQ_135_PIN)/10;
 }
 
 void getRTCValues() {
@@ -227,7 +239,7 @@ void getBMPValues() {
   delay(BMPReadingDelay);
   BMPReadingDelay = BMP180.getPressure(BMP180_Airpressure, BMP180_Temperature);
   delay(BMPReadingDelay);
-  BMP180_Airpressure/=10.00;
+  BMP180_Airpressure /= 10.00;
 }
 
 void getPressureValues() {
@@ -244,7 +256,7 @@ void getHumidityValues() {
 
 void getBrightnessValues() {
   Brightness = analogRead(BRIGHTNESS_PIN);
-  Brightness=map(Brightness,0,1023,100,0);
+  Brightness = map(Brightness, 0, 1023, 100, 0);
 }
 
 void getLoudnessValues() {
@@ -281,6 +293,10 @@ void constructSendoffString() {
   sendoff += Brightness;
   sendoff += ";";
   sendoff += Loudness;
+  sendoff+=";";
+  sendoff+=MQ_2_Value;
+  sendoff+=";";
+  sendoff+=MQ_135_Value;
   sendoff.replace('.', ',');
 }
 
@@ -435,6 +451,35 @@ void loop() {
     directLcd.print("DURCHSCHNITT: ");
     directLcd.print(TOTAL_Airpressure);
   }
+  else if(displayCounter<changeScreenThreshold*8){//gaswerte
+    displayCounter++;
+    directLcd.clear();
+    directLcd.print("GAS-SENSOREN");
+    directLcd.setCursor(0,1);
+    directLcd.print("MQ_2: ");
+    directLcd.print(MQ_2_Value);
+    directLcd.setCursor(0,2);
+    directLcd.print("MQ_135: ");
+    directLcd.print(MQ_135_Value);
+  }
+  else if(displayCounter<changeScreenThreshold*9){//sondtiges
+    displayCounter++;
+    directLcd.clear();
+    directLcd.print("VERSCHIEDENES");
+    directLcd.setCursor(0,1);
+    directLcd.print("DATEI: ");
+    directLcd.print(fileName);
+    directLcd.setCursor(0,2);
+    directLcd.print("AUFZEICHNUNG ");
+    //if(recording){
+    directLcd.print("LAEUFT");
+    //}else{directLcd.print("GESTOPPT");}
+    directLcd.setCursor(0,3);
+    directLcd.print("MODUS: ");
+    //if(physik){
+    directLcd.print("PHYSIK");
+    //}else{directLcd.print("GEOGRAPHIE");
+  }
   else {
     displayCounter = 0;
   }
@@ -469,18 +514,32 @@ String getTimeName() {
   return a;
 }
 
+void sleeep6Hours() {
+  for (int i = 0; i < 2600; i++) { //2700*8s =6h
+
+//idleWakePeriodoc.ino
+    
+    // ATmega2560
+    //LowPower.idle(SLEEP_8S, ADC_OFF, TIMER2_OFF, TIMER1_OFF, TIMER0_OFF, 
+//                SPI_OFF, USART0_OFF, TWI_OFF);/*, TIMER5_OFF, TIMER4_OFF, TIMER3_OFF,
+//                  TIMER2_OFF, TIMER1_OFF, TIMER0_OFF, SPI_OFF, USART3_OFF,
+  //                USART2_OFF, USART1_OFF, USART0_OFF, TWI_OFF);*/
+
+  }
+}
+
 void alwaysInterruptButton_Push() {
   if (directLcdEnabled) {
     analogWrite(DIRECT_LCD_BACKLIGHT_PIN, 0);
     analogWrite(DIRECT_LCD_CONTRAST_PIN, 255);
     //delay(1000);
-    directLcdEnabled=false;
+    directLcdEnabled = false;
   }
   else {
     analogWrite(DIRECT_LCD_CONTRAST_PIN, 128);
     analogWrite(DIRECT_LCD_BACKLIGHT_PIN, 255);
     //delay(1000);
-    directLcdEnabled=true;
+    directLcdEnabled = true;
   }
 }
 
