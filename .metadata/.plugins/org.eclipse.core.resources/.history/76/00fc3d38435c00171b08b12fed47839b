@@ -87,7 +87,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static String TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_STRING = "E";
     public static String TOGGLE_FULLSCREEN_MODE_KEY_STRING="F11";
 
-    public static final int VERSION=3;
+    public static final int VERSION=2;
 
     boolean allowKeyComboChange=false;
     private boolean bottomPanelExpanded=false;

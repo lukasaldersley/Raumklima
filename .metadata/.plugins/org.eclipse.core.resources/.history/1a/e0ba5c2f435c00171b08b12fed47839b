@@ -87,7 +87,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static String TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_STRING = "E";
     public static String TOGGLE_FULLSCREEN_MODE_KEY_STRING="F11";
 
-    public static final int VERSION=3;
+    public static final int VERSION=2;
 
     boolean allowKeyComboChange=false;
     private boolean bottomPanelExpanded=false;
@@ -184,7 +184,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private String[] editKeyComboWindowText;
     private BufferedWriter bw;
     private int currentlyEditedKeycombo;
-	private File configFile;
 
     /**
      * the standard constructor (without the optional values of the second Constructor, which is only needed in order to make the numbering in the Title of the MainWindow work. This Constructor just calls the {@code setup()} Method.
@@ -211,19 +210,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      */
     private void setup(){
         //Check for Software updates and automaitically perform them
-    	configFile=new File("RaumklimaConfig.txt");
-    	if(!configFile.exists()){//Download the default configuration file
-    		try{
-                URL website = new URL("https://raw.githubusercontent.com/lukasaldersley/Raumklima/master/Release/RaumklimaConfig.txt");
-                ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-                FileOutputStream fos = new FileOutputStream("RaumklimaConfig.txt");
-                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-                fos.close();
-            }
-            catch(Exception e){
-                e.printStackTrace();
-            }
-    	}
         if(checkIfUpdateAvailable()){
             updateJar();
         }
@@ -261,10 +247,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             e.printStackTrace();
         }
 
-        //read in the RaumklimaConfig.txt file, which holds the configuration
+        //read in the config.txt file, which holds the configuration
         configRaw=new String[NUMBER_OF_CONFIG_ENTRIES];
         try {
-            br = new BufferedReader(new FileReader(configFile));
+            br = new BufferedReader(new FileReader(new File("config.txt")));
             for(int i=0;i<NUMBER_OF_CONFIG_ENTRIES;i++){
                 configRaw[i]=br.readLine();
             }
@@ -636,7 +622,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private void writeConfigFile(){
     	System.out.println("writingConfig");
         try {
-        File cf=new File("RaumklimaConfig.txt");
+        File cf=new File("config.txt");
         cf.delete();
         cf.createNewFile();
         bw = new BufferedWriter(new FileWriter(cf));
