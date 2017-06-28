@@ -2,6 +2,7 @@ package Raumklima;
 //TODO config wieder schreiben nachdem irgendeiner der werte ge�ndert wurde
 //TODO concat CSV-files
 //TODO arduino Config
+//TODO updater
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
@@ -21,70 +22,70 @@ import org.jfree.data.xy.*;
 import org.jfree.ui.*;
 public class Raumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener
 {
-    public static boolean CLOSE_WINDOW_ALT_REQUIRED=false;
-    public static boolean OPEN_HELP_WINDOW_ALT_REQUIRED=false;
-    public static boolean OPEN_NEW_PLOT_ALT_REQUIRED=false;
-    public static boolean OPEN_NEW_WINDOW_ALT_REQUIRED=false;
-    public static boolean OPEN_SETTINGS_WINDOW_ALT_REQUIRED=false;
-    public static boolean REFRESH_FRAME_ALT_REQUIRED=false;
-    public static boolean SAVE_GRAPH_IMAGE_ALT_REQUIRED=false;
-    public static boolean TOGGLE_BOTTOM_PANEL_VISIBILITY_ALT_REQUIRED=false;
-    public static boolean TOGGLE_FULLSCREEN_MODE_ALT_REQUIRED=false;
+    public static boolean CWALT_REQUIRED=false;
+    public static boolean OHALT_REQUIRED=false;
+    public static boolean ONPALT_REQUIRED=false;
+    public static boolean ONWALT_REQUIRED=false;
+    public static boolean OSALT_REQUIRED=false;
+    public static boolean RFALT_REQUIRED=false;
+    public static boolean SGIALT_REQUIRED=false;
+    public static boolean TBPVALT_REQUIRED=false;
+    public static boolean TOGGLE_FULLSCREEN_MODEALT_REQUIRED=false;
 
-    public static boolean CLOSE_WINDOW_ALT_GRAPH_REQUIRED=false;
-    public static boolean OPEN_HELP_WINDOW_ALT_GRAPH_REQUIRED=false;
-    public static boolean OPEN_NEW_PLOT_ALT_GRAPH_REQUIRED=false;
-    public static boolean OPEN_NEW_WINDOW_ALT_GRAPH_REQUIRED=false;
-    public static boolean OPEN_SETTINGS_WINDOW_ALT_GRAPH_REQUIRED=false;
-    public static boolean REFRESH_FRAME_ALT_GRAPH_REQUIRED=false;
-    public static boolean SAVE_GRAPH_IMAGE_ALT_GRAPH_REQUIRED=false;
-    public static boolean TOGGLE_BOTTOM_PANEL_VISIBILITY_ALT_GRAPH_REQUIRED=false;
-    public static boolean TOGGLE_FULLSCREEN_MODE_ALT_GRAPH_REQUIRED=false;
+    public static boolean CWALT_GRAPH_REQUIRED=false;
+    public static boolean OHALT_GRAPH_REQUIRED=false;
+    public static boolean ONPALT_GRAPH_REQUIRED=false;
+    public static boolean ONWALT_GRAPH_REQUIRED=false;
+    public static boolean OSALT_GRAPH_REQUIRED=false;
+    public static boolean RFALT_GRAPH_REQUIRED=false;
+    public static boolean SGIALT_GRAPH_REQUIRED=false;
+    public static boolean TBPVALT_GRAPH_REQUIRED=false;
+    public static boolean TOGGLE_FULLSCREEN_MODEALT_GRAPH_REQUIRED=false;
 
-    public static boolean CLOSE_WINDOW_CTRL_REQUIRED=true;
-    public static boolean OPEN_HELP_WINDOW_CTRL_REQUIRED=false;
-    public static boolean OPEN_NEW_PLOT_CTRL_REQUIRED=true;
-    public static boolean OPEN_NEW_WINDOW_CTRL_REQUIRED=true;
-    public static boolean OPEN_SETTINGS_WINDOW_CTRL_REQUIRED=true;
-    public static boolean REFRESH_FRAME_CTRL_REQUIRED=false;
-    public static boolean SAVE_GRAPH_IMAGE_CTRL_REQUIRED=true;
-    public static boolean TOGGLE_BOTTOM_PANEL_VISIBILITY_CTRL_REQUIRED=true;
-    public static boolean TOGGLE_FULLSCREEN_MODE_CTRL_REQUIRED=false;
+    public static boolean CWCR=true;
+    public static boolean OHCR=false;
+    public static boolean ONPCR=true;
+    public static boolean ONWCR=true;
+    public static boolean OSCR=true;
+    public static boolean RFCR=false;
+    public static boolean SGICR=true;
+    public static boolean TBPVCR=true;
+    public static boolean TOGGLE_FULLSCREEN_MODECR=false;
 
-    public static boolean CLOSE_WINDOW_SHIFT_REQUIRED=false;
-    public static boolean OPEN_HELP_WINDOW_SHIFT_REQUIRED=false;
-    public static boolean OPEN_NEW_PLOT_SHIFT_REQUIRED=false;
-    public static boolean OPEN_NEW_WINDOW_SHIFT_REQUIRED=false;
-    public static boolean OPEN_SETTINGS_WINDOW_SHIFT_REQUIRED=false;
-    public static boolean REFRESH_FRAME_SHIFT_REQUIRED=false;
-    public static boolean SAVE_GRAPH_IMAGE_SHIFT_REQUIRED=false;
-    public static boolean TOGGLE_BOTTOM_PANEL_VISIBILITY_SHIFT_REQUIRED=false;
-    public static boolean TOGGLE_FULLSCREEN_MODE_SHIFT_REQUIRED=false;
+    public static boolean CWSR=false;
+    public static boolean OHSR=false;
+    public static boolean ONPSR=false;
+    public static boolean ONWSR=false;
+    public static boolean OSSR=false;
+    public static boolean RFSR=false;
+    public static boolean SGISR=false;
+    public static boolean TBPVSR=false;
+    public static boolean TOGGLE_FULLSCREEN_MODESR=false;
 
-    public static int CLOSE_WINDOW_KEY_CODE=87;//W
-    public static int OPEN_HELP_WINDOW_KEY_CODE=112;//F1
-    public static int OPEN_NEW_PLOT_KEY_CODE=79;//O
-    public static int OPEN_NEW_WINDOW_KEY_CODE=78;//N
-    public static int OPEN_SETTINGS_WINDOW_KEY_CODE=73;//I
-    public static int REFRESH_FRAME_KEY_CODE=116;//F5
-    public static int SAVE_GRAPH_IMAGE_KEY_CODE=83;
-    public static int TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_CODE=69;//E
+    public static int CLOSW_WINDOW_KEY_CODE=87;//W
+    public static int OHKEY_CODE=112;//F1
+    public static int ONPKEY_CODE=79;//O
+    public static int ONWKEY_CODE=78;//N
+    public static int OSKEY_CODE=73;//I
+    public static int RFKEY_CODE=116;//F5
+    public static int SGIKEY_CODE=83;
+    public static int TBPV_KEY_CODE=69;//E
     public static int TOGGLE_FULLSCREEN_MODE_KEY_CODE=122;//F11
 
     public static int HEIGHT_OF_DATA_BLOCK=25;
     public static int WIDTH_OF_DATA_BLOCK=370;
     public static int NUMBER_OF_KEY_COMBOS=9;
-    public static int NUMBER_OF_COPYRIGHT_NOTES=24;
+    public static int NUMBER_OF_COPYRIGHT_NOTES;
     public static int NUMBER_OF_CONFIG_ENTRIES=83;
 
-    public static String CLOSE_WINDOW_KEY_STRING="W";
-    public static String OPEN_HELP_WINDOW_KEY_STRING="F1";
-    public static String OPEN_NEW_PLOT_KEY_STRING="O";
-    public static String OPEN_NEW_WINDOW_KEY_STRING="N";
-    public static String OPEN_SETTINGS_WINDOW_KEY_STRING="I";
-    public static String REFRESH_FRAME_KEY_STRING="F5";
-    public static String SAVE_GRAPH_IMAGE_KEY_STRING="S";
-    public static String TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_STRING = "E";
+    public static String CWKEY_STRING="W";
+    public static String OHKEY_STRING="F1";
+    public static String ONPKEY_STRING="O";
+    public static String ONWKEY_STRING="N";
+    public static String OSKEY_STRING="I";
+    public static String RFKEY_STRING="F5";
+    public static String SGIKEY_STRING="S";
+    public static String TBPV_KEY_STRING = "E";
     public static String TOGGLE_FULLSCREEN_MODE_KEY_STRING="F11";
 
     public static final int VERSION=2;
@@ -237,10 +238,11 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         //setup some very basic stuff
         //setup some basic sizes
+        //TODO pr�fen
         fullscreenDimension=new Dimension(graphicsDevice.getDisplayMode().getWidth(),graphicsDevice.getDisplayMode().getHeight()-30);
         windowedTopPanelDimension=new Dimension(graphicsDevice.getDisplayMode().getWidth(),graphicsDevice.getDisplayMode().getHeight()-30);
-        
         //setup the logo
+        //TODO besseres logo
         try {
             logo = ImageIO.read(new File("../Resources/Weather.png"));
         } catch (IOException e) {
@@ -255,70 +257,69 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 configRaw[i]=br.readLine();
             }
             //System.out.println(configRaw[9]);
-            //TODO möglicherweise ändern
-            CLOSE_WINDOW_KEY_CODE=Integer.parseInt(new String(configRaw[9].trim().getBytes("UTF-8"),"UTF-8"));
-            CLOSE_WINDOW_KEY_STRING=configRaw[10];
-            OPEN_HELP_WINDOW_KEY_CODE=Integer.parseInt(configRaw[16].trim());
-            OPEN_HELP_WINDOW_KEY_STRING=configRaw[17];
-            OPEN_NEW_PLOT_KEY_CODE=Integer.parseInt(configRaw[23].trim());
-            OPEN_NEW_PLOT_KEY_STRING=configRaw[24];
-            OPEN_NEW_WINDOW_KEY_CODE=Integer.parseInt(configRaw[30].trim());
-            OPEN_NEW_WINDOW_KEY_STRING=configRaw[31];
-            OPEN_SETTINGS_WINDOW_KEY_CODE=Integer.parseInt(configRaw[37].trim());
-            OPEN_SETTINGS_WINDOW_KEY_STRING=configRaw[38];
-            REFRESH_FRAME_KEY_CODE=Integer.parseInt(configRaw[44].trim());
-            REFRESH_FRAME_KEY_STRING=configRaw[45];
-            SAVE_GRAPH_IMAGE_KEY_CODE=Integer.parseInt(configRaw[51].trim());
-            SAVE_GRAPH_IMAGE_KEY_STRING=configRaw[52];
-            TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_CODE=Integer.parseInt(configRaw[58].trim());
-            TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_STRING=configRaw[59];
-            TOGGLE_FULLSCREEN_MODE_KEY_CODE=Integer.parseInt(configRaw[65].trim());
+            CLOSW_WINDOW_KEY_CODE=Integer.parseInt(configRaw[9]);
+            CWKEY_STRING=configRaw[10];
+            OHKEY_CODE=Integer.parseInt(configRaw[16]);
+            OHKEY_STRING=configRaw[17];
+            ONPKEY_CODE=Integer.parseInt(configRaw[23]);
+            ONPKEY_STRING=configRaw[24];
+            ONWKEY_CODE=Integer.parseInt(configRaw[30]);
+            ONWKEY_STRING=configRaw[31];
+            OSKEY_CODE=Integer.parseInt(configRaw[37]);
+            OSKEY_STRING=configRaw[38];
+            RFKEY_CODE=Integer.parseInt(configRaw[44]);
+            RFKEY_STRING=configRaw[45];
+            SGIKEY_CODE=Integer.parseInt(configRaw[51]);
+            SGIKEY_STRING=configRaw[52];
+            TBPV_KEY_CODE=Integer.parseInt(configRaw[58]);
+            TBPV_KEY_STRING=configRaw[59];
+            TOGGLE_FULLSCREEN_MODE_KEY_CODE=Integer.parseInt(configRaw[65]);
             TOGGLE_FULLSCREEN_MODE_KEY_STRING=configRaw[66];
 
-            CLOSE_WINDOW_ALT_REQUIRED=configRaw[11].equals("YES");
-            CLOSE_WINDOW_ALT_GRAPH_REQUIRED=configRaw[12].equals("YES");
-            CLOSE_WINDOW_CTRL_REQUIRED=configRaw[13].equals("YES");
-            CLOSE_WINDOW_SHIFT_REQUIRED=configRaw[14].equals("YES");
+            CWALT_REQUIRED=configRaw[11].equals("YES");
+            CWALT_GRAPH_REQUIRED=configRaw[12].equals("YES");
+            CWCR=configRaw[13].equals("YES");
+            CWSR=configRaw[14].equals("YES");
 
-            OPEN_HELP_WINDOW_ALT_REQUIRED=configRaw[18].equals("YES");
-            OPEN_HELP_WINDOW_ALT_GRAPH_REQUIRED=configRaw[19].equals("YES");
-            OPEN_HELP_WINDOW_CTRL_REQUIRED=configRaw[20].equals("YES");
-            OPEN_HELP_WINDOW_SHIFT_REQUIRED=configRaw[21].equals("YES");
+            OHALT_REQUIRED=configRaw[18].equals("YES");
+            OHALT_GRAPH_REQUIRED=configRaw[19].equals("YES");
+            OHCR=configRaw[20].equals("YES");
+            OHSR=configRaw[21].equals("YES");
 
-            OPEN_NEW_PLOT_ALT_REQUIRED=configRaw[25].equals("YES");
-            OPEN_NEW_PLOT_ALT_GRAPH_REQUIRED=configRaw[26].equals("YES");
-            OPEN_NEW_PLOT_CTRL_REQUIRED=configRaw[27].equals("YES");
-            OPEN_NEW_PLOT_SHIFT_REQUIRED=configRaw[28].equals("YES");
+            ONPALT_REQUIRED=configRaw[25].equals("YES");
+            ONPALT_GRAPH_REQUIRED=configRaw[26].equals("YES");
+            ONPCR=configRaw[27].equals("YES");
+            ONPSR=configRaw[28].equals("YES");
 
-            OPEN_NEW_WINDOW_ALT_REQUIRED=configRaw[32].equals("YES");
-            OPEN_NEW_WINDOW_ALT_GRAPH_REQUIRED=configRaw[33].equals("YES");
-            OPEN_NEW_WINDOW_CTRL_REQUIRED=configRaw[34].equals("YES");
-            OPEN_NEW_WINDOW_SHIFT_REQUIRED=configRaw[35].equals("YES");
+            ONWALT_REQUIRED=configRaw[32].equals("YES");
+            ONWALT_GRAPH_REQUIRED=configRaw[33].equals("YES");
+            ONWCR=configRaw[34].equals("YES");
+            ONWSR=configRaw[35].equals("YES");
 
-            OPEN_SETTINGS_WINDOW_ALT_REQUIRED=configRaw[39].equals("YES");
-            OPEN_SETTINGS_WINDOW_ALT_GRAPH_REQUIRED=configRaw[40].equals("YES");
-            OPEN_SETTINGS_WINDOW_CTRL_REQUIRED=configRaw[41].equals("YES");
-            OPEN_SETTINGS_WINDOW_SHIFT_REQUIRED=configRaw[42].equals("YES");
+            OSALT_REQUIRED=configRaw[39].equals("YES");
+            OSALT_GRAPH_REQUIRED=configRaw[40].equals("YES");
+            OSCR=configRaw[41].equals("YES");
+            OSSR=configRaw[42].equals("YES");
 
-            REFRESH_FRAME_ALT_REQUIRED=configRaw[46].equals("YES");
-            REFRESH_FRAME_ALT_GRAPH_REQUIRED=configRaw[47].equals("YES");
-            REFRESH_FRAME_CTRL_REQUIRED=configRaw[48].equals("YES");
-            REFRESH_FRAME_SHIFT_REQUIRED=configRaw[49].equals("YES");
+            RFALT_REQUIRED=configRaw[46].equals("YES");
+            RFALT_GRAPH_REQUIRED=configRaw[47].equals("YES");
+            RFCR=configRaw[48].equals("YES");
+            RFSR=configRaw[49].equals("YES");
 
-            SAVE_GRAPH_IMAGE_ALT_REQUIRED=configRaw[53].equals("YES");
-            SAVE_GRAPH_IMAGE_ALT_GRAPH_REQUIRED=configRaw[54].equals("YES");
-            SAVE_GRAPH_IMAGE_CTRL_REQUIRED=configRaw[55].equals("YES");
-            SAVE_GRAPH_IMAGE_SHIFT_REQUIRED=configRaw[56].equals("YES");
+            SGIALT_REQUIRED=configRaw[53].equals("YES");
+            SGIALT_GRAPH_REQUIRED=configRaw[54].equals("YES");
+            SGICR=configRaw[55].equals("YES");
+            SGISR=configRaw[56].equals("YES");
 
-            TOGGLE_BOTTOM_PANEL_VISIBILITY_ALT_REQUIRED=configRaw[60].equals("YES");
-            TOGGLE_BOTTOM_PANEL_VISIBILITY_ALT_GRAPH_REQUIRED=configRaw[61].equals("YES");
-            TOGGLE_BOTTOM_PANEL_VISIBILITY_CTRL_REQUIRED=configRaw[62].equals("YES");
-            TOGGLE_BOTTOM_PANEL_VISIBILITY_SHIFT_REQUIRED=configRaw[63].equals("YES");
+            TBPVALT_REQUIRED=configRaw[60].equals("YES");
+            TBPVALT_GRAPH_REQUIRED=configRaw[61].equals("YES");
+            TBPVCR=configRaw[62].equals("YES");
+            TBPVSR=configRaw[63].equals("YES");
 
-            TOGGLE_FULLSCREEN_MODE_ALT_REQUIRED=configRaw[67].equals("YES");
-            TOGGLE_FULLSCREEN_MODE_ALT_GRAPH_REQUIRED=configRaw[68].equals("YES");
-            TOGGLE_FULLSCREEN_MODE_CTRL_REQUIRED=configRaw[69].equals("YES");
-            TOGGLE_FULLSCREEN_MODE_SHIFT_REQUIRED=configRaw[70].equals("YES");
+            TOGGLE_FULLSCREEN_MODEALT_REQUIRED=configRaw[67].equals("YES");
+            TOGGLE_FULLSCREEN_MODEALT_GRAPH_REQUIRED=configRaw[68].equals("YES");
+            TOGGLE_FULLSCREEN_MODECR=configRaw[69].equals("YES");
+            TOGGLE_FULLSCREEN_MODESR=configRaw[70].equals("YES");
 
             if(configRaw[74].equals("YES")){
                 savePng=true;
@@ -351,7 +352,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         //Initialise and setup FileChooser
         fileChooser=new JFileChooser();
-        fileChooser.setDialogTitle("Bitte CSV-Datei auswählen");
+        fileChooser.setDialogTitle("Bitte CSV-Datei ausw�hlen");
         fileChooser.setMultiSelectionEnabled(false);
         fileChooser.setFileFilter(new FileNameExtensionFilter("Aufgezeichnete Klimadaten (.csv/.CSV)","csv","CSV"));
 
@@ -359,19 +360,19 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         mainWindowMenuBar=new JMenuBar();
 
         fileMenu=new JMenu("Datei");
-        openDifferentPlotMenuItem=new JMenuItem("Datei öffnen (Strg+"+OPEN_NEW_PLOT_KEY_STRING+")");
+        openDifferentPlotMenuItem=new JMenuItem("Datei �ffnen (Strg+"+ONPKEY_STRING+")");
         openDifferentPlotMenuItem.addActionListener(this);
         fileMenu.add(openDifferentPlotMenuItem);
-        openNewWindowMenuItem=new JMenuItem("neues Fenster öffnen (Strg+"+OPEN_NEW_WINDOW_KEY_STRING+")");
+        openNewWindowMenuItem=new JMenuItem("neues Fenster �ffnen (Strg+"+ONWKEY_STRING+")");
         openNewWindowMenuItem.addActionListener(this);
         fileMenu.add(openNewWindowMenuItem);
-        closeWindowMenuItem=new JMenuItem("Fenster schließen (Strg+"+CLOSE_WINDOW_KEY_STRING+")");
+        closeWindowMenuItem=new JMenuItem("Fenster schlie�en (Strg+"+CWKEY_STRING+")");
         closeWindowMenuItem.addActionListener(this);
         fileMenu.add(closeWindowMenuItem);
 
         mainWindowMenuBar.add(fileMenu);
 
-        openSettingsWindowMenu=new JMenu("Einstellungen (Strg+"+OPEN_SETTINGS_WINDOW_KEY_STRING+")");
+        openSettingsWindowMenu=new JMenu("Einstellungen (Strg+"+OSKEY_STRING+")");
         openSettingsWindowMenu.addMouseListener(this);
         mainWindowMenuBar.add(openSettingsWindowMenu);
 
@@ -380,7 +381,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         mainWindowMenuBar.add(toggleFullscreenModeMenu);
         mainWindow.setJMenuBar(mainWindowMenuBar);
 
-        openHelpWindowMenu=new JMenu("Hilfe ("+OPEN_HELP_WINDOW_KEY_STRING+")");
+        openHelpWindowMenu=new JMenu("Hilfe ("+OHKEY_STRING+")");
         openHelpWindowMenu.addMouseListener(this);
         mainWindowMenuBar.add(openHelpWindowMenu);
 
@@ -403,11 +404,11 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         try{
             editKeyComboWindowText=new String[NUMBER_OF_KEY_COMBOS];
             configureKeyComboWindow.setLayout(new GridLayout(0,1));
-            configureKeyComboWindow.setTitle("Tastenkombination ändern");
+            configureKeyComboWindow.setTitle("Tastenkombination �ndern");
             configureKeyComboWindow.setSize(new Dimension(540,470));
             configureKeyComboWindow.setLocationRelativeTo(null);
             br = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("configureKeyComboText.txt")));
-            int anz=12;
+            int anz=Integer.parseInt(br.readLine());
             configureKeyComboText=new JLabel[anz];
             for(int i=0;i<anz;i++){
                 configureKeyComboText[i]=new JLabel(br.readLine());
@@ -440,7 +441,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         helpWindowScrollPane.setPreferredSize(new Dimension(helpWindow.getWidth(), helpWindow.getHeight()-53));
         helpWindow.add(helpWindowScrollPane,BorderLayout.NORTH);
 
-        helpWindowCloseButton=new JButton("Schließen");
+        helpWindowCloseButton=new JButton("Schlie�en");
         helpWindowCloseButton.addActionListener(this);
         helpWindowCloseButton.setPreferredSize(new Dimension(helpWindow.getWidth(),25));
         helpWindow.add(helpWindowCloseButton,BorderLayout.SOUTH);
@@ -477,7 +478,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         settingsWindow.add(settingsWindowLeftPanel,BorderLayout.WEST);
 
-        rightPanelTitle=new JLabel("Tastenkürzel:");
+        rightPanelTitle=new JLabel("Tastenk�rzel:");
         rightPanelTitle.setFont(new Font(Font.SERIF,Font.BOLD, 16));
         settingsWindowRightPanel.add(rightPanelTitle, BorderLayout.NORTH);
         readInTextsForKeyCombos();
@@ -538,6 +539,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             mainWindow.add(dataPanel,BorderLayout.SOUTH);
 
             //make the program able to react by adding the ActionListeners
+            //TODO
             keyComboAusgabe.addKeyListener(this);
             mainWindow.addKeyListener(this);
             mainWindow.addComponentListener(this);
@@ -603,7 +605,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         try{
             URL website = new URL("https://raw.githubusercontent.com/lukasaldersley/Raumklima/master/Release/VERSION");
             br=new  BufferedReader(new InputStreamReader(website.openStream()));
-            if(Integer.parseInt(br.readLine().trim())>VERSION){
+            if(Integer.parseInt(br.readLine())>VERSION){
                 return true;
             }
             else{
@@ -620,21 +622,17 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      * Writes the Configuration (which is saved in a {@link String} Array in Memory) to a File on the local Storage
      */
     private void writeConfigFile(){
-    	System.out.println("writingConfig");
-        try {
-        File cf=new File("config.txt");
+        /*try {
+        File cf=new File("config2.txt");
         cf.delete();
-        cf.createNewFile();
         bw = new BufferedWriter(new FileWriter(cf));
         for(int i=0;i<NUMBER_OF_CONFIG_ENTRIES;i++){
         bw.write(configRaw[i]);
         bw.newLine();
         }
-        bw.flush();
-        bw.close();
         } catch (Exception e) {
         e.printStackTrace();
-        }
+        }*/
     }
 
     private void readInTextsForKeyCombos() {
@@ -654,6 +652,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             //add Copyright notice
             br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("CopyrightNotes.txt")));
             try{
+                NUMBER_OF_COPYRIGHT_NOTES=Integer.parseInt(br.readLine());
                 copyrightNotes=new JLabel[NUMBER_OF_COPYRIGHT_NOTES];
                 for(int i=0;i<NUMBER_OF_COPYRIGHT_NOTES;i++){
                     line=br.readLine();
@@ -666,122 +665,122 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 JLabel error=new JLabel("Ein Fehler ist aufgetreten und diese Seite konnte nicht geladen werden. Bitte laden Sie das Programm neu.");
                 helpPanel.add(error);
             }
-            if(CLOSE_WINDOW_ALT_REQUIRED){
+            if(CWALT_REQUIRED){
                 helpWindowText[0].setText(helpWindowText[0].getText()+"Alt+");
             }
-            if(CLOSE_WINDOW_ALT_GRAPH_REQUIRED){
+            if(CWALT_GRAPH_REQUIRED){
                 helpWindowText[0].setText(helpWindowText[0].getText()+"AltGr+");
             }
-            if(CLOSE_WINDOW_CTRL_REQUIRED){
+            if(CWCR){
                 helpWindowText[0].setText(helpWindowText[0].getText()+"Strg+");
             }
-            if(CLOSE_WINDOW_SHIFT_REQUIRED){
+            if(CWSR){
                 helpWindowText[0].setText(helpWindowText[0].getText()+"Shift+");
             }
-            if(OPEN_HELP_WINDOW_ALT_REQUIRED){
+            if(OHALT_REQUIRED){
                 helpWindowText[1].setText(helpWindowText[1].getText()+"Alt+");
             }
-            if(OPEN_HELP_WINDOW_ALT_GRAPH_REQUIRED){
+            if(OHALT_GRAPH_REQUIRED){
                 helpWindowText[1].setText(helpWindowText[1].getText()+"AltGr+");
             }
-            if(OPEN_HELP_WINDOW_CTRL_REQUIRED){
+            if(OHCR){
                 helpWindowText[1].setText(helpWindowText[1].getText()+"Strg+");
             }
-            if(OPEN_HELP_WINDOW_SHIFT_REQUIRED){
+            if(OHSR){
                 helpWindowText[1].setText(helpWindowText[1].getText()+"Shift+");
             }
-            if(OPEN_NEW_PLOT_ALT_REQUIRED){
+            if(ONPALT_REQUIRED){
                 helpWindowText[2].setText(helpWindowText[2].getText()+"Alt+");
             }
-            if(OPEN_NEW_PLOT_ALT_GRAPH_REQUIRED){
+            if(ONPALT_GRAPH_REQUIRED){
                 helpWindowText[2].setText(helpWindowText[2].getText()+"AltGr+");
             }
-            if(OPEN_NEW_PLOT_CTRL_REQUIRED){
+            if(ONPCR){
                 helpWindowText[2].setText(helpWindowText[2].getText()+"Strg+");
             }
-            if(OPEN_NEW_PLOT_SHIFT_REQUIRED){
+            if(ONPSR){
                 helpWindowText[2].setText(helpWindowText[2].getText()+"Shift+");
             }
-            if(OPEN_NEW_WINDOW_ALT_REQUIRED){
+            if(ONWALT_REQUIRED){
                 helpWindowText[3].setText(helpWindowText[3].getText()+"Alt+");
             }
-            if(OPEN_NEW_WINDOW_ALT_GRAPH_REQUIRED){
+            if(ONWALT_GRAPH_REQUIRED){
                 helpWindowText[3].setText(helpWindowText[3].getText()+"AltGr+");
             }
-            if(OPEN_NEW_WINDOW_CTRL_REQUIRED){
+            if(ONWCR){
                 helpWindowText[3].setText(helpWindowText[3].getText()+"Strg+");
             }
-            if(OPEN_NEW_WINDOW_SHIFT_REQUIRED){
+            if(ONWSR){
                 helpWindowText[3].setText(helpWindowText[3].getText()+"Shift+");
             }
-            if(OPEN_SETTINGS_WINDOW_ALT_REQUIRED){
+            if(OSALT_REQUIRED){
                 helpWindowText[4].setText(helpWindowText[4].getText()+"Alt+");
             }
-            if(OPEN_SETTINGS_WINDOW_ALT_GRAPH_REQUIRED){
+            if(OSALT_GRAPH_REQUIRED){
                 helpWindowText[4].setText(helpWindowText[4].getText()+"AltGr+");
             }
-            if(OPEN_SETTINGS_WINDOW_CTRL_REQUIRED){
+            if(OSCR){
                 helpWindowText[4].setText(helpWindowText[4].getText()+"Strg+");
             }
-            if(OPEN_SETTINGS_WINDOW_SHIFT_REQUIRED){
+            if(OSSR){
                 helpWindowText[4].setText(helpWindowText[4].getText()+"Shift+");
             }
-            if(REFRESH_FRAME_ALT_REQUIRED){
+            if(RFALT_REQUIRED){
                 helpWindowText[5].setText(helpWindowText[5].getText()+"Alt+");
             }
-            if(REFRESH_FRAME_ALT_GRAPH_REQUIRED){
+            if(RFALT_GRAPH_REQUIRED){
                 helpWindowText[5].setText(helpWindowText[5].getText()+"AltGr+");
             }
-            if(REFRESH_FRAME_CTRL_REQUIRED){
+            if(RFCR){
                 helpWindowText[5].setText(helpWindowText[5].getText()+"Strg+");
             }
-            if(REFRESH_FRAME_SHIFT_REQUIRED){
+            if(RFSR){
                 helpWindowText[5].setText(helpWindowText[5].getText()+"Shift+");
             }
-            if(SAVE_GRAPH_IMAGE_ALT_REQUIRED){
+            if(SGIALT_REQUIRED){
                 helpWindowText[6].setText(helpWindowText[6].getText()+"Alt+");
             }
-            if(SAVE_GRAPH_IMAGE_ALT_GRAPH_REQUIRED){
+            if(SGIALT_GRAPH_REQUIRED){
                 helpWindowText[6].setText(helpWindowText[6].getText()+"AltGr+");
             }
-            if(SAVE_GRAPH_IMAGE_CTRL_REQUIRED){
+            if(SGICR){
                 helpWindowText[6].setText(helpWindowText[6].getText()+"Strg+");
             }
-            if(SAVE_GRAPH_IMAGE_SHIFT_REQUIRED){
+            if(SGISR){
                 helpWindowText[6].setText(helpWindowText[6].getText()+"Shift+");
             }
-            if(TOGGLE_BOTTOM_PANEL_VISIBILITY_ALT_REQUIRED){
+            if(TBPVALT_REQUIRED){
                 helpWindowText[7].setText(helpWindowText[7].getText()+"Alt+");
             }
-            if(TOGGLE_BOTTOM_PANEL_VISIBILITY_ALT_GRAPH_REQUIRED){
+            if(TBPVALT_GRAPH_REQUIRED){
                 helpWindowText[7].setText(helpWindowText[7].getText()+"AltGr+");
             }
-            if(TOGGLE_BOTTOM_PANEL_VISIBILITY_CTRL_REQUIRED){
+            if(TBPVCR){
                 helpWindowText[7].setText(helpWindowText[7].getText()+"Strg+");
             }
-            if(TOGGLE_BOTTOM_PANEL_VISIBILITY_SHIFT_REQUIRED){
+            if(TBPVSR){
                 helpWindowText[7].setText(helpWindowText[7].getText()+"Shift+");
             }
-            if(TOGGLE_FULLSCREEN_MODE_ALT_REQUIRED){
+            if(TOGGLE_FULLSCREEN_MODEALT_REQUIRED){
                 helpWindowText[8].setText(helpWindowText[8].getText()+"Alt+");
             }
-            if(TOGGLE_FULLSCREEN_MODE_ALT_GRAPH_REQUIRED){
+            if(TOGGLE_FULLSCREEN_MODEALT_GRAPH_REQUIRED){
                 helpWindowText[8].setText(helpWindowText[8].getText()+"AltGr+");
             }
-            if(TOGGLE_FULLSCREEN_MODE_CTRL_REQUIRED){
+            if(TOGGLE_FULLSCREEN_MODECR){
                 helpWindowText[8].setText(helpWindowText[8].getText()+"Strg+");
             }
-            if(TOGGLE_FULLSCREEN_MODE_SHIFT_REQUIRED){
+            if(TOGGLE_FULLSCREEN_MODESR){
                 helpWindowText[8].setText(helpWindowText[8].getText()+"Shift+");
             }
-            helpWindowText[1].setText(helpWindowText[1].getText()+OPEN_HELP_WINDOW_KEY_STRING);
-            helpWindowText[0].setText(helpWindowText[0].getText()+CLOSE_WINDOW_KEY_STRING);
-            helpWindowText[2].setText(helpWindowText[2].getText()+OPEN_NEW_PLOT_KEY_STRING);
-            helpWindowText[3].setText(helpWindowText[3].getText()+OPEN_NEW_WINDOW_KEY_STRING);
-            helpWindowText[4].setText(helpWindowText[4].getText()+OPEN_SETTINGS_WINDOW_KEY_STRING);
-            helpWindowText[5].setText(helpWindowText[5].getText()+REFRESH_FRAME_KEY_STRING);
-            helpWindowText[6].setText(helpWindowText[6].getText()+SAVE_GRAPH_IMAGE_KEY_STRING);
-            helpWindowText[7].setText(helpWindowText[7].getText()+TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_STRING);
+            helpWindowText[1].setText(helpWindowText[1].getText()+OHKEY_STRING);
+            helpWindowText[0].setText(helpWindowText[0].getText()+CWKEY_STRING);
+            helpWindowText[2].setText(helpWindowText[2].getText()+ONPKEY_STRING);
+            helpWindowText[3].setText(helpWindowText[3].getText()+ONWKEY_STRING);
+            helpWindowText[4].setText(helpWindowText[4].getText()+OSKEY_STRING);
+            helpWindowText[5].setText(helpWindowText[5].getText()+RFKEY_STRING);
+            helpWindowText[6].setText(helpWindowText[6].getText()+SGIKEY_STRING);
+            helpWindowText[7].setText(helpWindowText[7].getText()+TBPV_KEY_STRING);
             helpWindowText[8].setText(helpWindowText[8].getText()+TOGGLE_FULLSCREEN_MODE_KEY_STRING);
             for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
                 for(int j=helpWindowText[i].getText().length();j<60;j++){
@@ -1000,6 +999,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void toggleSettingsWindow(){
+        //mainWindow.setFocusable(settingsWindow.isVisible());
         settingsWindow.setVisible(!settingsWindow.isVisible());
     }
 
@@ -1021,8 +1021,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     @Override
     public void actionPerformed(ActionEvent event) {
         if(event.getSource()==changeKeyComboButton){
-        	//TODO maybe
-        	//mainWindow.removeKeyListener(this);
             allowKeyComboChange=true;
             keyComboAusgabe.setText("Bereit");
             keyComboAusgabe.requestFocus();
@@ -1031,112 +1029,70 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
         if(event.getSource()==saveKeyComboButton){
             configureKeyComboWindow.setVisible(false);
-            
-            if(changeAltDown){
-        		configRaw[currentlyEditedKeycombo*7+11]="YES";
-        	}
-        	else{
-        		configRaw[currentlyEditedKeycombo*7+11]="NO";
-        	}
-            
-            if(changeAltGrDown){
-        		configRaw[currentlyEditedKeycombo*7+12]="YES";
-        	}
-        	else{
-        		configRaw[currentlyEditedKeycombo*7+12]="NO";
-        	}
-            
-            if(changeCtrlDown){
-        		configRaw[currentlyEditedKeycombo*7+13]="YES";
-        	}
-        	else{
-        		configRaw[currentlyEditedKeycombo*7+13]="NO";
-        	}
-            
-            if(changeShiftDown){
-        		configRaw[currentlyEditedKeycombo*7+14]="YES";
-        	}
-        	else{
-        		configRaw[currentlyEditedKeycombo*7+14]="NO";
-        	}
-        	configRaw[currentlyEditedKeycombo*7+9]=String.valueOf(changeKeyCode);
-        	configRaw[currentlyEditedKeycombo*7+10]=changeKeyChar;
-        	
-            
             if(currentlyEditedKeycombo==0){
-            	CLOSE_WINDOW_ALT_REQUIRED=changeAltDown;
-            	CLOSE_WINDOW_ALT_GRAPH_REQUIRED=changeAltGrDown;
-            	CLOSE_WINDOW_CTRL_REQUIRED=changeCtrlDown;
-            	CLOSE_WINDOW_SHIFT_REQUIRED=changeShiftDown;
-            	CLOSE_WINDOW_KEY_STRING=changeKeyChar;
-            	CLOSE_WINDOW_KEY_CODE=changeKeyCode;
+            	CWALT_REQUIRED=changeAltDown;
+            	CWALT_GRAPH_REQUIRED=changeAltGrDown;
+            	CWCR=changeCtrlDown;
+            	CWSR=changeShiftDown;
+            	CWKEY_STRING=changeKeyChar;
             }
             else if(currentlyEditedKeycombo==1){
-            	OPEN_HELP_WINDOW_ALT_REQUIRED=changeAltDown;
-            	OPEN_HELP_WINDOW_ALT_GRAPH_REQUIRED=changeAltGrDown;
-            	OPEN_HELP_WINDOW_CTRL_REQUIRED=changeCtrlDown;
-            	OPEN_HELP_WINDOW_SHIFT_REQUIRED=changeShiftDown;
-            	OPEN_HELP_WINDOW_KEY_STRING=changeKeyChar;
-            	OPEN_HELP_WINDOW_KEY_CODE=changeKeyCode;
+            	OHALT_REQUIRED=changeAltDown;
+            	OHALT_GRAPH_REQUIRED=changeAltGrDown;
+            	OHCR=changeCtrlDown;
+            	OHSR=changeShiftDown;
+            	OHKEY_STRING=changeKeyChar;
             }
             else if(currentlyEditedKeycombo==2){
-            	OPEN_NEW_PLOT_ALT_REQUIRED=changeAltDown;
-            	OPEN_NEW_PLOT_ALT_GRAPH_REQUIRED=changeAltGrDown;
-            	OPEN_NEW_PLOT_CTRL_REQUIRED=changeCtrlDown;
-            	OPEN_NEW_PLOT_SHIFT_REQUIRED=changeShiftDown;
-            	OPEN_NEW_PLOT_KEY_STRING=changeKeyChar;
-            	OPEN_NEW_PLOT_KEY_CODE=changeKeyCode;
+            	ONPALT_REQUIRED=changeAltDown;
+            	ONPALT_GRAPH_REQUIRED=changeAltGrDown;
+            	ONPCR=changeCtrlDown;
+            	ONPSR=changeShiftDown;
+            	ONPKEY_STRING=changeKeyChar;
             }
             else if(currentlyEditedKeycombo==3){
-            	OPEN_NEW_WINDOW_ALT_REQUIRED=changeAltDown;
-            	OPEN_NEW_WINDOW_ALT_GRAPH_REQUIRED=changeAltGrDown;
-            	OPEN_NEW_WINDOW_CTRL_REQUIRED=changeCtrlDown;
-            	OPEN_NEW_WINDOW_SHIFT_REQUIRED=changeShiftDown;
-            	OPEN_NEW_WINDOW_KEY_STRING=changeKeyChar;
-            	OPEN_NEW_WINDOW_KEY_CODE=changeKeyCode;
+            	ONWALT_REQUIRED=changeAltDown;
+            	ONWALT_GRAPH_REQUIRED=changeAltGrDown;
+            	ONWCR=changeCtrlDown;
+            	ONWSR=changeShiftDown;
+            	ONWKEY_STRING=changeKeyChar;
             }
             else if(currentlyEditedKeycombo==4){
-            	OPEN_SETTINGS_WINDOW_ALT_REQUIRED=changeAltDown;
-            	OPEN_SETTINGS_WINDOW_ALT_GRAPH_REQUIRED=changeAltGrDown;
-            	OPEN_SETTINGS_WINDOW_CTRL_REQUIRED=changeCtrlDown;
-            	OPEN_SETTINGS_WINDOW_SHIFT_REQUIRED=changeShiftDown;
-            	OPEN_SETTINGS_WINDOW_KEY_STRING=changeKeyChar;
-            	OPEN_SETTINGS_WINDOW_KEY_CODE=changeKeyCode;
+            	OSALT_REQUIRED=changeAltDown;
+            	OSALT_GRAPH_REQUIRED=changeAltGrDown;
+            	OSCR=changeCtrlDown;
+            	OSSR=changeShiftDown;
+            	OSKEY_STRING=changeKeyChar;
             }
             else if(currentlyEditedKeycombo==5){
-            	REFRESH_FRAME_ALT_REQUIRED=changeAltDown;
-            	REFRESH_FRAME_ALT_GRAPH_REQUIRED=changeAltGrDown;
-            	REFRESH_FRAME_CTRL_REQUIRED=changeCtrlDown;
-            	REFRESH_FRAME_SHIFT_REQUIRED=changeShiftDown;
-            	REFRESH_FRAME_KEY_STRING=changeKeyChar;
-            	REFRESH_FRAME_KEY_CODE=changeKeyCode;
+            	RFALT_REQUIRED=changeAltDown;
+            	RFALT_GRAPH_REQUIRED=changeAltGrDown;
+            	RFCR=changeCtrlDown;
+            	RFSR=changeShiftDown;
+            	RFKEY_STRING=changeKeyChar;
             }
             else if(currentlyEditedKeycombo==6){
-            	SAVE_GRAPH_IMAGE_ALT_REQUIRED=changeAltDown;
-            	SAVE_GRAPH_IMAGE_ALT_GRAPH_REQUIRED=changeAltGrDown;
-            	SAVE_GRAPH_IMAGE_CTRL_REQUIRED=changeCtrlDown;
-            	SAVE_GRAPH_IMAGE_SHIFT_REQUIRED=changeShiftDown;
-            	SAVE_GRAPH_IMAGE_KEY_STRING=changeKeyChar;
-            	SAVE_GRAPH_IMAGE_KEY_CODE=changeKeyCode;
+            	SGIALT_REQUIRED=changeAltDown;
+            	SGIALT_GRAPH_REQUIRED=changeAltGrDown;
+            	SGICR=changeCtrlDown;
+            	SGISR=changeShiftDown;
+            	SGIKEY_STRING=changeKeyChar;
             }
             else if(currentlyEditedKeycombo==7){
-            	TOGGLE_BOTTOM_PANEL_VISIBILITY_ALT_REQUIRED=changeAltDown;
-            	TOGGLE_BOTTOM_PANEL_VISIBILITY_ALT_GRAPH_REQUIRED=changeAltGrDown;
-            	TOGGLE_BOTTOM_PANEL_VISIBILITY_CTRL_REQUIRED=changeCtrlDown;
-            	TOGGLE_BOTTOM_PANEL_VISIBILITY_SHIFT_REQUIRED=changeShiftDown;
-            	TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_STRING=changeKeyChar;
-            	TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_CODE=changeKeyCode;
+            	TBPVALT_REQUIRED=changeAltDown;
+            	TBPVALT_GRAPH_REQUIRED=changeAltGrDown;
+            	TBPVCR=changeCtrlDown;
+            	TBPVSR=changeShiftDown;
+            	TBPV_KEY_STRING=changeKeyChar;
             }
             else if(currentlyEditedKeycombo==8){
-            	TOGGLE_FULLSCREEN_MODE_ALT_REQUIRED=changeAltDown;
-            	TOGGLE_FULLSCREEN_MODE_ALT_GRAPH_REQUIRED=changeAltGrDown;
-            	TOGGLE_FULLSCREEN_MODE_CTRL_REQUIRED=changeCtrlDown;
-            	TOGGLE_FULLSCREEN_MODE_SHIFT_REQUIRED=changeShiftDown;
+            	TOGGLE_FULLSCREEN_MODEALT_REQUIRED=changeAltDown;
+            	TOGGLE_FULLSCREEN_MODEALT_GRAPH_REQUIRED=changeAltGrDown;
+            	TOGGLE_FULLSCREEN_MODECR=changeCtrlDown;
+            	TOGGLE_FULLSCREEN_MODESR=changeShiftDown;
             	TOGGLE_FULLSCREEN_MODE_KEY_STRING=changeKeyChar;
-            	TOGGLE_FULLSCREEN_MODE_KEY_CODE=changeKeyCode;
             }
             writeConfigFile();
-            readInTextsForKeyCombos();
         }
         if(event.getSource()==openDifferentPlotMenuItem){
             openNewPlot();
@@ -1180,6 +1136,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void openEditCeyComboWindow(int in) {
+        //TODO maybe
+        //mainWindow.removeKeyListener(this);
         configureKeyComboText[5].setText(configureKeyComboText[5].getText()+editKeyComboWindowText[in]);
         configureKeyComboWindow.setVisible(true);
         currentlyEditedKeycombo=in;
@@ -1281,7 +1239,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             //keyComboAusgabe.setText(keyComboAusgabe.getText()+String.valueOf(event.getKeyChar()));
             keyComboAusgabe.setText(keyComboAusgabe.getText()+getKeyStringFromKeyCode(event.getExtendedKeyCode()));
             changeKeyChar=getKeyStringFromKeyCode(event.getExtendedKeyCode());
-            changeKeyCode=event.getExtendedKeyCode();
             System.out.print(event.getKeyChar());
             System.out.println(":"+event.getExtendedKeyCode()+":"+getKeyStringFromKeyCode(event.getExtendedKeyCode()));
             changeKeyCode=event.getExtendedKeyCode();
@@ -1393,36 +1350,36 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     @Override
     public void keyPressed(KeyEvent event) {
-        if(event.getExtendedKeyCode()==TOGGLE_FULLSCREEN_MODE_KEY_CODE&&event.isAltDown()==TOGGLE_FULLSCREEN_MODE_ALT_REQUIRED&&event.isAltGraphDown()==TOGGLE_FULLSCREEN_MODE_ALT_GRAPH_REQUIRED&&event.isControlDown()==TOGGLE_FULLSCREEN_MODE_CTRL_REQUIRED&&event.isShiftDown()==TOGGLE_FULLSCREEN_MODE_SHIFT_REQUIRED){
+        if(event.getExtendedKeyCode()==TOGGLE_FULLSCREEN_MODE_KEY_CODE&&event.isAltDown()==TOGGLE_FULLSCREEN_MODEALT_REQUIRED&&event.isAltGraphDown()==TOGGLE_FULLSCREEN_MODEALT_GRAPH_REQUIRED&&event.isControlDown()==TOGGLE_FULLSCREEN_MODECR&&event.isShiftDown()==TOGGLE_FULLSCREEN_MODESR){
             toggleFullscreen();
         }
-        if(event.getExtendedKeyCode()==REFRESH_FRAME_KEY_CODE&&event.isAltDown()==REFRESH_FRAME_ALT_REQUIRED&&event.isAltGraphDown()==REFRESH_FRAME_ALT_GRAPH_REQUIRED&&event.isControlDown()==REFRESH_FRAME_CTRL_REQUIRED&&event.isShiftDown()==REFRESH_FRAME_SHIFT_REQUIRED){
+        if(event.getExtendedKeyCode()==RFKEY_CODE&&event.isAltDown()==RFALT_REQUIRED&&event.isAltGraphDown()==RFALT_GRAPH_REQUIRED&&event.isControlDown()==RFCR&&event.isShiftDown()==RFSR){
             refreshPage();
         }
-        if(event.getExtendedKeyCode()==OPEN_HELP_WINDOW_KEY_CODE&&event.isAltDown()==OPEN_HELP_WINDOW_ALT_REQUIRED&&event.isAltGraphDown()==OPEN_HELP_WINDOW_ALT_GRAPH_REQUIRED&&event.isControlDown()==OPEN_HELP_WINDOW_CTRL_REQUIRED&&event.isShiftDown()==OPEN_HELP_WINDOW_SHIFT_REQUIRED){
+        if(event.getExtendedKeyCode()==OHKEY_CODE&&event.isAltDown()==OHALT_REQUIRED&&event.isAltGraphDown()==OHALT_GRAPH_REQUIRED&&event.isControlDown()==OHCR&&event.isShiftDown()==OHSR){
             deactivateFullscreen();
             toggleHelpWindow();
         }
-        if(event.getExtendedKeyCode()==OPEN_NEW_PLOT_KEY_CODE&&event.isAltDown()==OPEN_NEW_PLOT_ALT_REQUIRED&&event.isAltGraphDown()==OPEN_NEW_PLOT_ALT_GRAPH_REQUIRED&&event.isControlDown()==OPEN_NEW_PLOT_CTRL_REQUIRED&&event.isShiftDown()==OPEN_NEW_PLOT_SHIFT_REQUIRED){
+        if(event.getExtendedKeyCode()==ONPKEY_CODE&&event.isAltDown()==ONPALT_REQUIRED&&event.isAltGraphDown()==ONPALT_GRAPH_REQUIRED&&event.isControlDown()==ONPCR&&event.isShiftDown()==ONPSR){
             deactivateFullscreen();
             openNewPlot();
         }
-        if(event.getExtendedKeyCode()==OPEN_NEW_WINDOW_KEY_CODE&&event.isAltDown()==OPEN_NEW_WINDOW_ALT_REQUIRED&&event.isAltGraphDown()==OPEN_NEW_WINDOW_ALT_GRAPH_REQUIRED&&event.isControlDown()==OPEN_NEW_WINDOW_CTRL_REQUIRED&&event.isShiftDown()==OPEN_NEW_WINDOW_SHIFT_REQUIRED){
+        if(event.getExtendedKeyCode()==ONWKEY_CODE&&event.isAltDown()==ONWALT_REQUIRED&&event.isAltGraphDown()==ONWALT_GRAPH_REQUIRED&&event.isControlDown()==ONWCR&&event.isShiftDown()==ONWSR){
             deactivateFullscreen();
             openNewWindow();
         }
-        if(event.getExtendedKeyCode()==CLOSE_WINDOW_KEY_CODE&&event.isAltDown()==CLOSE_WINDOW_ALT_REQUIRED&&event.isAltGraphDown()==CLOSE_WINDOW_ALT_GRAPH_REQUIRED&&event.isControlDown()==CLOSE_WINDOW_CTRL_REQUIRED&&event.isShiftDown()==CLOSE_WINDOW_SHIFT_REQUIRED){
+        if(event.getExtendedKeyCode()==CLOSW_WINDOW_KEY_CODE&&event.isAltDown()==CWALT_REQUIRED&&event.isAltGraphDown()==CWALT_GRAPH_REQUIRED&&event.isControlDown()==CWCR&&event.isShiftDown()==CWSR){
             deactivateFullscreen();
             closeWindow();
         }
-        if(event.getExtendedKeyCode()==TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_CODE&&event.isAltDown()==TOGGLE_BOTTOM_PANEL_VISIBILITY_ALT_REQUIRED&&event.isAltGraphDown()==TOGGLE_BOTTOM_PANEL_VISIBILITY_ALT_GRAPH_REQUIRED&&event.isControlDown()==TOGGLE_BOTTOM_PANEL_VISIBILITY_CTRL_REQUIRED&&event.isShiftDown()==TOGGLE_BOTTOM_PANEL_VISIBILITY_SHIFT_REQUIRED){
+        if(event.getExtendedKeyCode()==TBPV_KEY_CODE&&event.isAltDown()==TBPVALT_REQUIRED&&event.isAltGraphDown()==TBPVALT_GRAPH_REQUIRED&&event.isControlDown()==TBPVCR&&event.isShiftDown()==TBPVSR){
             toggleBottomPanel();
         }
-        if(event.getExtendedKeyCode()==OPEN_SETTINGS_WINDOW_KEY_CODE&&event.isAltDown()==OPEN_SETTINGS_WINDOW_ALT_REQUIRED&&event.isAltGraphDown()==OPEN_SETTINGS_WINDOW_ALT_GRAPH_REQUIRED&&event.isControlDown()==OPEN_SETTINGS_WINDOW_CTRL_REQUIRED&&event.isShiftDown()==OPEN_SETTINGS_WINDOW_SHIFT_REQUIRED){
+        if(event.getExtendedKeyCode()==OSKEY_CODE&&event.isAltDown()==OSALT_REQUIRED&&event.isAltGraphDown()==OSALT_GRAPH_REQUIRED&&event.isControlDown()==OSCR&&event.isShiftDown()==OSSR){
             deactivateFullscreen();
             toggleSettingsWindow();
         }
-        if(event.getExtendedKeyCode()==SAVE_GRAPH_IMAGE_KEY_CODE&&event.isAltDown()==SAVE_GRAPH_IMAGE_ALT_REQUIRED&&event.isAltGraphDown()==SAVE_GRAPH_IMAGE_ALT_GRAPH_REQUIRED&&event.isControlDown()==SAVE_GRAPH_IMAGE_CTRL_REQUIRED&&event.isShiftDown()==SAVE_GRAPH_IMAGE_SHIFT_REQUIRED){
+        if(event.getExtendedKeyCode()==SGIKEY_CODE&&event.isAltDown()==SGIALT_REQUIRED&&event.isAltGraphDown()==SGIALT_GRAPH_REQUIRED&&event.isControlDown()==SGICR&&event.isShiftDown()==SGISR){
             if(saveJpeg){
                 try {
                     ChartUtilities.saveChartAsJPEG(new File(csvFile.getName()+".jpeg"), jFreeChart, fullscreenDimension.width, fullscreenDimension.height);

@@ -359,13 +359,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         mainWindowMenuBar=new JMenuBar();
 
         fileMenu=new JMenu("Datei");
-        openDifferentPlotMenuItem=new JMenuItem("Datei öffnen (Strg+"+OPEN_NEW_PLOT_KEY_STRING+")");
+        openDifferentPlotMenuItem=new JMenuItem("Datei �ffnen (Strg+"+OPEN_NEW_PLOT_KEY_STRING+")");
         openDifferentPlotMenuItem.addActionListener(this);
         fileMenu.add(openDifferentPlotMenuItem);
-        openNewWindowMenuItem=new JMenuItem("neues Fenster öffnen (Strg+"+OPEN_NEW_WINDOW_KEY_STRING+")");
+        openNewWindowMenuItem=new JMenuItem("neues Fenster �ffnen (Strg+"+OPEN_NEW_WINDOW_KEY_STRING+")");
         openNewWindowMenuItem.addActionListener(this);
         fileMenu.add(openNewWindowMenuItem);
-        closeWindowMenuItem=new JMenuItem("Fenster schließen (Strg+"+CLOSE_WINDOW_KEY_STRING+")");
+        closeWindowMenuItem=new JMenuItem("Fenster schlie�en (Strg+"+CLOSE_WINDOW_KEY_STRING+")");
         closeWindowMenuItem.addActionListener(this);
         fileMenu.add(closeWindowMenuItem);
 
@@ -620,7 +620,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      * Writes the Configuration (which is saved in a {@link String} Array in Memory) to a File on the local Storage
      */
     private void writeConfigFile(){
-    	System.out.println("writingConfig");
         try {
         File cf=new File("config.txt");
         cf.delete();
@@ -1031,45 +1030,12 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
         if(event.getSource()==saveKeyComboButton){
             configureKeyComboWindow.setVisible(false);
-            
-            if(changeAltDown){
-        		configRaw[currentlyEditedKeycombo*7+11]="YES";
-        	}
-        	else{
-        		configRaw[currentlyEditedKeycombo*7+11]="NO";
-        	}
-            
-            if(changeAltGrDown){
-        		configRaw[currentlyEditedKeycombo*7+12]="YES";
-        	}
-        	else{
-        		configRaw[currentlyEditedKeycombo*7+12]="NO";
-        	}
-            
-            if(changeCtrlDown){
-        		configRaw[currentlyEditedKeycombo*7+13]="YES";
-        	}
-        	else{
-        		configRaw[currentlyEditedKeycombo*7+13]="NO";
-        	}
-            
-            if(changeShiftDown){
-        		configRaw[currentlyEditedKeycombo*7+14]="YES";
-        	}
-        	else{
-        		configRaw[currentlyEditedKeycombo*7+14]="NO";
-        	}
-        	configRaw[currentlyEditedKeycombo*7+9]=String.valueOf(changeKeyCode);
-        	configRaw[currentlyEditedKeycombo*7+10]=changeKeyChar;
-        	
-            
             if(currentlyEditedKeycombo==0){
             	CLOSE_WINDOW_ALT_REQUIRED=changeAltDown;
             	CLOSE_WINDOW_ALT_GRAPH_REQUIRED=changeAltGrDown;
             	CLOSE_WINDOW_CTRL_REQUIRED=changeCtrlDown;
             	CLOSE_WINDOW_SHIFT_REQUIRED=changeShiftDown;
             	CLOSE_WINDOW_KEY_STRING=changeKeyChar;
-            	CLOSE_WINDOW_KEY_CODE=changeKeyCode;
             }
             else if(currentlyEditedKeycombo==1){
             	OPEN_HELP_WINDOW_ALT_REQUIRED=changeAltDown;
@@ -1077,7 +1043,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             	OPEN_HELP_WINDOW_CTRL_REQUIRED=changeCtrlDown;
             	OPEN_HELP_WINDOW_SHIFT_REQUIRED=changeShiftDown;
             	OPEN_HELP_WINDOW_KEY_STRING=changeKeyChar;
-            	OPEN_HELP_WINDOW_KEY_CODE=changeKeyCode;
             }
             else if(currentlyEditedKeycombo==2){
             	OPEN_NEW_PLOT_ALT_REQUIRED=changeAltDown;
@@ -1085,7 +1050,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             	OPEN_NEW_PLOT_CTRL_REQUIRED=changeCtrlDown;
             	OPEN_NEW_PLOT_SHIFT_REQUIRED=changeShiftDown;
             	OPEN_NEW_PLOT_KEY_STRING=changeKeyChar;
-            	OPEN_NEW_PLOT_KEY_CODE=changeKeyCode;
             }
             else if(currentlyEditedKeycombo==3){
             	OPEN_NEW_WINDOW_ALT_REQUIRED=changeAltDown;
@@ -1093,7 +1057,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             	OPEN_NEW_WINDOW_CTRL_REQUIRED=changeCtrlDown;
             	OPEN_NEW_WINDOW_SHIFT_REQUIRED=changeShiftDown;
             	OPEN_NEW_WINDOW_KEY_STRING=changeKeyChar;
-            	OPEN_NEW_WINDOW_KEY_CODE=changeKeyCode;
             }
             else if(currentlyEditedKeycombo==4){
             	OPEN_SETTINGS_WINDOW_ALT_REQUIRED=changeAltDown;
@@ -1101,7 +1064,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             	OPEN_SETTINGS_WINDOW_CTRL_REQUIRED=changeCtrlDown;
             	OPEN_SETTINGS_WINDOW_SHIFT_REQUIRED=changeShiftDown;
             	OPEN_SETTINGS_WINDOW_KEY_STRING=changeKeyChar;
-            	OPEN_SETTINGS_WINDOW_KEY_CODE=changeKeyCode;
             }
             else if(currentlyEditedKeycombo==5){
             	REFRESH_FRAME_ALT_REQUIRED=changeAltDown;
@@ -1109,7 +1071,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             	REFRESH_FRAME_CTRL_REQUIRED=changeCtrlDown;
             	REFRESH_FRAME_SHIFT_REQUIRED=changeShiftDown;
             	REFRESH_FRAME_KEY_STRING=changeKeyChar;
-            	REFRESH_FRAME_KEY_CODE=changeKeyCode;
             }
             else if(currentlyEditedKeycombo==6){
             	SAVE_GRAPH_IMAGE_ALT_REQUIRED=changeAltDown;
@@ -1117,7 +1078,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             	SAVE_GRAPH_IMAGE_CTRL_REQUIRED=changeCtrlDown;
             	SAVE_GRAPH_IMAGE_SHIFT_REQUIRED=changeShiftDown;
             	SAVE_GRAPH_IMAGE_KEY_STRING=changeKeyChar;
-            	SAVE_GRAPH_IMAGE_KEY_CODE=changeKeyCode;
             }
             else if(currentlyEditedKeycombo==7){
             	TOGGLE_BOTTOM_PANEL_VISIBILITY_ALT_REQUIRED=changeAltDown;
@@ -1125,7 +1085,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             	TOGGLE_BOTTOM_PANEL_VISIBILITY_CTRL_REQUIRED=changeCtrlDown;
             	TOGGLE_BOTTOM_PANEL_VISIBILITY_SHIFT_REQUIRED=changeShiftDown;
             	TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_STRING=changeKeyChar;
-            	TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_CODE=changeKeyCode;
             }
             else if(currentlyEditedKeycombo==8){
             	TOGGLE_FULLSCREEN_MODE_ALT_REQUIRED=changeAltDown;
@@ -1133,10 +1092,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             	TOGGLE_FULLSCREEN_MODE_CTRL_REQUIRED=changeCtrlDown;
             	TOGGLE_FULLSCREEN_MODE_SHIFT_REQUIRED=changeShiftDown;
             	TOGGLE_FULLSCREEN_MODE_KEY_STRING=changeKeyChar;
-            	TOGGLE_FULLSCREEN_MODE_KEY_CODE=changeKeyCode;
             }
             writeConfigFile();
-            readInTextsForKeyCombos();
         }
         if(event.getSource()==openDifferentPlotMenuItem){
             openNewPlot();
@@ -1281,7 +1238,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             //keyComboAusgabe.setText(keyComboAusgabe.getText()+String.valueOf(event.getKeyChar()));
             keyComboAusgabe.setText(keyComboAusgabe.getText()+getKeyStringFromKeyCode(event.getExtendedKeyCode()));
             changeKeyChar=getKeyStringFromKeyCode(event.getExtendedKeyCode());
-            changeKeyCode=event.getExtendedKeyCode();
             System.out.print(event.getKeyChar());
             System.out.println(":"+event.getExtendedKeyCode()+":"+getKeyStringFromKeyCode(event.getExtendedKeyCode()));
             changeKeyCode=event.getExtendedKeyCode();

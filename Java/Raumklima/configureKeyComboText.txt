@@ -1,13 +1,12 @@
-12
-Mögliche Tastenkombinationen sind:
-	Alt, AltGr, Strg, Shift (keine davon bis alle sind möglich)
+ï»¿MÃ¶gliche Tastenkombinationen sind:
+	Alt, AltGr, Strg, Shift (keine davon bis alle sind mÃ¶glich)
 	und EINE Beliebige andere Taste
 	(z.b. Funktionstasten, Zahlen, Sonderzeichen, Buchstaben usw.)
 
-Um die Tatenkombination für: 
-zu ändern, klicken Sie bitte auf den knopf "Ändern" und drücken sie dann
-bitte alle gewünschten Tasten gleichzeitig und lassen die letzte Taste
+Um die Tatenkombination fÃ¼r: 
+zu Ã¤ndern, klicken Sie bitte auf den knopf "Ã„ndern" und drÃ¼cken sie dann
+bitte alle gewÃ¼nschten Tasten gleichzeitig und lassen die letzte Taste
 (die Funktionstaste, Zahl, den Buuchstaben oder das Sonderzeichen)
-als LETZTES LOS. Die Gewählte Tastenkombination erscheint im Textfeld unten.
-Sie können die Tastenkombination durch erneutes klicken auf den knopf nochmals ändern.
-Zum Speichern drücken Sie bitte auf den Knopf "Schließen"
+als LETZTES LOS. Die GewÃ¤hlte Tastenkombination erscheint im Textfeld unten.
+Sie kÃ¶nnen die Tastenkombination durch erneutes klicken auf den knopf nochmals Ã¤ndern.
+Zum Speichern drÃ¼cken Sie bitte auf den Knopf "SchlieÃŸen"
