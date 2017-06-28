@@ -76,7 +76,7 @@ unsigned long lastMenuTime = 0;
 unsigned long lastValueTime = 0;
 unsigned long lastData;
 
-int directLcdContrast = 128;
+int directLcdContrast = 75;
 int directLcdBrightness = 255;
 
 //DEVICES--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -86,7 +86,7 @@ DHT dht(DHT_PIN, DHTTYPE);
 SFE_BMP180 BMP180;
 Adafruit_BME280 BME280;
 LiquidCrystal directLcd(DIRECT_LCD_RS_PIN, DIRECT_LCD_E_PIN, DIRECT_LCD_D4_PIN, DIRECT_LCD_D5_PIN, DIRECT_LCD_D6_PIN, DIRECT_LCD_D7_PIN);
-LiquidCrystal_I2C indirectLcd(0x27, 16, 4);
+LiquidCrystal_I2C indirectLcd(0x27, 16, 2);
 
 
 //DATA VARS------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -121,7 +121,7 @@ void setup() {
   analogWrite(DIRECT_LCD_BACKLIGHT_PIN, directLcdBrightness);
 
   indirectLcd.init();
-  //indirectLcd.noBacklight();
+  indirectLcd.noBacklight();
 
   directLcd.begin(20, 4);
   directLcd.clear();
@@ -253,13 +253,13 @@ void getDHTValues() {//partially from dht22.ino
 
 void getBMPValues() {
   BMPReadingDelay = BMP180.startTemperature();
-  delay(BMPReadingDelay);
+  //delay(BMPReadingDelay);
   BMPReadingDelay = BMP180.getTemperature(BMP180_Temperature);
-  delay(BMPReadingDelay);
+  //delay(BMPReadingDelay);
   BMPReadingDelay = BMP180.startPressure(3);
-  delay(BMPReadingDelay);
+  //delay(BMPReadingDelay);
   BMPReadingDelay = BMP180.getPressure(BMP180_Airpressure, BMP180_Temperature);
-  delay(BMPReadingDelay);
+  //delay(BMPReadingDelay);
   BMP180_Airpressure /= 10.00;
 }
 
@@ -420,23 +420,59 @@ void loop() {
   }
 
   if (needsValueUpdate) {
-    if (menuPage == 3) {
+    if (menuPage == 1) {
       needsValueUpdate = false;
-      if (directLcdEnabled) {
-        analogWrite(DIRECT_LCD_BACKLIGHT_PIN, 0);
-        analogWrite(DIRECT_LCD_CONTRAST_PIN, 255);
+      recording = !recording;
+      indirectLcd.clear();
+      indirectLcd.print("AUFZEICHNUNG:");
+      indirectLcd.setCursor(0, 1);
+      if (recording) {
+        indirectLcd.print("LAEUFT");
       }
       else {
+        indirectLcd.print("GESTOPPT");
+      }
+    }
+    else if (menuPage == 2) {
+      needsValueUpdate = false;
+      physik = !physik;
+      indirectLcd.clear();
+      indirectLcd.print("FACHSCHAFT:");
+      indirectLcd.setCursor(0, 1);
+      if (physik) {
+        indirectLcd.print("PHYSIK");
+      }
+      else {
+        indirectLcd.print("GEOGRAPHIE");
+      }
+    }
+    else if (menuPage == 3) {
+      needsValueUpdate = false;
+      directLcdEnabled=!directLcdEnabled;
+      indirectLcd.clear();
+      indirectLcd.print("HAUPT-LCD STATUS");
+      indirectLcd.setCursor(0, 1);
+      if (directLcdEnabled) {
+        indirectLcd.print("AN");
+      }
+      else {
+        indirectLcd.print("AUS");
+      }
+      if (directLcdEnabled) {
         analogWrite(DIRECT_LCD_BACKLIGHT_PIN, directLcdBrightness);
         analogWrite(DIRECT_LCD_CONTRAST_PIN, directLcdContrast);
+      }
+      else {
+        analogWrite(DIRECT_LCD_BACKLIGHT_PIN, 0);
+        analogWrite(DIRECT_LCD_CONTRAST_PIN, 255);
       }
     }
   }
 
-  if (millis()/1000==0) {
+  if (millis() % 1000 == 0) {
     Serial.println("HALLOUHGOZTUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIISD");
+    getDATA();
     if (physik) {
-      getDATA();
       if (recording) {
         printDataToSD();
       }
@@ -627,21 +663,24 @@ void iterateMenu() {
     Serial.println("MENU");
     lastMenuTime = millis();
     if (menuPage == 0) { //recording
-      Serial.println("SHOULD OPEN SECONDARY SCREEN");
-      needsUpdate = true;
       menuPage = 1;
-    }
-    else if (menuPage = 1) { //GeoPhysik
+      Serial.println("RECORDING");
       needsUpdate = true;
+    }
+    else if (menuPage == 1) { //GeoPhysik
       menuPage = 2;
+      needsUpdate = true;
+      Serial.println("GEO");
     }
     else if (menuPage == 2) { //directLcdON/OFF
-      needsUpdate = true;
+      Serial.println("LCD");
       menuPage = 3;
+      needsUpdate = true;
     }
     else {
-      needsUpdate = true;
       menuPage = 0;
+      Serial.println("OFF");
+      needsUpdate = true;
     }
   }
 }
@@ -649,10 +688,10 @@ void iterateMenu() {
 void increaseValue() {
   if (millis() - lastValueTime > 300) {
     if (menuPage == 1) {
-      recording = !recording;
+      needsValueUpdate = true;
     }
     else if (menuPage == 2) {
-      physik = !physik;
+      needsValueUpdate = true;
     }
     else if (menuPage == 3) {
       needsValueUpdate = true;
