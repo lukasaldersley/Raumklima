@@ -269,8 +269,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 configRaw[i]=br.readLine();
             }
             //System.out.println(configRaw[9]);
-            //TODO möglicherweise ändern
-            CLOSE_WINDOW_KEY_CODE=Integer.parseInt(new String(configRaw[9].trim().getBytes("UTF-8"),"UTF-8"));
+            //CLOSE_WINDOW_KEY_CODE=Integer.parseInt(new String(configRaw[9].trim().getBytes("UTF-8"),"UTF-8"));
+            CLOSE_WINDOW_KEY_CODE=Integer.parseInt(configRaw[9]);
             CLOSE_WINDOW_KEY_STRING=configRaw[10];
             OPEN_HELP_WINDOW_KEY_CODE=Integer.parseInt(configRaw[16].trim());
             OPEN_HELP_WINDOW_KEY_STRING=configRaw[17];
@@ -844,22 +844,30 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     //TODO layout Überdenken
     private void refreshPage(){
-        dataPanelX=floor(mainWindow.getWidth()/370);
+    	System.out.println();
+    	System.out.println("WINDOW: "+mainWindow.getWidth()+"x"+mainWindow.getHeight());
+    	System.out.println("ANZ: "+numberOfGraphs);
+        dataPanelX=floor((mainWindow.getWidth()-15)/370);
+        System.out.println("X-Dimension: "+dataPanelX);
         dataPanelY=roof((double)((double)numberOfGraphs/(double)dataPanelX));
+        System.out.println("Y-Dimension: "+dataPanelY);
         if(dataPanelX*dataPanelY<numberOfGraphs){//Something went terribly WRONG!!!!
             System.out.println("HELP SPACIAL COLLISION OF numberOfGraphs and panelX/Y: "+numberOfGraphs+"|"+dataPanelX+"x"+dataPanelY);
         }
+        System.out.println("DATAPANEL: "+HEIGHT_OF_DATA_BLOCK*dataPanelY);
+        System.out.println("CHARTPANEL :"+((mainWindow.getHeight()-22)-HEIGHT_OF_DATA_BLOCK*dataPanelY));
 
         dataPanel.setLayout(new GridLayout(dataPanelY,dataPanelX*2));
         if(bottomPanelExpanded){
-            windowedTopPanelDimension.setSize(mainWindow.getWidth(),(mainWindow.getHeight()-30)-HEIGHT_OF_DATA_BLOCK*dataPanelY);
+            windowedTopPanelDimension.setSize(mainWindow.getWidth()-15,(mainWindow.getHeight()-22)-HEIGHT_OF_DATA_BLOCK*dataPanelY);
         }
         else{
-            windowedTopPanelDimension.setSize(mainWindow.getWidth(),mainWindow.getHeight()-30);
+            windowedTopPanelDimension.setSize(mainWindow.getWidth()-15,mainWindow.getHeight()-22);
         }
 
         chartPanel.setPreferredSize(windowedTopPanelDimension);
 
+        //refresh Stuff
         chartPanel.setVisible(false);
         if(bottomPanelExpanded){
             dataPanel.setVisible(false);
@@ -867,6 +875,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
         chartPanel.setVisible(true);
         mainWindow.validate();
+    	System.out.println("WINDOW: "+mainWindow.getWidth()+"x"+mainWindow.getHeight());
+        System.out.println();
     }
 
     private void deactivateFullscreen(){
@@ -1035,8 +1045,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     @Override
     public void actionPerformed(ActionEvent event) {
         if(event.getSource()==changeKeyComboButton){
-        	//TODO maybe
-        	//mainWindow.removeKeyListener(this);
+        	mainWindow.removeKeyListener(this);
             allowKeyComboChange=true;
             keyComboAusgabe.setText("Bereit");
             keyComboAusgabe.requestFocus();
@@ -1044,6 +1053,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             keyComboAusgabe.grabFocus();
         }
         if(event.getSource()==saveKeyComboButton){
+        	mainWindow.addKeyListener(this);
             configureKeyComboWindow.setVisible(false);
             
             if(changeAltDown){

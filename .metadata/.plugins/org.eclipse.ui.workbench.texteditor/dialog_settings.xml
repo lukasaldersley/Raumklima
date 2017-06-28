@@ -2,37 +2,37 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="DAMN" key="selection"/>
+		<item value="Raumklima" key="selection"/>
 		<item value="true" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="DAMN"/>
-			<item value="actionP"/>
-			<item value="Ausgabe"/>
-			<item value="addKey"/>
-			<item value="System.out.println"/>
-			<item value="Config"/>
-			<item value="removeKeyListener"/>
-			<item value="bwr"/>
+			<item value="Raumluft"/>
+			<item value="config.txt"/>
+			<item value="write"/>
+			<item value="ausw"/>
+			<item value="Integer.parseInt"/>
+			<item value="OH_"/>
+			<item value="OS_"/>
+			<item value="OPNE_NEW_PLOT"/>
 		</list>
 		<list key="replacehistory">
-			<item value="bw"/>
-			<item value="jpeg"/>
-			<item value="openNewPlot()"/>
-			<item value="OPEN_NEW_PLOT_KEY_CODE"/>
-			<item value="OPEN_NEW_WINDOW_KEY_CODE"/>
-			<item value="NUMBER_OF_KEY_COMBOS"/>
-			<item value="//chartPanel.setPreferred"/>
-			<item value="chartPanel"/>
+			<item value="Raumklima"/>
+			<item value="RaumluftConfig.txt"/>
+			<item value="OPEN_HELP_WINDOW_"/>
+			<item value="OPEN_SETTINGS_WINDOW_"/>
+			<item value="OPEN_NEW_PLOT"/>
+			<item value="CLOSE_WINDOW_"/>
+			<item value="OPNE_NEW_PLOT"/>
+			<item value="CLOSE_WINDOW"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="284" key="DIALOG_WIDTH"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
-		<item value="391" key="DIALOG_HEIGHT"/>
-		<item value="1077" key="DIALOG_X_ORIGIN"/>
-		<item value="248" key="DIALOG_Y_ORIGIN"/>
+		<item value="336" key="DIALOG_HEIGHT"/>
+		<item value="-449" key="DIALOG_X_ORIGIN"/>
+		<item value="303" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>
