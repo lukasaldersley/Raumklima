@@ -88,7 +88,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static String TBPV_KEY_STRING = "E";
     public static String TFM_KEY_STRING="F11";
 
-    public static final int VERSION=1;
+    public static final int VERSION=2;
 
     boolean allowKeyComboChange=false;
     private boolean bottomPanelExpanded=false;
@@ -184,7 +184,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private String[] configRaw;
     private String[] editKeyComboWindowText;
     private BufferedWriter bw;
-	private int currentlyEditedKeycombo;
+    private int currentlyEditedKeycombo;
 
     /**
      * the standard constructor (without the optional values of the second Constructor, which is only needed in order to make the numbering in the Title of the MainWindow work. This Constructor just calls the {@code setup()} Method.
@@ -399,8 +399,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             e.printStackTrace();
         }
 
-        
-        
         //keyComboWindow
         //beim Textfeld 5 wird noch der name der zu ändernden tastenkombi eingef�gt
         try{
@@ -432,7 +430,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             e.printStackTrace();
         }
 
-        
         //Setup the HeplpWindow
         helpWindowScrollPane=new JScrollPane();
         helpWindow.setSize(520,480);
@@ -540,7 +537,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
             mainWindow.add(chartPanel,BorderLayout.NORTH);
             mainWindow.add(dataPanel,BorderLayout.SOUTH);
-            
+
             //make the program able to react by adding the ActionListeners
             //TODO
             keyComboAusgabe.addKeyListener(this);
@@ -567,7 +564,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 //siehe oben beim config-lesenn und in der Config datei.
                 toggleFullscreen();
             }
-            
+
             //if the mottomPanel should be made invisible on startup, do it here
             if(!bottomPanelExpanded){
                 toggleBottomPanel();
@@ -599,7 +596,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Checks whether an Update is available
      * @return true if an update is available, false if no update is available
@@ -626,15 +623,15 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      */
     private void writeConfigFile(){
         /*try {
-           File cf=new File("config2.txt");
-            cf.delete();
-            bw = new BufferedWriter(new FileWriter(cf));
-            for(int i=0;i<NUMBER_OF_CONFIG_ENTRIES;i++){
-                bw.write(configRaw[i]);
-                bw.newLine();
-            }
+        File cf=new File("config2.txt");
+        cf.delete();
+        bw = new BufferedWriter(new FileWriter(cf));
+        for(int i=0;i<NUMBER_OF_CONFIG_ENTRIES;i++){
+        bw.write(configRaw[i]);
+        bw.newLine();
+        }
         } catch (Exception e) {
-            e.printStackTrace();
+        e.printStackTrace();
         }*/
     }
 
@@ -1024,17 +1021,17 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     @Override
     public void actionPerformed(ActionEvent event) {
         if(event.getSource()==changeKeyComboButton){
-        	allowKeyComboChange=true;
+            allowKeyComboChange=true;
             keyComboAusgabe.setText("Bereit");
             keyComboAusgabe.requestFocus();
             keyComboAusgabe.requestFocusInWindow();
             keyComboAusgabe.grabFocus();
         }
         if(event.getSource()==saveKeyComboButton){
-        	//TOTO maybe
+            //TOTO maybe
             configureKeyComboWindow.setVisible(false);
             if(currentlyEditedKeycombo==0){
-            	;
+
             }
             writeConfigFile();
         }
@@ -1080,7 +1077,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void openEditCeyComboWindow(int in) {
-    	//TODO maybe
+        //TODO maybe
         //mainWindow.removeKeyListener(this);
         configureKeyComboText[5].setText(configureKeyComboText[5].getText()+editKeyComboWindowText[in]);
         configureKeyComboWindow.setVisible(true);
@@ -1160,8 +1157,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     @Override
     public void keyReleased(KeyEvent event) {
-    	if(allowKeyComboChange){
-    		allowKeyComboChange=false;
+        if(allowKeyComboChange){
+            allowKeyComboChange=false;
             //System.out.println("KeyReleased");
             keyComboAusgabe.setText("");
             if(event.isAltDown()){
@@ -1180,11 +1177,115 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 keyComboAusgabe.setText(keyComboAusgabe.getText()+"Shift+");
                 changeShiftDown=true;
             }
-            keyComboAusgabe.setText(keyComboAusgabe.getText()+String.valueOf(event.getKeyChar()));
+            //keyComboAusgabe.setText(keyComboAusgabe.getText()+String.valueOf(event.getKeyChar()));
+            keyComboAusgabe.setText(keyComboAusgabe.getText()+getKeyStringFromKeyCode(event.getExtendedKeyCode()));
+            changeKeyChar=getKeyStringFromKeyCode(event.getExtendedKeyCode());
             System.out.print(event.getKeyChar());
-            System.out.println(":"+event.getExtendedKeyCode());
-            //TODO methode machen die das handelt: changeKeyChar=String.valueOf(event.getKeyChar());
+            System.out.println(":"+event.getExtendedKeyCode()+":"+getKeyStringFromKeyCode(event.getExtendedKeyCode()));
             changeKeyCode=event.getExtendedKeyCode();
+        }
+    }
+
+    private String getKeyStringFromKeyCode(int code){
+        switch(code){
+            case 8: return"BACKSPACE";
+            case 10: return"ENTER";
+            case 16:return "SHIFT";
+            case 17: return"STRG";
+            case 18:return"ALT";
+            case 20:return"CAPS_LOCK";
+            case 27: return"ESC";
+            case 32: return"SPACE";
+            case 33: return"BILD_AUF";
+            case 34: return"BILD_AB";
+            case 35: return"ENDE";
+            case 36: return"POS1";
+            case 37: return"PFEILTASTE_LINKS";
+            case 38: return"PFEILTASTE_OBEN";
+            case 39: return"PFEILTASTE_RECHTS";
+            case 40: return"PFEILTASTE_UNTEN";
+            case 44: return",";
+            case 45: return"-";
+            case 46: return".";
+            case 48: return"0";
+            case 49: return"1";
+            case 50: return"2";
+            case 51: return"3";
+            case 52: return"4";
+            case 53: return"5";
+            case 54: return"6";
+            case 55: return"7";
+            case 56: return"8";
+            case 57: return"9";
+            case 65: return"A";
+            case 66: return"B";
+            case 67: return"C";
+            case 68: return"D";
+            case 69: return"E";
+            case 70: return"F";
+            case 71: return"G";
+            case 72: return"H";
+            case 73: return"I";
+            case 74: return"J";
+            case 75: return"K";
+            case 76: return"L";
+            case 77: return"M";
+            case 78: return"N";
+            case 79: return"O";
+            case 80: return"P";
+            case 81: return"Q";
+            case 82: return"R";
+            case 83: return"S";
+            case 84: return"T";
+            case 85: return"U";
+            case 86: return"V";
+            case 87: return"W";
+            case 88: return"X";
+            case 89: return"Y";
+            case 90: return"Z";
+            case 96: return"NUM_0";
+            case 97: return"NUM_1";
+            case 98: return"NUM_2";
+            case 99: return"NUM_3";
+            case 100: return"NUM_4";
+            case 101: return"NUM_5";
+            case 102: return"NUM_6";
+            case 103: return"NUM_7";
+            case 104: return"NUM_8";
+            case 105: return"NUM_9";
+            case 106: return"NUM_*";
+            case 107: return"NUM_+";
+            case 109: return"NUM_-";
+            case 110: return"NUM_,";
+            case 111: return"NUM_/";
+            case 112: return"F1";
+            case 113: return"F2";
+            case 114: return"F3";
+            case 115: return"F4";
+            case 116: return"F5";
+            case 117: return"F6";
+            case 118: return"F7";
+            case 119: return"F8";
+            case 120: return"F9";
+            case 121: return"F10";
+            case 122: return"F11";
+            case 123: return"F12";
+            case 127: return"ENTF";
+            case 129: return"´";
+            case 130: return"^";
+            case 144: return"NUM";
+            case 145: return"ROLLEN";
+            case 153: return"<";
+            case 154: return"DRUCK";
+            case 155: return"EINFG";
+            case 520: return"#";
+            case 521: return"+";
+            case 524:return"WINDOWS";
+            case 16777412: return"Ä";
+            case 16777430: return"Ö";
+            case 16777439: return"ß";
+            case 16777468: return"Ü";
+            default:return "ERROR:"+String.valueOf(code)+"("+String.valueOf((char)(code))+")";
         }
     }
 
