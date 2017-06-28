@@ -1,8 +1,0 @@
-package serialIO.ABSTRACT.TIME;
-public class CLOCK
-{
-    public CLOCK()
-    {
-        ;
-    }
-}
