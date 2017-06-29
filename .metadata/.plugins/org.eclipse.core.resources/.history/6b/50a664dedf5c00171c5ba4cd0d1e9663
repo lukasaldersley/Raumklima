@@ -111,6 +111,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private Crosshair[] yCrosshairs;
 
     private Dimension fullscreenDimension;
+    private Dimension windowedTopPanelDimension;
 
     private File csvFile;
 
@@ -187,9 +188,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 	private int width;
 	private int height;
 	private Dimension windowDimension;
-	private Dimension bottomPanelDimension;
-	private Dimension topPanelDimension;
-	private JPanel[] dataPanels;
 
     /**
      * the standard constructor (without the optional values of the second Constructor, which is only needed in order to make the numbering in the Title of the MainWindow work. This Constructor just calls the {@code setup()} Method.
@@ -256,7 +254,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         //setup some very basic stuff
         //setup some basic sizes
-        fullscreenDimension=new Dimension(graphicsDevice.getDisplayMode().getWidth(),graphicsDevice.getDisplayMode().getHeight());
+        fullscreenDimension=new Dimension(graphicsDevice.getDisplayMode().getWidth(),graphicsDevice.getDisplayMode().getHeight()-30);
+        windowedTopPanelDimension=new Dimension(graphicsDevice.getDisplayMode().getWidth(),graphicsDevice.getDisplayMode().getHeight()-30);
         
         //setup the logo
         try {
@@ -541,16 +540,12 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
             dataLabels=new JLabel[numberOfGraphs];
             dataBoxes=new JTextField[numberOfGraphs];
-            dataPanels=new JPanel[numberOfGraphs];
 
             for(int i=0;i<numberOfGraphs;i++){
-            	dataPanels[i]=new JPanel(new GridLayout(1,2));
-            	dataPanels[i].setPreferredSize(new Dimension(WIDTH_OF_DATA_BLOCK,HEIGHT_OF_DATA_BLOCK));
                 dataLabels[i]=new JLabel(dataValueDescriptors[i]);
                 dataBoxes[i]=new JTextField();
-                dataPanels[i].add(dataLabels[i]);
-                dataPanels[i].add(dataBoxes[i]);
-                dataPanel.add(dataPanels[i]);
+                dataPanel.add(dataLabels[i]);
+                dataPanel.add(dataBoxes[i]);
             }
 
             //Remove the temporary WaitPanel
@@ -568,20 +563,28 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             chartPanel.addChartMouseListener(this);
             mainWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-            
+            if(bottomPanelExpanded){
+                fullscreenDimension.setSize(fullscreenDimension.width,(graphicsDevice.getDisplayMode().getHeight()-30)-HEIGHT_OF_DATA_BLOCK*dataPanelY);
+            }
+            else{
+                ;//remains the same
+            }
+
+            //revert the Cursor Back To Normal
+            mainWindow.setCursor(Cursor.getDefaultCursor());
             //if the fullscreenMode should be activated on startup, do it now
             if(fullscreen){
-                fullscreen=false;
+                fullscreen=!fullscreen;//damit das program den Vollbildmodus korrekterweise einschaltet
+                //und nicht glaubt dass der Vollbildmodus schon an war und ihn deaktiviert
+                //siehe oben beim config-lesenn und in der Config datei.
                 toggleFullscreen();
             }
+
             //if the mottomPanel should be made invisible on startup, do it here
             if(!bottomPanelExpanded){
                 toggleBottomPanel();
             }
             chartPanel.getPopupMenu().remove(3);//den punkt speichern zum speichern des aktuellen Chartinhalts entfernen, da es sonst probleme mit dem vollbildmodus gibt wenn jemand darauf klickt.
-            refreshPage();
-            //revert the Cursor Back To Normal
-            mainWindow.setCursor(Cursor.getDefaultCursor());
         }
         else{
             exit();
@@ -840,54 +843,25 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void toggleFullscreen(){
-    	//Set a Different Cursor to indicate The program is working
-        try{
-            mainWindow.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-        
         if(fullscreen){//if fullscreenMode is already enabled, disable it
             deactivateFullscreen();
         }
         else{//the fullscreenMode is disabled, so enable it
             avtivateFullscreen();
         }
-        mainWindow.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
     //TODO layout Überdenken
     private void refreshPage(){
     	System.out.println(mainWindow.getSize());
     	width=mainWindow.getWidth()-15;
-    	if(fullscreen){
-    		height=mainWindow.getHeight()-(23+8);
-    	}
-    	else{
     	height=mainWindow.getHeight()-(53+8);
-    	}
     	windowDimension=new Dimension(width,height);
     	System.out.println(windowDimension);
     	dataPanelX=floor((double)(windowDimension.getWidth()/(double)(WIDTH_OF_DATA_BLOCK)));
-    	dataPanelY=roof(numberOfGraphs/(double)(dataPanelX));
-    	dataPanel.setLayout(new GridLayout(dataPanelY,dataPanelX));
+    	dataPanelY=roof(numberOfGraphs/(double)(dataPanelX/2));
     	System.out.println(numberOfGraphs+" | "+dataPanelX+"x"+dataPanelY);
-    	bottomPanelDimension=new Dimension(width,dataPanelY*HEIGHT_OF_DATA_BLOCK);
-    	if(bottomPanelExpanded){
-    	topPanelDimension=new Dimension(width,height-(dataPanelY*HEIGHT_OF_DATA_BLOCK));
-    	dataPanel.setVisible(true);
-    	}
-    	else{
-        	topPanelDimension=new Dimension(width,height);
-        	dataPanel.setVisible(false);
-    	}
-    	dataPanel.setPreferredSize(bottomPanelDimension);
-    	chartPanel.setPreferredSize(topPanelDimension);
-    	System.out.println(topPanelDimension);
-    	System.out.println(bottomPanelDimension);
     	System.out.println();
-        mainWindow.validate();
     }
 
     private void deactivateFullscreen(){
@@ -922,7 +896,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private JFreeChart createChart(XYDataset xYDataset) {
-        JFreeChart jFreeChart = ChartFactory.createXYLineChart(null,"Zeit (s)","Werte",xYDataset);
+        JFreeChart jFreeChart = ChartFactory.createXYLineChart(null,"Zeit","Werte",xYDataset);
         return jFreeChart;
     }
 

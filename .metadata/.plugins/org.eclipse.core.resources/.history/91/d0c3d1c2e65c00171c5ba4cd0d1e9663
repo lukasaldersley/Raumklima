@@ -922,7 +922,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private JFreeChart createChart(XYDataset xYDataset) {
-        JFreeChart jFreeChart = ChartFactory.createXYLineChart(null,"Zeit (s)","Werte",xYDataset);
+        JFreeChart jFreeChart = ChartFactory.createXYLineChart(null,"Zeit","Werte",xYDataset);
         return jFreeChart;
     }
 

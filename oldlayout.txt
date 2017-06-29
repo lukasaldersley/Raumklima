@@ -1,0 +1,34 @@
+
+    	System.out.println();
+    	System.out.println("WINDOW: "+mainWindow.getWidth()+"x"+mainWindow.getHeight());
+    	System.out.println("ANZ: "+numberOfGraphs);
+        dataPanelX=floor((mainWindow.getWidth()-15)/370);
+        System.out.println("X-Dimension: "+dataPanelX);
+        dataPanelY=roof((double)((double)numberOfGraphs/(double)dataPanelX));
+        System.out.println("Y-Dimension: "+dataPanelY);
+        if(dataPanelX*dataPanelY<numberOfGraphs){//Something went terribly WRONG!!!!
+            System.out.println("HELP SPACIAL COLLISION OF numberOfGraphs and panelX/Y: "+numberOfGraphs+"|"+dataPanelX+"x"+dataPanelY);
+        }
+        System.out.println("DATAPANEL: "+HEIGHT_OF_DATA_BLOCK*dataPanelY);
+        System.out.println("CHARTPANEL :"+((mainWindow.getHeight()-22)-HEIGHT_OF_DATA_BLOCK*dataPanelY));
+
+        dataPanel.setLayout(new GridLayout(dataPanelY,dataPanelX*2));
+        if(bottomPanelExpanded){
+            windowedTopPanelDimension.setSize(mainWindow.getWidth()-15,(mainWindow.getHeight()-22)-HEIGHT_OF_DATA_BLOCK*dataPanelY);
+        }
+        else{
+            windowedTopPanelDimension.setSize(mainWindow.getWidth()-15,mainWindow.getHeight()-22);
+        }
+
+        chartPanel.setPreferredSize(windowedTopPanelDimension);
+
+        //refresh Stuff
+        chartPanel.setVisible(false);
+        if(bottomPanelExpanded){
+            dataPanel.setVisible(false);
+            dataPanel.setVisible(true);
+        }
+        chartPanel.setVisible(true);
+        mainWindow.validate();
+    	System.out.println("WINDOW: "+mainWindow.getWidth()+"x"+mainWindow.getHeight());
+        System.out.println();
