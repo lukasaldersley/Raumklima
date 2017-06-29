@@ -87,7 +87,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static String TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_STRING = "E";
     public static String TOGGLE_FULLSCREEN_MODE_KEY_STRING="F11";
 
-    public static final int VERSION=4;
+    public static final double VERSION=1.0;
 
     boolean allowKeyComboChange=false;
     private boolean bottomPanelExpanded=false;
@@ -617,7 +617,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         try{
             URL website = new URL("https://raw.githubusercontent.com/lukasaldersley/Raumklima/master/Release/VERSION");
             br=new  BufferedReader(new InputStreamReader(website.openStream()));
-            if(Integer.parseInt(br.readLine().trim())>VERSION){
+            if(Double.parseDouble(br.readLine().trim())>VERSION){
                 return true;
             }
             else{
