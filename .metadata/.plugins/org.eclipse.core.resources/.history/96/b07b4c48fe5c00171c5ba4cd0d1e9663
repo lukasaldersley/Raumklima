@@ -422,8 +422,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         saveGraphImagesMenu.addActionListener(this);
         mainWindowMenuBar.add(saveGraphImagesMenu);
 
-        mainWindowMenuBar.addKeyListener(this);
-        
         mainWindow.setJMenuBar(mainWindowMenuBar);
 
         //keyComboWindow
@@ -508,18 +506,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         rightPanelTitle=new JLabel("Tastenkürzel:");
         rightPanelTitle.setFont(new Font(Font.SERIF,Font.BOLD, 16));
         settingsWindowRightPanel.add(rightPanelTitle, BorderLayout.NORTH);
+        readInTextsForKeyCombos();
         for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
-            settingsWindowRightInnerPanel[i]=new JPanel(new BorderLayout());
-            settingsWindowText[i]=new JLabel();
-            settingsWindowText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
-            settingsWindowRightInnerPanel[i].add(settingsWindowText[i],BorderLayout.WEST);
-            rightPanelButtons[i]=new JButton("Ändern");
-            rightPanelButtons[i].setPreferredSize(new Dimension(100,25));
-            rightPanelButtons[i].addActionListener(this);
-            settingsWindowRightInnerPanel[i].add(rightPanelButtons[i],BorderLayout.EAST);
             settingsWindowRightPanel.add(settingsWindowRightInnerPanel[i], BorderLayout.SOUTH);
         }
-        readInTextsForKeyCombos();
 
         settingsWindow.add(settingsWindowRightPanel, BorderLayout.EAST);
         settingsWindow.validate();
@@ -675,10 +665,12 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void readInTextsForKeyCombos() {
+        br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("HelpTexts.txt")));
         try{
 
             String line="";
             for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
+                settingsWindowRightInnerPanel[i]=new JPanel(new BorderLayout());
                 helpWindowText[i]=new JLabel();
                 helpWindowText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
                 helpPanel.add(helpWindowText[i]);
@@ -831,8 +823,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             saveGraphImagesMenu.setText("Graphen speichern ("+helpWindowText[6].getText()+")");
             //TODO
             toggleFullscreenModeMenu.setText("Vollbildmodus ("+helpWindowText[8].getText()+")");
-
-            br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("HelpTexts.txt")));
+            
             for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
                 line=br.readLine();
                 editKeyComboWindowText[i]=line;
@@ -844,7 +835,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             }
             for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
                 //die Gleichen elmente für die Einstellungsseite Verwenden
-            	settingsWindowText[i].setText(helpWindowText[i].getText());
+                settingsWindowText[i]=new JLabel(helpWindowText[i].getText());
+                settingsWindowText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
+                settingsWindowRightInnerPanel[i].add(settingsWindowText[i],BorderLayout.WEST);
+                rightPanelButtons[i]=new JButton("Ändern");
+                rightPanelButtons[i].setPreferredSize(new Dimension(100,25));
+                rightPanelButtons[i].addActionListener(this);
+                settingsWindowRightInnerPanel[i].add(rightPanelButtons[i],BorderLayout.EAST);
             }
         }
         catch(Exception e){
@@ -1094,7 +1091,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         	mainWindow.addKeyListener(this);
             configureKeyComboWindow.setVisible(false);
             
-            
             if(changeAltDown){
         		configRaw[currentlyEditedKeycombo*7+11]="YES";
         	}
@@ -1200,8 +1196,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             }
             writeConfigFile();
             readInTextsForKeyCombos();
-            helpWindow.validate();
-            settingsWindow.validate();
         }
         if(event.getSource()==openDifferentPlotMenuItem){
             openNewPlot();
@@ -1211,9 +1205,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
         if(event.getSource()==closeWindowMenuItem){
             closeWindow();
-        }
-        if(event.getSource()==saveGraphImagesMenu){
-        	saveImages();
         }
         if(event.getSource()==helpWindowCloseButton){
             helpWindow.setVisible(false);
@@ -1491,28 +1482,24 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             toggleSettingsWindow();
         }
         if(event.getExtendedKeyCode()==SAVE_GRAPH_IMAGE_KEY_CODE&&event.isAltDown()==SAVE_GRAPH_IMAGE_ALT_REQUIRED&&event.isAltGraphDown()==SAVE_GRAPH_IMAGE_ALT_GRAPH_REQUIRED&&event.isControlDown()==SAVE_GRAPH_IMAGE_CTRL_REQUIRED&&event.isShiftDown()==SAVE_GRAPH_IMAGE_SHIFT_REQUIRED){
-            saveImages();
+            if(saveJpeg){
+                try {
+                    ChartUtilities.saveChartAsJPEG(new File(csvFile.getName()+".jpeg"), jFreeChart, fullscreenDimension.width, fullscreenDimension.height);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(savePng){
+                try {
+                    ChartUtilities.saveChartAsPNG(new File(csvFile.getName()+".png"), jFreeChart, fullscreenDimension.width, fullscreenDimension.height);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
-    private void saveImages() {
-    	if(saveJpeg){
-            try {
-                ChartUtilities.saveChartAsJPEG(new File(csvFile.getName()+".jpeg"), jFreeChart, fullscreenDimension.width, fullscreenDimension.height);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        if(savePng){
-            try {
-                ChartUtilities.saveChartAsPNG(new File(csvFile.getName()+".png"), jFreeChart, fullscreenDimension.width, fullscreenDimension.height);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-	}
-
-	@Override
+    @Override
     public void keyTyped(KeyEvent event) {}
 
     @Override

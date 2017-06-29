@@ -422,8 +422,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         saveGraphImagesMenu.addActionListener(this);
         mainWindowMenuBar.add(saveGraphImagesMenu);
 
-        mainWindowMenuBar.addKeyListener(this);
-        
         mainWindow.setJMenuBar(mainWindowMenuBar);
 
         //keyComboWindow
@@ -1212,9 +1210,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         if(event.getSource()==closeWindowMenuItem){
             closeWindow();
         }
-        if(event.getSource()==saveGraphImagesMenu){
-        	saveImages();
-        }
         if(event.getSource()==helpWindowCloseButton){
             helpWindow.setVisible(false);
         }
@@ -1491,28 +1486,24 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             toggleSettingsWindow();
         }
         if(event.getExtendedKeyCode()==SAVE_GRAPH_IMAGE_KEY_CODE&&event.isAltDown()==SAVE_GRAPH_IMAGE_ALT_REQUIRED&&event.isAltGraphDown()==SAVE_GRAPH_IMAGE_ALT_GRAPH_REQUIRED&&event.isControlDown()==SAVE_GRAPH_IMAGE_CTRL_REQUIRED&&event.isShiftDown()==SAVE_GRAPH_IMAGE_SHIFT_REQUIRED){
-            saveImages();
+            if(saveJpeg){
+                try {
+                    ChartUtilities.saveChartAsJPEG(new File(csvFile.getName()+".jpeg"), jFreeChart, fullscreenDimension.width, fullscreenDimension.height);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(savePng){
+                try {
+                    ChartUtilities.saveChartAsPNG(new File(csvFile.getName()+".png"), jFreeChart, fullscreenDimension.width, fullscreenDimension.height);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
-    private void saveImages() {
-    	if(saveJpeg){
-            try {
-                ChartUtilities.saveChartAsJPEG(new File(csvFile.getName()+".jpeg"), jFreeChart, fullscreenDimension.width, fullscreenDimension.height);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        if(savePng){
-            try {
-                ChartUtilities.saveChartAsPNG(new File(csvFile.getName()+".png"), jFreeChart, fullscreenDimension.width, fullscreenDimension.height);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-	}
-
-	@Override
+    @Override
     public void keyTyped(KeyEvent event) {}
 
     @Override

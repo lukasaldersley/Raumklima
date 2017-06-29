@@ -217,6 +217,14 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      */
     private void setup(){
     	
+    	//Set a Different Cursor to indicate The program is working
+        try{
+            mainWindow.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    	
         //Check for Software updates and automaitically perform them
     	configFile=new File("RaumklimaConfig.txt");
     	if(!configFile.exists()){//Download the default configuration file
@@ -241,15 +249,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         helpWindow=new JFrame();
         mainWindow=new JFrame();
         configureKeyComboWindow=new JFrame();
-        
-
-    	//Set a Different Cursor to indicate The program is working
-        try{
-            mainWindow.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
 
         //Initialise and fill the WaitPanel
         waitPanel=new JPanel(new BorderLayout());
@@ -422,8 +421,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         saveGraphImagesMenu.addActionListener(this);
         mainWindowMenuBar.add(saveGraphImagesMenu);
 
-        mainWindowMenuBar.addKeyListener(this);
-        
         mainWindow.setJMenuBar(mainWindowMenuBar);
 
         //keyComboWindow
@@ -508,18 +505,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         rightPanelTitle=new JLabel("Tastenkürzel:");
         rightPanelTitle.setFont(new Font(Font.SERIF,Font.BOLD, 16));
         settingsWindowRightPanel.add(rightPanelTitle, BorderLayout.NORTH);
+        readInTextsForKeyCombos();
         for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
-            settingsWindowRightInnerPanel[i]=new JPanel(new BorderLayout());
-            settingsWindowText[i]=new JLabel();
-            settingsWindowText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
-            settingsWindowRightInnerPanel[i].add(settingsWindowText[i],BorderLayout.WEST);
-            rightPanelButtons[i]=new JButton("Ändern");
-            rightPanelButtons[i].setPreferredSize(new Dimension(100,25));
-            rightPanelButtons[i].addActionListener(this);
-            settingsWindowRightInnerPanel[i].add(rightPanelButtons[i],BorderLayout.EAST);
             settingsWindowRightPanel.add(settingsWindowRightInnerPanel[i], BorderLayout.SOUTH);
         }
-        readInTextsForKeyCombos();
 
         settingsWindow.add(settingsWindowRightPanel, BorderLayout.EAST);
         settingsWindow.validate();
@@ -675,11 +664,16 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void readInTextsForKeyCombos() {
+        br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("HelpTexts.txt")));
         try{
 
             String line="";
             for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
-                helpWindowText[i]=new JLabel();
+                settingsWindowRightInnerPanel[i]=new JPanel(new BorderLayout());
+                line=br.readLine();
+                editKeyComboWindowText[i]=line;
+                line +=": ";
+                helpWindowText[i]=new JLabel(line);
                 helpWindowText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
                 helpPanel.add(helpWindowText[i]);
             }
@@ -812,8 +806,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             if(TOGGLE_FULLSCREEN_MODE_SHIFT_REQUIRED){
                 helpWindowText[8].setText(helpWindowText[8].getText()+"Shift+");
             }
-            helpWindowText[0].setText(helpWindowText[0].getText()+CLOSE_WINDOW_KEY_STRING);
             helpWindowText[1].setText(helpWindowText[1].getText()+OPEN_HELP_WINDOW_KEY_STRING);
+            helpWindowText[0].setText(helpWindowText[0].getText()+CLOSE_WINDOW_KEY_STRING);
             helpWindowText[2].setText(helpWindowText[2].getText()+OPEN_NEW_PLOT_KEY_STRING);
             helpWindowText[3].setText(helpWindowText[3].getText()+OPEN_NEW_WINDOW_KEY_STRING);
             helpWindowText[4].setText(helpWindowText[4].getText()+OPEN_SETTINGS_WINDOW_KEY_STRING);
@@ -822,29 +816,29 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             helpWindowText[7].setText(helpWindowText[7].getText()+TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_STRING);
             helpWindowText[8].setText(helpWindowText[8].getText()+TOGGLE_FULLSCREEN_MODE_KEY_STRING);
 
-            closeWindowMenuItem.setText("Fenster schließen ("+helpWindowText[0].getText()+")");
-            openHelpWindowMenu.setText("Hilfe ("+helpWindowText[1].getText()+")");
             openDifferentPlotMenuItem.setText("Datei öffnen ("+helpWindowText[2].getText()+")");
             openNewWindowMenuItem.setText("neues Fenster öffnen ("+helpWindowText[3].getText()+")");
+            closeWindowMenuItem.setText("Fenster schließen ("+helpWindowText[1].getText()+")");
             openSettingsWindowMenu.setText("Einstellungen ("+helpWindowText[4].getText()+")");
-            //TODO
+            openHelpWindowMenu.setText("Hilfe ("+helpWindowText[0].getText()+")");
+            toggleFullscreenModeMenu.setText("Vollbildmodus ("+helpWindowText[8].getText()+")");
             saveGraphImagesMenu.setText("Graphen speichern ("+helpWindowText[6].getText()+")");
             //TODO
-            toggleFullscreenModeMenu.setText("Vollbildmodus ("+helpWindowText[8].getText()+")");
-
-            br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("HelpTexts.txt")));
+            
             for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
-                line=br.readLine();
-                editKeyComboWindowText[i]=line;
-                line +=": ";
-                helpWindowText[i].setText(line+helpWindowText[i].getText());
                 for(int j=helpWindowText[i].getText().length();j<60;j++){
                     helpWindowText[i].setText(helpWindowText[i].getText()+" ");
                 }
             }
             for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
                 //die Gleichen elmente für die Einstellungsseite Verwenden
-            	settingsWindowText[i].setText(helpWindowText[i].getText());
+                settingsWindowText[i]=new JLabel(helpWindowText[i].getText());
+                settingsWindowText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
+                settingsWindowRightInnerPanel[i].add(settingsWindowText[i],BorderLayout.WEST);
+                rightPanelButtons[i]=new JButton("Ändern");
+                rightPanelButtons[i].setPreferredSize(new Dimension(100,25));
+                rightPanelButtons[i].addActionListener(this);
+                settingsWindowRightInnerPanel[i].add(rightPanelButtons[i],BorderLayout.EAST);
             }
         }
         catch(Exception e){
@@ -1094,7 +1088,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         	mainWindow.addKeyListener(this);
             configureKeyComboWindow.setVisible(false);
             
-            
             if(changeAltDown){
         		configRaw[currentlyEditedKeycombo*7+11]="YES";
         	}
@@ -1200,8 +1193,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             }
             writeConfigFile();
             readInTextsForKeyCombos();
-            helpWindow.validate();
-            settingsWindow.validate();
         }
         if(event.getSource()==openDifferentPlotMenuItem){
             openNewPlot();
@@ -1211,9 +1202,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
         if(event.getSource()==closeWindowMenuItem){
             closeWindow();
-        }
-        if(event.getSource()==saveGraphImagesMenu){
-        	saveImages();
         }
         if(event.getSource()==helpWindowCloseButton){
             helpWindow.setVisible(false);
@@ -1491,28 +1479,24 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             toggleSettingsWindow();
         }
         if(event.getExtendedKeyCode()==SAVE_GRAPH_IMAGE_KEY_CODE&&event.isAltDown()==SAVE_GRAPH_IMAGE_ALT_REQUIRED&&event.isAltGraphDown()==SAVE_GRAPH_IMAGE_ALT_GRAPH_REQUIRED&&event.isControlDown()==SAVE_GRAPH_IMAGE_CTRL_REQUIRED&&event.isShiftDown()==SAVE_GRAPH_IMAGE_SHIFT_REQUIRED){
-            saveImages();
+            if(saveJpeg){
+                try {
+                    ChartUtilities.saveChartAsJPEG(new File(csvFile.getName()+".jpeg"), jFreeChart, fullscreenDimension.width, fullscreenDimension.height);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(savePng){
+                try {
+                    ChartUtilities.saveChartAsPNG(new File(csvFile.getName()+".png"), jFreeChart, fullscreenDimension.width, fullscreenDimension.height);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
-    private void saveImages() {
-    	if(saveJpeg){
-            try {
-                ChartUtilities.saveChartAsJPEG(new File(csvFile.getName()+".jpeg"), jFreeChart, fullscreenDimension.width, fullscreenDimension.height);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        if(savePng){
-            try {
-                ChartUtilities.saveChartAsPNG(new File(csvFile.getName()+".png"), jFreeChart, fullscreenDimension.width, fullscreenDimension.height);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-	}
-
-	@Override
+    @Override
     public void keyTyped(KeyEvent event) {}
 
     @Override
