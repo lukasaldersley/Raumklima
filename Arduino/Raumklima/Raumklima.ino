@@ -127,7 +127,7 @@ void setup() {
   directLcd.clear();
   directLcd.print("Initialisieren...");
 
-  pinMode(3, INPUT); //ich hab den widerstand auf dem board vergessen deswegen der interne
+  //pinMode(3, INPUT); //ich hab den widerstand auf dem board vergessen deswegen der interne
   //attachInterrupt(1, alwaysInterruptButton_Push, RISING);
   attachInterrupt(0, iterateMenu, RISING); //TODO überlegen
   attachInterrupt(1, increaseValue, RISING);
@@ -143,12 +143,12 @@ void setup() {
     directLcd.print("OK");
   }
 
-  fileName = getTimeName();
-  Serial.println(fileName);
-  directLcd.setCursor(0, 2);
-  directLcd.print("DATEINAME fuer CSV:");
-  directLcd.setCursor(0, 3);
-  directLcd.print(fileName);
+  /*fileName = getTimeName();
+    Serial.println(fileName);
+    directLcd.setCursor(0, 2);
+    directLcd.print("DATEINAME fuer CSV:");
+    directLcd.setCursor(0, 3);
+    directLcd.print(fileName);*/
 
   Serial.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness;MQ2;MQ135");
 
@@ -156,25 +156,25 @@ void setup() {
   directLcd.clear();
   directLcd.print("SD-Schreibzugriff:");
   directLcd.setCursor(0, 1);
-  file = SD.open(fileName, FILE_WRITE);
-  if (file) {
+  /*file = SD.open(fileName, FILE_WRITE);
+    if (file) {
     file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness;MQ2;MQ135");
     file.close();
-    directLcd.print("OK");
-  }
-  else {//RETRY ONCE MORE
+    //directLcd.print("OK");
+    }
+    else {//RETRY ONCE MORE
     file = SD.open(fileName, FILE_WRITE);
     if (file) {
       Serial.println("SD FAILED ONCE While writing the titles");
       file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness;MQ2;MQ135");
       file.close();
-      directLcd.print("OK");
+      //directLcd.print("OK");
     }
     else {
       Serial.println("SD FAILED twice While writing the titles");
-      directLcd.print("FAIL-Aufzeichnung nicht möglich");
+      ///directLcd.print("FAIL-Aufzeichnung nicht möglich");
     }
-  }
+    }*/
 
   directLcd.setCursor(0, 2);
   directLcd.print("DHT-Sensor: ");
@@ -186,13 +186,13 @@ void setup() {
   BME280.begin();
   directLcd.print("OK");
   delay(500);
-  directLcd.clear();
-  directLcd.print("FERTIG!");
-  directLcd.setCursor(0, 2);
-  directLcd.print("DATEINAME fuer CSV:");
-  directLcd.setCursor(0, 3);
-  directLcd.print(fileName);
-  delay(2000);
+  //directLcd.clear();
+  //directLcd.print("FERTIG!");
+  //directLcd.setCursor(0, 2);
+  //directLcd.print("DATEINAME fuer CSV:");
+  //directLcd.setCursor(0, 3);
+  //directLcd.print(fileName);
+  //delay(2000);
 }
 
 //GET SENSOR DATA-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -319,7 +319,7 @@ void constructSendoffString() {
   sendoff += ";";
   sendoff += MQ_135_Value;
   sendoff += ";";
-  sendoff += millis() - lastData;
+  sendoff += (double)((millis() - lastData)/10.0);
   lastData = millis();
   sendoff.replace('.', ',');
 }
@@ -427,6 +427,27 @@ void loop() {
       indirectLcd.print("AUFZEICHNUNG:");
       indirectLcd.setCursor(0, 1);
       if (recording) {
+        fileName=getTimeName();
+        file = SD.open(fileName, FILE_WRITE);
+        if (file) {
+          file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness;MQ2;MQ135");
+          file.close();
+          //directLcd.print("OK");
+        }
+        else {//RETRY ONCE MORE
+          file = SD.open(fileName, FILE_WRITE);
+          if (file) {
+            Serial.println("SD FAILED ONCE While writing the titles");
+            file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness;MQ2;MQ135");
+            file.close();
+            //directLcd.print("OK");
+          }
+          else {
+            Serial.println("SD FAILED twice While writing the titles");
+            directLcd.print("FAIL-Aufzeichnung nicht möglich");
+          }
+        }
+
         indirectLcd.print("LAEUFT");
       }
       else {
@@ -448,7 +469,7 @@ void loop() {
     }
     else if (menuPage == 3) {
       needsValueUpdate = false;
-      directLcdEnabled=!directLcdEnabled;
+      directLcdEnabled = !directLcdEnabled;
       indirectLcd.clear();
       indirectLcd.print("HAUPT-LCD STATUS");
       indirectLcd.setCursor(0, 1);
@@ -652,9 +673,10 @@ String getTimeName() {
   return a;
 }
 
-void sleeep6Hours() {
-  for (int i = 0; i < 2600; i++) { //2700*8s =6h
-    //TODO
+void sleeep(int hours,int minutes) {
+  long eightSecondsSleepIterations=((minutes-15)+(hours*30))*14;//sollte auf die zu schlafende zeit -15 minuten kommen
+  for(;eightSecondsSleepIterations>0;eightSecondsSleepIterations--){
+    ;
   }
 }
 
