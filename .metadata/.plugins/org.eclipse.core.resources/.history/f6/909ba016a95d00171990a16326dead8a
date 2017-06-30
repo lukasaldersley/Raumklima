@@ -769,7 +769,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             File oldFile=new File("Raumklima.jar");
             oldFile.delete();
             //fileUrl: "https://raw.githubusercontent.com/lukasaldersley/Raumklima/master/Release/VERSION"
-            URL website = new URL("https://github.com/lukasaldersley/Raumklima/raw/V1/Release/Raumklima.jar");
+            URL website = new URL("https://github.com/lukasaldersley/Raumklima/raw/V1.0/Release/Raumklima.jar");
             ReadableByteChannel rbc = Channels.newChannel(website.openStream());
             FileOutputStream fos = new FileOutputStream("Raumklima.jar");
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
@@ -788,7 +788,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      */
     public boolean checkIfUpdateAvailable(){
         try{
-            URL website = new URL("https://raw.githubusercontent.com/lukasaldersley/Raumklima/V1/Release/VERSION");
+            URL website = new URL("https://raw.githubusercontent.com/lukasaldersley/Raumklima/V1.0/Release/VERSION");
             br=new  BufferedReader(new InputStreamReader(website.openStream()));
             if(Double.parseDouble(br.readLine().trim())>VERSION){
                 return true;
