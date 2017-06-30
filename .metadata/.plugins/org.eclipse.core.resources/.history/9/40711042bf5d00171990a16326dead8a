@@ -2,7 +2,6 @@ package Raumklima;
 
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -10,20 +9,20 @@ import javax.swing.JLabel;
 public class testOffullscreenApi {
 	
 	GraphicsDevice gd=GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-	public GraphicsDevice[] gda;
+	private GraphicsDevice[] gda;
 	public testOffullscreenApi(){
 		JFrame window=new JFrame();
-		window.setLayout(new GridLayout(0,1));
-		gda=GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
-		JLabel[] lbl=new JLabel[gda.length];
-		for(int i=0;i<gda.length;i++){
-			lbl[i]=new JLabel(gda[i].getIDstring()+" "+gda[i].getType()+" "+gda[i].hashCode()+" "+gda[i].getConfigurations()+" "+gda[i].getDefaultConfiguration()+" "+gda[i].getDisplayMode()+" "+gda[i].getDisplayModes()+" "+gda[i].getFullScreenWindow()+" "+gda[i].isDisplayChangeSupported()+" "+gda[i].isFullScreenSupported());
-			window.add(lbl[i]);
-		}
+		JLabel lbl=new JLabel("HIhvhgdfds<sfxghjkljhgfdsadfghjkjhgvcxysdfghjk");
+		window.add(lbl);
+		window.pack();
 		gd.setFullScreenWindow(window);
+		gda=GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
+		for(int i=0;i<gda.length;i++){
+			System.out.println(gda[i].isFullScreenSupported());
+			System.out.println(gda[i].getIDstring());
+			System.out.println();
+		}
 	}
-	
-	
 
 	public static void main(String[] args) {
 		new testOffullscreenApi();
