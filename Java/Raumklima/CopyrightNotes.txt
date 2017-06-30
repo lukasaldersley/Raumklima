@@ -7,6 +7,7 @@ Java Programm:
 
     Benutzte Bibliotheken:
         -JFreeChart (GNU LGPL)
+        -JSSC (JSerialComm)
         -Standard Java Bibliotheken (swing, awt, usw..)
 
 Arduino Sketch ("Firmware des Geräts"):

@@ -78,6 +78,6 @@ YES
 #
 #General Status
 #FullscreenOnStartup
-YES
+NO
 #BottomPanelExpandedOnStartup
 YES

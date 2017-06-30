@@ -144,7 +144,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static String TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_STRING = "E";
     public static String TOGGLE_FULLSCREEN_MODE_KEY_STRING="F11";
 
-    public static final double VERSION=1.1;
+    public static final double VERSION=1.0;
 
     boolean allowKeyComboChange=false;
     private boolean bottomPanelExpanded;
@@ -748,9 +748,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 toggleFullscreen();
             }
             //if the mottomPanel should be made invisible on startup, do it here
-            if(bottomPanelExpandedOnStartup){
-                toggleBottomPanel();
-            }
+            //if(bottomPanelExpandedOnStartup){
+            //    toggleBottomPanel();
+            //}
             chartPanel.getPopupMenu().remove(3);//den punkt speichern zum speichern des aktuellen Chartinhalts entfernen, da es sonst probleme mit dem vollbildmodus gibt wenn jemand darauf klickt.
             refreshPage();
             //revert the Cursor Back To Normal
