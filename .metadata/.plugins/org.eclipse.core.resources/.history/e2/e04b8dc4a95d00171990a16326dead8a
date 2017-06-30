@@ -78,10 +78,6 @@ import org.jfree.ui.RectangleEdge;
 import com.fazecast.jSerialComm.SerialPort;
 public class Raumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener
 {
-	
-	public static String branch="master";//V1 is an option
-	
-	
     public static boolean CLOSE_WINDOW_ALT_REQUIRED=false;
     public static boolean OPEN_HELP_WINDOW_ALT_REQUIRED=false;
     public static boolean OPEN_NEW_PLOT_ALT_REQUIRED=false;
@@ -773,7 +769,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             File oldFile=new File("Raumklima.jar");
             oldFile.delete();
             //fileUrl: "https://raw.githubusercontent.com/lukasaldersley/Raumklima/master/Release/VERSION"
-            URL website = new URL("https://github.com/lukasaldersley/Raumklima/raw/"+branch+"/Release/Raumklima.jar");
+            URL website = new URL("https://github.com/lukasaldersley/Raumklima/raw/V1/Release/Raumklima.jar");
             ReadableByteChannel rbc = Channels.newChannel(website.openStream());
             FileOutputStream fos = new FileOutputStream("Raumklima.jar");
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
@@ -792,7 +788,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      */
     public boolean checkIfUpdateAvailable(){
         try{
-            URL website = new URL("https://raw.githubusercontent.com/lukasaldersley/Raumklima/"+branch+"/Release/VERSION");
+            URL website = new URL("https://raw.githubusercontent.com/lukasaldersley/Raumklima/V1/Release/VERSION");
             br=new  BufferedReader(new InputStreamReader(website.openStream()));
             if(Double.parseDouble(br.readLine().trim())>VERSION){
                 return true;
