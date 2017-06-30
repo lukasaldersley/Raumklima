@@ -1,0 +1,24 @@
+package Raumklima;
+
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+public class testOffullscreenApi {
+	
+	GraphicsDevice gd=GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+	public testOffullscreenApi(){
+		JFrame window=new JFrame();
+		JLabel lbl=new JLabel("HI");
+		window.add(lbl);
+		window.pack();
+		gd.setFullScreenWindow(window);
+	}
+
+	public static void main(String[] args) {
+		new testOffullscreenApi();
+	}
+
+}
