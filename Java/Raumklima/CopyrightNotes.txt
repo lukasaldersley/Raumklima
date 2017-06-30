@@ -2,7 +2,7 @@
 
 Java Programm:
 
-    Bei Fragen: lukasaldersley@outlook.com
+    Bei Fragen/Vorschlägen: lukasaldersley@outlook.com
         oder Kommentar auf https://www.github.com/lukasaldersley/Raumklima
 
     Benutzte Bibliotheken:

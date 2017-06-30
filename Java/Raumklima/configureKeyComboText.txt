@@ -1,5 +1,5 @@
 ﻿Mögliche Tastenkombinationen sind:
-	Alt, AltGr, Strg, Shift (keine davon bis alle sind möglich)
+	Alt, Strg, Shift (keine davon bis alle sind möglich)
 	und EINE Beliebige andere Taste
 	(z.b. Funktionstasten, Zahlen, Sonderzeichen, Buchstaben usw.)
 
