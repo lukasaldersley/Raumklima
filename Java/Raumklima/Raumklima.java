@@ -159,6 +159,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     private Crosshair xCrosshair;
     private Crosshair[] yCrosshairs;
+    
+    private JCheckBox[] visibleSeries;
 
     private Dimension fullscreenDimension;
 
@@ -199,6 +201,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private JLabel[] dataLabels;
     private JLabel[] helpWindowText;
     private JLabel[] settingsWindowText;
+
+    XYSeries[] xYSeries;
 
     private JMenu fileMenu;
     private JMenu openHelpWindowMenu;
@@ -253,6 +257,18 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 	private JCheckBox dataPanelOnStartup;
 	private JCheckBox fullscreenOnStartupComboBox;
 	private boolean bottomPanelExpandedOnStartup;
+
+
+	private boolean[] seriesVisible;
+
+
+	private JPanel selectGraphsPanel;
+
+
+	private JScrollPane selectGraphsScroller;
+
+
+	private XYSeriesCollection xYSeriesCollection;
 
     /**
      * the standard constructor (without the optional values of the second Constructor, which is only needed in order to make the numbering in the Title of the MainWindow work. This Constructor just calls the {@code setup()} Method.
@@ -638,6 +654,11 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         
         
         settingsWindowLeftPanel.add(settingsWindowLowerLeftPanel);
+        
+        selectGraphsPanel=new JPanel(new GridLayout(0,1));
+        selectGraphsScroller=new JScrollPane();
+        selectGraphsScroller.setViewportView(selectGraphsPanel);
+        settingsWindowLeftPanel.add(selectGraphsScroller);
         
 
         settingsWindow.add(settingsWindowLeftPanel,BorderLayout.WEST);
@@ -1062,7 +1083,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     @SuppressWarnings("rawtypes")
     private XYDataset createDataset(boolean doShowOpenDialog,String fileName) {
-        XYSeriesCollection xYSeriesCollection = new XYSeriesCollection();
+        xYSeriesCollection = new XYSeriesCollection();
         if(doShowOpenDialog){
             int returnVal = showOpenDialog();
             if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -1083,7 +1104,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             csvFile=new File(fileName);
         }
 
-        XYSeries[] xYSeries;
 
         try{
             String line=br.readLine();
@@ -1092,9 +1112,17 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             numberOfGraphs=dataValueDescriptors.length;
 
             xYSeries=new XYSeries[numberOfGraphs];
+            visibleSeries=new JCheckBox[numberOfGraphs];
+            seriesVisible=new boolean[numberOfGraphs];
+            //TODO
 
             for (int i = 0; i < numberOfGraphs; ++i) {
                 xYSeries[i] = new XYSeries((Comparable)((Object)(dataValueDescriptors[i])));
+                seriesVisible[i]=true;
+                visibleSeries[i]=new JCheckBox(dataValueDescriptors[i]);
+                visibleSeries[i].setSelected(seriesVisible[i]);
+                visibleSeries[i].addActionListener(this);
+                selectGraphsPanel.add(visibleSeries[i]);
             }
 
             line=br.readLine();
@@ -1112,7 +1140,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                     zwsp[i]=Double.parseDouble(zwso[i]);
                     xYSeries[i].add(counter,zwsp[i]);
                 }
-                counter++;
+                counter+=2;
+                //DELAYING STGKDPSGFGFGFGFGFGFGFGFGFGFGFGFGFGFGFGFGFGFGFGF
+                br.readLine();
+                //#DELAYING LIKSJAAAAAAAFADFDFDFDFDFDSJAAAAAAAAAAAAAAAAAAAAAAAAAAAAS
                 line=br.readLine();
                 if(line==null||line==""){
                     break;
@@ -1360,9 +1391,49 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 openEditCeyComboWindow(i);
             }
         }
+        for(int i=0;i<numberOfGraphs;i++){
+        	if(event.getSource()==visibleSeries[i]){
+        		if(visibleSeries[i].isSelected()){
+        			//seriesVisible[i]=true;
+        			//xYSeriesCollection.addSeries(xYSeries[i]);
+        			addASeries(i);
+        		}
+        		//TODO
+        		else{
+        			//seriesVisible[i]=false;
+        			removeASeries(i);
+        			//xYSeriesCollection.removeSeries(i);
+        		}
+        	}
+        }
     }
 
-    private void openEditCeyComboWindow(int in) {
+    private void addASeries(int in) {
+    	seriesVisible[in]=true;
+    	xYSeriesCollection.removeAllSeries();
+    	for(int i=0;i<numberOfGraphs;i++){
+        	yCrosshairs[i].setVisible(false);
+    		if(seriesVisible[i]){
+    			xYSeriesCollection.addSeries(xYSeries[i]);
+    			yCrosshairs[i].setVisible(true);
+    		}
+    	}
+	}
+
+	private void removeASeries(int in) {
+		//TODO sort out crosshairs and figure out exceptions
+    	seriesVisible[in]=false;
+    	yCrosshairs[in].setVisible(false);
+    	int rm=0;
+    	for(int i=0;i<in;i++){
+    		if(seriesVisible[i]){
+    			rm++;
+    		}
+    	}
+    	xYSeriesCollection.removeSeries(rm);
+	}
+
+	private void openEditCeyComboWindow(int in) {
         configureKeyComboText[5].setText(configureKeyComboText[5].getText()+editKeyComboWindowText[in]);
         configureKeyComboWindow.setVisible(true);
         currentlyEditedKeycombo=in;
