@@ -70,4 +70,4 @@ YES
 #FullscreenOnStartup
 NO
 #BottomPanelExpandedOnStartup
-YES
+NO

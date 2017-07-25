@@ -1137,13 +1137,18 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 String[] zwso=line.split(";");
                 double[] zwsp=new double[numberOfGraphs];
                 for(int i=0;i<numberOfGraphs;i++){
+                	try{
                     zwsp[i]=Double.parseDouble(zwso[i]);
                     xYSeries[i].add(counter,zwsp[i]);
+                	}
+                	catch(Exception e){
+                		e.printStackTrace();
+                		System.out.println(i);
+                	}
                 }
-                counter+=2;
-                //DELAYING STGKDPSGFGFGFGFGFGFGFGFGFGFGFGFGFGFGFGFGFGFGFGF
-                br.readLine();
-                //#DELAYING LIKSJAAAAAAAFADFDFDFDFDFDSJAAAAAAAAAAAAAAAAAAAAAAAAAAAAS
+                //counter+=2;
+                counter++;
+                //br.readLine();
                 line=br.readLine();
                 if(line==null||line==""){
                     break;
@@ -1178,8 +1183,21 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         double d = valueAxis.java2DToValue((double)chartMouseEvent.getTrigger().getX(), rectangle2D, RectangleEdge.BOTTOM);
         this.xCrosshair.setValue(d);
         for (int i = 0; i < numberOfGraphs; ++i) {
-            double d2 = DatasetUtilities.findYValue((XYDataset)xYPlot.getDataset(), (int)i, (double)d);
+        	if(seriesVisible[i]){
+        		int nInt=0;
+        		for(int j=0;j<i;j++){
+        			if(seriesVisible[i]){
+        				nInt++;
+        			}
+        		}
+        		System.out.println(i+"=>"+nInt);
+            double d2 = DatasetUtilities.findYValue((XYDataset)xYPlot.getDataset(), (int)nInt, (double)d);
             dataBoxes[i].setText(String.valueOf(d2));
+        	}
+        	else
+        	{
+        		dataBoxes[i].setText("N/A");
+        	}
         }
     }
 
@@ -1191,9 +1209,22 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         ValueAxis valueAxis = xYPlot.getDomainAxis();
         double d = valueAxis.java2DToValue((double)chartMouseEvent.getTrigger().getX(), rectangle2D, RectangleEdge.BOTTOM);
         this.xCrosshair.setValue(d);
+        for(int i=0;i<numberOfGraphs;i++)
+        {
+        	System.out.println(seriesVisible[i]);
+        }
         for (int i = 0; i < numberOfGraphs; ++i) {
-            double d2 = DatasetUtilities.findYValue((XYDataset)xYPlot.getDataset(), (int)i, (double)d);
+        	if(seriesVisible[i]){
+        		int nInt=0;
+        		for(int j=0;j<i;j++){
+        			if(seriesVisible[j]){
+        				nInt++;
+        			}
+        		}
+        		System.out.println(i+"=>"+nInt);
+            double d2 = DatasetUtilities.findYValue((XYDataset)xYPlot.getDataset(), (int)nInt, (double)d);
             yCrosshairs[i].setValue(d2);
+        	}
         }
     }
 
@@ -1366,22 +1397,22 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
         if(event.getSource()==fullscreenOnStartupComboBox){
         	if(fullscreenOnStartupComboBox.isSelected()){
-        		configRaw[80]="YES";
+        		configRaw[70]="YES";
         		fullscreenOnStartup=true;
         	}
         	else{
-        		configRaw[80]="NO";
+        		configRaw[70]="NO";
         		fullscreenOnStartup=true;
         	}
         	writeConfigFile();
         }
         if(event.getSource()==dataPanelOnStartup){
         	if(dataPanelOnStartup.isSelected()){
-        		configRaw[82]="YES";
+        		configRaw[72]="YES";
         		bottomPanelExpandedOnStartup=true;
         	}
         	else{
-        		configRaw[82]="NO";
+        		configRaw[72]="NO";
         		bottomPanelExpandedOnStartup=true;
         	}
         	writeConfigFile();
@@ -1421,14 +1452,17 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 	}
 
 	private void removeASeries(int in) {
+		System.out.println(in);
+		seriesVisible[in]=false;
 		//TODO sort out crosshairs and figure out exceptions
-    	seriesVisible[in]=false;
     	yCrosshairs[in].setVisible(false);
     	int rm=0;
     	for(int i=0;i<in;i++){
+    		System.out.print("cck: ");
     		if(seriesVisible[i]){
     			rm++;
     		}
+    		System.out.println(rm);
     	}
     	xYSeriesCollection.removeSeries(rm);
 	}
