@@ -80,7 +80,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 {
 	
 	public static String branch="master";//V1 is an option
-	
+	//ÄÜÖäüöß
 	
     public static boolean CLOSE_WINDOW_ALT_REQUIRED=false;
     public static boolean OPEN_HELP_WINDOW_ALT_REQUIRED=false;
