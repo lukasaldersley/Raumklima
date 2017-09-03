@@ -7,6 +7,6 @@ Um die Tatenkombination für:
 zu ändern, klicken Sie bitte auf den knopf "Ändern" und drücken sie dann
 bitte alle gewünschten Tasten gleichzeitig und lassen die letzte Taste
 (die Funktionstaste, Zahl, den Buuchstaben oder das Sonderzeichen)
-als LETZTES LOS. Die Gewählte Tastenkombination erscheint im Textfeld unten.
+als ERSTES LOS. Die Gewählte Tastenkombination erscheint im Textfeld unten.
 Sie können die Tastenkombination durch erneutes klicken auf den knopf nochmals ändern.
 Zum Speichern drücken Sie bitte auf den Knopf "Schließen"

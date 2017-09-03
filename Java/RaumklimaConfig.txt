@@ -69,5 +69,9 @@ YES
 #General Status
 #FullscreenOnStartup
 NO
+#FullscreenPossible
+YES
 #BottomPanelExpandedOnStartup
 NO
+#AutoUpdate
+YES

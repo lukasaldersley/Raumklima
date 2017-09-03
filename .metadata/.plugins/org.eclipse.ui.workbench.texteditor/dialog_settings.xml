@@ -2,37 +2,37 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="System.out.println(zeile" key="selection"/>
+		<item value="makeHelpWindowVisible" key="selection"/>
 		<item value="true" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="makeHelpWindowVisible"/>
+			<item value="toggleHelpWindow()"/>
+			<item value="=configRaw["/>
+			<item value="XA:"/>
+			<item value="�"/>
+			<item value=" �"/>
 			<item value="System.out.println(zeile"/>
 			<item value="chartM"/>
-			<item value="AS"/>
-			<item value="[]"/>
-			<item value="seies"/>
-			<item value="+"/>
-			<item value="altgr"/>
-			<item value="V1.0"/>
 		</list>
 		<list key="replacehistory">
+			<item value="makeHelpWindowVisible()"/>
+			<item value="makeHelpWindowVisible"/>
+			<item value="ü"/>
+			<item value="ä"/>
 			<item value="+&quot; &quot;+"/>
 			<item value="fileTypeTitle"/>
 			<item value="Raumklima"/>
 			<item value="RaumluftConfig.txt"/>
-			<item value="OPEN_HELP_WINDOW_"/>
-			<item value="OPEN_SETTINGS_WINDOW_"/>
-			<item value="OPEN_NEW_PLOT"/>
-			<item value="CLOSE_WINDOW_"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="284" key="DIALOG_WIDTH"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 		<item value="336" key="DIALOG_HEIGHT"/>
-		<item value="683" key="DIALOG_X_ORIGIN"/>
-		<item value="327" key="DIALOG_Y_ORIGIN"/>
+		<item value="1386" key="DIALOG_X_ORIGIN"/>
+		<item value="249" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>
