@@ -2,30 +2,30 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="makeHelpWindowVisible" key="selection"/>
+		<item value="System.out.print" key="selection"/>
 		<item value="true" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="System.out.print"/>
+			<item value="editKeyComboWindowText"/>
+			<item value="waitText"/>
 			<item value="makeHelpWindowVisible"/>
 			<item value="toggleHelpWindow()"/>
 			<item value="=configRaw["/>
 			<item value="XA:"/>
 			<item value="�"/>
-			<item value=" �"/>
-			<item value="System.out.println(zeile"/>
-			<item value="chartM"/>
 		</list>
 		<list key="replacehistory">
+			<item value="if(debug){System.out.print"/>
+			<item value="setNewKeyCombinationTexts"/>
+			<item value="pleaseWaitMessageText"/>
 			<item value="makeHelpWindowVisible()"/>
 			<item value="makeHelpWindowVisible"/>
 			<item value="ü"/>
 			<item value="ä"/>
 			<item value="+&quot; &quot;+"/>
-			<item value="fileTypeTitle"/>
-			<item value="Raumklima"/>
-			<item value="RaumluftConfig.txt"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
