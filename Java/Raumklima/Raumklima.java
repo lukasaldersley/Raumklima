@@ -305,13 +305,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private URL source;
 
     private XYSeriesCollection xYSeriesCollection;
-	private int imageWidth;
-	private int imageHeight;
-	private JPanel FileSizePanel;
-	private JTextField imageWidthBox;
-	private JTextField imageHeightBox;
-	private JCheckBox imageSizeAutoCheckBox;
-	private boolean getImageSizeAutomatically;
+    private int imageWidth;
+    private int imageHeight;
+    private JPanel FileSizePanel;
+    private JTextField imageWidthBox;
+    private JTextField imageHeightBox;
+    private JCheckBox imageSizeAutoCheckBox;
+    private boolean getImageSizeAutomatically;
 
     public static void main(String[] args){
         if(args.length==0){
@@ -581,52 +581,52 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         imageWidthBox.setMaximumSize(new Dimension(50,23));
         imageWidthBox.getDocument().addDocumentListener(new DocumentListener(){
 
-			@Override
-			public void changedUpdate(DocumentEvent e) {}
+                @Override
+                public void changedUpdate(DocumentEvent e) {}
 
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				System.out.println("A");
-	    		imageWidth=Integer.parseInt(imageWidthBox.getText());
-	    		reloadBackend();
-			}
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    System.out.println("A");
+                    imageWidth=Integer.parseInt(imageWidthBox.getText());
+                    reloadBackend();
+                }
 
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				if(!imageWidthBox.getText().equals("")){
-				System.out.println("B");
-	    		imageWidth=Integer.parseInt(imageWidthBox.getText());
-	    		reloadBackend();
-				}
-			}
-        	
-        });
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    if(!imageWidthBox.getText().equals("")){
+                        System.out.println("B");
+                        imageWidth=Integer.parseInt(imageWidthBox.getText());
+                        reloadBackend();
+                    }
+                }
+
+            });
         imageHeightBox=new JTextField();
         imageHeightBox.setText(String.valueOf(imageHeight));
         imageHeightBox.setMinimumSize(new Dimension(50,23));
         imageHeightBox.setMaximumSize(new Dimension(50,23));
         imageHeightBox.getDocument().addDocumentListener(new DocumentListener(){
 
-			@Override
-			public void changedUpdate(DocumentEvent e) {}
+                @Override
+                public void changedUpdate(DocumentEvent e) {}
 
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				System.out.println("A");
-	    		imageHeight=Integer.parseInt(imageHeightBox.getText());
-	    		reloadBackend();
-			}
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    System.out.println("A");
+                    imageHeight=Integer.parseInt(imageHeightBox.getText());
+                    reloadBackend();
+                }
 
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				if(!imageHeightBox.getText().equals("")){
-				System.out.println("B");
-	    		imageHeight=Integer.parseInt(imageHeightBox.getText());
-	    		reloadBackend();
-				}
-			}
-        	
-        });
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    if(!imageHeightBox.getText().equals("")){
+                        System.out.println("B");
+                        imageHeight=Integer.parseInt(imageHeightBox.getText());
+                        reloadBackend();
+                    }
+                }
+
+            });
         FileSizePanel.add(imageWidthBox);
         FileSizePanel.add(new JLabel("x"));
         FileSizePanel.add(imageHeightBox);
@@ -635,9 +635,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         FileSizePanel.add(imageSizeAutoCheckBox);
         imageSizeAutoCheckBox.addActionListener(this);
         if(getImageSizeAutomatically){
-        	imageHeightBox.setEnabled(false);
-        	imageWidthBox.setEnabled(false);
-        	imageSizeAutoCheckBox.setSelected(true);
+            imageHeightBox.setEnabled(false);
+            imageWidthBox.setEnabled(false);
+            imageSizeAutoCheckBox.setSelected(true);
         }
         FileTypePanel.add(FileSizePanel);
         FileSizePanel.validate();
@@ -912,8 +912,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             bottomPanelExpandedOnStartup=configRaw[80].equals("YES");
             autoUpdate=configRaw[82].equals("YES");
             if(getImageSizeAutomatically){
-            	imageHeight=fullscreenDimension.height;
-            	imageWidth=fullscreenDimension.width;
+                imageHeight=fullscreenDimension.height;
+                imageWidth=fullscreenDimension.width;
             }
         }
         catch(Exception e){
@@ -1024,13 +1024,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 return true;
             }
             else{
-            	source=new URL(projectUri+branch+"/PublicVersion/BUILD");
-            	br=new  BufferedReader(new InputStreamReader(source.openStream()));
+                source=new URL(projectUri+branch+"/PublicVersion/BUILD");
+                br=new  BufferedReader(new InputStreamReader(source.openStream()));
                 if(Double.parseDouble(br.readLine().trim())>BUILD){
                     return true;
                 }
                 else{
-                return false;
+                    return false;
                 }
             }
         }
@@ -1516,23 +1516,23 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     @Override
     public void actionPerformed(ActionEvent event) {
-    	System.out.println("EVENT FIRED");
-    	if(event.getSource()==imageSizeAutoCheckBox){
-    		if(imageSizeAutoCheckBox.isSelected()){
-    			imageWidthBox.setText(String.valueOf(fullscreenDimension.width));
-        		imageWidth=Integer.parseInt(imageWidthBox.getText());
-    			imageWidthBox.setEnabled(false);
-    			imageHeightBox.setText(String.valueOf(fullscreenDimension.height));
-        		imageHeight=Integer.parseInt(imageHeightBox.getText());
-    			imageHeightBox.setEnabled(false);
-    			getImageSizeAutomatically=true;
-    		}
-    		else{
-    			imageWidthBox.setEnabled(true);
-    			imageHeightBox.setEnabled(true);
-    			getImageSizeAutomatically=false;
-    		}
-    	}
+        System.out.println("EVENT FIRED");
+        if(event.getSource()==imageSizeAutoCheckBox){
+            if(imageSizeAutoCheckBox.isSelected()){
+                imageWidthBox.setText(String.valueOf(fullscreenDimension.width));
+                imageWidth=Integer.parseInt(imageWidthBox.getText());
+                imageWidthBox.setEnabled(false);
+                imageHeightBox.setText(String.valueOf(fullscreenDimension.height));
+                imageHeight=Integer.parseInt(imageHeightBox.getText());
+                imageHeightBox.setEnabled(false);
+                getImageSizeAutomatically=true;
+            }
+            else{
+                imageWidthBox.setEnabled(true);
+                imageHeightBox.setEnabled(true);
+                getImageSizeAutomatically=false;
+            }
+        }
         if(event.getSource()==changeKeyComboButton){
             mainWindow.removeKeyListener(this);
             allowKeyComboChange=true;
@@ -1687,7 +1687,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void openSetNewKeyCombinationWindow(int input) {
-    	keyCombinationsEnabled=false;
+        keyCombinationsEnabled=false;
         configureKeyComboText[5].setText(configureKeyComboText[5].getText()+setNewKeyCombinationTexts[input]);
         setNewKeyCombinationWindow.setVisible(true);
         currentlyEditedKeyCombinationNumber=input;
@@ -1796,7 +1796,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private String getKeyStringFromKeyCode(int code){
-    	//mir ist bekannt, dass die Methode KeyEvent.getKeyText(int) existiert, jedoch sind ausgaben wie "Zirkumflex (Dead)" meiner meinung nach unverständlicher als "^"
+        //mir ist bekannt, dass die Methode KeyEvent.getKeyText(int) existiert, jedoch sind ausgaben wie "Zirkumflex (Dead)" meiner meinung nach unverständlicher als "^"
         switch(code){
             case 8: return"BACKSPACE";
             case 10: return"ENTER";
@@ -1904,41 +1904,41 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      */
     @Override
     public void keyPressed(KeyEvent event) {
-    	System.out.println("KeyText (extended): "+KeyEvent.getKeyText(event.getExtendedKeyCode())+"    KeyText: "+KeyEvent.getKeyText(event.getKeyCode())+"    KeyString (eigenbau&&extended): "+getKeyStringFromKeyCode(event.getExtendedKeyCode())+"    KeyString(eigenbau): "+getKeyStringFromKeyCode(event.getKeyCode()));
-    	if(keyCombinationsEnabled){
-        if(event.getExtendedKeyCode()==TOGGLE_FULLSCREEN_MODE_KEY_CODE&&event.isAltDown()==TOGGLE_FULLSCREEN_MODE_ALT_REQUIRED&&event.isControlDown()==TOGGLE_FULLSCREEN_MODE_CTRL_REQUIRED&&event.isShiftDown()==TOGGLE_FULLSCREEN_MODE_SHIFT_REQUIRED){
-            toggleFullscreen();
+        System.out.println("KeyText (extended): "+KeyEvent.getKeyText(event.getExtendedKeyCode())+"    KeyText: "+KeyEvent.getKeyText(event.getKeyCode())+"    KeyString (eigenbau&&extended): "+getKeyStringFromKeyCode(event.getExtendedKeyCode())+"    KeyString(eigenbau): "+getKeyStringFromKeyCode(event.getKeyCode()));
+        if(keyCombinationsEnabled){
+            if(event.getExtendedKeyCode()==TOGGLE_FULLSCREEN_MODE_KEY_CODE&&event.isAltDown()==TOGGLE_FULLSCREEN_MODE_ALT_REQUIRED&&event.isControlDown()==TOGGLE_FULLSCREEN_MODE_CTRL_REQUIRED&&event.isShiftDown()==TOGGLE_FULLSCREEN_MODE_SHIFT_REQUIRED){
+                toggleFullscreen();
+            }
+            if(event.getExtendedKeyCode()==REFRESH_FRAME_KEY_CODE&&event.isAltDown()==REFRESH_FRAME_ALT_REQUIRED&&event.isControlDown()==REFRESH_FRAME_CTRL_REQUIRED&&event.isShiftDown()==REFRESH_FRAME_SHIFT_REQUIRED){
+                refreshPage();
+            }
+            if(event.getExtendedKeyCode()==OPEN_HELP_WINDOW_KEY_CODE&&event.isAltDown()==OPEN_HELP_WINDOW_ALT_REQUIRED&&event.isControlDown()==OPEN_HELP_WINDOW_CTRL_REQUIRED&&event.isShiftDown()==OPEN_HELP_WINDOW_SHIFT_REQUIRED){
+                deactivateFullscreen();
+                makeHelpWindowVisible();
+            }
+            if(event.getExtendedKeyCode()==OPEN_NEW_PLOT_KEY_CODE&&event.isAltDown()==OPEN_NEW_PLOT_ALT_REQUIRED&&event.isControlDown()==OPEN_NEW_PLOT_CTRL_REQUIRED&&event.isShiftDown()==OPEN_NEW_PLOT_SHIFT_REQUIRED){
+                deactivateFullscreen();
+                openNewPlot();
+            }
+            if(event.getExtendedKeyCode()==OPEN_NEW_WINDOW_KEY_CODE&&event.isAltDown()==OPEN_NEW_WINDOW_ALT_REQUIRED&&event.isControlDown()==OPEN_NEW_WINDOW_CTRL_REQUIRED&&event.isShiftDown()==OPEN_NEW_WINDOW_SHIFT_REQUIRED){
+                deactivateFullscreen();
+                openNewWindow();
+            }
+            if(event.getExtendedKeyCode()==CLOSE_WINDOW_KEY_CODE&&event.isAltDown()==CLOSE_WINDOW_ALT_REQUIRED&&event.isControlDown()==CLOSE_WINDOW_CTRL_REQUIRED&&event.isShiftDown()==CLOSE_WINDOW_SHIFT_REQUIRED){
+                deactivateFullscreen();
+                closeWindow();
+            }
+            if(event.getExtendedKeyCode()==TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_CODE&&event.isAltDown()==TOGGLE_BOTTOM_PANEL_VISIBILITY_ALT_REQUIRED&&event.isControlDown()==TOGGLE_BOTTOM_PANEL_VISIBILITY_CTRL_REQUIRED&&event.isShiftDown()==TOGGLE_BOTTOM_PANEL_VISIBILITY_SHIFT_REQUIRED){
+                toggleBottomPanel();
+            }
+            if(event.getExtendedKeyCode()==OPEN_SETTINGS_WINDOW_KEY_CODE&&event.isAltDown()==OPEN_SETTINGS_WINDOW_ALT_REQUIRED&&event.isControlDown()==OPEN_SETTINGS_WINDOW_CTRL_REQUIRED&&event.isShiftDown()==OPEN_SETTINGS_WINDOW_SHIFT_REQUIRED){
+                deactivateFullscreen();
+                toggleSettingsWindow();
+            }
+            if(event.getExtendedKeyCode()==SAVE_GRAPH_IMAGE_KEY_CODE&&event.isAltDown()==SAVE_GRAPH_IMAGE_ALT_REQUIRED&&event.isControlDown()==SAVE_GRAPH_IMAGE_CTRL_REQUIRED&&event.isShiftDown()==SAVE_GRAPH_IMAGE_SHIFT_REQUIRED){
+                saveImages();
+            }
         }
-        if(event.getExtendedKeyCode()==REFRESH_FRAME_KEY_CODE&&event.isAltDown()==REFRESH_FRAME_ALT_REQUIRED&&event.isControlDown()==REFRESH_FRAME_CTRL_REQUIRED&&event.isShiftDown()==REFRESH_FRAME_SHIFT_REQUIRED){
-            refreshPage();
-        }
-        if(event.getExtendedKeyCode()==OPEN_HELP_WINDOW_KEY_CODE&&event.isAltDown()==OPEN_HELP_WINDOW_ALT_REQUIRED&&event.isControlDown()==OPEN_HELP_WINDOW_CTRL_REQUIRED&&event.isShiftDown()==OPEN_HELP_WINDOW_SHIFT_REQUIRED){
-            deactivateFullscreen();
-            makeHelpWindowVisible();
-        }
-        if(event.getExtendedKeyCode()==OPEN_NEW_PLOT_KEY_CODE&&event.isAltDown()==OPEN_NEW_PLOT_ALT_REQUIRED&&event.isControlDown()==OPEN_NEW_PLOT_CTRL_REQUIRED&&event.isShiftDown()==OPEN_NEW_PLOT_SHIFT_REQUIRED){
-            deactivateFullscreen();
-            openNewPlot();
-        }
-        if(event.getExtendedKeyCode()==OPEN_NEW_WINDOW_KEY_CODE&&event.isAltDown()==OPEN_NEW_WINDOW_ALT_REQUIRED&&event.isControlDown()==OPEN_NEW_WINDOW_CTRL_REQUIRED&&event.isShiftDown()==OPEN_NEW_WINDOW_SHIFT_REQUIRED){
-            deactivateFullscreen();
-            openNewWindow();
-        }
-        if(event.getExtendedKeyCode()==CLOSE_WINDOW_KEY_CODE&&event.isAltDown()==CLOSE_WINDOW_ALT_REQUIRED&&event.isControlDown()==CLOSE_WINDOW_CTRL_REQUIRED&&event.isShiftDown()==CLOSE_WINDOW_SHIFT_REQUIRED){
-            deactivateFullscreen();
-            closeWindow();
-        }
-        if(event.getExtendedKeyCode()==TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_CODE&&event.isAltDown()==TOGGLE_BOTTOM_PANEL_VISIBILITY_ALT_REQUIRED&&event.isControlDown()==TOGGLE_BOTTOM_PANEL_VISIBILITY_CTRL_REQUIRED&&event.isShiftDown()==TOGGLE_BOTTOM_PANEL_VISIBILITY_SHIFT_REQUIRED){
-            toggleBottomPanel();
-        }
-        if(event.getExtendedKeyCode()==OPEN_SETTINGS_WINDOW_KEY_CODE&&event.isAltDown()==OPEN_SETTINGS_WINDOW_ALT_REQUIRED&&event.isControlDown()==OPEN_SETTINGS_WINDOW_CTRL_REQUIRED&&event.isShiftDown()==OPEN_SETTINGS_WINDOW_SHIFT_REQUIRED){
-            deactivateFullscreen();
-            toggleSettingsWindow();
-        }
-        if(event.getExtendedKeyCode()==SAVE_GRAPH_IMAGE_KEY_CODE&&event.isAltDown()==SAVE_GRAPH_IMAGE_ALT_REQUIRED&&event.isControlDown()==SAVE_GRAPH_IMAGE_CTRL_REQUIRED&&event.isShiftDown()==SAVE_GRAPH_IMAGE_SHIFT_REQUIRED){
-            saveImages();
-        }
-    	}
     }
 
     private void saveImages() {
