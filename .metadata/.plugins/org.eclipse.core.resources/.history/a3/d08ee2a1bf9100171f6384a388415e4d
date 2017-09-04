@@ -153,7 +153,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static int NUMBER_OF_CONFIG_ENTRIES=83;
 
     public static final double VERSION=1.6;
-    public static final double BUILD=0.1;
+    public static final double BUILD=1.0;
 
     private boolean allowKeyComboChange=false;
     private boolean bottomPanelExpanded=false;
@@ -418,7 +418,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             //how-to-download-and-save-a-file-from-internet-using-java.htm
             //1.9.17 20:58
             try{
-                source = new URL(projectUri+branch+"/PublicVersion/RaumklimaConfig.txt");
+                source = new URL(projectUri+branch+"/Release/RaumklimaConfig.txt");
                 readableByteChannelFromSource = Channels.newChannel(source.openStream());
                 fileOutputStream = new FileOutputStream("RaumklimaConfig.txt");
                 fileOutputStream.getChannel().transferFrom(readableByteChannelFromSource, 0, Long.MAX_VALUE);
@@ -1018,13 +1018,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      */
     public boolean checkIfUpdateAvailable(){
         try{
-            source = new URL(projectUri+branch+"/PublicVersion/VERSION");
+            source = new URL(projectUri+branch+"/Release/VERSION");
             br=new  BufferedReader(new InputStreamReader(source.openStream()));
             if(Double.parseDouble(br.readLine().trim())>VERSION){
                 return true;
             }
             else{
-            	source=new URL(projectUri+branch+"/PublicVersion/BUILD");
+            	source=new URL(projectUri+branch+"/Release/BUILD");
             	br=new  BufferedReader(new InputStreamReader(source.openStream()));
                 if(Double.parseDouble(br.readLine().trim())>VERSION){
                     return true;
@@ -1047,8 +1047,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         try{
             oldFile=new File("Raumklima.jar");
             oldFile.delete();
-            //fileUrl: "https://raw.githubusercontent.com/lukasaldersley/Raumklima/master/PublicVersion/VERSION"
-            source = new URL(projectUri+"raw/"+branch+"/PublicVersion/Raumklima.jar");
+            //fileUrl: "https://raw.githubusercontent.com/lukasaldersley/Raumklima/master/Release/VERSION"
+            source = new URL(projectUri+"raw/"+branch+"/Release/Raumklima.jar");
             readableByteChannelFromSource = Channels.newChannel(source.openStream());
             fileOutputStream = new FileOutputStream("Raumklima.jar");
             fileOutputStream.getChannel().transferFrom(readableByteChannelFromSource, 0, Long.MAX_VALUE);
