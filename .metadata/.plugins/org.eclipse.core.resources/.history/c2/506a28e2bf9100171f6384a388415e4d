@@ -1026,7 +1026,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             else{
             	source=new URL(projectUri+branch+"/PublicVersion/BUILD");
             	br=new  BufferedReader(new InputStreamReader(source.openStream()));
-                if(Double.parseDouble(br.readLine().trim())>BUILD){
+                if(Double.parseDouble(br.readLine().trim())>VERSION){
                     return true;
                 }
                 else{
@@ -1085,7 +1085,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 helpPanel.add(copyrightNotes[0]);
                 copyrightNotes[1]=new JLabel(" ");
                 helpPanel.add(copyrightNotes[1]);
-                copyrightNotes[2]=new JLabel("Version: "+VERSION+"."+BUILD);
+                copyrightNotes[2]=new JLabel("Version: "+VERSION);
                 helpPanel.add(copyrightNotes[2]);
                 for(int i=3;i<NUMBER_OF_COPYRIGHT_NOTES+3;i++){
                     line=br.readLine();
