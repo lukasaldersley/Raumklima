@@ -93,7 +93,7 @@ import com.fazecast.jSerialComm.SerialPort;
 public class Raumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener
 {
     public boolean debug=false;
-    public static String branch="V1.6";//master, V1 and V1.6 are Options
+    public static String branch="master";//V1 and V1.5 are Options
     public static String projectUri="https://raw.githubusercontent.com/lukasaldersley/Raumklima/";
 
     public static boolean CLOSE_WINDOW_ALT_REQUIRED=false;
