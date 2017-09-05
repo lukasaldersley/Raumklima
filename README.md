@@ -3,7 +3,7 @@ Software für ein Arduino-basiertes Gerät zur Überwachung des Raumklimas.
 
 Dieses Projekt wird/wurde durchgeführt im Rahmen eines W-Seminares von Lukas Aldersley am Josef-Effner-Gymnasium in Dachau.
 
-Die Aktuelle Version ist 1.0.
+Die Aktuelle Version ist 1.6.1.0
 Die Software wird alle Updates automatisch installieren.
 
 Funktionsfähige Software befindet sich im Ordner PublicVersion (als .jar oder als .ino Datei. Die VERSION datei wird nur vom updater gebraucht. Unter Umständen ist diese Software noch mit Bugs behaftet)
