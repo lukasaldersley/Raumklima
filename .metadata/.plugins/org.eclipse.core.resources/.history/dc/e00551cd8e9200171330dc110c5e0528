@@ -736,8 +736,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         interpolationSettings=new JPanel();
         interpolationSettings.add(new JLabel("Unfertig"));
         interpolationSettings.add(new JLabel("funktionslos"));
-        interpolationSettings.add(new JLabel(" "));
-        interpolationSettings.add(new JLabel(" "));
         interpolationSettings.setLayout(new BoxLayout(interpolationSettings, BoxLayout.Y_AXIS));
         JLabel title=new JLabel("Interpolation");
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
