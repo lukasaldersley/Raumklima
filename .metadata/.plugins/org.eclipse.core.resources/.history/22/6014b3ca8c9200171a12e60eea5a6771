@@ -737,9 +737,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         
         interpolationSettings=new JPanel();
         interpolationSettings.setLayout(new BoxLayout(interpolationSettings, BoxLayout.Y_AXIS));
-        JLabel title=new JLabel("Interpolation");
-        title.setAlignmentX(Component.LEFT_ALIGNMENT);
-        interpolationSettings.add(title);
+        interpolationSettings.add(new JLabel("Interpolation"));
         interpolationSettings.add(new JLabel(" "));
         interpolateButtonGroup=new ButtonGroup();
         interpolate1x=new JRadioButton("Alle Werte zeichnen");
@@ -778,11 +776,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         });
         interpolateCustomPanel.add(interpolateCustomInputBox);
         interpolateCustomPanel.add(new JLabel(". Wert zeichnen"));
-        interpolate1x.setAlignmentX(Component.LEFT_ALIGNMENT);
-        interpolate4x.setAlignmentX(Component.LEFT_ALIGNMENT);
-        interpolate10x.setAlignmentX(Component.LEFT_ALIGNMENT);
-        interpolate100x.setAlignmentX(Component.LEFT_ALIGNMENT);
-        interpolate1000x.setAlignmentX(Component.LEFT_ALIGNMENT);
         interpolateButtonGroup.add(interpolate1x);
         interpolateButtonGroup.add(interpolate4x);
         interpolateButtonGroup.add(interpolate10x);

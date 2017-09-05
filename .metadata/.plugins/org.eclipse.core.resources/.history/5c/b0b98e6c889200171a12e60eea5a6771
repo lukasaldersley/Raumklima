@@ -304,18 +304,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private JScrollPane selectVisibleGraphsScrollPane;
     private JCheckBox[] selectGraphVisibilityCheckBox;
     private boolean[] graphIsVisible;
-	private JPanel visibilitySettings;
-	private JPanel interpolationSettings;
-	private JRadioButton interpolateEvery;
-	private JRadioButton interpolate1x;
-	private JRadioButton interpolate4x;
-	private JRadioButton interpolate10x;
-	private JRadioButton interpolate100x;
-	private JRadioButton interpolate1000x;
-	private JRadioButton interpolateCustom;
-	private ButtonGroup interpolateButtonGroup;
-	private JPanel interpolateCustomPanel;
-	private JTextField interpolateCustomInputBox;
 
     public static void main(String[] args){
         //if(args.length==0){
@@ -718,7 +706,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         visibilitySettings=new JPanel();
         visibilitySettings.setLayout(new BoxLayout(visibilitySettings,BoxLayout.Y_AXIS));
         visibilitySettings.add(new JLabel("Graphensichtbarkeit"));
-        visibilitySettings.add(new JLabel(" "));
         selectVisibleGraphsPanel=new JPanel();
         selectVisibleGraphsPanel.setLayout(new BoxLayout(selectVisibleGraphsPanel,BoxLayout.Y_AXIS));
         selectGraphVisibilityCheckBox=new JCheckBox[numberOfGraphs];
@@ -733,75 +720,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         selectVisibleGraphsScrollPane.setAlignmentX(Component.LEFT_ALIGNMENT);//TODO HALP
         visibilitySettings.add(selectVisibleGraphsScrollPane);
         GraphSettings.setLayout(new BoxLayout(GraphSettings,BoxLayout.X_AXIS));
-        GraphSettings.add(visibilitySettings);
-        
-        interpolationSettings=new JPanel();
-        interpolationSettings.setLayout(new BoxLayout(interpolationSettings, BoxLayout.Y_AXIS));
-        JLabel title=new JLabel("Interpolation");
-        title.setAlignmentX(Component.LEFT_ALIGNMENT);
-        interpolationSettings.add(title);
-        interpolationSettings.add(new JLabel(" "));
-        interpolateButtonGroup=new ButtonGroup();
-        interpolate1x=new JRadioButton("Alle Werte zeichnen");
-        interpolate4x=new JRadioButton("jeden 4. Wert zeichnen");
-        interpolate10x=new JRadioButton("jeden 10. Wert zeichen");
-        interpolate100x=new JRadioButton("jeden 100. Wert zeichen");
-        interpolate1000x=new JRadioButton("jeden 1000. Wert zeichen");
-        interpolateCustom=new JRadioButton("jeden ");
-        interpolateCustomPanel=new JPanel();
-        interpolateCustomPanel.setLayout(new BoxLayout(interpolateCustomPanel,BoxLayout.X_AXIS));
-        interpolateCustomPanel.add(interpolateCustom);
-        interpolateCustomInputBox=new JTextField();
-        interpolateCustomInputBox.setEnabled(interpolateCustom.isSelected());
-        interpolateCustomInputBox.setMinimumSize(new Dimension(60,23));
-        interpolateCustomInputBox.setMaximumSize(new Dimension(60,23));
-        interpolateCustomInputBox.getDocument().addDocumentListener(new DocumentListener(){
-
-			@Override
-			public void changedUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void insertUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-        	
-        });
-        interpolateCustomPanel.add(interpolateCustomInputBox);
-        interpolateCustomPanel.add(new JLabel(". Wert zeichnen"));
-        interpolate1x.setAlignmentX(Component.LEFT_ALIGNMENT);
-        interpolate4x.setAlignmentX(Component.LEFT_ALIGNMENT);
-        interpolate10x.setAlignmentX(Component.LEFT_ALIGNMENT);
-        interpolate100x.setAlignmentX(Component.LEFT_ALIGNMENT);
-        interpolate1000x.setAlignmentX(Component.LEFT_ALIGNMENT);
-        interpolateButtonGroup.add(interpolate1x);
-        interpolateButtonGroup.add(interpolate4x);
-        interpolateButtonGroup.add(interpolate10x);
-        interpolateButtonGroup.add(interpolate100x);
-        interpolateButtonGroup.add(interpolate1000x);
-        interpolateButtonGroup.add(interpolateCustom);
-        interpolate1x.addActionListener(this);
-        interpolate4x.addActionListener(this);
-        interpolate10x.addActionListener(this);
-        interpolate100x.addActionListener(this);
-        interpolate1000x.addActionListener(this);
-        interpolateCustom.addActionListener(this);
-        interpolationSettings.add(interpolate1x);
-        interpolationSettings.add(interpolate4x);
-        interpolationSettings.add(interpolate10x);
-        interpolationSettings.add(interpolate100x);
-        interpolationSettings.add(interpolate1000x);
-        interpolationSettings.add(interpolateCustomPanel);
-        GraphSettings.add(interpolationSettings);
 
         KeyCombinationPanelTitle=new JLabel("Tastenkürzel:");
         KeyCombinationPanelTitle.setFont(new Font(Font.SERIF,Font.BOLD, 16));

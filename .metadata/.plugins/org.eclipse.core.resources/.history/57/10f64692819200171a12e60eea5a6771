@@ -304,18 +304,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private JScrollPane selectVisibleGraphsScrollPane;
     private JCheckBox[] selectGraphVisibilityCheckBox;
     private boolean[] graphIsVisible;
-	private JPanel visibilitySettings;
-	private JPanel interpolationSettings;
-	private JRadioButton interpolateEvery;
-	private JRadioButton interpolate1x;
-	private JRadioButton interpolate4x;
-	private JRadioButton interpolate10x;
-	private JRadioButton interpolate100x;
-	private JRadioButton interpolate1000x;
-	private JRadioButton interpolateCustom;
-	private ButtonGroup interpolateButtonGroup;
-	private JPanel interpolateCustomPanel;
-	private JTextField interpolateCustomInputBox;
 
     public static void main(String[] args){
         //if(args.length==0){
@@ -444,10 +432,15 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
             setupDataPanel();
 
+
             mainWindow.setJMenuBar(createMainWindowMenuBar());
+
             setupChangeKeyCombinationHelperWindow();
+
             setupHelpWindow();
+
             setupSettingsWindow();
+
             settingsWindow.validate();
             //validiere das hilfefenster nochmals 
             helpWindow.validate();
@@ -715,93 +708,20 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         GeneralSettings.add(FullscreenOptionsPanel);
         GeneralSettings.add(UpdateOptionsPanel);
 
-        visibilitySettings=new JPanel();
-        visibilitySettings.setLayout(new BoxLayout(visibilitySettings,BoxLayout.Y_AXIS));
-        visibilitySettings.add(new JLabel("Graphensichtbarkeit"));
-        visibilitySettings.add(new JLabel(" "));
         selectVisibleGraphsPanel=new JPanel();
         selectVisibleGraphsPanel.setLayout(new BoxLayout(selectVisibleGraphsPanel,BoxLayout.Y_AXIS));
         selectGraphVisibilityCheckBox=new JCheckBox[numberOfGraphs];
+        graphIsVisible=new boolean[numberOfGraphs];
         for(int i=0;i<numberOfGraphs;i++){
             selectGraphVisibilityCheckBox[i]=new JCheckBox(dataValueDescriptors[i]);
             selectGraphVisibilityCheckBox[i].setSelected(graphIsVisible[i]);
-            selectGraphVisibilityCheckBox[i].addActionListener(this);
             selectVisibleGraphsPanel.add(selectGraphVisibilityCheckBox[i]);
         }
         selectVisibleGraphsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);//TODO HALP
         selectVisibleGraphsScrollPane=new JScrollPane(selectVisibleGraphsPanel);
         selectVisibleGraphsScrollPane.setAlignmentX(Component.LEFT_ALIGNMENT);//TODO HALP
-        visibilitySettings.add(selectVisibleGraphsScrollPane);
-        GraphSettings.setLayout(new BoxLayout(GraphSettings,BoxLayout.X_AXIS));
-        GraphSettings.add(visibilitySettings);
-        
-        interpolationSettings=new JPanel();
-        interpolationSettings.setLayout(new BoxLayout(interpolationSettings, BoxLayout.Y_AXIS));
-        JLabel title=new JLabel("Interpolation");
-        title.setAlignmentX(Component.LEFT_ALIGNMENT);
-        interpolationSettings.add(title);
-        interpolationSettings.add(new JLabel(" "));
-        interpolateButtonGroup=new ButtonGroup();
-        interpolate1x=new JRadioButton("Alle Werte zeichnen");
-        interpolate4x=new JRadioButton("jeden 4. Wert zeichnen");
-        interpolate10x=new JRadioButton("jeden 10. Wert zeichen");
-        interpolate100x=new JRadioButton("jeden 100. Wert zeichen");
-        interpolate1000x=new JRadioButton("jeden 1000. Wert zeichen");
-        interpolateCustom=new JRadioButton("jeden ");
-        interpolateCustomPanel=new JPanel();
-        interpolateCustomPanel.setLayout(new BoxLayout(interpolateCustomPanel,BoxLayout.X_AXIS));
-        interpolateCustomPanel.add(interpolateCustom);
-        interpolateCustomInputBox=new JTextField();
-        interpolateCustomInputBox.setEnabled(interpolateCustom.isSelected());
-        interpolateCustomInputBox.setMinimumSize(new Dimension(60,23));
-        interpolateCustomInputBox.setMaximumSize(new Dimension(60,23));
-        interpolateCustomInputBox.getDocument().addDocumentListener(new DocumentListener(){
-
-			@Override
-			public void changedUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void insertUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-        	
-        });
-        interpolateCustomPanel.add(interpolateCustomInputBox);
-        interpolateCustomPanel.add(new JLabel(". Wert zeichnen"));
-        interpolate1x.setAlignmentX(Component.LEFT_ALIGNMENT);
-        interpolate4x.setAlignmentX(Component.LEFT_ALIGNMENT);
-        interpolate10x.setAlignmentX(Component.LEFT_ALIGNMENT);
-        interpolate100x.setAlignmentX(Component.LEFT_ALIGNMENT);
-        interpolate1000x.setAlignmentX(Component.LEFT_ALIGNMENT);
-        interpolateButtonGroup.add(interpolate1x);
-        interpolateButtonGroup.add(interpolate4x);
-        interpolateButtonGroup.add(interpolate10x);
-        interpolateButtonGroup.add(interpolate100x);
-        interpolateButtonGroup.add(interpolate1000x);
-        interpolateButtonGroup.add(interpolateCustom);
-        interpolate1x.addActionListener(this);
-        interpolate4x.addActionListener(this);
-        interpolate10x.addActionListener(this);
-        interpolate100x.addActionListener(this);
-        interpolate1000x.addActionListener(this);
-        interpolateCustom.addActionListener(this);
-        interpolationSettings.add(interpolate1x);
-        interpolationSettings.add(interpolate4x);
-        interpolationSettings.add(interpolate10x);
-        interpolationSettings.add(interpolate100x);
-        interpolationSettings.add(interpolate1000x);
-        interpolationSettings.add(interpolateCustomPanel);
-        GraphSettings.add(interpolationSettings);
+        GraphSettings.add(selectVisibleGraphsScrollPane);
+        //GraphSettings.add(new JLabel("ldvfjksdfjkldf"));
 
         KeyCombinationPanelTitle=new JLabel("Tastenkürzel:");
         KeyCombinationPanelTitle.setFont(new Font(Font.SERIF,Font.BOLD, 16));
@@ -1422,11 +1342,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             numberOfGraphs=dataValueDescriptors.length;
 
             xYSeries=new XYSeries[numberOfGraphs];
-            graphIsVisible=new boolean[numberOfGraphs];
+            //TODO
 
             for (int i = 0; i < numberOfGraphs; ++i) {
                 xYSeries[i] = new XYSeries((Comparable)((Object)(dataValueDescriptors[i])));
-                graphIsVisible[i]=true;
             }
 
             line=br.readLine();
@@ -1488,16 +1407,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         ValueAxis valueAxis = xYPlot.getDomainAxis();
         double d = valueAxis.java2DToValue((double)chartMouseEvent.getTrigger().getX(), rectangle2D, RectangleEdge.BOTTOM);
         this.xCrosshair.setValue(d);
-        int correctedIndex=0;
         for (int i = 0; i < numberOfGraphs; ++i) {
-            if(graphIsVisible[i]){
-                double d2 = DatasetUtilities.findYValue((XYDataset)xYPlot.getDataset(), (int)correctedIndex, (double)d);
-                dataBoxes[i].setText(String.valueOf(d2));
-                correctedIndex++;
-            }
-            else{
-                dataBoxes[i].setText("N/A (ausgeblendet)");
-            }
+
+            double d2 = DatasetUtilities.findYValue((XYDataset)xYPlot.getDataset(), (int)i, (double)d);
+            dataBoxes[i].setText(String.valueOf(d2));
         }
     }
 
@@ -1509,13 +1422,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         ValueAxis valueAxis = xYPlot.getDomainAxis();
         double d = valueAxis.java2DToValue((double)chartMouseEvent.getTrigger().getX(), rectangle2D, RectangleEdge.BOTTOM);
         this.xCrosshair.setValue(d);
-        int correctedIndex=0;
         for (int i = 0; i < numberOfGraphs; ++i) {
-            if(graphIsVisible[i]){
-                double d2 = DatasetUtilities.findYValue((XYDataset)xYPlot.getDataset(), (int)correctedIndex, (double)d);
-                yCrosshairs[i].setValue(d2);
-                correctedIndex++;
-            }
+
+            double d2 = DatasetUtilities.findYValue((XYDataset)xYPlot.getDataset(), (int)i, (double)d);
+            yCrosshairs[i].setValue(d2);
         }
     }
 
@@ -1564,7 +1474,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 getImageSizeAutomatically=false;
             }
         }
-        else if(event.getSource()==changeKeyCombinationButton){
+        if(event.getSource()==changeKeyCombinationButton){
             mainWindow.removeKeyListener(this);
             allowKeyCombinationChange=true;
             keyComboAusgabe.setText("Bereit");
@@ -1572,7 +1482,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             keyComboAusgabe.requestFocusInWindow();
             keyComboAusgabe.grabFocus();
         }
-        else if(event.getSource()==saveKeyCombinationButton){
+        if(event.getSource()==saveKeyCombinationButton){
             mainWindow.addKeyListener(this);
             setNewKeyCombinationWindow.setVisible(false);
 
@@ -1641,22 +1551,22 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             }
             keyCombinationsEnabled=true;
         }
-        else if(event.getSource()==openDifferentPlotMenuItem){
+        if(event.getSource()==openDifferentPlotMenuItem){
             openNewPlot();
         }
-        else if(event.getSource()==openNewWindowMenuItem){
+        if(event.getSource()==openNewWindowMenuItem){
             openNewWindow();
         }
-        else if(event.getSource()==closeWindowMenuItem){
+        if(event.getSource()==closeWindowMenuItem){
             closeWindow();
         }
-        else if(event.getSource()==saveGraphImagesMenu){
+        if(event.getSource()==saveGraphImagesMenu){
             saveImages();
         }
-        else if(event.getSource()==helpWindowCloseButton){
+        if(event.getSource()==helpWindowCloseButton){
             helpWindow.setVisible(false);
         }
-        else if(event.getSource()==jpegCheckBox){
+        if(event.getSource()==jpegCheckBox){
             if(pngCheckBox.isSelected()){
                 savePng=true;
             }
@@ -1664,7 +1574,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 savePng=false;
             }
         }
-        else if(event.getSource()==jpegCheckBox){
+        if(event.getSource()==jpegCheckBox){
             if(jpegCheckBox.isSelected()){
                 saveJpeg=true;
             }
@@ -1673,7 +1583,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             }
             saveConfigurationFile();
         }
-        else if(event.getSource()==fullscreenOnStartupComboBox){
+        if(event.getSource()==fullscreenOnStartupComboBox){
             if(fullscreenOnStartupComboBox.isSelected()){
                 fullscreenOnStartup=true;
             }
@@ -1682,7 +1592,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             }
             saveConfigurationFile();
         }
-        else if(event.getSource()==dataPanelOnStartup){
+        if(event.getSource()==dataPanelOnStartup){
             if(dataPanelOnStartup.isSelected()){
                 bottomPanelExpandedOnStartup=true;
             }
@@ -1691,16 +1601,16 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             }
             saveConfigurationFile();
         }
-        else if(event.getSource()==AutoUpdateRadioButton){
+        if(event.getSource()==AutoUpdateRadioButton){
             autoUpdate=AutoUpdateRadioButton.isSelected();
         }
-        else if(event.getSource()==ManualUpdateRadioButton){
+        if(event.getSource()==ManualUpdateRadioButton){
             autoUpdate=AutoUpdateRadioButton.isSelected();
         }
-        else if(event.getSource()==FullscreenExclusiveRadioButton){
+        if(event.getSource()==FullscreenExclusiveRadioButton){
             fullscreenOk=FullscreenExclusiveRadioButton.isSelected();
         }
-        else if(event.getSource()==MaximizeWindowRadioButton){
+        if(event.getSource()==MaximizeWindowRadioButton){
             fullscreenOk=FullscreenExclusiveRadioButton.isSelected();
         }
         for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
@@ -1708,40 +1618,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 openSetNewKeyCombinationWindow(i);
             }
         }
-        for(int i=0;i<numberOfGraphs;i++){
-            if(event.getSource()==selectGraphVisibilityCheckBox[i]){
-                setSeriesVisible(i,selectGraphVisibilityCheckBox[i].isSelected());
-            }
-        }
         reloadBackend();
-    }
-
-    private void setSeriesVisible(int number,boolean selected) {
-        if(graphIsVisible[number]==selected){//ist bereits im gewünschten status
-            return;
-        }
-        graphIsVisible[number]=selected;
-        if(selected){//hinzufügen
-            xYSeriesCollection.removeAllSeries();
-
-            for(int i=0;i<numberOfGraphs;i++){
-
-                yCrosshairs[i].setVisible(false);
-
-                if(graphIsVisible[i]){
-
-                    xYSeriesCollection.addSeries(xYSeries[i]);
-
-                    yCrosshairs[i].setVisible(true);
-
-                }
-
-            }
-        }
-        else{//entfernen
-            yCrosshairs[number].setVisible(false);
-            xYSeriesCollection.removeSeries(xYSeries[number]);
-        }
     }
 
     private void reloadBackend(){
