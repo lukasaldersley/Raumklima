@@ -88,7 +88,7 @@ import org.jfree.ui.RectangleEdge;
 
 public class Raumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener
 {
-    public boolean debug=false;
+    public boolean debug=true;
     public static String branch="master";//master, V1 and V1.6 are Options
     public static String projectUri="https://raw.githubusercontent.com/lukasaldersley/Raumklima/";
 
@@ -148,7 +148,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static int NUMBER_OF_COPYRIGHT_NOTES=24;
     public static int NUMBER_OF_CONFIG_ENTRIES=83;
 
-    public static final String VERSION="1.6.1.1";
+    public static final String VERSION="0.3.1.9";
 
     private boolean allowKeyCombinationChange=false;
     private boolean bottomPanelExpanded=false;
