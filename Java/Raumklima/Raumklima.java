@@ -2073,3 +2073,4 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     @Override
     public void windowOpened(WindowEvent event) {}
 }
+
