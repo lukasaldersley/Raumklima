@@ -1,4 +1,5 @@
 #include "hx711.h"
+//#include DigiCDC für serial in digistump
 
 Hx711 scale(A1,A0);
 unsigned long value=0;

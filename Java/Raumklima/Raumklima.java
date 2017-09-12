@@ -17,6 +17,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -40,6 +42,7 @@ import java.nio.channels.ReadableByteChannel;
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
@@ -86,7 +89,7 @@ import org.jfree.ui.RectangleEdge;
  * https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/layout/BoxLayoutDemoProject/src/layout/BoxLayoutDemo.java
  */
 
-public class Raumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener
+public class Raumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener, FocusListener
 {
     public boolean debug=false;
     public static String branch="master";//master, V1 and V1.6 are Options
@@ -149,7 +152,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static int WIDTH_OF_DATA_BLOCK=370;
     public static int NUMBER_OF_KEY_COMBOS=9;
     public static int NUMBER_OF_COPYRIGHT_NOTES=24;
-    public static int NUMBER_OF_CONFIG_ENTRIES=83;
+    public static int NUMBER_OF_CONFIG_ENTRIES=89;
 
     private boolean allowKeyCombinationChange=false;
     private boolean bottomPanelExpanded=false;
@@ -315,6 +318,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private ButtonGroup interpolateButtonGroup;
     private JPanel interpolateCustomPanel;
     private JTextField interpolateCustomInputBox;
+	private JPanel interpolationSettingsBasePanel;
+	private boolean isCustomInterpolated;
+	private int interpolationOffset=0;
+	private int interpolationFactor=0;
 
     public static void main(String[] args){
         //if(args.length==0){
@@ -411,11 +418,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         fullscreenDimension=new Dimension(graphicsDevice.getDisplayMode().getWidth(),graphicsDevice.getDisplayMode().getHeight());
 
         //setup the logo
-        try {
-            logo = ImageIO.read(new File("../Resources/Weather.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
+        
+        URL url=getClass().getResource("Resources/Weather.png");
+        if(debug){
+        System.out.println(url);
         }
+      mainWindow.setIconImage(new ImageIcon(url).getImage());
+      //https://stackoverflow.com/questions/9864267/loading-image-resource/9866659#9866659 antwort von icza
 
         //read the ConfigurationFile
         loadConfigurationFile();
@@ -428,7 +437,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         //setup the MainWindow
         mainWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        mainWindow.setIconImage(logo);
         mainWindow.setMinimumSize(new Dimension(WIDTH_OF_DATA_BLOCK,400));//mindestens 1 block der Textfelder MUSS draufpassen (370px)
         setTitle();
 
@@ -734,28 +742,26 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         GraphSettings.setLayout(new BoxLayout(GraphSettings,BoxLayout.X_AXIS));
         GraphSettings.add(visibilitySettings);
 
+        interpolationSettingsBasePanel=new JPanel();
+        //interpolationSettingsBasePanel.setBackground(Color.YELLOW);
         interpolationSettings=new JPanel();
-        interpolationSettings.add(new JLabel("Unfertig"));
-        interpolationSettings.add(new JLabel("funktionslos"));
-        interpolationSettings.add(new JLabel(" "));
-        interpolationSettings.add(new JLabel(" "));
+        //interpolationSettings.setBackground(Color.GREEN);
         interpolationSettings.setLayout(new BoxLayout(interpolationSettings, BoxLayout.Y_AXIS));
         JLabel title=new JLabel("Interpolation");
-        title.setAlignmentX(Component.LEFT_ALIGNMENT);
         interpolationSettings.add(title);
         interpolationSettings.add(new JLabel(" "));
         interpolateButtonGroup=new ButtonGroup();
         interpolate1x=new JRadioButton("Alle Werte zeichnen");
         interpolate4x=new JRadioButton("jeden 4. Wert zeichnen");
-        interpolate10x=new JRadioButton("jeden 10. Wert zeichen");
-        interpolate100x=new JRadioButton("jeden 100. Wert zeichen");
-        interpolate1000x=new JRadioButton("jeden 1000. Wert zeichen");
-        interpolateCustom=new JRadioButton("jeden ");
+        interpolate10x=new JRadioButton("jeden 10. Wert zeichnen");
+        interpolate100x=new JRadioButton("jeden 100. Wert zeichnen");
+        interpolate1000x=new JRadioButton("jeden 1000. Wert zeichnen");
         interpolateCustomPanel=new JPanel();
+        //interpolateCustomPanel.setBackground(Color.RED);
         interpolateCustomPanel.setLayout(new BoxLayout(interpolateCustomPanel,BoxLayout.X_AXIS));
-        interpolateCustomPanel.add(interpolateCustom);
+        interpolateCustom=new JRadioButton("Benutzerdefiniert");
         interpolateCustomInputBox=new JTextField();
-        interpolateCustomInputBox.setEnabled(interpolateCustom.isSelected());
+        interpolateCustomInputBox.addFocusListener(this);
         interpolateCustomInputBox.setMinimumSize(new Dimension(60,23));
         interpolateCustomInputBox.setMaximumSize(new Dimension(60,23));
         interpolateCustomInputBox.getDocument().addDocumentListener(new DocumentListener(){
@@ -779,13 +785,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 }
 
             });
+
+        interpolateCustomPanel.add(new JLabel("jeden "));
         interpolateCustomPanel.add(interpolateCustomInputBox);
         interpolateCustomPanel.add(new JLabel(". Wert zeichnen"));
-        interpolate1x.setAlignmentX(Component.LEFT_ALIGNMENT);
-        interpolate4x.setAlignmentX(Component.LEFT_ALIGNMENT);
-        interpolate10x.setAlignmentX(Component.LEFT_ALIGNMENT);
-        interpolate100x.setAlignmentX(Component.LEFT_ALIGNMENT);
-        interpolate1000x.setAlignmentX(Component.LEFT_ALIGNMENT);
         interpolateButtonGroup.add(interpolate1x);
         interpolateButtonGroup.add(interpolate4x);
         interpolateButtonGroup.add(interpolate10x);
@@ -803,8 +806,15 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         interpolationSettings.add(interpolate10x);
         interpolationSettings.add(interpolate100x);
         interpolationSettings.add(interpolate1000x);
-        interpolationSettings.add(interpolateCustomPanel);
-        GraphSettings.add(interpolationSettings);
+        interpolationSettings.add(interpolateCustom);
+        //interpolationSettings.add(interpolateCustomPanel);
+        interpolationSettings.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        interpolateCustomPanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        interpolationSettingsBasePanel.setLayout(new BoxLayout(interpolationSettingsBasePanel,BoxLayout.Y_AXIS));
+        interpolationSettingsBasePanel.setMaximumSize(new Dimension(200,480));
+        interpolationSettingsBasePanel.add(interpolationSettings,BorderLayout.NORTH);
+        interpolationSettingsBasePanel.add(interpolateCustomPanel,BorderLayout.SOUTH);
+		GraphSettings.add(interpolationSettingsBasePanel);
 
         KeyCombinationPanelTitle=new JLabel("Tastenkürzel:");
         KeyCombinationPanelTitle.setFont(new Font(Font.SERIF,Font.BOLD, 16));
@@ -966,6 +976,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             fullscreenOk=configRaw[78].equals("YES");
             bottomPanelExpandedOnStartup=configRaw[80].equals("YES");
             autoUpdate=configRaw[82].equals("YES");
+            interpolationFactor=Integer.parseInt(configRaw[84].trim());
+            isCustomInterpolated=configRaw[86].equals("YES");
+            interpolationOffset=Integer.parseInt(configRaw[88].trim());
             if(getImageSizeAutomatically){
                 imageHeight=fullscreenDimension.height;
                 imageWidth=fullscreenDimension.width;
@@ -1047,6 +1060,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         configRaw[78]=getYesNoString(fullscreenOk);
         configRaw[80]=getYesNoString(bottomPanelExpandedOnStartup);
         configRaw[82]=getYesNoString(autoUpdate);
+        configRaw[84]=String.valueOf(interpolationFactor);
+        configRaw[86]=getYesNoString(isCustomInterpolated);
+        configRaw[88]=String.valueOf(interpolationOffset);
 
         if(debug){
             System.out.println("writing Config");
@@ -1439,7 +1455,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             }
 
             line=br.readLine();
+            for(int x=0;x<interpolationOffset;x++){
+            	line=br.readLine();
+            }
             while(line!=null||line!=""){
+                for(int i=0;i<interpolationFactor-1;i++){
+                	line=br.readLine();
+                }
                 if(line==null||line==""){
                     break;
                 }
@@ -2031,6 +2053,11 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
     }
 
+	@Override
+	public void focusGained(FocusEvent arg0) {
+	interpolateCustom.setSelected(true);
+	}
+
     @Override
     public void keyTyped(KeyEvent event) {}
 
@@ -2072,5 +2099,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     @Override
     public void windowOpened(WindowEvent event) {}
+
+	@Override
+	public void focusLost(FocusEvent arg0) {}
 }
 
