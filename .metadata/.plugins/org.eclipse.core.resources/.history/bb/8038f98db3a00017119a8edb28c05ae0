@@ -29,6 +29,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -95,7 +96,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static String projectUri="https://raw.githubusercontent.com/lukasaldersley/Raumklima/";
     public static String downloadTargetUri="https://github.com/lukasaldersley/Raumklima/raw/";
 
-    public static final String VERSION="1.7.0.0";
+    public static final String VERSION="1.6.1.5";
 
     public static boolean CLOSE_WINDOW_ALT_REQUIRED=false;
     public static boolean OPEN_HELP_WINDOW_ALT_REQUIRED=false;
@@ -1505,7 +1506,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 	private XYDataset createDataset(){
 
         try{
-        	xYSeriesCollection.removeAllSeries();
             br=new BufferedReader(new FileReader(csvFile));
             String line=br.readLine();
             dataValueDescriptors=line.split(";");
@@ -1519,18 +1519,15 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 xYSeries[i] = new XYSeries((Comparable)((Object)(dataValueDescriptors[i])));
                 graphIsVisible[i]=true;
             }
-        	if(interpolationFactor<1){
-        		interpolationFactor=1;
-        	}
             int numberOfLines=numberOfLinesInFile(csvFile);
 
             line=br.readLine();
             for(int x=0;x<interpolationOffset;x++){
                 line=br.readLine();
             }
-            counter=0;
-            while(line!=null&&!line.equals("")){
-                if(line==null||line.equals("")){
+                for(int j=0;j<numberOfLines+interpolationOffset;j+=interpolationFactor){
+                    line=br.readLine();
+                if(line==null||line==""){
                     break;
                 }
                 //System.out.println(line);
@@ -1551,26 +1548,17 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                         }
                     }
                 }
+                //counter+=2;
                 counter++;
-                for(int j=0;j<interpolationFactor;j++){
-                    line=br.readLine();
-                }
-                if(line==null||line.equals("")){
+                //br.readLine();
+                line=br.readLine();
+                if(line==null||line==""){
                     break;
                 }
             }
 
-        	if(selectGraphVisibilityCheckBox!=null){
-        		for (int i = 0; i < numberOfGraphs; ++i) {
-        			if(selectGraphVisibilityCheckBox[i].isSelected()){
-                    xYSeriesCollection.addSeries(xYSeries[i]);
-        			}
-            	}
-        	}
-        	else{
             for (int i = 0; i < numberOfGraphs; ++i) {
-                    xYSeriesCollection.addSeries(xYSeries[i]);
-            	}
+                xYSeriesCollection.addSeries(xYSeries[i]);
             }
         }
         catch(Exception ex){
@@ -1868,16 +1856,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         	if(interpolationOffset<0){
         		interpolationOffset=0;
         	}
-        	if(interpolationFactor<1){
-        		interpolationFactor=1;
-        	}
         	//um das ChartPanel neu zu laden
-        	mainWindow.remove(chartPanel);
         	jFreeChart=createChart(createDataset());
-        	setupCrosshairOverlays();
         	mainWindow.add(chartPanel,BorderLayout.NORTH);
         	chartPanel.addChartMouseListener(this);
-        	mainWindow.validate();
         }
         for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
             if(event.getSource()==KeyCombinationChangeButton[i]){

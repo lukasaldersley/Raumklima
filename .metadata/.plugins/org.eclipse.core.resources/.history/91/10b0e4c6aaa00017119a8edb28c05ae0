@@ -34,7 +34,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.LineNumberReader;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
@@ -90,12 +89,12 @@ import org.jfree.ui.RectangleEdge;
 
 public class Raumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener, FocusListener
 {
-    public static boolean debug=true;
+    public static boolean debug=false;
     public static String branch="master";//master, V1 and V1.6 are Options
     public static String projectUri="https://raw.githubusercontent.com/lukasaldersley/Raumklima/";
     public static String downloadTargetUri="https://github.com/lukasaldersley/Raumklima/raw/";
 
-    public static final String VERSION="1.7.0.0";
+    public static final String VERSION="1.6.1.5";
 
     public static boolean CLOSE_WINDOW_ALT_REQUIRED=false;
     public static boolean OPEN_HELP_WINDOW_ALT_REQUIRED=false;
@@ -327,10 +326,11 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     public static void main(String[] args){
     	for(int i=0;i<args.length;i++){
-    		if(args[i].equalsIgnoreCase("debug")||args[i].equalsIgnoreCase("d")||args[i].equalsIgnoreCase("/debug")||args[i].equalsIgnoreCase("/d")||args[i].equalsIgnoreCase("-debug")||args[i].equalsIgnoreCase("-d")){
+    		System.out.println("A: \""+args[i]+"\"");
+    		if(args[i].equalsIgnoreCase("debug")||args[i].equalsIgnoreCase("d")){
     			debug=true;
     		}
-    		else if(args[i].equalsIgnoreCase("?")||args[i].equalsIgnoreCase("help")||args[i].equalsIgnoreCase("h")||args[i].equalsIgnoreCase("/?")||args[i].equalsIgnoreCase("/help")||args[i].equalsIgnoreCase("/h")||args[i].equalsIgnoreCase("-?")||args[i].equalsIgnoreCase("-help")||args[i].equalsIgnoreCase("-h")){
+    		else if(args[i].equalsIgnoreCase("?")||args[i].equalsIgnoreCase("help")||args[i].equalsIgnoreCase("h")){
     			System.out.println("\nBefehlszeilenparameter\n\n\"d\" oder \"debug\"\t\tDebugmodus\n\"h\", \"?\" oder \"help\"\t\tdiese Hilfe anzeigen");
     			System.exit(0);
     		}
@@ -453,8 +453,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         //get the data and draw the graph
         //proceed only if successful otherwise exit
-        pickCsvFile(usingFileChooser,fileName);
-        jFreeChart = createChart(createDataset());
+        jFreeChart = createChart(createDataset(usingFileChooser,fileName));
         if(jFilePickerFailed==false){
             setupCrosshairOverlays();
 
@@ -785,13 +784,22 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         interpolateCustomInputBox.getDocument().addDocumentListener(new DocumentListener(){
 
                 @Override
-                public void changedUpdate(DocumentEvent arg0) {}
+                public void changedUpdate(DocumentEvent arg0) {
+                    // TODO Auto-generated method stub
+
+                }
 
                 @Override
-                public void insertUpdate(DocumentEvent arg0) {interpolateCustom.setSelected(true);}
+                public void insertUpdate(DocumentEvent arg0) {
+                    interpolationFactor=Integer.parseInt(interpolateCustomInputBox.getText());
+                    interpolateCustom.setSelected(true);
+                }
 
                 @Override
-                public void removeUpdate(DocumentEvent arg0) {interpolateCustom.setSelected(true);}
+                public void removeUpdate(DocumentEvent arg0) {
+                    interpolationFactor=Integer.parseInt(interpolateCustomInputBox.getText());
+                    interpolateCustom.setSelected(true);
+                }
 
             });
 
@@ -860,7 +868,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         interpolationOffsetValueBox.setMinimumSize(new Dimension(60,23));
         interpolationOffsetValueBox.setPreferredSize(new Dimension(60,23));
         interpolationOffsetValueBox.setMaximumSize(new Dimension(60,23));
-        interpolationOffsetValueBox.setText(String.valueOf(interpolationOffset)+1);
         interpolateOffsetValuePanel.add(interpolationOffsetValueBox);
         interpolateOffsetValuePanel.add(new JLabel(". Wert                         "));
         interpolateOffsetPanel.add(interpolateOffsetValuePanel);
@@ -1480,13 +1487,15 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         return jFreeChart;
     }
 
-    private void pickCsvFile(boolean doShowOpenDialog,String fileName) {
+    @SuppressWarnings("rawtypes")
+    private XYDataset createDataset(boolean doShowOpenDialog,String fileName) {
         xYSeriesCollection = new XYSeriesCollection();
         if(doShowOpenDialog){
             int returnVal = showOpenDialog();
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 try{
                     csvFile=fileChooser.getSelectedFile();
+                    br=new BufferedReader(new FileReader(csvFile));
                 }
                 catch(Exception ex){
                     ex.printStackTrace();
@@ -1494,19 +1503,14 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             }
             else{
                 jFilePickerFailed=true;
+                return xYSeriesCollection;
             }
         }
         else{
             csvFile=new File(fileName);
         }
-    }
-    
-    @SuppressWarnings("rawtypes")
-	private XYDataset createDataset(){
 
         try{
-        	xYSeriesCollection.removeAllSeries();
-            br=new BufferedReader(new FileReader(csvFile));
             String line=br.readLine();
             dataValueDescriptors=line.split(";");
 
@@ -1519,18 +1523,16 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 xYSeries[i] = new XYSeries((Comparable)((Object)(dataValueDescriptors[i])));
                 graphIsVisible[i]=true;
             }
-        	if(interpolationFactor<1){
-        		interpolationFactor=1;
-        	}
-            int numberOfLines=numberOfLinesInFile(csvFile);
 
             line=br.readLine();
             for(int x=0;x<interpolationOffset;x++){
                 line=br.readLine();
             }
-            counter=0;
-            while(line!=null&&!line.equals("")){
-                if(line==null||line.equals("")){
+            while(line!=null||line!=""){
+                for(int i=0;i<interpolationFactor-1;i++){
+                    line=br.readLine();
+                }
+                if(line==null||line==""){
                     break;
                 }
                 //System.out.println(line);
@@ -1551,26 +1553,17 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                         }
                     }
                 }
+                //counter+=2;
                 counter++;
-                for(int j=0;j<interpolationFactor;j++){
-                    line=br.readLine();
-                }
-                if(line==null||line.equals("")){
+                //br.readLine();
+                line=br.readLine();
+                if(line==null||line==""){
                     break;
                 }
             }
 
-        	if(selectGraphVisibilityCheckBox!=null){
-        		for (int i = 0; i < numberOfGraphs; ++i) {
-        			if(selectGraphVisibilityCheckBox[i].isSelected()){
-                    xYSeriesCollection.addSeries(xYSeries[i]);
-        			}
-            	}
-        	}
-        	else{
             for (int i = 0; i < numberOfGraphs; ++i) {
-                    xYSeriesCollection.addSeries(xYSeries[i]);
-            	}
+                xYSeriesCollection.addSeries(xYSeries[i]);
             }
         }
         catch(Exception ex){
@@ -1579,24 +1572,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         return xYSeriesCollection;
     }
 
-    private int numberOfLinesInFile(File inputFile) {
-    	//https://stackoverflow.com/questions/453018/number-of-lines-in-a-file-in-java
-    	//antwort von Telmo Marques und er.vikas
-    	LineNumberReader lnr;
-		try {
-			lnr = new LineNumberReader(new FileReader(inputFile));
-	    	lnr.skip(Long.MAX_VALUE);
-	    	lnr.close();
-	    	if(debug){System.out.println("NumberOfLines: "+lnr.getLineNumber()+1);}
-	    	return lnr.getLineNumber()+1;
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			return 0;
-		}
-	}
-
-	private void exit(){
+    private void exit(){
         mainWindow.setVisible(false);
         mainWindow.dispose();
         fileChooserWindow.dispose();
@@ -1827,57 +1803,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
         else if(event.getSource()==MaximizeWindowRadioButton){
             fullscreenOk=FullscreenExclusiveRadioButton.isSelected();
-        }
-        else if(event.getSource()==changeInterpolationSettings){
-        	if(interpolateCustom.isSelected()){
-        		isCustomInterpolated=true;
-        		try{
-        		interpolationFactor=Integer.parseInt(interpolateCustomInputBox.getText());
-        		}
-        		catch(NumberFormatException e){
-        			interpolationFactor=1;
-        		}
-        	}
-        	else{
-        		isCustomInterpolated=false;
-        		if(interpolate1x.isSelected()){
-        			interpolationFactor=1;
-        		}
-        		else if(interpolate4x.isSelected()){
-        			interpolationFactor=4;
-        		}
-        		else if(interpolate10x.isSelected()){
-        			interpolationFactor=10;
-        		}
-        		else if(interpolate100x.isSelected()){
-        			interpolationFactor=100;
-        		}
-        		else if(interpolate1000x.isSelected()){
-        			interpolationFactor=1000;
-        		}
-        		else{
-        			interpolationFactor=1;
-        		}
-        	}
-        	try{
-        		interpolationOffset=Integer.parseInt(interpolationOffsetValueBox.getText())-1;
-        	}
-        	catch(NumberFormatException e){
-        		interpolationOffset=0;
-        	}
-        	if(interpolationOffset<0){
-        		interpolationOffset=0;
-        	}
-        	if(interpolationFactor<1){
-        		interpolationFactor=1;
-        	}
-        	//um das ChartPanel neu zu laden
-        	mainWindow.remove(chartPanel);
-        	jFreeChart=createChart(createDataset());
-        	setupCrosshairOverlays();
-        	mainWindow.add(chartPanel,BorderLayout.NORTH);
-        	chartPanel.addChartMouseListener(this);
-        	mainWindow.validate();
         }
         for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
             if(event.getSource()==KeyCombinationChangeButton[i]){
