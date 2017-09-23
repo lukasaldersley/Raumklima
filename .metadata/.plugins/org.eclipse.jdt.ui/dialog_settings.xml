@@ -5,11 +5,13 @@
 	<item value="480,510" key="UserLibraryLoadSaveDialog.size"/>
 	<section name="FatJarPackageWizard">
 		<item value="C:\Raumklima" key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION"/>
-		<item value="Raumklima - Java" key="FatJarPackageWizardPage.LAUNCH_CONFIGURATION_SELECTION_NAME"/>
-		<item value="C:\Raumklima\PublicVersion\Raumklima.jar" key="FatJarPackageWizardPage.DESTINATION_PATH_SELECTION"/>
+		<item value="Downloader - Java" key="FatJarPackageWizardPage.LAUNCH_CONFIGURATION_SELECTION_NAME"/>
+		<item value="C:\Users\alder\Desktop\W-Seminar Websites\Downloader.jar" key="FatJarPackageWizardPage.DESTINATION_PATH_SELECTION"/>
 		<item value="false" key="FatJarPackageWizardPage.ANTSCRIPT_SAVE"/>
 		<item value="1" key="FatJarPackageWizardPage.LIBRARY_HANDLING"/>
 		<list key="FatJarPackageWizardPage.DESTINATION_NAMES_ID">
+			<item value="C:\Users\alder\Desktop\W-Seminar Websites\Downloader.jar"/>
+			<item value="C:\Users\alder\Desktop\Downloader.jar"/>
 			<item value="C:\Raumklima\PublicVersion\Raumklima.jar"/>
 		</list>
 		<list key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION_HISTORY">
@@ -33,6 +35,7 @@
 	</section>
 	<section name="OptionalMessageDialog.hide.">
 		<item value="true" key="org.eclipse.jdt.ui.typecomment.deprecated"/>
+		<item value="false" key="RunnableJar.export.ipwarning"/>
 	</section>
 	<section name="NewPackageWizardPage">
 		<item value="false" key="create_package_info_java"/>

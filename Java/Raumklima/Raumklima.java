@@ -96,7 +96,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static String projectUri="https://raw.githubusercontent.com/lukasaldersley/Raumklima/";
     public static String downloadTargetUri="https://github.com/lukasaldersley/Raumklima/raw/";
 
-    public static final String VERSION="1.6.1.1";
+    public static final String VERSION="1.6.1.5";
 
     public static boolean CLOSE_WINDOW_ALT_REQUIRED=false;
     public static boolean OPEN_HELP_WINDOW_ALT_REQUIRED=false;
@@ -318,10 +318,17 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private ButtonGroup interpolateButtonGroup;
     private JPanel interpolateCustomPanel;
     private JTextField interpolateCustomInputBox;
-	private JPanel interpolationSettingsBasePanel;
-	private boolean isCustomInterpolated;
-	private int interpolationOffset=0;
-	private int interpolationFactor=0;
+    private JPanel interpolationSettingsBasePanel;
+    private boolean isCustomInterpolated;
+    private int interpolationOffset=0;
+    private int interpolationFactor=0;
+    private JPanel GeneralInterpolationSettings;
+    private JPanel interpolationOffsetPanel;
+    private JPanel interpolationOffsetValuePanel;
+    private JTextField interpolationOffsetValueBox;
+    private JPanel interpolateOffsetPanel;
+    private JPanel interpolateOffsetValuePanel;
+    private JButton changeInterpolationSettings;
 
     public static void main(String[] args){
         //if(args.length==0){
@@ -333,14 +340,15 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     /**
-     * the standard constructor (without the optional values of the second Constructor, which is only needed in order to make the numbering in the Title of the MainWindow work. This Constructor just calls the {@code setup()} Method.
+     * the standard constructor
+     * This Constructor just calls the {@code setup()} Method.
      */
     public Raumklima(){
         setup(true,"");
     }
 
     /**
-     * the Secondary Constructor, which includes the "advanced" features (for the numbering scheme). This Constructor just calls the {@code setup()} Method.
+     * the Secondary Constructor, which includes the "advanced" features (for the numbering scheme). This Constructor just calls the setup Method.
      * @param newTitleNumber the number that should be displayed in the Titlebar on the MainWindow
      * @param newPrevious the preceding instance of Raumklima (only used to update the numbering scheme if a window is closed or opened)
      * @param newNext the following instance of Raumklima (only used to update the numbering scheme if a window is closed or opened)
@@ -418,13 +426,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         fullscreenDimension=new Dimension(graphicsDevice.getDisplayMode().getWidth(),graphicsDevice.getDisplayMode().getHeight());
 
         //setup the logo
-        
+
         URL url=getClass().getResource("Resources/Weather.png");
         if(debug){
-        System.out.println(url);
+            System.out.println(url);
         }
-      mainWindow.setIconImage(new ImageIcon(url).getImage());
-      //https://stackoverflow.com/questions/9864267/loading-image-resource/9866659#9866659 antwort von icza
+        mainWindow.setIconImage(new ImageIcon(url).getImage());
+        //https://stackoverflow.com/questions/9864267/loading-image-resource/9866659#9866659 antwort von icza
 
         //read the ConfigurationFile
         loadConfigurationFile();
@@ -693,17 +701,20 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         FullscreenOptionsPanel.add(FullscreenOptionsButtonGroupPanel);
         FullscreenOptionsPanel.add(new JLabel(" "));
         FullscreenOptionsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);//TODO HALP
+        System.out.println("ABAB");
+        CheckFullscreenAvailability();
+        System.out.println("BABA");
 
         UpdateOptionsPanel=new JPanel();
         UpdateOptionsPanel.setLayout(new BoxLayout(UpdateOptionsPanel, BoxLayout.Y_AXIS));
         UpdateOptionsButtonGroup=new ButtonGroup();
-        AutoUpdateRadioButton=new JRadioButton("Automatisch beim Start prÃ¼fen");
+        AutoUpdateRadioButton=new JRadioButton("Automatisch beim Start prüfen");
         ManualUpdateRadioButton=new JRadioButton("Nur Manuell");
         UpdateOptionsButtonGroup.add(AutoUpdateRadioButton);
         UpdateOptionsButtonGroup.add(ManualUpdateRadioButton);
         AutoUpdateRadioButton.setSelected(autoUpdate);
         ManualUpdateRadioButton.setSelected(!autoUpdate);
-        UpdateNow=new JButton("Jetzt auf Updates prÃ¼fen");
+        UpdateNow=new JButton("Jetzt auf Updates prüfen");
         UpdateNow.addActionListener(this);
         AutoUpdateRadioButton.addActionListener(this);
         ManualUpdateRadioButton.addActionListener(this);
@@ -742,8 +753,14 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         GraphSettings.setLayout(new BoxLayout(GraphSettings,BoxLayout.X_AXIS));
         GraphSettings.add(visibilitySettings);
 
+        GeneralInterpolationSettings=new JPanel();
+        //GeneralInterpolationSettings.setBackground(Color.RED);
+        GeneralInterpolationSettings.setLayout(new BoxLayout(GeneralInterpolationSettings,BoxLayout.Y_AXIS));
         interpolationSettingsBasePanel=new JPanel();
-        //interpolationSettingsBasePanel.setBackground(Color.YELLOW);
+        //interpolationSettingsBasePanel.setBackground(Color.BLUE);
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        interpolationSettingsBasePanel.setLayout(new BoxLayout(interpolationSettingsBasePanel,BoxLayout.Y_AXIS));
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         interpolationSettings=new JPanel();
         //interpolationSettings.setBackground(Color.GREEN);
         interpolationSettings.setLayout(new BoxLayout(interpolationSettings, BoxLayout.Y_AXIS));
@@ -774,14 +791,14 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
                 @Override
                 public void insertUpdate(DocumentEvent arg0) {
-                    // TODO Auto-generated method stub
-
+                    interpolationFactor=Integer.parseInt(interpolateCustomInputBox.getText());
+                    interpolateCustom.setSelected(true);
                 }
 
                 @Override
                 public void removeUpdate(DocumentEvent arg0) {
-                    // TODO Auto-generated method stub
-
+                    interpolationFactor=Integer.parseInt(interpolateCustomInputBox.getText());
+                    interpolateCustom.setSelected(true);
                 }
 
             });
@@ -795,28 +812,81 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         interpolateButtonGroup.add(interpolate100x);
         interpolateButtonGroup.add(interpolate1000x);
         interpolateButtonGroup.add(interpolateCustom);
-        interpolate1x.addActionListener(this);
-        interpolate4x.addActionListener(this);
-        interpolate10x.addActionListener(this);
-        interpolate100x.addActionListener(this);
-        interpolate1000x.addActionListener(this);
-        interpolateCustom.addActionListener(this);
         interpolationSettings.add(interpolate1x);
         interpolationSettings.add(interpolate4x);
         interpolationSettings.add(interpolate10x);
         interpolationSettings.add(interpolate100x);
         interpolationSettings.add(interpolate1000x);
         interpolationSettings.add(interpolateCustom);
+        if(!isCustomInterpolated){
+            if(interpolationFactor==1){
+                interpolate1x.setSelected(true);
+            }
+            else if(interpolationFactor==4){
+                interpolate4x.setSelected(true);
+            }
+            else if(interpolationFactor==10){
+                interpolate10x.setSelected(true);
+            }
+            else if(interpolationFactor==100){
+                interpolate100x.setSelected(true);
+            }
+            else if(interpolationFactor==1000){
+                interpolate1000x.setSelected(true);
+            }
+            else{
+                interpolateCustom.setSelected(true);
+                interpolateCustomInputBox.setText(String.valueOf(interpolationFactor));
+                isCustomInterpolated=true;
+                saveConfigurationFile();
+            }
+        }
+        else{
+            interpolateCustom.setSelected(true);
+            interpolateCustomInputBox.setText(String.valueOf(interpolationFactor));
+        }
         //interpolationSettings.add(interpolateCustomPanel);
         interpolationSettings.setAlignmentX(Component.RIGHT_ALIGNMENT);
         interpolateCustomPanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
         interpolationSettingsBasePanel.setLayout(new BoxLayout(interpolationSettingsBasePanel,BoxLayout.Y_AXIS));
         interpolationSettingsBasePanel.setMaximumSize(new Dimension(200,480));
         interpolationSettingsBasePanel.add(interpolationSettings,BorderLayout.NORTH);
-        interpolationSettingsBasePanel.add(interpolateCustomPanel,BorderLayout.SOUTH);
-		GraphSettings.add(interpolationSettingsBasePanel);
+        interpolationSettingsBasePanel.add(interpolateCustomPanel,BorderLayout.CENTER);
+        interpolateOffsetPanel=new JPanel();
+        interpolateOffsetPanel.setLayout(new BoxLayout(interpolateOffsetPanel,BoxLayout.Y_AXIS));
+        interpolateOffsetPanel.add(new JLabel(" "));
+        interpolateOffsetPanel.add(new JLabel(" "));
+        JLabel x=new JLabel("Startwert:                                      ");/*                                       */
+        x.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        interpolateOffsetPanel.add(x);
+        interpolateOffsetPanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        interpolateOffsetPanel.setMinimumSize(new Dimension(200,100));
+        interpolateOffsetValuePanel=new JPanel();
+        interpolateOffsetValuePanel.setLayout(new BoxLayout(interpolateOffsetValuePanel,BoxLayout.X_AXIS));
+        interpolateOffsetValuePanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        interpolationOffsetValueBox=new JTextField();
+        interpolationOffsetValueBox.setMinimumSize(new Dimension(60,23));
+        interpolationOffsetValueBox.setPreferredSize(new Dimension(60,23));
+        interpolationOffsetValueBox.setMaximumSize(new Dimension(60,23));
+        interpolateOffsetValuePanel.add(interpolationOffsetValueBox);
+        interpolateOffsetValuePanel.add(new JLabel(". Wert                         "));
+        interpolateOffsetPanel.add(interpolateOffsetValuePanel);
+        //interpolateOffsetPanel.setBackground(Color.YELLOW);
+        interpolateOffsetPanel.add(new JLabel(" "));
+        interpolateOffsetPanel.add(new JLabel(" "));
+        interpolateOffsetPanel.add(new JLabel(" "));
+        changeInterpolationSettings=new JButton("Übernehmen");
+        changeInterpolationSettings.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        changeInterpolationSettings.addActionListener(this);
+        interpolateOffsetPanel.add(changeInterpolationSettings);
 
-        KeyCombinationPanelTitle=new JLabel("TastenkÃ¼rzel:");
+        interpolationSettingsBasePanel.add(interpolateOffsetPanel,BorderLayout.SOUTH);
+
+        GeneralInterpolationSettings.add(interpolationSettingsBasePanel);
+
+        GraphSettings.add(GeneralInterpolationSettings);
+
+        KeyCombinationPanelTitle=new JLabel("Tastenkürzel:");
         KeyCombinationPanelTitle.setFont(new Font(Font.SERIF,Font.BOLD, 16));
         KeyCombinationSettingsFramePanel.setLayout(new GridLayout(0,1));
         KeyCombinationSettingsFramePanel.add(KeyCombinationPanelTitle);
@@ -825,7 +895,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             settingsWindowText[i]=new JLabel();
             settingsWindowText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
             KeyCombinationSettingsEntryPanel[i].add(settingsWindowText[i],BorderLayout.WEST);
-            KeyCombinationChangeButton[i]=new JButton("Ã„ndern");
+            KeyCombinationChangeButton[i]=new JButton("Ändern");
             KeyCombinationChangeButton[i].setPreferredSize(new Dimension(100,25));
             KeyCombinationChangeButton[i].addActionListener(this);
             KeyCombinationSettingsEntryPanel[i].add(KeyCombinationChangeButton[i],BorderLayout.EAST);
@@ -990,7 +1060,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     /**
-     * Writes the Configuration (which is saved in a {@link String} Array in Memory) to a File on the local Storage
+     * Writes the Configuration (which is saved in a {@link String} Array in Memory) to a {@link File} on the local Storage
      */
     private void saveConfigurationFile(){
         if(debug){
@@ -1456,11 +1526,11 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
             line=br.readLine();
             for(int x=0;x<interpolationOffset;x++){
-            	line=br.readLine();
+                line=br.readLine();
             }
             while(line!=null||line!=""){
                 for(int i=0;i<interpolationFactor-1;i++){
-                	line=br.readLine();
+                    line=br.readLine();
                 }
                 if(line==null||line==""){
                     break;
@@ -2053,10 +2123,41 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
     }
 
-	@Override
-	public void focusGained(FocusEvent arg0) {
-	interpolateCustom.setSelected(true);
-	}
+    @Override
+    public void focusGained(FocusEvent arg0) {
+        interpolateCustom.setSelected(true);
+    }
+
+    private void CheckFullscreenAvailability(){
+        try{
+            if(System.getProperty("os.name").contains("Win")||System.getProperty("os.name").contains("WIN")||System.getProperty("os.name").contains("win")){//System ist irgend eine Windows Version
+            	System.out.println("WINDOWS...YAY");
+                br=new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("wmic path win32_VideoController get name").getInputStream()));//cmd parameter von https://superuser.com/questions/723506/get-the-video-card-model-via-command-line-in-windows
+            }
+            else{//System ist irgendwas (Linux/UNIX/Mac OS)... Jedenfalls was mit bash (99% wahrscheinlich)
+                br=new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("lspci -vnn | grep VGA -A 12").getInputStream()));//cmd parameter von http://www.binarytides.com/linux-get-gpu-information/
+            }
+            String zeile=br.readLine();
+            String alles="";
+            while(true){
+            	System.out.println("\t\""+zeile+"\"");
+                if(zeile==null/*||zeile.equals("")*/){
+                	System.out.println("BROKEN");
+                    break;
+                }
+                alles+=zeile;
+                zeile=br.readLine();
+            }
+            if(alles.contains("Intel")||alles.contains("Intel")||alles.contains("intel")){
+            	FullscreenExclusiveRadioButton.setEnabled(false);
+            	MaximizeWindowRadioButton.setSelected(true);
+            	fullscreenOk=false;
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void keyTyped(KeyEvent event) {}
@@ -2100,7 +2201,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     @Override
     public void windowOpened(WindowEvent event) {}
 
-	@Override
-	public void focusLost(FocusEvent arg0) {}
+    @Override
+    public void focusLost(FocusEvent arg0) {}
 }
 

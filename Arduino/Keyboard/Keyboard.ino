@@ -9,7 +9,7 @@ void setup() {
 void loop() {
   // this is generally not necessary but with some older systems it seems to
   // prevent missing the first character after a delay:
-  /*DigiKeyboard.sendKeyStroke(0);
+  DigiKeyboard.sendKeyStroke(0);
 
   DigiKeyboard.sendKeyStroke(KEY_R, MOD_GUI_LEFT);
   DigiKeyboard.delay(100);
@@ -17,8 +17,8 @@ void loop() {
   DigiKeyboard.sendKeyStroke(KEY_ENTER);
   DigiKeyboard.delay(5000);
   DigiKeyboard.sendKeyStroke(KEY_ENTER);
-  delay(2500);*/
-  Serial.println("HALLO");
+  delay(2500);
+  //Serial.println("HALLO");
 
 
 
