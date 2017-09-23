@@ -91,12 +91,12 @@ import org.jfree.ui.RectangleEdge;
 
 public class Raumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener, FocusListener
 {
-    public boolean debug=true;
+    public boolean debug=false;
     public static String branch="master";//master, V1 and V1.6 are Options
     public static String projectUri="https://raw.githubusercontent.com/lukasaldersley/Raumklima/";
     public static String downloadTargetUri="https://github.com/lukasaldersley/Raumklima/raw/";
 
-    public static final String VERSION="1.6.1.5";
+    public static final String VERSION="1.6.1.0";
 
     public static boolean CLOSE_WINDOW_ALT_REQUIRED=false;
     public static boolean OPEN_HELP_WINDOW_ALT_REQUIRED=false;
@@ -378,7 +378,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 fileOutputStream = new FileOutputStream("RaumklimaConfig.txt");
                 fileOutputStream.getChannel().transferFrom(readableByteChannelFromSource, 0, Long.MAX_VALUE);
                 fileOutputStream.close();
-                configFile=new File("RaumklimaConfig.txt");
             }
             catch(Exception e){
                 e.printStackTrace();
