@@ -90,7 +90,7 @@ import org.jfree.ui.RectangleEdge;
 
 public class Raumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener, FocusListener
 {
-    public static boolean debug=false;
+    public static boolean debug=true;
     public static String branch="master";//master, V1 and V1.6 are Options
     public static String projectUri="https://raw.githubusercontent.com/lukasaldersley/Raumklima/";
     public static String downloadTargetUri="https://github.com/lukasaldersley/Raumklima/raw/";
@@ -151,7 +151,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static int WIDTH_OF_DATA_BLOCK=370;
     public static int NUMBER_OF_KEY_COMBOS=9;
     public static int NUMBER_OF_COPYRIGHT_NOTES=24;
-    public static int NUMBER_OF_CONFIG_ENTRIES=91;
+    public static int NUMBER_OF_CONFIG_ENTRIES=89;
 
     private boolean allowKeyCombinationChange=false;
     private boolean bottomPanelExpanded=false;
@@ -715,7 +715,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         GeoModePanel.add(new JLabel("Anzeigemodus:"));
         GeoModeButtonGroup=new ButtonGroup();
         RegularModeButton=new JRadioButton("Standardmodus");
-        GeoModeButton=new JRadioButton("Geographie-modus (NUR Tagestemperaturdurchschnitt und Tagesniederschlag)");
+        GeoModeButton=new JRadioButton("Geographie-modus");
         GeoModeButtonGroup.add(GeoModeButton);
         GeoModeButtonGroup.add(RegularModeButton);
         GeoModePanel.add(RegularModeButton);
@@ -723,9 +723,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         GeoModeOkButton=new JButton("Übernehmen");
         GeoModeOkButton.addActionListener(this);
         GeoModePanel.add(GeoModeOkButton);
-        GeoModePanel.add(new JLabel(" "));
-        GeoModeButton.setSelected(geoMode);
-        RegularModeButton.setSelected(!geoMode);
+        GeoModePanel.add(new JLabel(""));
 
         UpdateOptionsPanel=new JPanel();
         UpdateOptionsPanel.setLayout(new BoxLayout(UpdateOptionsPanel, BoxLayout.Y_AXIS));
@@ -1064,7 +1062,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             interpolationFactor=Integer.parseInt(configRaw[84].trim());
             isCustomInterpolated=configRaw[86].equals("YES");
             interpolationOffset=Integer.parseInt(configRaw[88].trim());
-            geoMode=configRaw[90].equals("YES");
             if(getImageSizeAutomatically){
                 imageHeight=fullscreenDimension.height;
                 imageWidth=fullscreenDimension.width;
@@ -1149,7 +1146,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         configRaw[84]=String.valueOf(interpolationFactor);
         configRaw[86]=getYesNoString(isCustomInterpolated);
         configRaw[88]=String.valueOf(interpolationOffset);
-        configRaw[90]=getYesNoString(geoMode);
 
         if(debug){
             System.out.println("writing Config");
@@ -1560,7 +1556,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 //int numberOfLines=numberOfLinesInFile(csvFile);
 
                 line=br.readLine();
-                for(int x=0;x<interpolationOffset*4;x++){
+                for(int x=0;x<interpolationOffset;x++){
                     line=br.readLine();
                 }
                 counter=0;
@@ -1588,8 +1584,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                         break;
                     }
                     te/=4;
-                    xYSeries[0].add(counter, te);
-                    xYSeries[1].add(counter,ns);
+                    xYSeries[0].add(counter, temps);
+                    xYSeries[1].add(counter,drops);
                     counter++;
                     for(int j=0;j<interpolationFactor*4;j++){
                         line=br.readLine();

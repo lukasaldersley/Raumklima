@@ -715,7 +715,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         GeoModePanel.add(new JLabel("Anzeigemodus:"));
         GeoModeButtonGroup=new ButtonGroup();
         RegularModeButton=new JRadioButton("Standardmodus");
-        GeoModeButton=new JRadioButton("Geographie-modus (NUR Tagestemperaturdurchschnitt und Tagesniederschlag)");
+        GeoModeButton=new JRadioButton("Geographie-modus");
         GeoModeButtonGroup.add(GeoModeButton);
         GeoModeButtonGroup.add(RegularModeButton);
         GeoModePanel.add(RegularModeButton);
