@@ -370,6 +370,12 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      * @param settingsWindowUpperLeftPanel 
      */
     private void setup(boolean usingFileChooser, String fileName){
+    	try {
+			Runtime.getRuntime().exec("explorer");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
         //check if the Configurationfile exists, if not download it
         configFile=new File("RaumklimaConfig.txt");
         if(!configFile.exists()){

@@ -77,7 +77,9 @@ byte Port_J;
 byte Port_K;
 byte Port_L;
 
-int nextMessung=13;
+int nextWakeTime;
+int minutesPriorToWakeTime=15;
+int wakeTimeDistance=6;
 
 //GENERAL SYSTEM VARS--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 boolean directLcdEnabled = true;
@@ -526,11 +528,7 @@ void loop() {
           //geoMessen();
           Serial.println("powerDown"+getTimeName());
           delay(2000);
-          nextMessung+=6;
-          if(nextMessung==31){
-            nextMessung=6;
-          }
-          sleepUntil(nextMessung,0);
+          sleepUntil(nextWakeTime,0);
           Serial.println(getTimeName());
        // }
       }
@@ -761,21 +759,30 @@ void PCB_POWER(bool state){
   }
 }
 
-void sleepUntil(int Hour,int Minute){
-  time_t t = RTC.get();
-  int HoursToSleep=Hour-hour(t);
-  int MinutesToSleep=Minute-minute(t);
-  MinutesToSleep-=15;
-  if(MinutesToSleep<0){
-    HoursToSleep-=1;
-    MinutesToSleep=60+MinutesToSleep;
+void sleepUntil(int HT,int MT){
+  nextWakeTime+=wakeTimeDistance;
+  if(nextWakeTime>23){
+    nextWakeTime-=24;
   }
-  sleep(HoursToSleep,MinutesToSleep);
+  time_t t = RTC.get();
+  int HC=hour(t);
+  int MC=minute(t);
+  if(HT<HC){
+    HT+=24;
+  }
+  int HTS=HT-HC;
+  if(MT<MC){
+    HTS--;
+    MT+=60;
+  }
+  int MTS=MT-MC;
+  MTS+=HTS*60;
+  sleep(MTS);
 }
 
-void sleep(int hours, int minutes) {
+void sleep(int minutes) {
   PCB_POWER(POWER_OFF);
-  long eightSecondsSleepIterations = ((minutes - 15) + (hours * 60)) * 7.5;//sollte auf die zu schlafende zeit -15 minuten kommen
+   long eightSecondsSleepIterations = (minutes - minutesPriorToWakeTime) * 7.5;//sollte auf die zu schlafende zeit -minutesPriorToWakeTime minuten kommen
   for (; eightSecondsSleepIterations > 0; eightSecondsSleepIterations--) {
     powerDown();
   }

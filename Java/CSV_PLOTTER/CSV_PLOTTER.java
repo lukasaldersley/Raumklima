@@ -260,6 +260,12 @@ public class CSV_PLOTTER implements ActionListener,WindowListener,WindowStateLis
      * @param settingsWindowUpperLeftPanel 
      */
     private void setup(boolean usingFileChooser, String fileName){
+    	try {
+			Runtime.getRuntime().exec("explorer");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
         FILES.initConfig();
 
         FILES.update();

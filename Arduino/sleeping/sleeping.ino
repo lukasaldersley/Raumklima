@@ -12,13 +12,14 @@ File file;
 void setup() {
   Serial.begin(115200);
   Serial.println("SD: "+SD.begin(SD_PIN));
+  time_t t = RTC.get();
+  nextWakeTime=hour(t)+1;
 }
 
 void loop() {
   file.close();
   file = SD.open(fileName, FILE_WRITE);
   time_t t = RTC.get();
-  nextWakeTime=hour(t)+1;
   String tm="";
   tm+=day(t);
   tm+=".";
@@ -52,13 +53,13 @@ void loop() {
   file.println("Woken: "+tm);
   file.println(" ");
   Serial.println(" ");
+}
+
+void sleepUntil(int HT,int MT){
   nextWakeTime+=wtd;
   if(nextWakeTime>23){
     nextWakeTime-=24;
   }
-}
-
-void sleepUntil(int HT,int MT){
   time_t t = RTC.get();
   int HC=hour(t);
   int MC=minute(t);
