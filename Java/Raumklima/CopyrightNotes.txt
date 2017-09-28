@@ -1,31 +1,66 @@
-﻿
-
+﻿ 
+ 
+Betriebsanweisung:
+ 
 Java Programm:
-
-    Bei Fragen/Vorschlägen: lukasaldersley@outlook.com
-        oder Kommentar auf https://www.github.com/lukasaldersley/Raumklima
-
-    Benutzte Bibliotheken:
-        -JFreeChart (GNU LGPL)
-        -JSSC (JSerialComm)
-        -Standard Java Bibliotheken (swing, awt, usw..)
-
-Arduino Sketch ("Firmware des Geräts"):
-    Benutzte Bibliotheken:
-        -Arduino (alle Grundfunktionen)
-        -LiquidCrystal (GNU LGPL 2.1 or later)
-            Copyright 2006-2008 Hans-Christoph Steiner.
-            All rights reserved.
-            Copyright (c) 2010 Arduino LLC. All right reserved.
-        -DS3232RTC
-        -TimeLib
+ 
+Beim Starten des Programms öffnet sich zunächst eine Dateiauswahl, in der die anzuzeigende Datei ausgewählt werden muss.
+Die anzeigbaren Dateien sind die CSV Dateien, die vom Gerät aufgezeichnet werden, aber alle anderen CSV Dateien,
+die nur Zahlen enthalten, können ebenfalls angezeigt werden (möglicherweise mit eingeschränktem Funktionsumfang).
+Nach dem Klick auf "Öffnen" wird die ausgewählte datei eingelesen und alle Werte gezeichnet.
+Bei einem Klick auf "Abbrechen" in der Dateiauswahl wird das Programm beendet.
+ 
+ 
+ 
+ 
+ 
+Gerät:
+ 
+ 
+ 
+ 
+Benutzte Bibliotheken:
+    Java Programm:
+        -JFreeChart
+        -
+    
+    Arduino:
         -LiquidCrystal_I2C
+        -DS3232RTC
+            Jack Christensen
+            https://github.com/JChristensen/DS3232RTC
+            CC BY-SA 4.0 
+        -TimeLib
+            Michael Margolis / Paul Stoffregen
+            https://github.com/PaulStoffregen/Time
+            GNU Lesser General Public License (GNU LGPL)
+        -avr/sleep
+            http://www.atmel.com/webdoc/AVRLibcReferenceManual/index_1license.html
+        -avr/wdt
+            http://www.atmel.com/webdoc/AVRLibcReferenceManual/index_1license.html
+        -Arduino
+            Arduino
+            arduino.cc
+            GNU Lesser General Public License (GNU LGPL)
         -Wire
+            Arduino
+            arduino.cc
+            GNU Lesser General Public License (GNU LGPL)
         -SPI
+            Arduino
+            arduino.cc
+            GNU Lesser General Public License (GNU LGPL)
         -SD
-        -DHT
-        -SFE_BMP180
+            Arduino
+            arduino.cc
+            GNU Lesser General Public License (GNU LGPL)
+        -Servo
+            Arduino
+            arduino.cc
+            GNU Lesser General Public License (GNU LGPL)
         -Adafruit_Sensor
         -Adafruit_BME280
-
-(Wird noch vervollständigt und genauer beschreieben)
+        -hx711
+            Weihong Guan
+            https://github.com/aguegu/ardulibs/tree/master/hx711
+            MIT License (siehe: https://github.com/aguegu/ardulibs/blob/master/LICENSE.txt)
