@@ -330,7 +330,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private JRadioButton GeoModeButton;
     private JButton GeoModeOkButton;
     private boolean geoMode;
-
+    private boolean replotting=false;
+    
     public static void main(String[] args){
         for(int i=0;i<args.length;i++){
             if(args[i].equalsIgnoreCase("debug")||args[i].equalsIgnoreCase("d")||args[i].equalsIgnoreCase("/debug")||args[i].equalsIgnoreCase("/d")||args[i].equalsIgnoreCase("-debug")||args[i].equalsIgnoreCase("-d")){
@@ -762,6 +763,34 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         GeneralSettings.add(GeoModePanel);
         GeneralSettings.add(UpdateOptionsPanel);
 
+        setupGraphSettings();
+
+        KeyCombinationPanelTitle=new JLabel("Tastenkürzel:");
+        KeyCombinationPanelTitle.setFont(new Font(Font.SERIF,Font.BOLD, 16));
+        KeyCombinationSettingsFramePanel.setLayout(new GridLayout(0,1));
+        KeyCombinationSettingsFramePanel.add(KeyCombinationPanelTitle);
+        for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
+            KeyCombinationSettingsEntryPanel[i]=new JPanel(new BorderLayout());
+            settingsWindowText[i]=new JLabel();
+            settingsWindowText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
+            KeyCombinationSettingsEntryPanel[i].add(settingsWindowText[i],BorderLayout.WEST);
+            KeyCombinationChangeButton[i]=new JButton("Ändern");
+            KeyCombinationChangeButton[i].setPreferredSize(new Dimension(100,25));
+            KeyCombinationChangeButton[i].addActionListener(this);
+            KeyCombinationSettingsEntryPanel[i].add(KeyCombinationChangeButton[i],BorderLayout.EAST);
+            KeyCombinationSettingsFramePanel.add(KeyCombinationSettingsEntryPanel[i]);
+        }
+        loadTextForHelpWindowAndKeyCombinations();
+        KeyCombinationSettings.add(KeyCombinationSettingsFramePanel);
+
+        SettingsPageTabbedPane.addTab("Allgemeine Einstellungen",GeneralSettings);
+        SettingsPageTabbedPane.addTab("Graphenbereich",GraphSettings);
+        SettingsPageTabbedPane.addTab("Tastenkombinationen",KeyCombinationSettings);
+        settingsWindow.add(SettingsPageTabbedPane);
+    }
+    
+    void setupGraphSettings(){
+        GraphSettings.removeAll();
         visibilitySettings=new JPanel();
         visibilitySettings.setLayout(new BoxLayout(visibilitySettings,BoxLayout.Y_AXIS));
         visibilitySettings.add(new JLabel("Graphensichtbarkeit"));
@@ -906,29 +935,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         GeneralInterpolationSettings.add(interpolationSettingsBasePanel);
 
         GraphSettings.add(GeneralInterpolationSettings);
-
-        KeyCombinationPanelTitle=new JLabel("Tastenkürzel:");
-        KeyCombinationPanelTitle.setFont(new Font(Font.SERIF,Font.BOLD, 16));
-        KeyCombinationSettingsFramePanel.setLayout(new GridLayout(0,1));
-        KeyCombinationSettingsFramePanel.add(KeyCombinationPanelTitle);
-        for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
-            KeyCombinationSettingsEntryPanel[i]=new JPanel(new BorderLayout());
-            settingsWindowText[i]=new JLabel();
-            settingsWindowText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
-            KeyCombinationSettingsEntryPanel[i].add(settingsWindowText[i],BorderLayout.WEST);
-            KeyCombinationChangeButton[i]=new JButton("Ändern");
-            KeyCombinationChangeButton[i].setPreferredSize(new Dimension(100,25));
-            KeyCombinationChangeButton[i].addActionListener(this);
-            KeyCombinationSettingsEntryPanel[i].add(KeyCombinationChangeButton[i],BorderLayout.EAST);
-            KeyCombinationSettingsFramePanel.add(KeyCombinationSettingsEntryPanel[i]);
-        }
-        loadTextForHelpWindowAndKeyCombinations();
-        KeyCombinationSettings.add(KeyCombinationSettingsFramePanel);
-
-        SettingsPageTabbedPane.addTab("Allgemeine Einstellungen",GeneralSettings);
-        SettingsPageTabbedPane.addTab("Graphenbereich",GraphSettings);
-        SettingsPageTabbedPane.addTab("Tastenkombinationen",KeyCombinationSettings);
-        settingsWindow.add(SettingsPageTabbedPane);
     }
 
     private void setupHelpWindow(){
@@ -1359,10 +1365,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             helpWindowText[7].setText(helpWindowText[7].getText()+TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_STRING);
             helpWindowText[8].setText(helpWindowText[8].getText()+TOGGLE_FULLSCREEN_MODE_KEY_STRING);
 
-            closeWindowMenuItem.setText("Fenster schlieÃŸen ("+helpWindowText[0].getText()+")");
+            closeWindowMenuItem.setText("Fenster schließen ("+helpWindowText[0].getText()+")");
             openHelpWindowMenu.setText("Hilfe ("+helpWindowText[1].getText()+")");
-            openDifferentPlotMenuItem.setText("Datei Ã¶ffnen ("+helpWindowText[2].getText()+")");
-            openNewWindowMenuItem.setText("neues Fenster Ã¶ffnen ("+helpWindowText[3].getText()+")");
+            openDifferentPlotMenuItem.setText("Datei Öffnen ("+helpWindowText[2].getText()+")");
+            openNewWindowMenuItem.setText("neues Fenster Öffnen ("+helpWindowText[3].getText()+")");
             openSettingsWindowMenu.setText("Einstellungen ("+helpWindowText[4].getText()+")");
             saveGraphImagesMenu.setText("Graphen speichern ("+helpWindowText[6].getText()+")");
             toggleFullscreenModeMenu.setText("Vollbildmodus ("+helpWindowText[8].getText()+")");
@@ -1539,6 +1545,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             br=new BufferedReader(new FileReader(csvFile));
             String line=br.readLine();
             dataValueDescriptors=line.split(";");
+            numberOfGraphs=dataValueDescriptors.length;
+            if(replotting){
+                setupGraphSettings();
+            }
             if(geoMode){
                 int temps = 0;
                 int drops=0;
@@ -1576,6 +1586,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                     if(line==null||line.equals("")){
                         break;
                     }
+                    ns=0;
+                    te=0;
                     for(int l=0;l<4;l++){
                         line=line.replace("NAN","0,00");
                         line=line.replace(',', '.');
@@ -1607,9 +1619,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
             }
             else{
-
-                numberOfGraphs=dataValueDescriptors.length;
-
                 xYSeries=new XYSeries[numberOfGraphs];
                 graphIsVisible=new boolean[numberOfGraphs];
 
@@ -1991,12 +2000,14 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void replot(){
+        replotting=true;
         mainWindow.remove(chartPanel);
         jFreeChart=createChart(createDataset());
         setupCrosshairOverlays();
         mainWindow.add(chartPanel,BorderLayout.NORTH);
         chartPanel.addChartMouseListener(this);
         mainWindow.validate();
+        replotting=false;
     }
 
     private void setSeriesVisible(int number,boolean selected) {
