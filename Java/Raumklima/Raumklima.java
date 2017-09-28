@@ -150,7 +150,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static int HEIGHT_OF_DATA_BLOCK=25;
     public static int WIDTH_OF_DATA_BLOCK=370;
     public static int NUMBER_OF_KEY_COMBOS=9;
-    public static int NUMBER_OF_COPYRIGHT_NOTES=24;
+    public static int NUMBER_OF_COPYRIGHT_NOTES=66;
     public static int NUMBER_OF_CONFIG_ENTRIES=91;
 
     private boolean allowKeyCombinationChange=false;
@@ -1259,8 +1259,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 helpWindowText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
                 helpPanel.add(helpWindowText[i]);
             }
-            //add Copyright notice
-            NUMBER_OF_COPYRIGHT_NOTES=numberOfLinesInFile(new File(this.getClass().getResource("CopyrightNotes.txt").getFile()));
             br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("CopyrightNotes.txt")));
             try{
                 copyrightNotes=new JLabel[NUMBER_OF_COPYRIGHT_NOTES+3];
@@ -1272,6 +1270,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 helpPanel.add(copyrightNotes[2]);
                 for(int i=3;i<NUMBER_OF_COPYRIGHT_NOTES+3;i++){
                     line=br.readLine();
+                    System.out.println(line);
                     copyrightNotes[i]=new JLabel(line);
                     helpPanel.add(copyrightNotes[i]);
                 }
@@ -1696,7 +1695,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         return xYSeriesCollection;
     }
 
-    private int numberOfLinesInFile(File inputFile) {
+    @SuppressWarnings("unused")
+	private int numberOfLinesInFile(File inputFile) {
         //https://stackoverflow.com/questions/453018/number-of-lines-in-a-file-in-java
         //antwort von Telmo Marques und er.vikas
         LineNumberReader lnr;
