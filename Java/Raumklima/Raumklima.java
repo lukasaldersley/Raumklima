@@ -95,7 +95,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static String projectUri="https://raw.githubusercontent.com/lukasaldersley/Raumklima/";
     public static String downloadTargetUri="https://github.com/lukasaldersley/Raumklima/raw/";
 
-    public static final String VERSION="1.8.0.2";
+    public static final String VERSION="1.9.0.0";
 
     public static boolean CLOSE_WINDOW_ALT_REQUIRED=false;
     public static boolean OPEN_HELP_WINDOW_ALT_REQUIRED=false;
@@ -218,8 +218,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private JCheckBox FiletypePngCheckBox;
     private JCheckBox FiletypeJpgCheckBox;
 
-    //private JComboBox<String> comboBox;
-
     private JFileChooser fileChooser;
 
     private JFreeChart jFreeChart;
@@ -331,6 +329,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private JButton GeoModeOkButton;
     private boolean geoMode;
     private boolean replotting=false;
+	private boolean onlyInterpolationChanging=false;
 
     public static void main(String[] args){
         for(int i=0;i<args.length;i++){
@@ -371,14 +370,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      * @param settingsWindowUpperLeftPanel 
      */
     private void setup(boolean usingFileChooser, String fileName){
-        if(debug){
-            try {
-                Runtime.getRuntime().exec("explorer");
-            } catch (IOException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
-        }
         //check if the Configurationfile exists, if not download it
         configFile=new File("RaumklimaConfig.txt");
         if(!configFile.exists()){
@@ -454,7 +445,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         //Initialise and setup FileChooser
         fileChooser=new JFileChooser();
-        fileChooser.setDialogTitle("Bitte CSV-Datei auswählen");
+        fileChooser.setDialogTitle("Bitte CSV-Datei auswÃ¤hlen");
         fileChooser.setMultiSelectionEnabled(false);
         fileChooser.setFileFilter(new FileNameExtensionFilter("Aufgezeichnete Klimadaten (.csv/.CSV)","csv","CSV","Csv"));
 
@@ -470,7 +461,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         //proceed only if successful otherwise exit
         pickCsvFile(usingFileChooser,fileName);
         if(jFilePickerFailed==false){
-            jFreeChart = createChart(createDataset());
+            jFreeChart = createDataset();
             setupCrosshairOverlays();
 
             setupDataPanel();
@@ -584,10 +575,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             keyComboAusgabe.setEditable(false);
             //keyComboAusgabe.setFocusable(false);
             auxiliaryPanel.add(keyComboAusgabe);
-            changeKeyCombinationButton=new JButton("Ändern");
+            changeKeyCombinationButton=new JButton("Ã„ndern");
             changeKeyCombinationButton.addActionListener(this);
             auxiliaryPanel.add(changeKeyCombinationButton);
-            saveKeyCombinationButton=new JButton("Schließen");
+            saveKeyCombinationButton=new JButton("SchlieÃŸen");
             saveKeyCombinationButton.addActionListener(this);
             auxiliaryPanel.add(saveKeyCombinationButton);
             setNewKeyCombinationWindow.add(auxiliaryPanel);
@@ -610,7 +601,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         KeyCombinationSettingsFramePanel=new JPanel();
 
         SettingsPageTabbedPane=new JTabbedPane();
-        GeneralSettings=new JPanel(); //F11, Updates prï¿½fen, Update policy, Dateitypen 
+        GeneralSettings=new JPanel(); //F11, Updates prÃ¼fen, Update policy, Dateitypen 
         GraphSettings=new JPanel();  //sichtbarkeit, interplolation
         KeyCombinationSettings=new JPanel();  //keysÃ¤ndern
 
@@ -711,7 +702,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         FullscreenOptionsPanel.setLayout(new BoxLayout(FullscreenOptionsPanel, BoxLayout.Y_AXIS));
         FullscreenOptionsButtonGroup=new ButtonGroup();
         MaximizeWindowRadioButton=new JRadioButton("Fenster Maximieren");
-        FullscreenExclusiveRadioButton=new JRadioButton("Vollbildmodus (Nicht verfügbar auf Computern mit Intel-Grafik)");
+        FullscreenExclusiveRadioButton=new JRadioButton("Vollbildmodus (Nicht verfÃ¼gbar auf Computern mit Intel-Grafik)");
         FullscreenOptionsButtonGroup.add(MaximizeWindowRadioButton);
         FullscreenOptionsButtonGroup.add(FullscreenExclusiveRadioButton);
         MaximizeWindowRadioButton.setSelected(!fullscreenOk);
@@ -739,7 +730,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         GeoModeButtonGroup.add(RegularModeButton);
         GeoModePanel.add(RegularModeButton);
         GeoModePanel.add(GeoModeButton);
-        GeoModeOkButton=new JButton("Übernehmen");
+        GeoModeOkButton=new JButton("Ãœbernehmen");
         GeoModeOkButton.addActionListener(this);
         GeoModePanel.add(GeoModeOkButton);
         GeoModePanel.add(new JLabel(" "));
@@ -749,13 +740,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         UpdateOptionsPanel=new JPanel();
         UpdateOptionsPanel.setLayout(new BoxLayout(UpdateOptionsPanel, BoxLayout.Y_AXIS));
         UpdateOptionsButtonGroup=new ButtonGroup();
-        AutoUpdateRadioButton=new JRadioButton("Automatisch beim Start prüfen");
+        AutoUpdateRadioButton=new JRadioButton("Automatisch beim Start prÃ¼fen");
         ManualUpdateRadioButton=new JRadioButton("Nur Manuell");
         UpdateOptionsButtonGroup.add(AutoUpdateRadioButton);
         UpdateOptionsButtonGroup.add(ManualUpdateRadioButton);
         AutoUpdateRadioButton.setSelected(autoUpdate);
         ManualUpdateRadioButton.setSelected(!autoUpdate);
-        UpdateNow=new JButton("Jetzt auf Updates prüfen");
+        UpdateNow=new JButton("Jetzt auf Updates prÃ¼fen");
         UpdateNow.addActionListener(this);
         AutoUpdateRadioButton.addActionListener(this);
         ManualUpdateRadioButton.addActionListener(this);
@@ -777,7 +768,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         setupGraphSettings();
 
-        KeyCombinationPanelTitle=new JLabel("Tastenkürzel:");
+        KeyCombinationPanelTitle=new JLabel("TastenkÃ¼rzel:");
         KeyCombinationPanelTitle.setFont(new Font(Font.SERIF,Font.BOLD, 16));
         KeyCombinationSettingsFramePanel.setLayout(new GridLayout(0,1));
         KeyCombinationSettingsFramePanel.add(KeyCombinationPanelTitle);
@@ -786,7 +777,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             settingsWindowText[i]=new JLabel();
             settingsWindowText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
             KeyCombinationSettingsEntryPanel[i].add(settingsWindowText[i],BorderLayout.WEST);
-            KeyCombinationChangeButton[i]=new JButton("Ändern");
+            KeyCombinationChangeButton[i]=new JButton("Ã„ndern");
             KeyCombinationChangeButton[i].setPreferredSize(new Dimension(100,25));
             KeyCombinationChangeButton[i].addActionListener(this);
             KeyCombinationSettingsEntryPanel[i].add(KeyCombinationChangeButton[i],BorderLayout.EAST);
@@ -799,6 +790,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         SettingsPageTabbedPane.addTab("Graphenbereich",GraphSettings);
         SettingsPageTabbedPane.addTab("Tastenkombinationen",KeyCombinationSettings);
         settingsWindow.add(SettingsPageTabbedPane);
+        settingsWindow.setResizable(false);
     }
 
     void setupGraphSettings(){
@@ -931,8 +923,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         interpolateOffsetPanel.add(new JLabel(" "));
         interpolateOffsetPanel.add(new JLabel(" "));
         interpolateOffsetPanel.add(new JLabel(" "));
-        changeInterpolationSettings=new JButton("Übernehmen");
+        interpolateOffsetPanel.add(new JLabel(" "));
+        interpolateOffsetPanel.add(new JLabel(" "));
+        interpolateOffsetPanel.add(new JLabel(" "));
+        interpolateOffsetPanel.add(new JLabel(" "));
+        changeInterpolationSettings=new JButton("OK (nur Interpolation)");
         changeInterpolationSettings.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        changeInterpolationSettings.setAlignmentY(Component.BOTTOM_ALIGNMENT);
         changeInterpolationSettings.addActionListener(this);
         interpolateOffsetPanel.add(changeInterpolationSettings);
 
@@ -956,7 +953,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         helpWindowScrollPane.setPreferredSize(new Dimension(helpWindow.getWidth(), helpWindow.getHeight()-53));
         helpWindow.add(helpWindowScrollPane,BorderLayout.NORTH);
 
-        helpWindowCloseButton=new JButton("Schließen");
+        helpWindowCloseButton=new JButton("SchlieÃŸen");
         helpWindowCloseButton.addActionListener(this);
         helpWindowCloseButton.setPreferredSize(new Dimension(helpWindow.getWidth(),25));
         helpWindow.add(helpWindowCloseButton,BorderLayout.SOUTH);
@@ -971,13 +968,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         mainWindowMenuBar=new JMenuBar();
 
         fileMenu=new JMenu("Datei");
-        openDifferentPlotMenuItem=new JMenuItem("Datei öffnen (Strg+"+OPEN_NEW_PLOT_KEY_STRING+")");
+        openDifferentPlotMenuItem=new JMenuItem("Datei Ã¶ffnen (Strg+"+OPEN_NEW_PLOT_KEY_STRING+")");
         openDifferentPlotMenuItem.addActionListener(this);
         fileMenu.add(openDifferentPlotMenuItem);
-        openNewWindowMenuItem=new JMenuItem("neues Fenster öffnen (Strg+"+OPEN_NEW_WINDOW_KEY_STRING+")");
+        openNewWindowMenuItem=new JMenuItem("neues Fenster Ã¶ffnen (Strg+"+OPEN_NEW_WINDOW_KEY_STRING+")");
         openNewWindowMenuItem.addActionListener(this);
         fileMenu.add(openNewWindowMenuItem);
-        closeWindowMenuItem=new JMenuItem("Fenster schließen (Strg+"+CLOSE_WINDOW_KEY_STRING+")");
+        closeWindowMenuItem=new JMenuItem("Fenster schlieÃŸen (Strg+"+CLOSE_WINDOW_KEY_STRING+")");
         closeWindowMenuItem.addActionListener(this);
         fileMenu.add(closeWindowMenuItem);
 
@@ -1371,10 +1368,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             helpWindowText[7].setText(helpWindowText[7].getText()+TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_STRING);
             helpWindowText[8].setText(helpWindowText[8].getText()+TOGGLE_FULLSCREEN_MODE_KEY_STRING);
 
-            closeWindowMenuItem.setText("Fenster schließen ("+helpWindowText[0].getText()+")");
+            closeWindowMenuItem.setText("Fenster schlieÃŸen ("+helpWindowText[0].getText()+")");
             openHelpWindowMenu.setText("Hilfe ("+helpWindowText[1].getText()+")");
-            openDifferentPlotMenuItem.setText("Datei Öffnen ("+helpWindowText[2].getText()+")");
-            openNewWindowMenuItem.setText("neues Fenster Öffnen ("+helpWindowText[3].getText()+")");
+            openDifferentPlotMenuItem.setText("Datei Ã¶ffnen ("+helpWindowText[2].getText()+")");
+            openNewWindowMenuItem.setText("neues Fenster Ã¶ffnen ("+helpWindowText[3].getText()+")");
             openSettingsWindowMenu.setText("Einstellungen ("+helpWindowText[4].getText()+")");
             saveGraphImagesMenu.setText("Graphen speichern ("+helpWindowText[6].getText()+")");
             toggleFullscreenModeMenu.setText("Vollbildmodus ("+helpWindowText[8].getText()+")");
@@ -1513,11 +1510,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         return fileChooser.showOpenDialog(fileChooserWindow);
     }
 
-    private JFreeChart createChart(XYDataset xYDataset) {
-        JFreeChart jFreeChart = ChartFactory.createXYLineChart(null,"Zeit (s)","Werte",xYDataset);
-        return jFreeChart;
-    }
-
     private void pickCsvFile(boolean doShowOpenDialog,String fileName) {
         xYSeriesCollection = new XYSeriesCollection();
         if(doShowOpenDialog){
@@ -1540,7 +1532,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     @SuppressWarnings("rawtypes")
-    private XYDataset createDataset(){
+    private JFreeChart createDataset(){
 
         try{
             xYSeriesCollection.removeAllSeries();
@@ -1568,12 +1560,16 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                     return createDataset();
                 }
                 xYSeries=new XYSeries[numberOfGraphs];
+                if(!onlyInterpolationChanging){
                 graphIsVisible=new boolean[numberOfGraphs];
+                }
 
                 xYSeries[0] = new XYSeries((Comparable)((Object)(dataValueDescriptors[temps])));
-                graphIsVisible[0]=true;
                 xYSeries[1] = new XYSeries((Comparable)((Object)(dataValueDescriptors[drops])));
+                if(!onlyInterpolationChanging){
+                graphIsVisible[0]=true;
                 graphIsVisible[1]=true;
+                }
 
                 if(interpolationFactor<1){
                     interpolationFactor=1;
@@ -1624,11 +1620,15 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             }
             else{
                 xYSeries=new XYSeries[numberOfGraphs];
+                if(!onlyInterpolationChanging){
                 graphIsVisible=new boolean[numberOfGraphs];
+                }
 
                 for (int i = 0; i < numberOfGraphs; ++i) {
                     xYSeries[i] = new XYSeries((Comparable)((Object)(dataValueDescriptors[i])));
+                    if(!onlyInterpolationChanging){
                     graphIsVisible[i]=true;
+                    }
                 }
                 if(interpolationFactor<1){
                     interpolationFactor=1;
@@ -1692,7 +1692,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 xYSeriesCollection.addSeries(xYSeries[i]);
             }
         }
-        return xYSeriesCollection;
+        JFreeChart chart = ChartFactory.createXYLineChart(null,"Zeit","Werte",xYSeriesCollection);
+        onlyInterpolationChanging=false;
+        return chart;
     }
 
     @SuppressWarnings("unused")
@@ -1990,6 +1992,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             if(interpolationFactor<1){
                 interpolationFactor=1;
             }
+            onlyInterpolationChanging=true;
             replot();
         }
         if(event.getSource()==GeoModeOkButton){
@@ -2012,7 +2015,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private void replot(){
         replotting=true;
         mainWindow.remove(chartPanel);
-        jFreeChart=createChart(createDataset());
+        jFreeChart=createDataset();
         setupCrosshairOverlays();
         mainWindow.add(chartPanel,BorderLayout.NORTH);
         chartPanel.addChartMouseListener(this);

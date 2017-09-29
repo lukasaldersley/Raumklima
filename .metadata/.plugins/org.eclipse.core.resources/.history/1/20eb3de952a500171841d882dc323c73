@@ -34,6 +34,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.LineNumberReader;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
@@ -94,7 +95,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static String projectUri="https://raw.githubusercontent.com/lukasaldersley/Raumklima/";
     public static String downloadTargetUri="https://github.com/lukasaldersley/Raumklima/raw/";
 
-    public static final String VERSION="1.6.1.5";
+    public static final String VERSION="1.8.0.2";
 
     public static boolean CLOSE_WINDOW_ALT_REQUIRED=false;
     public static boolean OPEN_HELP_WINDOW_ALT_REQUIRED=false;
@@ -149,8 +150,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static int HEIGHT_OF_DATA_BLOCK=25;
     public static int WIDTH_OF_DATA_BLOCK=370;
     public static int NUMBER_OF_KEY_COMBOS=9;
-    public static int NUMBER_OF_COPYRIGHT_NOTES=24;
-    public static int NUMBER_OF_CONFIG_ENTRIES=89;
+    public static int NUMBER_OF_COPYRIGHT_NOTES=66;
+    public static int NUMBER_OF_CONFIG_ENTRIES=91;
 
     private boolean allowKeyCombinationChange=false;
     private boolean bottomPanelExpanded=false;
@@ -216,8 +217,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private JCheckBox fullscreenOnStartupComboBox;
     private JCheckBox FiletypePngCheckBox;
     private JCheckBox FiletypeJpgCheckBox;
-
-    //private JComboBox<String> comboBox;
 
     private JFileChooser fileChooser;
 
@@ -323,18 +322,25 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private JPanel interpolateOffsetPanel;
     private JPanel interpolateOffsetValuePanel;
     private JButton changeInterpolationSettings;
+    private JPanel GeoModePanel;
+    private JRadioButton RegularModeButton;
+    private ButtonGroup GeoModeButtonGroup;
+    private JRadioButton GeoModeButton;
+    private JButton GeoModeOkButton;
+    private boolean geoMode;
+    private boolean replotting=false;
 
     public static void main(String[] args){
-    	for(int i=0;i<args.length;i++){
-    		if(args[i].equalsIgnoreCase("debug")||args[i].equalsIgnoreCase("d")){
-    			debug=true;
-    		}
-    		else if(args[i].equalsIgnoreCase("?")||args[i].equalsIgnoreCase("help")||args[i].equalsIgnoreCase("h")){
-    			System.out.println("\nBefehlszeilenparameter\n\n\"d\" oder \"debug\"\t\tDebugmodus\n\"h\", \"?\" oder \"help\"\t\tdiese Hilfe anzeigen");
-    			System.exit(0);
-    		}
-    	}
-		new Raumklima();
+        for(int i=0;i<args.length;i++){
+            if(args[i].equalsIgnoreCase("debug")||args[i].equalsIgnoreCase("d")||args[i].equalsIgnoreCase("/debug")||args[i].equalsIgnoreCase("/d")||args[i].equalsIgnoreCase("-debug")||args[i].equalsIgnoreCase("-d")){
+                debug=true;
+            }
+            else if(args[i].equalsIgnoreCase("?")||args[i].equalsIgnoreCase("help")||args[i].equalsIgnoreCase("h")||args[i].equalsIgnoreCase("/?")||args[i].equalsIgnoreCase("/help")||args[i].equalsIgnoreCase("/h")||args[i].equalsIgnoreCase("-?")||args[i].equalsIgnoreCase("-help")||args[i].equalsIgnoreCase("-h")){
+                System.out.println("\nBefehlszeilenparameter\n\n\"d\" oder \"debug\"\t\tDebugmodus\n\"h\", \"?\" oder \"help\"\t\tdiese Hilfe anzeigen");
+                System.exit(0);
+            }
+        }
+        new Raumklima();
     }
 
     /**
@@ -363,6 +369,14 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      * @param settingsWindowUpperLeftPanel 
      */
     private void setup(boolean usingFileChooser, String fileName){
+        if(debug){
+            try {
+                Runtime.getRuntime().exec("explorer");
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+        }
         //check if the Configurationfile exists, if not download it
         configFile=new File("RaumklimaConfig.txt");
         if(!configFile.exists()){
@@ -452,8 +466,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         //get the data and draw the graph
         //proceed only if successful otherwise exit
-        jFreeChart = createChart(createDataset(usingFileChooser,fileName));
+        pickCsvFile(usingFileChooser,fileName);
         if(jFilePickerFailed==false){
+            jFreeChart = createDataset();
             setupCrosshairOverlays();
 
             setupDataPanel();
@@ -494,6 +509,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             refreshPage();
             //revert the Cursor Back To Normal
             mainWindow.setCursor(Cursor.getDefaultCursor());
+            mainWindow.remove(pleaseWaitMessagePanel);
         }
         else{
             exit();
@@ -507,7 +523,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         if(dataPanelX*dataPanelY<numberOfGraphs){
             //Something went TERRIBLY WRONG!!!!
-            //HASN'T BEEN OBSERVED FOR A LONG TIME (a lot of options have been tested
+            //HASN'T BEEN OBSERVED FOR A LONG TIME (a lot of options have been tested)
+        	//Probably will never occur again
             System.err.println("HELP: SPACIAL COLLISION OF numberOfGraphs and panelX/Y: "+numberOfGraphs+"|"+dataPanelX+"x"+dataPanelY);
         }
 
@@ -591,7 +608,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         KeyCombinationSettingsFramePanel=new JPanel();
 
         SettingsPageTabbedPane=new JTabbedPane();
-        GeneralSettings=new JPanel(); //F11, Updates prï¿½fen, Update policy, Dateitypen 
+        GeneralSettings=new JPanel(); //F11, Updates prÃ¼fen, Update policy, Dateitypen 
         GraphSettings=new JPanel();  //sichtbarkeit, interplolation
         KeyCombinationSettings=new JPanel();  //keysÃ¤ndern
 
@@ -621,7 +638,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    System.out.println("A");
+                    if(debug){
+                        System.out.println("A");
+                    }
                     imageWidth=Integer.parseInt(imageWidthBox.getText());
                     reloadBackend();
                 }
@@ -629,7 +648,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 @Override
                 public void removeUpdate(DocumentEvent e) {
                     if(!imageWidthBox.getText().equals("")){
-                        System.out.println("B");
+                        if(debug){
+                            System.out.println("B");
+                        }
                         imageWidth=Integer.parseInt(imageWidthBox.getText());
                         reloadBackend();
                     }
@@ -647,7 +668,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    System.out.println("A");
+                    if(debug){
+                        System.out.println("A");
+                    }
                     imageHeight=Integer.parseInt(imageHeightBox.getText());
                     reloadBackend();
                 }
@@ -655,7 +678,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 @Override
                 public void removeUpdate(DocumentEvent e) {
                     if(!imageHeightBox.getText().equals("")){
-                        System.out.println("B");
+                        if(debug){
+                            System.out.println("B");
+                        }
                         imageHeight=Integer.parseInt(imageHeightBox.getText());
                         reloadBackend();
                     }
@@ -700,20 +725,35 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         FullscreenOptionsPanel.add(FullscreenOptionsButtonGroupPanel);
         FullscreenOptionsPanel.add(new JLabel(" "));
         FullscreenOptionsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);//TODO HALP
-        System.out.println("ABAB");
         CheckFullscreenAvailability();
-        System.out.println("BABA");
+
+        GeoModePanel=new JPanel();
+        GeoModePanel.setLayout(new BoxLayout(GeoModePanel,BoxLayout.Y_AXIS));
+        GeoModePanel.add(new JLabel("Anzeigemodus:"));
+        GeoModeButtonGroup=new ButtonGroup();
+        RegularModeButton=new JRadioButton("Standardmodus");
+        GeoModeButton=new JRadioButton("Geographie-modus (NUR Tagestemperaturdurchschnitt und Tagesniederschlag)");
+        GeoModeButtonGroup.add(GeoModeButton);
+        GeoModeButtonGroup.add(RegularModeButton);
+        GeoModePanel.add(RegularModeButton);
+        GeoModePanel.add(GeoModeButton);
+        GeoModeOkButton=new JButton("Ãœbernehmen");
+        GeoModeOkButton.addActionListener(this);
+        GeoModePanel.add(GeoModeOkButton);
+        GeoModePanel.add(new JLabel(" "));
+        GeoModeButton.setSelected(geoMode);
+        RegularModeButton.setSelected(!geoMode);
 
         UpdateOptionsPanel=new JPanel();
         UpdateOptionsPanel.setLayout(new BoxLayout(UpdateOptionsPanel, BoxLayout.Y_AXIS));
         UpdateOptionsButtonGroup=new ButtonGroup();
-        AutoUpdateRadioButton=new JRadioButton("Automatisch beim Start prüfen");
+        AutoUpdateRadioButton=new JRadioButton("Automatisch beim Start prÃ¼fen");
         ManualUpdateRadioButton=new JRadioButton("Nur Manuell");
         UpdateOptionsButtonGroup.add(AutoUpdateRadioButton);
         UpdateOptionsButtonGroup.add(ManualUpdateRadioButton);
         AutoUpdateRadioButton.setSelected(autoUpdate);
         ManualUpdateRadioButton.setSelected(!autoUpdate);
-        UpdateNow=new JButton("Jetzt auf Updates prüfen");
+        UpdateNow=new JButton("Jetzt auf Updates prÃ¼fen");
         UpdateNow.addActionListener(this);
         AutoUpdateRadioButton.addActionListener(this);
         ManualUpdateRadioButton.addActionListener(this);
@@ -730,8 +770,38 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         GeneralSettings.add(FileTypePanel);
         GeneralSettings.add(FullscreenOptionsPanel);
+        GeneralSettings.add(GeoModePanel);
         GeneralSettings.add(UpdateOptionsPanel);
 
+        setupGraphSettings();
+
+        KeyCombinationPanelTitle=new JLabel("TastenkÃ¼rzel:");
+        KeyCombinationPanelTitle.setFont(new Font(Font.SERIF,Font.BOLD, 16));
+        KeyCombinationSettingsFramePanel.setLayout(new GridLayout(0,1));
+        KeyCombinationSettingsFramePanel.add(KeyCombinationPanelTitle);
+        for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
+            KeyCombinationSettingsEntryPanel[i]=new JPanel(new BorderLayout());
+            settingsWindowText[i]=new JLabel();
+            settingsWindowText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
+            KeyCombinationSettingsEntryPanel[i].add(settingsWindowText[i],BorderLayout.WEST);
+            KeyCombinationChangeButton[i]=new JButton("Ã„ndern");
+            KeyCombinationChangeButton[i].setPreferredSize(new Dimension(100,25));
+            KeyCombinationChangeButton[i].addActionListener(this);
+            KeyCombinationSettingsEntryPanel[i].add(KeyCombinationChangeButton[i],BorderLayout.EAST);
+            KeyCombinationSettingsFramePanel.add(KeyCombinationSettingsEntryPanel[i]);
+        }
+        loadTextForHelpWindowAndKeyCombinations();
+        KeyCombinationSettings.add(KeyCombinationSettingsFramePanel);
+
+        SettingsPageTabbedPane.addTab("Allgemeine Einstellungen",GeneralSettings);
+        SettingsPageTabbedPane.addTab("Graphenbereich",GraphSettings);
+        SettingsPageTabbedPane.addTab("Tastenkombinationen",KeyCombinationSettings);
+        settingsWindow.add(SettingsPageTabbedPane);
+        settingsWindow.setResizable(false);
+    }
+
+    void setupGraphSettings(){
+        GraphSettings.removeAll();
         visibilitySettings=new JPanel();
         visibilitySettings.setLayout(new BoxLayout(visibilitySettings,BoxLayout.Y_AXIS));
         visibilitySettings.add(new JLabel("Graphensichtbarkeit"));
@@ -753,15 +823,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         GraphSettings.add(visibilitySettings);
 
         GeneralInterpolationSettings=new JPanel();
-        //GeneralInterpolationSettings.setBackground(Color.RED);
         GeneralInterpolationSettings.setLayout(new BoxLayout(GeneralInterpolationSettings,BoxLayout.Y_AXIS));
         interpolationSettingsBasePanel=new JPanel();
-        //interpolationSettingsBasePanel.setBackground(Color.BLUE);
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         interpolationSettingsBasePanel.setLayout(new BoxLayout(interpolationSettingsBasePanel,BoxLayout.Y_AXIS));
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         interpolationSettings=new JPanel();
-        //interpolationSettings.setBackground(Color.GREEN);
         interpolationSettings.setLayout(new BoxLayout(interpolationSettings, BoxLayout.Y_AXIS));
         JLabel title=new JLabel("Interpolation");
         interpolationSettings.add(title);
@@ -773,7 +838,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         interpolate100x=new JRadioButton("jeden 100. Wert zeichnen");
         interpolate1000x=new JRadioButton("jeden 1000. Wert zeichnen");
         interpolateCustomPanel=new JPanel();
-        //interpolateCustomPanel.setBackground(Color.RED);
         interpolateCustomPanel.setLayout(new BoxLayout(interpolateCustomPanel,BoxLayout.X_AXIS));
         interpolateCustom=new JRadioButton("Benutzerdefiniert");
         interpolateCustomInputBox=new JTextField();
@@ -783,22 +847,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         interpolateCustomInputBox.getDocument().addDocumentListener(new DocumentListener(){
 
                 @Override
-                public void changedUpdate(DocumentEvent arg0) {
-                    // TODO Auto-generated method stub
-
-                }
+                public void changedUpdate(DocumentEvent arg0) {}
 
                 @Override
-                public void insertUpdate(DocumentEvent arg0) {
-                    interpolationFactor=Integer.parseInt(interpolateCustomInputBox.getText());
-                    interpolateCustom.setSelected(true);
-                }
+                public void insertUpdate(DocumentEvent arg0) {interpolateCustom.setSelected(true);}
 
                 @Override
-                public void removeUpdate(DocumentEvent arg0) {
-                    interpolationFactor=Integer.parseInt(interpolateCustomInputBox.getText());
-                    interpolateCustom.setSelected(true);
-                }
+                public void removeUpdate(DocumentEvent arg0) {interpolateCustom.setSelected(true);}
 
             });
 
@@ -867,6 +922,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         interpolationOffsetValueBox.setMinimumSize(new Dimension(60,23));
         interpolationOffsetValueBox.setPreferredSize(new Dimension(60,23));
         interpolationOffsetValueBox.setMaximumSize(new Dimension(60,23));
+        interpolationOffsetValueBox.setText(String.valueOf(interpolationOffset)+1);
         interpolateOffsetValuePanel.add(interpolationOffsetValueBox);
         interpolateOffsetValuePanel.add(new JLabel(". Wert                         "));
         interpolateOffsetPanel.add(interpolateOffsetValuePanel);
@@ -874,8 +930,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         interpolateOffsetPanel.add(new JLabel(" "));
         interpolateOffsetPanel.add(new JLabel(" "));
         interpolateOffsetPanel.add(new JLabel(" "));
-        changeInterpolationSettings=new JButton("Übernehmen");
+        interpolateOffsetPanel.add(new JLabel(" "));
+        interpolateOffsetPanel.add(new JLabel(" "));
+        interpolateOffsetPanel.add(new JLabel(" "));
+        interpolateOffsetPanel.add(new JLabel(" "));
+        changeInterpolationSettings=new JButton("OK (nur Interpolation)");
         changeInterpolationSettings.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        changeInterpolationSettings.setAlignmentY(Component.BOTTOM_ALIGNMENT);
         changeInterpolationSettings.addActionListener(this);
         interpolateOffsetPanel.add(changeInterpolationSettings);
 
@@ -884,35 +945,12 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         GeneralInterpolationSettings.add(interpolationSettingsBasePanel);
 
         GraphSettings.add(GeneralInterpolationSettings);
-
-        KeyCombinationPanelTitle=new JLabel("Tastenkürzel:");
-        KeyCombinationPanelTitle.setFont(new Font(Font.SERIF,Font.BOLD, 16));
-        KeyCombinationSettingsFramePanel.setLayout(new GridLayout(0,1));
-        KeyCombinationSettingsFramePanel.add(KeyCombinationPanelTitle);
-        for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
-            KeyCombinationSettingsEntryPanel[i]=new JPanel(new BorderLayout());
-            settingsWindowText[i]=new JLabel();
-            settingsWindowText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
-            KeyCombinationSettingsEntryPanel[i].add(settingsWindowText[i],BorderLayout.WEST);
-            KeyCombinationChangeButton[i]=new JButton("Ändern");
-            KeyCombinationChangeButton[i].setPreferredSize(new Dimension(100,25));
-            KeyCombinationChangeButton[i].addActionListener(this);
-            KeyCombinationSettingsEntryPanel[i].add(KeyCombinationChangeButton[i],BorderLayout.EAST);
-            KeyCombinationSettingsFramePanel.add(KeyCombinationSettingsEntryPanel[i]);
-        }
-        loadTextForHelpWindowAndKeyCombinations();
-        KeyCombinationSettings.add(KeyCombinationSettingsFramePanel);
-
-        SettingsPageTabbedPane.addTab("Allgemeine Einstellungen",GeneralSettings);
-        SettingsPageTabbedPane.addTab("Graphenbereich",GraphSettings);
-        SettingsPageTabbedPane.addTab("Tastenkombinationen",KeyCombinationSettings);
-        settingsWindow.add(SettingsPageTabbedPane);
     }
 
     private void setupHelpWindow(){
         //Setup the HeplpWindow
         helpWindowScrollPane=new JScrollPane();
-        helpWindow.setSize(520,480);
+        helpWindow.setSize(800,480);
         helpWindow.setLocationRelativeTo(null);
         helpWindow.setTitle("Hilfe");
         helpPanel=new JPanel();
@@ -1048,6 +1086,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             interpolationFactor=Integer.parseInt(configRaw[84].trim());
             isCustomInterpolated=configRaw[86].equals("YES");
             interpolationOffset=Integer.parseInt(configRaw[88].trim());
+            geoMode=configRaw[90].equals("YES");
             if(getImageSizeAutomatically){
                 imageHeight=fullscreenDimension.height;
                 imageWidth=fullscreenDimension.width;
@@ -1132,6 +1171,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         configRaw[84]=String.valueOf(interpolationFactor);
         configRaw[86]=getYesNoString(isCustomInterpolated);
         configRaw[88]=String.valueOf(interpolationOffset);
+        configRaw[90]=getYesNoString(geoMode);
 
         if(debug){
             System.out.println("writing Config");
@@ -1223,7 +1263,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 helpWindowText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
                 helpPanel.add(helpWindowText[i]);
             }
-            //add Copyright notice
             br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("CopyrightNotes.txt")));
             try{
                 copyrightNotes=new JLabel[NUMBER_OF_COPYRIGHT_NOTES+3];
@@ -1235,6 +1274,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 helpPanel.add(copyrightNotes[2]);
                 for(int i=3;i<NUMBER_OF_COPYRIGHT_NOTES+3;i++){
                     line=br.readLine();
+                    System.out.println(line);
                     copyrightNotes[i]=new JLabel(line);
                     helpPanel.add(copyrightNotes[i]);
                 }
@@ -1406,8 +1446,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
         else{
             height=mainWindow.getHeight()-(53+8);
+            windowDimension=new Dimension(width,height);
         }
-        windowDimension=new Dimension(width,height);
         if(debug){
             System.out.println(windowDimension);
         }
@@ -1430,11 +1470,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         chartPanel.setPreferredSize(topPanelDimension);
         if(debug){
             System.out.println(topPanelDimension);
-        }
-        if(debug){
             System.out.println(bottomPanelDimension);
-        }
-        if(debug){
             System.out.println();
         }
         mainWindow.validate();
@@ -1481,20 +1517,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         return fileChooser.showOpenDialog(fileChooserWindow);
     }
 
-    private JFreeChart createChart(XYDataset xYDataset) {
-        JFreeChart jFreeChart = ChartFactory.createXYLineChart(null,"Zeit (s)","Werte",xYDataset);
-        return jFreeChart;
-    }
-
-    @SuppressWarnings("rawtypes")
-    private XYDataset createDataset(boolean doShowOpenDialog,String fileName) {
+    private void pickCsvFile(boolean doShowOpenDialog,String fileName) {
         xYSeriesCollection = new XYSeriesCollection();
         if(doShowOpenDialog){
             int returnVal = showOpenDialog();
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 try{
                     csvFile=fileChooser.getSelectedFile();
-                    br=new BufferedReader(new FileReader(csvFile));
                 }
                 catch(Exception ex){
                     ex.printStackTrace();
@@ -1502,73 +1531,186 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             }
             else{
                 jFilePickerFailed=true;
-                return xYSeriesCollection;
             }
         }
         else{
             csvFile=new File(fileName);
         }
+    }
+
+    @SuppressWarnings("rawtypes")
+    private JFreeChart createDataset(){
 
         try{
+            xYSeriesCollection.removeAllSeries();
+            br=new BufferedReader(new FileReader(csvFile));
             String line=br.readLine();
             dataValueDescriptors=line.split(";");
-
             numberOfGraphs=dataValueDescriptors.length;
+            if(geoMode){
+                int temps = 0;
+                int drops=0;
+                numberOfGraphs=2;
+                for(int i=0;i<dataValueDescriptors.length;i++){
+                    if(dataValueDescriptors[i].equalsIgnoreCase("Niederschlagsmenge")){
+                        drops=i;
+                    }
+                    if(dataValueDescriptors[i].equalsIgnoreCase("Temperatur")){
+                        temps=i;
+                    }
+                }
+                if(temps==0&&drops==0){
+                    geoMode=false;
+                    GeoModeButton.setSelected(false);
+                    RegularModeButton.setSelected(true);
+                    reloadBackend();
+                    return createDataset();
+                }
+                xYSeries=new XYSeries[numberOfGraphs];
+                graphIsVisible=new boolean[numberOfGraphs];
 
-            xYSeries=new XYSeries[numberOfGraphs];
-            graphIsVisible=new boolean[numberOfGraphs];
+                xYSeries[0] = new XYSeries((Comparable)((Object)(dataValueDescriptors[temps])));
+                graphIsVisible[0]=true;
+                xYSeries[1] = new XYSeries((Comparable)((Object)(dataValueDescriptors[drops])));
+                graphIsVisible[1]=true;
 
-            for (int i = 0; i < numberOfGraphs; ++i) {
-                xYSeries[i] = new XYSeries((Comparable)((Object)(dataValueDescriptors[i])));
-                graphIsVisible[i]=true;
-            }
+                if(interpolationFactor<1){
+                    interpolationFactor=1;
+                }
 
-            line=br.readLine();
-            for(int x=0;x<interpolationOffset;x++){
                 line=br.readLine();
-            }
-            while(line!=null||line!=""){
-                for(int i=0;i<interpolationFactor-1;i++){
+                for(int x=0;x<interpolationOffset*4;x++){
                     line=br.readLine();
                 }
-                if(line==null||line==""){
-                    break;
-                }
-                //System.out.println(line);
-                line=line.replace("NAN","0,00");
-                line=line.replace(',', '.');
-                //System.out.println(line);
-                String[] zwso=line.split(";");
-                double[] zwsp=new double[numberOfGraphs];
-                for(int i=0;i<numberOfGraphs;i++){
-                    try{
-                        zwsp[i]=Double.parseDouble(zwso[i]);
-                        xYSeries[i].add(counter,zwsp[i]);
+                counter=0;
+                double ns=0.0;
+                double te=0.0;
+                while(line!=null&&!line.equals("")){
+                    if(line==null||line.equals("")){
+                        break;
                     }
-                    catch(Exception e){
-                        e.printStackTrace();
-                        if(debug){
-                            System.out.println(i);
+                    ns=0;
+                    te=0;
+                    for(int l=0;l<4;l++){
+                        line=line.replace("NAN","0,00");
+                        line=line.replace(',', '.');
+                        String[] zwso=line.split(";");
+                        double[] zwsp=new double[2];
+                        zwsp[0]=Double.parseDouble(zwso[temps]);
+                        zwsp[1]=Double.parseDouble(zwso[drops]);
+                        ns+=zwsp[1];
+                        te+=zwsp[0];
+                        line=br.readLine();
+                        if(line==null||line.equals("")){
+                            break;
                         }
                     }
+                    if(line==null||line.equals("")){
+                        break;
+                    }
+                    te/=4;
+                    xYSeries[0].add(counter, te);
+                    xYSeries[1].add(counter,ns);
+                    counter++;
+                    for(int j=0;j<interpolationFactor*4;j++){
+                        line=br.readLine();
+                    }
+                    if(line==null||line.equals("")){
+                        break;
+                    }
                 }
-                //counter+=2;
-                counter++;
-                //br.readLine();
-                line=br.readLine();
-                if(line==null||line==""){
-                    break;
-                }
-            }
 
-            for (int i = 0; i < numberOfGraphs; ++i) {
-                xYSeriesCollection.addSeries(xYSeries[i]);
+            }
+            else{
+                xYSeries=new XYSeries[numberOfGraphs];
+                graphIsVisible=new boolean[numberOfGraphs];
+
+                for (int i = 0; i < numberOfGraphs; ++i) {
+                    xYSeries[i] = new XYSeries((Comparable)((Object)(dataValueDescriptors[i])));
+                    graphIsVisible[i]=true;
+                }
+                if(interpolationFactor<1){
+                    interpolationFactor=1;
+                }
+                //int numberOfLines=numberOfLinesInFile(csvFile);
+
+                line=br.readLine();
+                for(int x=0;x<interpolationOffset;x++){
+                    line=br.readLine();
+                }
+                counter=0;
+                while(line!=null&&!line.equals("")){
+                    if(line==null||line.equals("")){
+                        break;
+                    }
+                    //System.out.println(line);
+                    line=line.replace("NAN","0,00");
+                    line=line.replace(',', '.');
+                    //System.out.println(line);
+                    String[] zwso=line.split(";");
+                    double[] zwsp=new double[numberOfGraphs];
+                    for(int i=0;i<numberOfGraphs;i++){
+                        try{
+                            zwsp[i]=Double.parseDouble(zwso[i]);
+                            xYSeries[i].add(counter,zwsp[i]);
+                        }
+                        catch(Exception e){
+                            e.printStackTrace();
+                            if(debug){
+                                System.out.println(i);
+                            }
+                        }
+                    }
+                    counter++;
+                    for(int j=0;j<interpolationFactor;j++){
+                        line=br.readLine();
+                    }
+                    if(line==null||line.equals("")){
+                        break;
+                    }
+                }
             }
         }
         catch(Exception ex){
             ex.printStackTrace();
         }
-        return xYSeriesCollection;
+
+        if(replotting){
+            setupGraphSettings();
+        }
+
+        if(selectGraphVisibilityCheckBox!=null){
+            for (int i = 0; i < numberOfGraphs; ++i) {
+                if(selectGraphVisibilityCheckBox[i].isSelected()){
+                    xYSeriesCollection.addSeries(xYSeries[i]);
+                }
+            }
+        }
+        else{
+            for (int i = 0; i < numberOfGraphs; ++i) {
+                xYSeriesCollection.addSeries(xYSeries[i]);
+            }
+        }
+        JFreeChart chart = ChartFactory.createXYLineChart(null,"Zeit","Werte",xYSeriesCollection);
+        return chart;
+    }
+
+    @SuppressWarnings("unused")
+	private int numberOfLinesInFile(File inputFile) {
+        //https://stackoverflow.com/questions/453018/number-of-lines-in-a-file-in-java
+        //antwort von Telmo Marques und er.vikas
+        LineNumberReader lnr;
+        try {
+            lnr = new LineNumberReader(new FileReader(inputFile));
+            lnr.skip(Long.MAX_VALUE);
+            lnr.close();
+            if(debug){System.out.println("NumberOfLines: "+lnr.getLineNumber()+1);}
+            return lnr.getLineNumber()+1;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     private void exit(){
@@ -1647,7 +1789,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        System.out.println("EVENT FIRED");
+        if(debug){
+            System.out.println("EVENT FIRED");
+        }
         if(event.getSource()==imageSizeAutoCheckBox){
             if(imageSizeAutoCheckBox.isSelected()){
                 imageWidthBox.setText(String.valueOf(fullscreenDimension.width));
@@ -1803,6 +1947,55 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         else if(event.getSource()==MaximizeWindowRadioButton){
             fullscreenOk=FullscreenExclusiveRadioButton.isSelected();
         }
+        else if(event.getSource()==changeInterpolationSettings){
+            if(interpolateCustom.isSelected()){
+                isCustomInterpolated=true;
+                try{
+                    interpolationFactor=Integer.parseInt(interpolateCustomInputBox.getText());
+                }
+                catch(NumberFormatException e){
+                    interpolationFactor=1;
+                }
+            }
+            else{
+                isCustomInterpolated=false;
+                if(interpolate1x.isSelected()){
+                    interpolationFactor=1;
+                }
+                else if(interpolate4x.isSelected()){
+                    interpolationFactor=4;
+                }
+                else if(interpolate10x.isSelected()){
+                    interpolationFactor=10;
+                }
+                else if(interpolate100x.isSelected()){
+                    interpolationFactor=100;
+                }
+                else if(interpolate1000x.isSelected()){
+                    interpolationFactor=1000;
+                }
+                else{
+                    interpolationFactor=1;
+                }
+            }
+            try{
+                interpolationOffset=Integer.parseInt(interpolationOffsetValueBox.getText())-1;
+            }
+            catch(NumberFormatException e){
+                interpolationOffset=0;
+            }
+            if(interpolationOffset<0){
+                interpolationOffset=0;
+            }
+            if(interpolationFactor<1){
+                interpolationFactor=1;
+            }
+            replot();
+        }
+        if(event.getSource()==GeoModeOkButton){
+            geoMode=GeoModeButton.isSelected();
+            replot();
+        }
         for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
             if(event.getSource()==KeyCombinationChangeButton[i]){
                 openSetNewKeyCombinationWindow(i);
@@ -1814,6 +2007,17 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             }
         }
         reloadBackend();
+    }
+
+    private void replot(){
+        replotting=true;
+        mainWindow.remove(chartPanel);
+        jFreeChart=createDataset();
+        setupCrosshairOverlays();
+        mainWindow.add(chartPanel,BorderLayout.NORTH);
+        chartPanel.addChartMouseListener(this);
+        mainWindow.validate();
+        replotting=false;
     }
 
     private void setSeriesVisible(int number,boolean selected) {
@@ -2068,7 +2272,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      */
     @Override
     public void keyPressed(KeyEvent event) {
-        System.out.println("KeyText (extended): "+KeyEvent.getKeyText(event.getExtendedKeyCode())+"    KeyText: "+KeyEvent.getKeyText(event.getKeyCode())+"    KeyString (eigenbau&&extended): "+getKeyStringFromKeyCode(event.getExtendedKeyCode())+"    KeyString(eigenbau): "+getKeyStringFromKeyCode(event.getKeyCode()));
+        if(debug){
+            System.out.println("KeyText (extended): "+KeyEvent.getKeyText(event.getExtendedKeyCode())+"    KeyText: "+KeyEvent.getKeyText(event.getKeyCode())+"    KeyString (eigenbau&&extended): "+getKeyStringFromKeyCode(event.getExtendedKeyCode())+"    KeyString(eigenbau): "+getKeyStringFromKeyCode(event.getKeyCode()));
+        }
         if(keyCombinationsEnabled){
             if(event.getExtendedKeyCode()==TOGGLE_FULLSCREEN_MODE_KEY_CODE&&event.isAltDown()==TOGGLE_FULLSCREEN_MODE_ALT_REQUIRED&&event.isControlDown()==TOGGLE_FULLSCREEN_MODE_CTRL_REQUIRED&&event.isShiftDown()==TOGGLE_FULLSCREEN_MODE_SHIFT_REQUIRED){
                 toggleFullscreen();
@@ -2130,27 +2336,33 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private void CheckFullscreenAvailability(){
         try{
             if(System.getProperty("os.name").contains("Win")||System.getProperty("os.name").contains("WIN")||System.getProperty("os.name").contains("win")){//System ist irgend eine Windows Version
-            	System.out.println("WINDOWS...YAY");
+                if(debug){
+                    System.out.println("WINDOWS");
+                }
                 br=new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("wmic path win32_VideoController get name").getInputStream()));//cmd parameter von https://superuser.com/questions/723506/get-the-video-card-model-via-command-line-in-windows
             }
             else{//System ist irgendwas (Linux/UNIX/Mac OS)... Jedenfalls was mit bash (99% wahrscheinlich)
+                if(debug){
+                    System.out.println("LINUX");
+                }
                 br=new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("lspci -vnn | grep VGA -A 12").getInputStream()));//cmd parameter von http://www.binarytides.com/linux-get-gpu-information/
             }
             String zeile=br.readLine();
             String alles="";
             while(true){
-            	System.out.println("\t\""+zeile+"\"");
+                if(debug){
+                    System.out.println("\t\""+zeile+"\"");
+                }
                 if(zeile==null/*||zeile.equals("")*/){
-                	System.out.println("BROKEN");
                     break;
                 }
                 alles+=zeile;
                 zeile=br.readLine();
             }
             if(alles.contains("Intel")||alles.contains("Intel")||alles.contains("intel")){
-            	FullscreenExclusiveRadioButton.setEnabled(false);
-            	MaximizeWindowRadioButton.setSelected(true);
-            	fullscreenOk=false;
+                FullscreenExclusiveRadioButton.setEnabled(false);
+                MaximizeWindowRadioButton.setSelected(true);
+                fullscreenOk=false;
             }
         }
         catch(Exception e){

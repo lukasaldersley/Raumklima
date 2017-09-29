@@ -17,9 +17,9 @@
 //SETUP FOR SLEEP-----------------------------------------------------------------------------------------------------------------------------------------------
 //von http://www.gammon.com.au/forum/?id=11497 Sketch H
 // watchdog interrupt
-ISR (WDT_vect) 
+ISR (WDT_vect)
 {
-   wdt_disable();  // disable watchdog
+  wdt_disable();  // disable watchdog
 }  // end of WDT_vect
 
 
@@ -62,8 +62,8 @@ const int DIRECT_LCD_D6_PIN = 37;
 const int DIRECT_LCD_D7_PIN = 35;
 
 
-const bool POWER_ON=true;
-const bool POWER_OFF=false;
+const bool POWER_ON = true;
+const bool POWER_OFF = false;
 
 byte Port_A;
 byte Port_B;
@@ -78,8 +78,8 @@ byte Port_K;
 byte Port_L;
 
 int nextWakeTime;
-int minutesPriorToWakeTime=15;
-int wakeTimeDistance=6;
+int minutesPriorToWakeTime = 15;
+int wakeTimeDistance = 6;
 
 //GENERAL SYSTEM VARS--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 boolean directLcdEnabled = true;
@@ -108,7 +108,11 @@ unsigned long lastMenuTime = 0;
 unsigned long lastValueTime = 0;
 unsigned long lastData;
 unsigned long counter = 0;
-
+boolean servoIsTipped = false;
+int servoValue = 0;
+int SERVO_MAX=180;
+int SERVO_MIN=10;
+const int SERVO_PIN=9;
 
 
 byte AE[8] = {
@@ -150,6 +154,7 @@ File file;
 Adafruit_BME280 BME280;
 LiquidCrystal directLcd(DIRECT_LCD_RS_PIN, DIRECT_LCD_E_PIN, DIRECT_LCD_D4_PIN, DIRECT_LCD_D5_PIN, DIRECT_LCD_D6_PIN, DIRECT_LCD_D7_PIN);
 LiquidCrystal_I2C indirectLcd(0x27, 16, 2);
+Servo servo;
 
 
 //DATA VARS------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -169,6 +174,7 @@ double MQ_135_Value = 0.0;
 
 //INITIALISATION-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void setup() {
+  servo.attach(SERVO_PIN);
   Serial.begin(115200);
   Serial.println("INITING");
 
@@ -434,7 +440,7 @@ void loop() {
         }
       }
       else {
-        needsUpdate=false;
+        needsUpdate = false;
         indirectLcd.clear();
         indirectLcd.noBacklight();
       }
@@ -460,8 +466,8 @@ void loop() {
             file = SD.open(fileName, FILE_WRITE);
             if (file) {
               Serial.println("SD FAILED ONCE While writing the titles");
-            //file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness;MQ2;MQ135;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity");
-            file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;RTC_Temperature;TOTAL_Temperature;Brightness;Loudness;MQ2;MQ135;");
+              //file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness;MQ2;MQ135;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity");
+              file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;RTC_Temperature;TOTAL_Temperature;Brightness;Loudness;MQ2;MQ135;");
               file.close();
               //directLcd.print("OK");
             }
@@ -525,14 +531,14 @@ void loop() {
       }
       else {
         //if(geoReady()){
-          //geoMessen();
-          Serial.println("powerDown"+getTimeName());
-          delay(2000);
-          sleepUntil(nextWakeTime,0);
-          Serial.println(getTimeName());
-       // }
+        //geoMessen();
+        Serial.println("powerDown" + getTimeName());
+        delay(2000);
+        sleepUntil(nextWakeTime, 0);
+        Serial.println(getTimeName());
+        // }
       }
-      
+
       if (displayCounter < changeScreenThreshold) { //BME280
         displayCounter++;
         directLcd.clear();
@@ -570,15 +576,15 @@ void loop() {
         directLcd.print(fileName);
         directLcd.setCursor(0, 2);
         directLcd.print("AUFZEICHNUNG ");
-        if(!SDFail){
-        if (recording) {
-          directLcd.print("LAEUFT");
+        if (!SDFail) {
+          if (recording) {
+            directLcd.print("LAEUFT");
+          }
+          else {
+            directLcd.print("GESTOPPT");
+          }
         }
         else {
-          directLcd.print("GESTOPPT");
-        }
-        }
-        else{
           directLcd.print("N/A");
         }
         directLcd.setCursor(0, 3);
@@ -709,110 +715,126 @@ void increaseValue() {
   }
 }
 
-void createChars(){
-  indirectLcd.createChar('0',AE);
-  indirectLcd.createChar(1,OE);
-  indirectLcd.createChar(2,UE);
-  directLcd.createChar('0',AE);
-  directLcd.createChar(1,OE);
-  directLcd.createChar(2,UE);
+void createChars() {
+  indirectLcd.createChar('0', AE);
+  indirectLcd.createChar(1, OE);
+  indirectLcd.createChar(2, UE);
+  directLcd.createChar('0', AE);
+  directLcd.createChar(1, OE);
+  directLcd.createChar(2, UE);
 }
 
-void PCB_POWER(bool state){
-  if(state==POWER_ON){
-    PORTA=Port_A;//&=B01111111;
-    PORTB=Port_B;
-    PORTC=Port_C;
-    PORTD=Port_D;
-    PORTE=Port_E;
-    PORTF=Port_F;
-    PORTG=Port_G;
-    PORTH=Port_H;
-    PORTJ=Port_J;
-    PORTK=Port_K;
-    PORTL=Port_L;
+void PCB_POWER(bool state) {
+  if (state == POWER_ON) {
+    PORTA = Port_A; //&=B01111111;
+    PORTB = Port_B;
+    PORTC = Port_C;
+    PORTD = Port_D;
+    PORTE = Port_E;
+    PORTF = Port_F;
+    PORTG = Port_G;
+    PORTH = Port_H;
+    PORTJ = Port_J;
+    PORTK = Port_K;
+    PORTL = Port_L;
   }
-  else{
+  else {
     //PORTA|=B10000000;
-    Port_A=PORTA;
-    Port_B=PORTB;
-    Port_C=PORTC;
-    Port_D=PORTD;
-    Port_E=PORTE;
-    Port_F=PORTF;
-    Port_G=PORTG;
-    Port_H=PORTH;
-    Port_J=PORTJ;
-    Port_K=PORTK;
-    Port_L=PORTL;
-    PORTA=B00000000;
-    PORTB=B00000000;
-    PORTC=B00000000;
-    PORTD=B00000000;
-    PORTE=B00000000;
-    PORTF=B00000000;
-    PORTG=B00000000;
-    PORTH=B00000000;
-    PORTJ=B00000000;
-    PORTK=B00000000;
-    PORTL=B00000000;
+    Port_A = PORTA;
+    Port_B = PORTB;
+    Port_C = PORTC;
+    Port_D = PORTD;
+    Port_E = PORTE;
+    Port_F = PORTF;
+    Port_G = PORTG;
+    Port_H = PORTH;
+    Port_J = PORTJ;
+    Port_K = PORTK;
+    Port_L = PORTL;
+    PORTA = B00000000;
+    PORTB = B00000000;
+    PORTC = B00000000;
+    PORTD = B00000000;
+    PORTE = B00000000;
+    PORTF = B00000000;
+    PORTG = B00000000;
+    PORTH = B00000000;
+    PORTJ = B00000000;
+    PORTK = B00000000;
+    PORTL = B00000000;
   }
 }
 
-void sleepUntil(int HT,int MT){
-  nextWakeTime+=wakeTimeDistance;
-  if(nextWakeTime>23){
-    nextWakeTime-=24;
+void sleepUntil(int HT, int MT) {
+  nextWakeTime += wakeTimeDistance;
+  if (nextWakeTime > 23) {
+    nextWakeTime -= 24;
   }
   time_t t = RTC.get();
-  int HC=hour(t);
-  int MC=minute(t);
-  if(HT<HC){
-    HT+=24;
+  int HC = hour(t);
+  int MC = minute(t);
+  if (HT < HC) {
+    HT += 24;
   }
-  int HTS=HT-HC;
-  if(MT<MC){
+  int HTS = HT - HC;
+  if (MT < MC) {
     HTS--;
-    MT+=60;
+    MT += 60;
   }
-  int MTS=MT-MC;
-  MTS+=HTS*60;
+  int MTS = MT - MC;
+  MTS += HTS * 60;
   sleep(MTS);
 }
 
 void sleep(int minutes) {
   PCB_POWER(POWER_OFF);
-   long eightSecondsSleepIterations = (minutes - minutesPriorToWakeTime) * 7.5;//sollte auf die zu schlafende zeit -minutesPriorToWakeTime minuten kommen
+  long eightSecondsSleepIterations = (minutes - minutesPriorToWakeTime) * 7.5;//sollte auf die zu schlafende zeit -minutesPriorToWakeTime minuten kommen
   for (; eightSecondsSleepIterations > 0; eightSecondsSleepIterations--) {
     powerDown();
   }
   PCB_POWER(POWER_ON);
 }
 
-void powerDown(){
+void powerDown() {
   //von http://www.gammon.com.au/forum/?id=11497 Sketch H
   // disable ADC
-  ADCSRA = 0;  
+  ADCSRA = 0;
 
   // clear various "reset" flags
-  MCUSR = 0;     
+  MCUSR = 0;
   // allow changes, disable reset
   WDTCSR = bit (WDCE) | bit (WDE);
-  // set interrupt mode and an interval 
+  // set interrupt mode and an interval
   WDTCSR = bit (WDIE) | bit (WDP3) | bit (WDP0);    // set WDIE, and 8 seconds delay
   wdt_reset();  // pat the dog
-  
-  set_sleep_mode (SLEEP_MODE_PWR_DOWN);  
+
+  set_sleep_mode (SLEEP_MODE_PWR_DOWN);
   noInterrupts ();           // timed sequence follows
   sleep_enable();
- 
+
   // turn off brown-out enable in software
   //MCUCR = bit (BODS) | bit (BODSE);
-  //MCUCR = bit (BODS); 
+  //MCUCR = bit (BODS);
   interrupts ();             // guarantees next instruction executed
-  sleep_cpu ();  
-  
+  sleep_cpu ();
+
   // cancel sleep as a precaution
   sleep_disable();
+}
+
+void flipServo() {
+  servoIsTipped != servoIsTipped;
+  if (servoIsTipped) {
+    for (servoValue = SERVO_MIN; servoValue <= SERVO_MAX; servoValue++) {
+      servo.write(servoValue);
+      delay(10);
+    }
+  }
+  else {
+    for (servoValue = SERVO_MAX; servoValue >= SERVO_MIN; servoValue--) {
+      servo.write(servoValue);
+      delay(10);
+    }
+  }
 }
 
