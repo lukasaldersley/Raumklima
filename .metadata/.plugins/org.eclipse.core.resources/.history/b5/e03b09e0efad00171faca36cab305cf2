@@ -3,15 +3,12 @@ package Raumklima;
 import java.io.IOException;
 import com.fazecast.jSerialComm.*;
 public class Uploader{
-    /*A command line looks like this in a stock Arduino IDE:
-     * D:\arduino-dev\arduino-1.0.3\hardware/tools/avr/bin/avrdude
-     * -CD:\arduino-dev\arduino-1.0.3\hardware/tools/avr/etc/avrdude.conf
-     * -v -v -v -v -patmega328p -carduino     -P\\.\COM8 -b115200 -D -V
-     * -Uflash:w:e:\Temp\build100458372319682483.tmp\Blink.cpp.hex:i
-     * 
-     * Just write the binary to the .HEX file and let the dude upload it:
-     * */
-	
+    /*    A command line looks like this in a stock Arduino IDE:
+        D:\arduino-dev\arduino-1.0.3\hardware/tools/avr/bin/avrdude
+    -CD:\arduino-dev\arduino-1.0.3\hardware/tools/avr/etc/avrdude.conf
+    -v -v -v -v -patmega328p -carduino     -P\\.\COM8 -b115200 -D -V
+    -Uflash:w:e:\Temp\build100458372319682483.tmp\Blink.cpp.hex:i
+        Just write the binary to the .HEX file and let the dude upload it:     */
     final String ARDUINO_UNO="-patmega328p";
     final String ARDUINO_MEGA_2560="-pm2560";
     final String ARDUINO_LEONARDO="-patmega32u4";
