@@ -609,7 +609,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         FileTypePanel=new JPanel();
         FileTypePanel.setLayout(new BoxLayout(FileTypePanel, BoxLayout.Y_AXIS));
-        FileTypePanel.add(new JLabel("Verwendete Dateitypen"));
+        FileTypePanel.add(new JLabel("Optionen für das Abspeichern des momentanen Bildes"));
         FiletypePngCheckBox=new JCheckBox("PNG");
         FiletypePngCheckBox.setSelected(savePng);
         FiletypePngCheckBox.addActionListener(this);

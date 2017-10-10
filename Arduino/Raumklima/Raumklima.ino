@@ -1,26 +1,25 @@
-#include <avr/sleep.h>
-#include <avr/wdt.h>
-#include <Arduino.h>
-#include <LiquidCrystal.h>
+//#include <avr/sleep.h>
+//#include <avr/wdt.h>
+//#include <Arduino.h>
 #include "DS3232RTC.h"
 #include <TimeLib.h>
 #include <LiquidCrystal_I2C.h>
 #include <Wire.h>
 #include <SPI.h>
 #include <SD.h>
-#include <Adafruit_Sensor.h>
+//#include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 #include <Servo.h>
 #include "hx711.h"
 
 
-//SETUP FOR SLEEP-----------------------------------------------------------------------------------------------------------------------------------------------
+/*//SETUP FOR SLEEP-----------------------------------------------------------------------------------------------------------------------------------------------
 //von http://www.gammon.com.au/forum/?id=11497 Sketch H
 // watchdog interrupt
 ISR (WDT_vect)
 {
   wdt_disable();  // disable watchdog
-}  // end of WDT_vect
+}  // end of WDT_vect*/
 
 
 //INFORMATION----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -51,7 +50,7 @@ const int BRIGHTNESS_PIN = A2;
 const int LOUDNESS_PIN = A3;
 const int MQ_2_PIN = A0;
 const int MQ_135_PIN = A1;
-
+/*
 const int DIRECT_LCD_RS_PIN = 49;
 const int DIRECT_LCD_E_PIN = 47;
 const int DIRECT_LCD_CONTRAST_PIN = 45;
@@ -59,31 +58,15 @@ const int DIRECT_LCD_BACKLIGHT_PIN = 44;
 const int DIRECT_LCD_D4_PIN = 41;
 const int DIRECT_LCD_D5_PIN = 39;
 const int DIRECT_LCD_D6_PIN = 37;
-const int DIRECT_LCD_D7_PIN = 35;
-
-
-const bool POWER_ON = true;
-const bool POWER_OFF = false;
-
-byte Port_A;
-byte Port_B;
-byte Port_C;
-byte Port_D;
-byte Port_E;
-byte Port_F;
-byte Port_G;
-byte Port_H;
-byte Port_J;
-byte Port_K;
-byte Port_L;
+const int DIRECT_LCD_D7_PIN = 35;*/
 
 int nextWakeTime;
 int minutesPriorToWakeTime = 15;
 int wakeTimeDistance = 6;
 
 //GENERAL SYSTEM VARS--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-boolean directLcdEnabled = true;
-boolean indirectLcdEnabled = false;
+boolean lcdAEnabled = true;
+boolean inlcdAEnabled = false;
 boolean needsUpdate = false;
 boolean needsValueUpdate = false;
 boolean physik = false;
@@ -91,11 +74,11 @@ boolean recording = false;
 boolean sending = false;
 boolean  SDFail = true;
 
-int changeScreenThreshold = 10;
+short changeScreenThreshold = 10;
 int displayCounter = 0;
-int menuPage = 0;
-int directLcdContrast = 75;
-int directLcdBrightness = 255;
+short menuPage = 0;
+byte lcdAContrast = 75;
+byte lcdABrightness = 255;
 
 
 long baudrate = 115200;
@@ -110,50 +93,19 @@ unsigned long lastData;
 unsigned long counter = 0;
 boolean servoIsTipped = false;
 int servoValue = 0;
-int SERVO_MAX=180;
-int SERVO_MIN=10;
-const int SERVO_PIN=9;
+byte SERVO_MAX = 180;
+byte SERVO_MIN = 10;
+const int SERVO_PIN = 9;
 
 
-byte AE[8] = {
-  0b01010,
-  0b00000,
-  0b01110,
-  0b10001,
-  0b11111,
-  0b10001,
-  0b10001,
-  0b00000
-};
-
-byte OE[8] = {
-  0b01010,
-  0b00000,
-  0b01110,
-  0b10001,
-  0b10001,
-  0b10001,
-  0b01110,
-  0b00000
-};
-
-byte UE[8] = {
-  0b01010,
-  0b00000,
-  0b10001,
-  0b10001,
-  0b10001,
-  0b10001,
-  0b01110,
-  0b00000
-};
 
 
 //DEVICES--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 File file;
 Adafruit_BME280 BME280;
-LiquidCrystal directLcd(DIRECT_LCD_RS_PIN, DIRECT_LCD_E_PIN, DIRECT_LCD_D4_PIN, DIRECT_LCD_D5_PIN, DIRECT_LCD_D6_PIN, DIRECT_LCD_D7_PIN);
-LiquidCrystal_I2C indirectLcd(0x27, 16, 2);
+//LiquidCrystal lcdA(DIRECT_LCD_RS_PIN, DIRECT_LCD_E_PIN, DIRECT_LCD_D4_PIN, DIRECT_LCD_D5_PIN, DIRECT_LCD_D6_PIN, DIRECT_LCD_D7_PIN);
+LiquidCrystal_I2C lcdA(0x28, 20, 4);
+LiquidCrystal_I2C inlcdA(0x27, 16, 2);
 Servo servo;
 
 
@@ -178,15 +130,12 @@ void setup() {
   Serial.begin(115200);
   Serial.println("INITING");
 
-  analogWrite(DIRECT_LCD_CONTRAST_PIN, directLcdContrast);
-  analogWrite(DIRECT_LCD_BACKLIGHT_PIN, directLcdBrightness);
+  inlcdA.init();
+  inlcdA.noBacklight();
 
-  indirectLcd.init();
-  indirectLcd.noBacklight();
-
-  directLcd.begin(20, 4);
-  directLcd.clear();
-  directLcd.print("Initialisieren...");
+  lcdA.init();
+  lcdA.clear();
+  lcdA.print("Initialisieren...");
 
   createChars();
 
@@ -195,46 +144,46 @@ void setup() {
   attachInterrupt(0, iterateMenu, RISING); //TODO ï¿½berlegen
   attachInterrupt(1, increaseValue, RISING);
 
-  directLcd.setCursor(0, 1);
-  directLcd.print("SD-Karte: ");
+  lcdA.setCursor(0, 1);
+  lcdA.print("SD-Karte: ");
   if (!SD.begin(SD_PIN)) { //readWrite Sample   //INITIALIZE SD-CARD
     Serial.println("SD-FAIL");
-    directLcd.print("FAIL");
+    lcdA.print("FAIL");
     SDFail = true;
   }
   else {
     Serial.println("SD-Success");
-    directLcd.print("OK");
+    lcdA.print("OK");
     SDFail = false;
   }
 
   /*fileName = getTimeName();
     Serial.println(fileName);
-    directLcd.setCursor(0, 2);
-    directLcd.print("DATEINAME fuer CSV:");
-    directLcd.setCursor(0, 3);
-    directLcd.print(fileName);*/
+    lcdA.setCursor(0, 2);
+    lcdA.print("DATEINAME fuer CSV:");
+    lcdA.setCursor(0, 3);
+    lcdA.print(fileName);*/
 
-  Serial.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;RTC_Temperature;TOTAL_Temperature;Brightness;Loudness;MQ2;MQ135");
+  /*Serial.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;RTC_Temperature;TOTAL_Temperature;Brightness;Loudness;MQ2;MQ135");
 
-  delay(500);
-  directLcd.clear();
-  directLcd.print("SD-Schreibzugriff:");
-  directLcd.setCursor(0, 1);
+    delay(500);
+    lcdA.clear();
+    lcdA.print("SD-Schreibzugriff:");
+    lcdA.setCursor(0, 1);
 
 
-  directLcd.setCursor(0, 2);
-  directLcd.print("BME280: ");
+    lcdA.setCursor(0, 2);
+    lcdA.print("BME280: ");
+    lcdA.print("OK");
+    delay(500);
+    //lcdA.clear();
+    //lcdA.print("FERTIG!");
+    //lcdA.setCursor(0, 2);
+    //lcdA.print("DATEINAME fuer CSV:");
+    //lcdA.setCursor(0, 3);
+    //lcdA.print(fileName);
+    //delay(2000);*/
   BME280.begin();
-  directLcd.print("OK");
-  delay(500);
-  //directLcd.clear();
-  //directLcd.print("FERTIG!");
-  //directLcd.setCursor(0, 2);
-  //directLcd.print("DATEINAME fuer CSV:");
-  //directLcd.setCursor(0, 3);
-  //directLcd.print(fileName);
-  //delay(2000);
 }
 
 //GET SENSOR DATA-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -307,7 +256,7 @@ void getDATA() {
   constructSendoffString();
 }
 
-void printDataToSD() {
+void printDataToSD(String data) {
   if (!SDFail) {
     counter++;
     file.close();
@@ -320,7 +269,7 @@ void printDataToSD() {
       Serial.println("FAILED ONCE");
       file = SD.open(fileName, FILE_WRITE);
       if (file) {
-        file.println(sendoff);
+        file.println(data);
         file.close();
       }
       else {
@@ -333,17 +282,6 @@ void printDataToSD() {
 
 void printDataToUART0() { //Main Serial Port
   Serial.println(sendoff);
-}
-
-void printDataToUART2() { //BT-Module
-  int x = ((int)(sendoff.length()));
-  //Serial.println(x);
-  for (int i = x; i < 140; i++) { //sollten 140 zeichen sein
-    sendoff += "X";
-  }
-  x = ((int)(sendoff.length()));
-  //Serial.println(x);
-  Serial2.print(sendoff);
 }
 
 //CRUCIAL SYSTEM METHODS------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -392,57 +330,57 @@ void loop() {
       Serial.println("AN UPDATE IS NEEDED");
       if (menuPage == 0) {
         needsUpdate = false;
-        indirectLcd.noBacklight();
-        indirectLcd.clear();
+        inlcdA.noBacklight();
+        inlcdA.clear();
       }
       else if (menuPage == 1) {
         needsUpdate = false;
-        indirectLcd.backlight();
-        indirectLcd.clear();
-        indirectLcd.print("AUFZEICHNUNG:");
-        indirectLcd.setCursor(0, 1);
+        inlcdA.backlight();
+        inlcdA.clear();
+        inlcdA.print("AUFZEICHNUNG:");
+        inlcdA.setCursor(0, 1);
         if (!SDFail) {
           if (recording) {
-            indirectLcd.print("L");
-            indirectLcd.write(0);
-            indirectLcd.print("UFT");
+            inlcdA.print("L");
+            inlcdA.write(0);
+            inlcdA.print("UFT");
           }
           else {
-            indirectLcd.print("GESTOPPT");
+            inlcdA.print("GESTOPPT");
           }
         }
         else {
-          indirectLcd.print("NICHT VERFÃœGBAR");
+          inlcdA.print("NICHT VERFÃœGBAR");
         }
       }
       else if (menuPage == 2) {
         needsUpdate = false;
-        indirectLcd.clear();
-        indirectLcd.print("FACHSCHAFT:");
-        indirectLcd.setCursor(0, 1);
+        inlcdA.clear();
+        inlcdA.print("FACHSCHAFT:");
+        inlcdA.setCursor(0, 1);
         if (physik) {
-          indirectLcd.print("PHYSIK");
+          inlcdA.print("PHYSIK");
         }
         else {
-          indirectLcd.print("GEOGRAPHIE");
+          inlcdA.print("GEOGRAPHIE");
         }
       }
       else if (menuPage == 3) {
         needsUpdate = false;
-        indirectLcd.clear();
-        indirectLcd.print("HAUPT-LCD STATUS");
-        indirectLcd.setCursor(0, 1);
-        if (directLcdEnabled) {
-          indirectLcd.print("AN");
+        inlcdA.clear();
+        inlcdA.print("HAUPT-LCD STATUS");
+        inlcdA.setCursor(0, 1);
+        if (lcdAEnabled) {
+          inlcdA.print("AN");
         }
         else {
-          indirectLcd.print("AUS");
+          inlcdA.print("AUS");
         }
       }
       else {
         needsUpdate = false;
-        indirectLcd.clear();
-        indirectLcd.noBacklight();
+        inlcdA.clear();
+        inlcdA.noBacklight();
       }
     }
 
@@ -450,9 +388,9 @@ void loop() {
       if (menuPage == 1) {
         needsValueUpdate = false;
         recording = !recording;
-        indirectLcd.clear();
-        indirectLcd.print("AUFZEICHNUNG:");
-        indirectLcd.setCursor(0, 1);
+        inlcdA.clear();
+        inlcdA.print("AUFZEICHNUNG:");
+        inlcdA.setCursor(0, 1);
         if (recording) {
           fileName = getTimeName();
           file = SD.open(fileName, FILE_WRITE);
@@ -460,7 +398,7 @@ void loop() {
             //file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness;MQ2;MQ135;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity");
             file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;RTC_Temperature;TOTAL_Temperature;Brightness;Loudness;MQ2;MQ135;");
             file.close();
-            //directLcd.print("OK");
+            //lcdA.print("OK");
           }
           else {//RETRY ONCE MORE
             file = SD.open(fileName, FILE_WRITE);
@@ -469,65 +407,61 @@ void loop() {
               //file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness;MQ2;MQ135;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity");
               file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;RTC_Temperature;TOTAL_Temperature;Brightness;Loudness;MQ2;MQ135;");
               file.close();
-              //directLcd.print("OK");
+              //lcdA.print("OK");
             }
             else {
               Serial.println("SD FAILED twice While writing the titles");
-              indirectLcd.print("NICHT mÃ¶glich!");
+              inlcdA.print("NICHT mÃ¶glich!");
             }
           }
 
-          indirectLcd.print("LAEUFT");
+          inlcdA.print("LAEUFT");
         }
         else {
-          indirectLcd.print("GESTOPPT");
+          inlcdA.print("GESTOPPT");
         }
       }
       else if (menuPage == 2) {
         needsValueUpdate = false;
         physik = !physik;
-        indirectLcd.clear();
-        indirectLcd.print("FACHSCHAFT:");
-        indirectLcd.setCursor(0, 1);
+        inlcdA.clear();
+        inlcdA.print("FACHSCHAFT:");
+        inlcdA.setCursor(0, 1);
         if (physik) {
-          indirectLcd.print("PHYSIK");
+          inlcdA.print("PHYSIK");
         }
         else {
-          indirectLcd.print("GEOGRAPHIE");
+          inlcdA.print("GEOGRAPHIE");
         }
       }
       else if (menuPage == 3) {
         needsValueUpdate = false;
-        directLcdEnabled = !directLcdEnabled;
-        indirectLcd.clear();
-        indirectLcd.print("HAUPT-LCD STATUS");
-        indirectLcd.setCursor(0, 1);
-        if (directLcdEnabled) {
-          indirectLcd.print("AN");
+        lcdAEnabled = !lcdAEnabled;
+        inlcdA.clear();
+        inlcdA.print("HAUPT-LCD STATUS");
+        inlcdA.setCursor(0, 1);
+        if (lcdAEnabled) {
+          inlcdA.print("AN");
         }
         else {
-          indirectLcd.print("AUS");
+          inlcdA.print("AUS");
         }
-        if (directLcdEnabled) {
-          analogWrite(DIRECT_LCD_BACKLIGHT_PIN, directLcdBrightness);
-          analogWrite(DIRECT_LCD_CONTRAST_PIN, directLcdContrast);
+        if (lcdAEnabled) {
+          lcdA.backlight();
         }
         else {
-          analogWrite(DIRECT_LCD_BACKLIGHT_PIN, 0);
-          analogWrite(DIRECT_LCD_CONTRAST_PIN, 255);
+          lcdA.noBacklight();
         }
       }
     }
 
-    if (millis() % 1000 == 0) {
-      Serial.println("HALLOUHGOZTUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIISD");
+    if (millis() % 1000 < 10) {
       getDATA();
       if (physik) {
         if (recording) {
-          printDataToSD();
+          printDataToSD(sendoff);
         }
         printDataToUART0();
-        printDataToUART2();
       }
       else {
         //if(geoReady()){
@@ -541,101 +475,101 @@ void loop() {
 
       if (displayCounter < changeScreenThreshold) { //BME280
         displayCounter++;
-        directLcd.clear();
-        directLcd.print("BME280-Werte");
-        directLcd.setCursor(0, 1);
-        directLcd.print("Temp: ");
-        directLcd.print(BME280_Temperature);
-        directLcd.setCursor(0, 2);
-        directLcd.print("Luftdruck: ");
-        directLcd.print(BME280_Airpressure);
-        directLcd.setCursor(0, 3);
-        directLcd.print("Hum: ");
-        directLcd.print(BME280_Humidity);
+        lcdA.clear();
+        lcdA.print("BME280-Werte");
+        lcdA.setCursor(0, 1);
+        lcdA.print("Temp: ");
+        lcdA.print(BME280_Temperature);
+        lcdA.setCursor(0, 2);
+        lcdA.print("Luftdruck: ");
+        lcdA.print(BME280_Airpressure);
+        lcdA.setCursor(0, 3);
+        lcdA.print("Hum: ");
+        lcdA.print(BME280_Humidity);
       }
       else if (displayCounter < changeScreenThreshold * 2) { //RTC,LOUDNESS,BRIGHTNESS
         displayCounter++;
-        directLcd.clear();
-        directLcd.print("SONSTIGES");
-        directLcd.setCursor(0, 1);
-        directLcd.print("RTC-Temp: ");
-        directLcd.print(RTC_Temperature);
-        directLcd.setCursor(0, 2);
-        directLcd.print("Helligkeit: ");
-        directLcd.print(Brightness);
-        directLcd.setCursor(0, 3);
-        directLcd.print("Lautstaerke: ");
-        directLcd.print(Loudness);
+        lcdA.clear();
+        lcdA.print("SONSTIGES");
+        lcdA.setCursor(0, 1);
+        lcdA.print("RTC-Temp: ");
+        lcdA.print(RTC_Temperature);
+        lcdA.setCursor(0, 2);
+        lcdA.print("Helligkeit: ");
+        lcdA.print(Brightness);
+        lcdA.setCursor(0, 3);
+        lcdA.print("Lautstaerke: ");
+        lcdA.print(Loudness);
       }
       else if (displayCounter < changeScreenThreshold * 3) { //sondtiges
         displayCounter++;
-        directLcd.clear();
-        directLcd.print("SONSTIGES (II)");
-        directLcd.setCursor(0, 1);
-        directLcd.print("DATEI: ");
-        directLcd.print(fileName);
-        directLcd.setCursor(0, 2);
-        directLcd.print("AUFZEICHNUNG ");
+        lcdA.clear();
+        lcdA.print("SONSTIGES (II)");
+        lcdA.setCursor(0, 1);
+        lcdA.print("DATEI: ");
+        lcdA.print(fileName);
+        lcdA.setCursor(0, 2);
+        lcdA.print("AUFZEICHNUNG ");
         if (!SDFail) {
           if (recording) {
-            directLcd.print("LAEUFT");
+            lcdA.print("LAEUFT");
           }
           else {
-            directLcd.print("GESTOPPT");
+            lcdA.print("GESTOPPT");
           }
         }
         else {
-          directLcd.print("N/A");
+          lcdA.print("N/A");
         }
-        directLcd.setCursor(0, 3);
-        directLcd.print("MODUS: ");
+        lcdA.setCursor(0, 3);
+        lcdA.print("MODUS: ");
         if (physik) {
-          directLcd.print("PHYSIK");
+          lcdA.print("PHYSIK");
         }
         else {
-          directLcd.print("GEOGRAPHIE");
+          lcdA.print("GEOGRAPHIE");
         }
       }
       else if (displayCounter < changeScreenThreshold * 4) { //temperaturen
         displayCounter++;
-        directLcd.clear();
-        directLcd.print("TEMPERATUREN");
-        directLcd.setCursor(0, 1);
-        directLcd.print("BME: ");
-        directLcd.print(BME280_Temperature);
-        directLcd.setCursor(0, 2);
-        directLcd.print("RTC: ");
-        directLcd.print(RTC_Temperature);
-        directLcd.setCursor(0, 3);
-        directLcd.print("DURCHSCHNITT: ");
-        directLcd.print(TOTAL_Temperature);
+        lcdA.clear();
+        lcdA.print("TEMPERATUREN");
+        lcdA.setCursor(0, 1);
+        lcdA.print("BME: ");
+        lcdA.print(BME280_Temperature);
+        lcdA.setCursor(0, 2);
+        lcdA.print("RTC: ");
+        lcdA.print(RTC_Temperature);
+        lcdA.setCursor(0, 3);
+        lcdA.print("DURCHSCHNITT: ");
+        lcdA.print(TOTAL_Temperature);
       }
       else if (displayCounter < changeScreenThreshold * 5) { //luftfeuchtigkeiten
         displayCounter++;
-        directLcd.clear();
-        directLcd.print("LUFTFEUCHTIGKEITEN");
-        directLcd.setCursor(0, 1);
-        directLcd.print("BME280 ");
-        directLcd.print(BME280_Humidity);
+        lcdA.clear();
+        lcdA.print("LUFTFEUCHTIGKEITEN");
+        lcdA.setCursor(0, 1);
+        lcdA.print("BME280 ");
+        lcdA.print(BME280_Humidity);
       }
       else if (displayCounter < changeScreenThreshold * 6) { //luftdrï¿½cke
         displayCounter++;
-        directLcd.clear();
-        directLcd.print("LUFTDRUECKE");
-        directLcd.setCursor(0, 1);
-        directLcd.print("BME280: ");
-        directLcd.print(BME280_Airpressure);
+        lcdA.clear();
+        lcdA.print("LUFTDRUECKE");
+        lcdA.setCursor(0, 1);
+        lcdA.print("BME280: ");
+        lcdA.print(BME280_Airpressure);
       }
       else if (displayCounter < changeScreenThreshold * 7) { //gaswerte
         displayCounter++;
-        directLcd.clear();
-        directLcd.print("GAS-SENSOREN");
-        directLcd.setCursor(0, 1);
-        directLcd.print("MQ_2: ");
-        directLcd.print(MQ_2_Value);
-        directLcd.setCursor(0, 2);
-        directLcd.print("MQ_135: ");
-        directLcd.print(MQ_135_Value);
+        lcdA.clear();
+        lcdA.print("GAS-SENSOREN");
+        lcdA.setCursor(0, 1);
+        lcdA.print("MQ_2: ");
+        lcdA.print(MQ_2_Value);
+        lcdA.setCursor(0, 2);
+        lcdA.print("MQ_135: ");
+        lcdA.print(MQ_135_Value);
       }
       else {
         displayCounter = 0;
@@ -687,7 +621,7 @@ void iterateMenu() {
       needsUpdate = true;
       Serial.println("GEO");
     }
-    else if (menuPage == 2) { //directLcdON/OFF
+    else if (menuPage == 2) { //lcdAON/OFF
       Serial.println("LCD");
       menuPage = 3;
       needsUpdate = true;
@@ -716,53 +650,44 @@ void increaseValue() {
 }
 
 void createChars() {
-  indirectLcd.createChar('0', AE);
-  indirectLcd.createChar(1, OE);
-  indirectLcd.createChar(2, UE);
-  directLcd.createChar('0', AE);
-  directLcd.createChar(1, OE);
-  directLcd.createChar(2, UE);
-}
+  byte X[8] = {
+    0b01010,
+    0b00000,
+    0b01110,
+    0b10001,
+    0b11111,
+    0b10001,
+    0b10001,
+    0b00000
+  };
+  inlcdA.createChar('0', X);
+  lcdA.createChar('0', X);
 
-void PCB_POWER(bool state) {
-  if (state == POWER_ON) {
-    PORTA = Port_A; //&=B01111111;
-    PORTB = Port_B;
-    PORTC = Port_C;
-    PORTD = Port_D;
-    PORTE = Port_E;
-    PORTF = Port_F;
-    PORTG = Port_G;
-    PORTH = Port_H;
-    PORTJ = Port_J;
-    PORTK = Port_K;
-    PORTL = Port_L;
-  }
-  else {
-    //PORTA|=B10000000;
-    Port_A = PORTA;
-    Port_B = PORTB;
-    Port_C = PORTC;
-    Port_D = PORTD;
-    Port_E = PORTE;
-    Port_F = PORTF;
-    Port_G = PORTG;
-    Port_H = PORTH;
-    Port_J = PORTJ;
-    Port_K = PORTK;
-    Port_L = PORTL;
-    PORTA = B00000000;
-    PORTB = B00000000;
-    PORTC = B00000000;
-    PORTD = B00000000;
-    PORTE = B00000000;
-    PORTF = B00000000;
-    PORTG = B00000000;
-    PORTH = B00000000;
-    PORTJ = B00000000;
-    PORTK = B00000000;
-    PORTL = B00000000;
-  }
+  X[0] = 0b01010;
+  X[1] = 0b00000;
+  X[2] = 0b01110;
+  X[3] = 0b10001;
+  X[4] = 0b10001;
+  X[5] = 0b10001;
+  X[6] = 0b01110;
+  X[7] = 0b00000;
+  inlcdA.createChar(1, X);
+  lcdA.createChar(1, X);
+
+
+
+
+  X[0] = 0b01010;
+  X[1] = 0b00000;
+  X[2] = 0b10001;
+  X[3] = 0b10001;
+  X[4] = 0b10001;
+  X[5] = 0b10001;
+  X[6] = 0b01110;
+  X[7] = 0b00000;
+
+  lcdA.createChar(2, X);
+  inlcdA.createChar(2, X);
 }
 
 void sleepUntil(int HT, int MT) {
@@ -771,8 +696,8 @@ void sleepUntil(int HT, int MT) {
     nextWakeTime -= 24;
   }
   time_t t = RTC.get();
-  int HC = hour(t);
-  int MC = minute(t);
+  short HC = hour(t);
+  short MC = minute(t);
   if (HT < HC) {
     HT += 24;
   }
@@ -787,16 +712,14 @@ void sleepUntil(int HT, int MT) {
 }
 
 void sleep(int minutes) {
-  PCB_POWER(POWER_OFF);
   long eightSecondsSleepIterations = (minutes - minutesPriorToWakeTime) * 7.5;//sollte auf die zu schlafende zeit -minutesPriorToWakeTime minuten kommen
   for (; eightSecondsSleepIterations > 0; eightSecondsSleepIterations--) {
     powerDown();
   }
-  PCB_POWER(POWER_ON);
 }
 
 void powerDown() {
-  //von http://www.gammon.com.au/forum/?id=11497 Sketch H
+  /*//von http://www.gammon.com.au/forum/?id=11497 Sketch H
   // disable ADC
   ADCSRA = 0;
 
@@ -819,7 +742,7 @@ void powerDown() {
   sleep_cpu ();
 
   // cancel sleep as a precaution
-  sleep_disable();
+  sleep_disable();*/
 }
 
 void flipServo() {

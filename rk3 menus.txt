@@ -1,0 +1,98 @@
+lcdB.clear();
+lcdB.setCursor(0,0);
+lcdB.print("MODUS:");
+lcdB.setCursor(0,1);
+if(physik){
+lcdB.print("PHYSIK");
+}
+else{
+lcdB.print("GEOGRAPHIE");
+}
+
+
+lcdB.clear();
+lcdB.setCursor(0,0);
+lcdB.print("AUFZEICHNUNG:");
+lcdB.setCursor(0,1);
+if(rec){
+lcdB.print("ANGEHALTEN");
+}
+else{
+lcdB.print("GESTOPPT");
+
+
+lcdB.clear();
+lcdB.setCursor(0,0);
+lcdB.print("HAUPT-LCD STATUS");
+lcdB.setCursor(0,1);
+if(lcdA_Enabled){
+lcdB.print("AN");
+}
+else{
+lcdB.print("AUS");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+lcdA.clear();
+lcdA.setCursor(0,0);
+lcdA.print("TEMPERATUR:");
+lcdA.setCursor(0,1);
+lcdA.print(Temperature);
+lcdA.print(" ");
+lcdA.write(degC);
+lcdA.print("C");
+lcdA.setCursor(0,2);
+lcdA.print("LUFTFEUCHTIGKEIT:");
+lcdA.setCursor(0,3);
+LcdA.print(Humidity);
+lcdA.print(" %");
+
+
+lcdA.clear();
+lcdA.setCursor(0,0);
+lcdA.print("LUFTDRUCK:");
+lcdA.setCursor(0,1);
+lcdA.print(Pressure);
+lcdA.print(" kPa");
+lcdA.setCursor(0,2);
+lcdA.print("HELLIGKEIT:");
+lcdA.setCursor(0,3);
+lcdA.print(Brightness);
+lcdA.print(" %");
+
+
+lcdA.clear();
+lcdA.setCursor(0,0);
+lcdA.print("LAUTSTÄRKE:");
+lcdA.setCursor(0,1);
+lcdA.print(Volume);
+lcdA.print(" %");
+lcdA.setCursor(0,2);
+lcdA.print("CO2 KONZENTRATION:");
+lcdA.setCursor(0,3);
+lcdA.print(" %");
+
+
+lcdA.clear();
+lcdA.setCursor(0,0);
+lcdA.print("TAGESNIEDERSCHLAG:");
+lcdA.setCursor(0,1);
+lcdA.print("999mm");
+lcdA.setCursor(0,2);
+lcdA.print("LEZTER NIEDERSCHLAG:");
+lcdA.setCursor(0,3);
+lcdA.print("999mm");
