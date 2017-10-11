@@ -1257,14 +1257,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 helpPanel.add(helpWindowText[i]);
             }
             br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("CopyrightNotes.txt")));
-            
-            BufferedReader br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("irgendeine Datei IN DER JAR DATEI")));
-            String zeile=br.readLine();
-            while(zeile!=null){
-            	System.out.println(zeile);
-            	zeile=br.readLine();
-            }
-            br.close();
             try{
                 copyrightNotes=new JLabel[NUMBER_OF_COPYRIGHT_NOTES+3];
                 copyrightNotes[0]=new JLabel(" ");
