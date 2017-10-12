@@ -1,14 +1,16 @@
-﻿ 
- 
-Betriebsanweisung:
+﻿Betriebsanweisung:
  
 Java Programm:
  
 Beim Starten des Programms öffnet sich zunächst eine Dateiauswahl, in der die anzuzeigende Datei ausgewählt werden muss.
 Die anzeigbaren Dateien sind die CSV Dateien, die vom Gerät aufgezeichnet werden, aber alle anderen CSV Dateien,
-die nur Zahlen enthalten, können ebenfalls angezeigt werden (möglicherweise mit eingeschränktem Funktionsumfang).
-Nach dem Klick auf "Öffnen" wird die ausgewählte datei eingelesen und alle Werte gezeichnet.
+die nur Zahlen enthalten, können ebenfalls angezeigt werden (möglicherweise mit eingeschränktem Funktionsumfang, vor allem
+bei verwendung des Geographie-Anzeigemodus).
+Nach dem Klick auf "Öffnen" wird die ausgewählte Datei eingelesen und alle Werte gezeichnet.
 Bei einem Klick auf "Abbrechen" in der Dateiauswahl wird das Programm beendet.
+Nachdem eine Datei ausgewählt wurde, wird diese automatisch gelesen und versucht die enthaltenen Werte zu zeichnen.
+Abhängig davon, was in der Datei RaumklimaConfig.txt oder in den Einstellungen des Programms festgelegt wurde, werden entweder
+alle Wertereihen gezeichnet (Normaler Modus/ Physik Modus) oder 
  
  
  
@@ -22,7 +24,7 @@ Gerät:
 Benutzte Bibliotheken:
     Java Programm:
         -JFreeChart
-        -
+        -jSerialComm
     
     Arduino:
         -LiquidCrystal_I2C
@@ -34,10 +36,6 @@ Benutzte Bibliotheken:
             Michael Margolis / Paul Stoffregen
             https://github.com/PaulStoffregen/Time
             GNU Lesser General Public License (GNU LGPL)
-        -avr/sleep
-            http://www.atmel.com/webdoc/AVRLibcReferenceManual/index_1license.html
-        -avr/wdt
-            http://www.atmel.com/webdoc/AVRLibcReferenceManual/index_1license.html
         -Arduino
             Arduino
             arduino.cc
