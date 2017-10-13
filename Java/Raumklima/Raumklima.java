@@ -38,6 +38,7 @@ import java.io.LineNumberReader;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.charset.Charset;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -84,7 +85,7 @@ import org.jfree.ui.RectangleEdge;
 /* 
  * *JPanel*.setLayout(new BoxLayout(*JPanel*, BoxLayout.Y_AXIS));
  * 
- * *JPanel* steht für eine Instanz eines beliebigen JPanel
+ * *JPanel* steht fÃ¼r eine Instanz eines beliebigen JPanel
  * https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/layout/BoxLayoutDemoProject/src/layout/BoxLayoutDemo.java
  */
 
@@ -95,7 +96,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static String projectUri="https://raw.githubusercontent.com/lukasaldersley/Raumklima/";
     public static String downloadTargetUri="https://github.com/lukasaldersley/Raumklima/raw/";
 
-    public static final String VERSION="1.9.0.0";
+    public static final String VERSION="1.9.1.0";
 
     public static boolean CLOSE_WINDOW_ALT_REQUIRED=false;
     public static boolean OPEN_HELP_WINDOW_ALT_REQUIRED=false;
@@ -342,6 +343,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             }
         }
         new Raumklima();
+        System.out.println(Charset.defaultCharset());
     }
 
     /**
@@ -414,7 +416,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         //Initialise and fill the pleaseWaitMessagePanel
         pleaseWaitMessagePanel=new JPanel(new BorderLayout());
-        pleaseWaitMessageText=new JLabel("Bitte Warten.");
+        pleaseWaitMessageText=new JLabel("Bitte Warten...");
         pleaseWaitMessageText.setHorizontalAlignment(SwingConstants.CENTER);
         pleaseWaitMessagePanel.add(pleaseWaitMessageText,BorderLayout.CENTER);
 
@@ -578,7 +580,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             changeKeyCombinationButton=new JButton("Ã„ndern");
             changeKeyCombinationButton.addActionListener(this);
             auxiliaryPanel.add(changeKeyCombinationButton);
-            saveKeyCombinationButton=new JButton("Schließen");
+            saveKeyCombinationButton=new JButton("SchlieÃŸen");
             saveKeyCombinationButton.addActionListener(this);
             auxiliaryPanel.add(saveKeyCombinationButton);
             setNewKeyCombinationWindow.add(auxiliaryPanel);
@@ -601,15 +603,15 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         KeyCombinationSettingsFramePanel=new JPanel();
 
         SettingsPageTabbedPane=new JTabbedPane();
-        GeneralSettings=new JPanel(); //F11, Updates prüfen, Update policy, Dateitypen 
+        GeneralSettings=new JPanel(); //F11, Updates prÃ¼fen, Update policy, Dateitypen 
         GraphSettings=new JPanel();  //sichtbarkeit, interplolation
-        KeyCombinationSettings=new JPanel();  //keysÃ¤ndern
+        KeyCombinationSettings=new JPanel();  //keys Ã¤ndern
 
         GeneralSettings.setLayout(new BoxLayout(GeneralSettings, BoxLayout.Y_AXIS));
 
         FileTypePanel=new JPanel();
         FileTypePanel.setLayout(new BoxLayout(FileTypePanel, BoxLayout.Y_AXIS));
-        FileTypePanel.add(new JLabel("Optionen für das Abspeichern des momentanen Bildes"));
+        FileTypePanel.add(new JLabel("Optionen fÃ¼r das Abspeichern des momentanen Bildes"));
         FiletypePngCheckBox=new JCheckBox("PNG");
         FiletypePngCheckBox.setSelected(savePng);
         FiletypePngCheckBox.addActionListener(this);
@@ -702,7 +704,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         FullscreenOptionsPanel.setLayout(new BoxLayout(FullscreenOptionsPanel, BoxLayout.Y_AXIS));
         FullscreenOptionsButtonGroup=new ButtonGroup();
         MaximizeWindowRadioButton=new JRadioButton("Fenster Maximieren");
-        FullscreenExclusiveRadioButton=new JRadioButton("Vollbildmodus (Nicht verfügbar auf Computern mit Intel-Grafik)");
+        FullscreenExclusiveRadioButton=new JRadioButton("Vollbildmodus (Nicht verfÃ¼gbar auf Computern mit Intel-Grafik)");
         FullscreenOptionsButtonGroup.add(MaximizeWindowRadioButton);
         FullscreenOptionsButtonGroup.add(FullscreenExclusiveRadioButton);
         MaximizeWindowRadioButton.setSelected(!fullscreenOk);
@@ -740,13 +742,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         UpdateOptionsPanel=new JPanel();
         UpdateOptionsPanel.setLayout(new BoxLayout(UpdateOptionsPanel, BoxLayout.Y_AXIS));
         UpdateOptionsButtonGroup=new ButtonGroup();
-        AutoUpdateRadioButton=new JRadioButton("Automatisch beim Start prüfen");
+        AutoUpdateRadioButton=new JRadioButton("Automatisch beim Start prÃ¼fen");
         ManualUpdateRadioButton=new JRadioButton("Nur Manuell");
         UpdateOptionsButtonGroup.add(AutoUpdateRadioButton);
         UpdateOptionsButtonGroup.add(ManualUpdateRadioButton);
         AutoUpdateRadioButton.setSelected(autoUpdate);
         ManualUpdateRadioButton.setSelected(!autoUpdate);
-        UpdateNow=new JButton("Jetzt auf Updates prüfen");
+        UpdateNow=new JButton("Jetzt auf Updates prÃ¼fen");
         UpdateNow.addActionListener(this);
         AutoUpdateRadioButton.addActionListener(this);
         ManualUpdateRadioButton.addActionListener(this);
@@ -768,7 +770,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         setupGraphSettings();
 
-        KeyCombinationPanelTitle=new JLabel("Tastenkürzel:");
+        KeyCombinationPanelTitle=new JLabel("TastenkÃ¼rzel:");
         KeyCombinationPanelTitle.setFont(new Font(Font.SERIF,Font.BOLD, 16));
         KeyCombinationSettingsFramePanel.setLayout(new GridLayout(0,1));
         KeyCombinationSettingsFramePanel.add(KeyCombinationPanelTitle);
@@ -953,7 +955,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         helpWindowScrollPane.setPreferredSize(new Dimension(helpWindow.getWidth(), helpWindow.getHeight()-53));
         helpWindow.add(helpWindowScrollPane,BorderLayout.NORTH);
 
-        helpWindowCloseButton=new JButton("Schließen");
+        helpWindowCloseButton=new JButton("SchlieÃŸen");
         helpWindowCloseButton.addActionListener(this);
         helpWindowCloseButton.setPreferredSize(new Dimension(helpWindow.getWidth(),25));
         helpWindow.add(helpWindowCloseButton,BorderLayout.SOUTH);
@@ -968,13 +970,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         mainWindowMenuBar=new JMenuBar();
 
         fileMenu=new JMenu("Datei");
-        openDifferentPlotMenuItem=new JMenuItem("Datei Öffnen (Strg+"+OPEN_NEW_PLOT_KEY_STRING+")");
+        openDifferentPlotMenuItem=new JMenuItem("Datei Ã¶ffnen (Strg+"+OPEN_NEW_PLOT_KEY_STRING+")");
         openDifferentPlotMenuItem.addActionListener(this);
         fileMenu.add(openDifferentPlotMenuItem);
-        openNewWindowMenuItem=new JMenuItem("neues Fenster Öffnen (Strg+"+OPEN_NEW_WINDOW_KEY_STRING+")");
+        openNewWindowMenuItem=new JMenuItem("neues Fenster Ã¶ffnen (Strg+"+OPEN_NEW_WINDOW_KEY_STRING+")");
         openNewWindowMenuItem.addActionListener(this);
         fileMenu.add(openNewWindowMenuItem);
-        closeWindowMenuItem=new JMenuItem("Fenster schließen (Strg+"+CLOSE_WINDOW_KEY_STRING+")");
+        closeWindowMenuItem=new JMenuItem("Fenster schlieÃŸen (Strg+"+CLOSE_WINDOW_KEY_STRING+")");
         closeWindowMenuItem.addActionListener(this);
         fileMenu.add(closeWindowMenuItem);
 
@@ -1256,10 +1258,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 helpWindowText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
                 helpPanel.add(helpWindowText[i]);
             }
-            br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("CopyrightNotes.txt")));
+            br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("CopyrightNotes.txt"),"UTF-8"));
             try{
                 copyrightNotes=new JLabel[NUMBER_OF_COPYRIGHT_NOTES+3];
-                copyrightNotes[0]=new JLabel(" ");
+                copyrightNotes[0]=new JLabel(" ");//TODO
                 helpPanel.add(copyrightNotes[0]);
                 copyrightNotes[1]=new JLabel(" ");
                 helpPanel.add(copyrightNotes[1]);
@@ -1267,7 +1269,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 helpPanel.add(copyrightNotes[2]);
                 for(int i=3;i<NUMBER_OF_COPYRIGHT_NOTES+3;i++){
                     line=br.readLine();
+                    if(debug){
                     System.out.println(line);
+                    }
                     copyrightNotes[i]=new JLabel(line);
                     helpPanel.add(copyrightNotes[i]);
                 }
@@ -1368,15 +1372,15 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             helpWindowText[7].setText(helpWindowText[7].getText()+TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_STRING);
             helpWindowText[8].setText(helpWindowText[8].getText()+TOGGLE_FULLSCREEN_MODE_KEY_STRING);
 
-            closeWindowMenuItem.setText("Fenster schließen ("+helpWindowText[0].getText()+")");
+            closeWindowMenuItem.setText("Fenster schlieÃŸen ("+helpWindowText[0].getText()+")");
             openHelpWindowMenu.setText("Hilfe ("+helpWindowText[1].getText()+")");
-            openDifferentPlotMenuItem.setText("Datei Öffnen ("+helpWindowText[2].getText()+")");
-            openNewWindowMenuItem.setText("neues Fenster Öffnen ("+helpWindowText[3].getText()+")");
+            openDifferentPlotMenuItem.setText("Datei Ã¶ffnen ("+helpWindowText[2].getText()+")");
+            openNewWindowMenuItem.setText("neues Fenster Ã¶ffnen ("+helpWindowText[3].getText()+")");
             openSettingsWindowMenu.setText("Einstellungen ("+helpWindowText[4].getText()+")");
             saveGraphImagesMenu.setText("Graphen speichern ("+helpWindowText[6].getText()+")");
             toggleFullscreenModeMenu.setText("Vollbildmodus ("+helpWindowText[8].getText()+")");
 
-            br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("HelpTexts.txt")));
+            br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("HelpTexts.txt"),"UTF-8"));
             for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
                 line=br.readLine();
                 setNewKeyCombinationTexts[i]=line;
@@ -1387,7 +1391,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 }
             }
             for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
-                //die Gleichen elmente für die Einstellungsseite Verwenden
+                //die Gleichen elmente fÃ¼r die Einstellungsseite Verwenden
                 settingsWindowText[i].setText(helpWindowText[i].getText());
             }
         }
@@ -2024,11 +2028,11 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void setSeriesVisible(int number,boolean selected) {
-        if(graphIsVisible[number]==selected){//ist bereits im gewünschten status
+        if(graphIsVisible[number]==selected){//ist bereits im gewÃ¼nschten status
             return;
         }
         graphIsVisible[number]=selected;
-        if(selected){//hinzufügen
+        if(selected){//hinzufÃ¼gen
             xYSeriesCollection.removeAllSeries();
 
             for(int i=0;i<numberOfGraphs;i++){
@@ -2264,7 +2268,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             case 524:return"WINDOWS";
             case 16777412: return"Ã„"; //AE
             case 16777430: return"Ã–"; //OE
-            case 16777439: return"ß"; //'SS'
+            case 16777439: return"ÃŸ"; //'SS'
             case 16777468: return"Ãœ"; //UE
             default:return "ERROR:"+String.valueOf(code)+"("+String.valueOf((char)(code))+")";
         }
