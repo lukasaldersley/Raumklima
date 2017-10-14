@@ -76,7 +76,7 @@ YES
 #FullscreenOnStartup
 NO
 #FullscreenPossible
-NO
+YES
 #BottomPanelExpandedOnStartup
 NO
 #AutoUpdate

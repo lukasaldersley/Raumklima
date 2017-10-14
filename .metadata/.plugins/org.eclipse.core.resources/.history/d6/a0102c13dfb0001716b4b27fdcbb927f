@@ -151,7 +151,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static int HEIGHT_OF_DATA_BLOCK=25;
     public static int WIDTH_OF_DATA_BLOCK=370;
     public static int NUMBER_OF_KEY_COMBOS=9;
-    public static int NUMBER_OF_COPYRIGHT_NOTES=2000;
+    public static int NUMBER_OF_COPYRIGHT_NOTES=66;
     public static int NUMBER_OF_CONFIG_ENTRIES=91;
 
     private boolean allowKeyCombinationChange=false;
@@ -331,7 +331,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private JButton GeoModeOkButton;
     private boolean geoMode;
     private boolean replotting=false;
-    private boolean onlyInterpolationChanging=false;
+	private boolean onlyInterpolationChanging=false;
 
     public static void main(String[] args){
         for(int i=0;i<args.length;i++){
@@ -520,7 +520,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         if(dataPanelX*dataPanelY<numberOfGraphs){
             //Something went TERRIBLY WRONG!!!!
             //HASN'T BEEN OBSERVED FOR A LONG TIME (a lot of options have been tested)
-            //Probably will never occur again
+        	//Probably will never occur again
             System.err.println("HELP: SPACIAL COLLISION OF numberOfGraphs and panelX/Y: "+numberOfGraphs+"|"+dataPanelX+"x"+dataPanelY);
         }
 
@@ -996,11 +996,11 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         mainWindowMenuBar.add(openHelpWindowMenu);
 
         saveGraphImagesMenu=new JMenu("Graphen speichern (Strg+"+SAVE_GRAPH_IMAGE_KEY_STRING+")");
-        saveGraphImagesMenu.addMouseListener(this);
+        saveGraphImagesMenu.addActionListener(this);
         mainWindowMenuBar.add(saveGraphImagesMenu);
-
+        
         toggleDataPanelMenu=new JMenu("Detailansicht (Strg+E)");
-        toggleDataPanelMenu.addMouseListener(this);
+        toggleDataPanelMenu.addActionListener(this);
         mainWindowMenuBar.add(toggleDataPanelMenu);
 
         mainWindowMenuBar.addKeyListener(this);
@@ -1275,7 +1275,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 for(int i=3;i<NUMBER_OF_COPYRIGHT_NOTES+3;i++){
                     line=br.readLine();
                     if(debug){
-                        System.out.println(line);
+                    System.out.println(line);
                     }
                     copyrightNotes[i]=new JLabel(line);
                     helpPanel.add(copyrightNotes[i]);
@@ -1487,8 +1487,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             mainWindow.setExtendedState(JFrame.NORMAL);
         }
         fullscreen=false;
-        refreshPage();
-        saveConfigurationFile();
+        reloadBackend();
+        //refreshPage();
+        //saveConfigurationFile();
     }
 
     private void toggleBottomPanel(){
@@ -1500,8 +1501,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             bottomPanelExpanded=true;
             dataPanel.setVisible(true);
         }
-        refreshPage();
-        saveConfigurationFile();
+        reloadBackend();
+        //refreshPage();
+        //saveConfigurationFile();
     }
 
     private void avtivateFullscreen(){
@@ -1571,14 +1573,14 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 }
                 xYSeries=new XYSeries[numberOfGraphs];
                 if(!onlyInterpolationChanging){
-                    graphIsVisible=new boolean[numberOfGraphs];
+                graphIsVisible=new boolean[numberOfGraphs];
                 }
 
                 xYSeries[0] = new XYSeries((Comparable)((Object)(dataValueDescriptors[temps])));
                 xYSeries[1] = new XYSeries((Comparable)((Object)(dataValueDescriptors[drops])));
                 if(!onlyInterpolationChanging){
-                    graphIsVisible[0]=true;
-                    graphIsVisible[1]=true;
+                graphIsVisible[0]=true;
+                graphIsVisible[1]=true;
                 }
 
                 if(interpolationFactor<1){
@@ -1631,13 +1633,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             else{
                 xYSeries=new XYSeries[numberOfGraphs];
                 if(!onlyInterpolationChanging){
-                    graphIsVisible=new boolean[numberOfGraphs];
+                graphIsVisible=new boolean[numberOfGraphs];
                 }
 
                 for (int i = 0; i < numberOfGraphs; ++i) {
                     xYSeries[i] = new XYSeries((Comparable)((Object)(dataValueDescriptors[i])));
                     if(!onlyInterpolationChanging){
-                        graphIsVisible[i]=true;
+                    graphIsVisible[i]=true;
                     }
                 }
                 if(interpolationFactor<1){
@@ -1708,7 +1710,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     @SuppressWarnings("unused")
-    private int numberOfLinesInFile(File inputFile) {
+	private int numberOfLinesInFile(File inputFile) {
         //https://stackoverflow.com/questions/453018/number-of-lines-in-a-file-in-java
         //antwort von Telmo Marques und er.vikas
         LineNumberReader lnr;
@@ -1905,6 +1907,12 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
         else if(event.getSource()==closeWindowMenuItem){
             closeWindow();
+        }
+        else if(event.getSource()==saveGraphImagesMenu){
+            saveImages();
+        }
+        else if(event.getSource()==toggleDataPanelMenu){
+        	toggleBottomPanel();//TODO
         }
         else if(event.getSource()==helpWindowCloseButton){
             helpWindow.setVisible(false);
@@ -2136,12 +2144,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         if(event.getSource()==toggleFullscreenModeMenu){
             toggleFullscreen();
         }
-        else if(event.getSource()==saveGraphImagesMenu){
-            saveImages();
-        }
-        else if(event.getSource()==toggleDataPanelMenu){
-            toggleBottomPanel();
-        }
     }
 
     /**
@@ -2328,9 +2330,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void saveImages() {
-    	System.out.println("SAVING");
         if(saveJpeg){
-        	System.out.println("JPG");
             try {
                 ChartUtilities.saveChartAsJPEG(new File(csvFile.getName()+".jpeg"), jFreeChart, imageWidth, imageHeight);
             } catch (IOException e) {
@@ -2338,7 +2338,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             }
         }
         if(savePng){
-        	System.out.println("PNG");
             try {
                 ChartUtilities.saveChartAsPNG(new File(csvFile.getName()+".png"), jFreeChart, imageWidth, imageHeight);
             } catch (IOException e) {

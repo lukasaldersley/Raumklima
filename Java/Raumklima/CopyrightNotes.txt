@@ -10,13 +10,72 @@ Nach dem Klick auf "Öffnen" wird die ausgewählte Datei eingelesen und alle Wer
 Bei einem Klick auf "Abbrechen" in der Dateiauswahl wird das Programm beendet.
 Nachdem eine Datei ausgewählt wurde, wird diese automatisch gelesen und versucht die enthaltenen Werte zu zeichnen.
 Abhängig davon, was in der Datei RaumklimaConfig.txt oder in den Einstellungen des Programms festgelegt wurde, werden entweder
-alle Wertereihen gezeichnet (Normaler Modus/ Physik Modus) oder 
+alle Wertereihen gezeichnet (Standardmodus) oder nur die Wertereihen mit dem Titel Temperatur oder Niederschlagsmenge gezeichnet,
+auch wenn noch andere Werte vorhanden sind (Geographie Modus). Hierbei werden immer 4 Werte eingelesen, der Durchschnitt der
+Temperatur und die Summe der Niederschläge gebildet und gezeichnet.
+Nun sollten Sie in der mitte des Fensters die Graphen der Messwerte sehen können. Direkt darunter befindet sich eine Legende,
+der Sie entnehmen können welche Farbe welchem Messwert zugeordnet ist.
+Am oberen Rand des Fensters befindet sich eine Menüleiste. Im Untermenü "Datei" finden Sie drei Optionen:
+"Datei öffnen", "neues Fenster öffnen" und "Fenster schließen".
+Wenn Sie "Datei öffnen" anklicken öffnet sich wieder die Dateiauswahl und Sie können sich eine andere Datei anzeigen lassen.
+"neues Fenster öffnen" tut fast das gleiche, abgesehen davon, dass in diesem Fall ein weiteres Fenster geöffnet wird und Sie so
+zwei (oder mehr) Dateien gleichzeitig betrachten können.
+"Fenster schließen" schließt einfach nur das momentan aktive Fenster.
+Neben dem Dateimenü finden Sie das Menü "Einstellungen", worauf später noch eingegangen wird.
+Rechts daneben befindet sich ein Knopf um das Programm im Vollbildmodus anzeigen zu lassen, oder diesen wieder zu verlassen.
+Abhängig davon welche Grafikkarte im Computer eingebaut ist, kann es sein, dass der Vollbildmodus nicht unterstützt wird.
+In diesem Fall wird das Fenster maximiert.
+Ein Klick auf "Hilfe" wird dieses Fenster öffnen.
+Nachdem Sie auf "Graphen speichern" geklickt haben wird, je nach den , was Sie unter "Einstellungen" gewählt haben ein Bild der
+Wertereihen gespeichert.
+Wenn Sie "Detailansicht" wählen wird sich unten ein weiterer Bereich einblenden, in dem die genauen Werte für einen bestimmten
+Punkt angezeigt werden können. Um sich hier die Werte anzuzeigen lassen klicken Sie bitte auf den Gewünschten Punkt im 
+Graphenbereich. Um den Detailbereich wieder auszublenden klicken Sie einfach ein weiteres mal auf "Detailbereich".
+ 
+Nachdem sie in der Menüleiste auf "Einstellungen" geklickt haben, öffnet sich ein Fenster, in dem Sie die wichtigsten Einstellungen
+vornehmen können.
+Sie sehen oben drei Registerkarten: "Allgemeine Einstellungen", "Graphenbereich" und "Tastenkombinationen".
+ 
+Unter "Allgemeine Einstellungen" haben Sie zunächst die Möglichkeit zu konfigurieren was beim Speichern des Bildes der
+Wertereihen geschehen soll. Als Dateitypen stehen "JPG" und "PNG" zur Auswahl. Wenn ein Haken vor einem Dateityp gesetzt ist, wird
+ein Bild mit diesem Dateityp gespeichert, unabhängig davon, ob noch ein anderer Dateityp gewählt ist oder nicht.
+Direkt darunter haben Sie die Möglickeit die Auflösung des Bildes festzulegen. Wenn "Automatisch festlegen" gewählt ist, wird
+die Bildschirmauflösung Ihres Computers verwendet.
+Die nächste Einstellmöglichkeit legt fest, was beim klick auf "Vollbildmodus" geschehen soll. Falls Ihr Computer eine Integrierte
+Grafikeineheit von Intel verwendet, können Sie hier nichts verändern und die option "Vollbildmodus" ist ausgegraut. Auf Computern
+mit Intel Grafik wurde diese Funktion deaktiviert, da der Vollbildmodus zwar offiziell unterstützt wird, in der Praxis das Programm
+jedoch unbenutzbar macht. Falls Ihr Computer irgend eine andere Frfiklösung verwendet können Sie wählen ob das Fenster "nur"
+Maximiert werden soll, oder ob in den Vollbildmodus gewechselt werden soll.
+Die möglickeiten für den Anzeigemodus wurden eingangs schon erklärt. Falls die Vorraussetzungen für den Geographie-modus
+(Wertereihen mit dem Titel "Temperatur" oder "Niederschlagsmenge" müssen vorhanden sein) nichtgegeben sind, wird automatisch
+der Standardmodus verwendet.
+Für diese Einstellung müssen sie durch klicken auf den Knopf "Übernehmen" bestätigen, dass Sie eine änderung wünschen,
+da hierfür alle werte erneut eingelesen werden müssen und es deshalb etwas dauern könnte bis die Aktion abgeschlossen ist.
+Bei "Update Optionen" können Sie wählen, ob das Programm bei jedem Start automatisch prüfen soll, ob Softwareupdates vorhanden sind.
+Wenn Sie auf den Knopf "Jetzt auf Updates Prüfen" klicken wird das Programm überprüfen, ob es Updates gibt und gegbenenfalls
+die Updates Installieren und neu starten.
+ 
+In der Registerkarte "Graphenbereich" haben Sie die möglickeit einzelne Wertereihen auszublenden, indem Sie links vor dem jeweiligen
+Namen das Häkchen entfernen.
+Rechts haben Sie die Möglichkeit, die Interpolation (d.h. wie viele Aufgezeichnete Werte sollen zwischen gezeichneten Werten
+übersprungen werden) zu konfigurieren. Sie können zwischen einigen vordefinierten Werten wählen oder, wenn Sie "Benutzerdefiniert"
+auswählen, in das Textfeld eine positive Zahl zwischen 1 und 4294967295 (der Obergrenze für Integer (=einfache zahlen) in Java)
+eingeben. Wenn Sie die Interpolationsstufe gewählt haben, klicken Sie bitte "OK (nur Interpolation)". Dies wird wieder alle in der
+Datei vorhandenen Messwerte sichtbar machen (falls Sie welche ausgeblendet hatten).
+
+In der Registerkarte "Tastenkombinationen" können Sie die Tastenkombinationen ändern, indem Sie auf den Knopf "Ändern" hinter der
+jeweiligen Funktion klicken und den Anweisungen folgen.
+ 
+Hinweis: Immer wenn hinter einem Knopf eine Tastenkombination in Klammern steht, können Sie diese Funktion auch durch drücken dieser
+Tastenkombination aufrufen.
+ 
  
  
  
  
  
 Gerät:
+ 
  
  
  
@@ -29,36 +88,12 @@ Benutzte Bibliotheken:
     Arduino:
         -LiquidCrystal_I2C
         -DS3232RTC
-            Jack Christensen
-            https://github.com/JChristensen/DS3232RTC
-            CC BY-SA 4.0 
         -TimeLib
-            Michael Margolis / Paul Stoffregen
-            https://github.com/PaulStoffregen/Time
-            GNU Lesser General Public License (GNU LGPL)
         -Arduino
-            Arduino
-            arduino.cc
-            GNU Lesser General Public License (GNU LGPL)
         -Wire
-            Arduino
-            arduino.cc
-            GNU Lesser General Public License (GNU LGPL)
         -SPI
-            Arduino
-            arduino.cc
-            GNU Lesser General Public License (GNU LGPL)
         -SD
-            Arduino
-            arduino.cc
-            GNU Lesser General Public License (GNU LGPL)
         -Servo
-            Arduino
-            arduino.cc
-            GNU Lesser General Public License (GNU LGPL)
         -Adafruit_Sensor
         -Adafruit_BME280
         -hx711
-            Weihong Guan
-            https://github.com/aguegu/ardulibs/tree/master/hx711
-            MIT License (siehe: https://github.com/aguegu/ardulibs/blob/master/LICENSE.txt)

@@ -4,6 +4,6 @@ Datei öffnen
 Neues Fenster öffnen
 Fenster Einstellungen öffnen
 Graphen aktualisieren
-Graphen Speichern (alle Dateitypen)
-unteren Bildschirmteil ausblenden
+Graphen Speichern
+Detailbereich ein/ausblenden
 Vollbildmodus umschalten

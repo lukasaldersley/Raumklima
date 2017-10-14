@@ -151,7 +151,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static int HEIGHT_OF_DATA_BLOCK=25;
     public static int WIDTH_OF_DATA_BLOCK=370;
     public static int NUMBER_OF_KEY_COMBOS=9;
-    public static int NUMBER_OF_COPYRIGHT_NOTES=2000;
+    public static int NUMBER_OF_COPYRIGHT_NOTES=66;
     public static int NUMBER_OF_CONFIG_ENTRIES=91;
 
     private boolean allowKeyCombinationChange=false;

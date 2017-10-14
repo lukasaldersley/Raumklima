@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Raumklima
-comment0.text=\ \r\n\ *JPanel*.setLayout(new\ BoxLayout(*JPanel*,\ BoxLayout.Y_AXIS));\r\n\ \r\n\ *JPanel*\ steht\ f\u00FCr\ eine\ Instanz\ eines\ beliebigen\ JPanel\r\n\ https\://docs.oracle.com/javase/tutorial/displayCode.html?code\=https\://docs.oracle.com/javase/tutorial/uiswing/examples/layout/BoxLayoutDemoProject/src/layout/BoxLayoutDemo.java\r\n
+comment0.text=\ \r\n\ *JPanel*.setLayout(new\ BoxLayout(*JPanel*,\ BoxLayout.Y_AXIS));\r\n\ \r\n\ *JPanel*\ steht\ f\u00C3\u00BCr\ eine\ Instanz\ eines\ beliebigen\ JPanel\r\n\ https\://docs.oracle.com/javase/tutorial/displayCode.html?code\=https\://docs.oracle.com/javase/tutorial/uiswing/examples/layout/BoxLayoutDemoProject/src/layout/BoxLayoutDemo.java\r\n
 comment1.params=args
 comment1.target=void\ main(java.lang.String[])
 comment10.params=e
