@@ -39,6 +39,9 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -73,6 +76,7 @@ import org.jfree.chart.panel.Overlay;
 import org.jfree.chart.plot.Crosshair;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.general.DatasetUtilities;
+import org.jfree.data.xy.XYDataItem;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -92,11 +96,13 @@ import org.jfree.ui.RectangleEdge;
 public class Raumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener, FocusListener
 {
     public static boolean debug=false;
+    public static boolean logging=false;
+    public static boolean log_ready=false;
     public static String branch="master";//master, V1 and V1.6 are Options
     public static String projectUri="https://raw.githubusercontent.com/lukasaldersley/Raumklima/";
     public static String downloadTargetUri="https://github.com/lukasaldersley/Raumklima/raw/";
 
-    public static final String VERSION="1.9.1.0";
+    public static final String VERSION="1.9.1.5";
 
     public static boolean CLOSE_WINDOW_ALT_REQUIRED=false;
     public static boolean OPEN_HELP_WINDOW_ALT_REQUIRED=false;
@@ -332,19 +338,92 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private boolean geoMode;
     private boolean replotting=false;
     private boolean onlyInterpolationChanging=false;
+    private static File logFile;
+    private static FileWriter logWriter;
 
     public static void main(String[] args){
         for(int i=0;i<args.length;i++){
+            if(args[i].equalsIgnoreCase("log")||args[i].equalsIgnoreCase("l")||args[i].equalsIgnoreCase("/log")||args[i].equalsIgnoreCase("/l")||args[i].equalsIgnoreCase("-log")||args[i].equalsIgnoreCase("-l")){
+                logging=true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: "+logFile.getName());
+            }
             if(args[i].equalsIgnoreCase("debug")||args[i].equalsIgnoreCase("d")||args[i].equalsIgnoreCase("/debug")||args[i].equalsIgnoreCase("/d")||args[i].equalsIgnoreCase("-debug")||args[i].equalsIgnoreCase("-d")){
                 debug=true;
+                logln("Debugmodus aktiviert");
             }
             else if(args[i].equalsIgnoreCase("?")||args[i].equalsIgnoreCase("help")||args[i].equalsIgnoreCase("h")||args[i].equalsIgnoreCase("/?")||args[i].equalsIgnoreCase("/help")||args[i].equalsIgnoreCase("/h")||args[i].equalsIgnoreCase("-?")||args[i].equalsIgnoreCase("-help")||args[i].equalsIgnoreCase("-h")){
-                System.out.println("\nBefehlszeilenparameter\n\n\"d\" oder \"debug\"\t\tDebugmodus\n\"h\", \"?\" oder \"help\"\t\tdiese Hilfe anzeigen");
+                System.out.println("\nBefehlszeilenparameter\n\n\"d\" oder \"debug\"\t\tDebugmodus\n\"l\" oder \"log\"\t\t\tAusgabe in Datei abspeichern\n\"h\", \"?\" oder \"help\"\t\tdiese Hilfe anzeigen");
                 System.exit(0);
             }
         }
         new Raumklima();
-        System.out.println(Charset.defaultCharset());
+    }
+
+    public static void log(Object msg){
+        if(debug){
+            System.out.print(msg);
+        }
+        try{
+            if(logging){
+                if(log_ready){
+                    logWriter.write(String.valueOf(msg));
+                    logWriter.flush();
+                }
+                else{
+                    logFile=new File("RaumklimaLog_"+new SimpleDateFormat("dd.MM.yyyy_HH,mm").format(new Date())+".txt");
+                    logWriter=new FileWriter(logFile);
+                    log_ready=true;
+                }
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void logln(Object msg){
+        if(debug){
+            System.out.println(msg);
+        }
+        try{
+            if(logging){
+                if(log_ready){
+                    logWriter.write(String.valueOf(msg)+System.lineSeparator());
+                    logWriter.flush();
+                }
+                else{
+                    logFile=new File("RaumklimaLog_"+new SimpleDateFormat("dd.MM.yyyy_HH,mm").format(new Date())+".txt");
+                    logWriter=new FileWriter(logFile);
+                    log_ready=true;
+                }
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void logln(){
+        if(debug){
+            System.out.println();
+        }
+        try{
+            if(logging){
+                if(log_ready){
+                    logWriter.write(System.lineSeparator());
+                    logWriter.flush();
+                }
+                else{
+                    logFile=new File("RaumklimaLog_"+new SimpleDateFormat("dd.MM.yyyy_HH,mm").format(new Date())+".txt");
+                    logWriter=new FileWriter(logFile);
+                    log_ready=true;
+                }
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -373,6 +452,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      * @param settingsWindowUpperLeftPanel 
      */
     private void setup(boolean usingFileChooser, String fileName){
+
+        logln(Charset.defaultCharset());
         //check if the Configurationfile exists, if not download it
         configFile=new File("RaumklimaConfig.txt");
         if(!configFile.exists()){
@@ -437,9 +518,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         //setup the logo
 
         URL url=getClass().getResource("Resources/Weather.png");
-        if(debug){
-            System.out.println(url);
-        }
+
+        logln(url);
         mainWindow.setIconImage(new ImageIcon(url).getImage());
         //https://stackoverflow.com/questions/9864267/loading-image-resource/9866659#9866659 antwort von icza
 
@@ -634,9 +714,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(debug){
-                        System.out.println("A");
-                    }
+
+                    logln("A");
                     imageWidth=Integer.parseInt(imageWidthBox.getText());
                     reloadBackend();
                 }
@@ -644,9 +723,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 @Override
                 public void removeUpdate(DocumentEvent e) {
                     if(!imageWidthBox.getText().equals("")){
-                        if(debug){
-                            System.out.println("B");
-                        }
+
+                        logln("B");
                         imageWidth=Integer.parseInt(imageWidthBox.getText());
                         reloadBackend();
                     }
@@ -664,9 +742,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(debug){
-                        System.out.println("A");
-                    }
+
+                    logln("A");
                     imageHeight=Integer.parseInt(imageHeightBox.getText());
                     reloadBackend();
                 }
@@ -674,9 +751,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 @Override
                 public void removeUpdate(DocumentEvent e) {
                     if(!imageHeightBox.getText().equals("")){
-                        if(debug){
-                            System.out.println("B");
-                        }
+
+                        logln("B");
                         imageHeight=Integer.parseInt(imageHeightBox.getText());
                         reloadBackend();
                     }
@@ -1013,11 +1089,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             br = new BufferedReader(new FileReader(configFile));
             for(int i=0;i<NUMBER_OF_CONFIG_ENTRIES;i++){
                 configRaw[i]=br.readLine();
-                if(debug){
-                    System.out.println("CFG: "+configRaw[i]);
-                }
+
+                logln("CFG: "+configRaw[i]);
             }
-            //System.out.println(configRaw[9]);
+            //logln(configRaw[9]);
             //CLOSE_WINDOW_KEY_CODE=Integer.parseInt(new String(configRaw[9].trim().getBytes("UTF-8"),"UTF-8"));
             CLOSE_WINDOW_KEY_CODE=Integer.parseInt(configRaw[8]);
             CLOSE_WINDOW_KEY_STRING=configRaw[9];
@@ -1101,9 +1176,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      * Writes the Configuration (which is saved in a {@link String} Array in Memory) to a {@link File} on the local Storage
      */
     private void saveConfigurationFile(){
-        if(debug){
-            System.out.println("updating config");
-        }
+
+        logln("updating config");
         configRaw[8]=String.valueOf(CLOSE_WINDOW_KEY_CODE);
         configRaw[9]=CLOSE_WINDOW_KEY_STRING;
         configRaw[14]=String.valueOf(OPEN_HELP_WINDOW_KEY_CODE);
@@ -1173,9 +1247,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         configRaw[88]=String.valueOf(interpolationOffset);
         configRaw[90]=getYesNoString(geoMode);
 
-        if(debug){
-            System.out.println("writing Config");
-        }
+        logln("writing Config");
         try {
             configFile=new File("RaumklimaConfig.txt");
             configFile.delete();
@@ -1199,9 +1271,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public boolean checkIfUpdateAvailable(){
         try{
             source = new URL(projectUri+branch+"/PublicVersion/VERSION");
-            if(debug){
-                System.out.println(projectUri+branch+"/PublicVersion/VERSION");
-            }
+
+            logln(projectUri+branch+"/PublicVersion/VERSION");
             br=new  BufferedReader(new InputStreamReader(source.openStream()));
             String RemoteVersion=br.readLine().trim();
             //in String.split muss ein '.' escaped werden
@@ -1211,9 +1282,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             String[] remote=RemoteVersion.split("\\.");
             String[] local=VERSION.split("\\.");
             for(int i=0;i<4;i++){
-                if(debug){
-                    System.out.println(local[i]+" | "+remote[i]);
-                }
+
+                logln(local[i]+" | "+remote[i]);
                 if(Integer.parseInt(remote[i])>Integer.parseInt(local[i])){
                     return true;
                 }
@@ -1274,10 +1344,11 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 helpPanel.add(copyrightNotes[2]);
                 for(int i=3;i<NUMBER_OF_COPYRIGHT_NOTES+3;i++){
                     line=br.readLine();
-                    if(debug){
-                        System.out.println(line);
-                    }
                     copyrightNotes[i]=new JLabel(line);
+                    if(line==null){
+                    	break;
+                    }
+                    logln(line);
                     helpPanel.add(copyrightNotes[i]);
                 }
             }
@@ -1440,9 +1511,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void refreshPage(){
-        if(debug){
-            System.out.println(mainWindow.getSize());
-        }
+
+        logln(mainWindow.getSize());
         width=mainWindow.getWidth()-15;
         if(fullscreen&&fullscreenOk){
             height=mainWindow.getHeight()-(23+8);
@@ -1451,15 +1521,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             height=mainWindow.getHeight()-(53+8);
             windowDimension=new Dimension(width,height);
         }
-        if(debug){
-            System.out.println(windowDimension);
-        }
+
+        logln(windowDimension);
         dataPanelX=floor((double)(windowDimension.getWidth()/(double)(WIDTH_OF_DATA_BLOCK)));
         dataPanelY=roof(numberOfGraphs/(double)(dataPanelX));
         dataPanel.setLayout(new GridLayout(dataPanelY,dataPanelX));
-        if(debug){
-            System.out.println(numberOfGraphs+" | "+dataPanelX+"x"+dataPanelY);
-        }
+
+        logln(numberOfGraphs+" | "+dataPanelX+"x"+dataPanelY);
         bottomPanelDimension=new Dimension(width,dataPanelY*HEIGHT_OF_DATA_BLOCK);
         if(bottomPanelExpanded){
             topPanelDimension=new Dimension(width,height-(dataPanelY*HEIGHT_OF_DATA_BLOCK));
@@ -1471,11 +1539,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
         dataPanel.setPreferredSize(bottomPanelDimension);
         chartPanel.setPreferredSize(topPanelDimension);
-        if(debug){
-            System.out.println(topPanelDimension);
-            System.out.println(bottomPanelDimension);
-            System.out.println();
-        }
+
+        logln(topPanelDimension);
+        logln(bottomPanelDimension);
+        logln();
         mainWindow.validate();
     }
 
@@ -1555,10 +1622,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 int drops=0;
                 numberOfGraphs=2;
                 for(int i=0;i<dataValueDescriptors.length;i++){
-                    if(dataValueDescriptors[i].equalsIgnoreCase("Niederschlagsmenge")){
+                    if(dataValueDescriptors[i].substring(0, dataValueDescriptors[i].indexOf('(')).equalsIgnoreCase("Niederschlagsmenge")){
                         drops=i;
                     }
-                    if(dataValueDescriptors[i].equalsIgnoreCase("Temperatur")){
+                    if(dataValueDescriptors[i].substring(0, dataValueDescriptors[i].indexOf('(')).equalsIgnoreCase("Temperatur")){
                         temps=i;
                     }
                 }
@@ -1574,8 +1641,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                     graphIsVisible=new boolean[numberOfGraphs];
                 }
 
-                xYSeries[0] = new XYSeries((Comparable)((Object)(dataValueDescriptors[temps])));
-                xYSeries[1] = new XYSeries((Comparable)((Object)(dataValueDescriptors[drops])));
+                xYSeries[0] = new XYSeries((Comparable)((Object)(dataValueDescriptors[temps].substring(0, dataValueDescriptors[temps].indexOf('(')))));
+                xYSeries[1] = new XYSeries((Comparable)((Object)(dataValueDescriptors[drops].substring(0, dataValueDescriptors[drops].indexOf('(')))));
                 if(!onlyInterpolationChanging){
                     graphIsVisible[0]=true;
                     graphIsVisible[1]=true;
@@ -1635,7 +1702,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 }
 
                 for (int i = 0; i < numberOfGraphs; ++i) {
-                    xYSeries[i] = new XYSeries((Comparable)((Object)(dataValueDescriptors[i])));
+                    xYSeries[i] = new XYSeries((Comparable)((Object)(dataValueDescriptors[i].substring(0, dataValueDescriptors[i].indexOf('(')))));
                     if(!onlyInterpolationChanging){
                         graphIsVisible[i]=true;
                     }
@@ -1654,10 +1721,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                     if(line==null||line.equals("")){
                         break;
                     }
-                    //System.out.println(line);
+                    //logln(line);
                     line=line.replace("NAN","0,00");
                     line=line.replace(',', '.');
-                    //System.out.println(line);
+                    //logln(line);
                     String[] zwso=line.split(";");
                     double[] zwsp=new double[numberOfGraphs];
                     for(int i=0;i<numberOfGraphs;i++){
@@ -1667,9 +1734,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                         }
                         catch(Exception e){
                             e.printStackTrace();
-                            if(debug){
-                                System.out.println(i);
-                            }
+
+                            logln(i);
                         }
                     }
                     counter++;
@@ -1716,7 +1782,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             lnr = new LineNumberReader(new FileReader(inputFile));
             lnr.skip(Long.MAX_VALUE);
             lnr.close();
-            if(debug){System.out.println("NumberOfLines: "+lnr.getLineNumber()+1);}
+            logln("NumberOfLines: "+lnr.getLineNumber()+1);
             return lnr.getLineNumber()+1;
         }
         catch (Exception e) {
@@ -1746,7 +1812,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         for (int i = 0; i < numberOfGraphs; ++i) {
             if(graphIsVisible[i]){
                 double d2 = DatasetUtilities.findYValue((XYDataset)xYPlot.getDataset(), (int)correctedIndex, (double)d);
-                dataBoxes[i].setText(String.valueOf(d2));
+                dataBoxes[i].setText(String.valueOf(new DecimalFormat("###.#").format(d2)));//https://stackoverflow.com/questions/13210491/math-round-java antwort von arshajii
                 correctedIndex++;
             }
             else{
@@ -1801,9 +1867,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        if(debug){
-            System.out.println("EVENT FIRED");
-        }
+
+        logln("EVENT FIRED");
         if(event.getSource()==imageSizeAutoCheckBox){
             if(imageSizeAutoCheckBox.isSelected()){
                 imageWidthBox.setText(String.valueOf(fullscreenDimension.width));
@@ -2151,7 +2216,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public void keyReleased(KeyEvent event) {
         if(allowKeyCombinationChange){
             allowKeyCombinationChange=false;
-            //System.out.println("KeyReleased");
+            //logln("KeyReleased");
             keyComboAusgabe.setText("");
             if(event.isAltDown()){
                 keyComboAusgabe.setText("Alt+");
@@ -2169,12 +2234,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             keyComboAusgabe.setText(keyComboAusgabe.getText()+getKeyStringFromKeyCode(event.getExtendedKeyCode()));
             changeKeyChar=getKeyStringFromKeyCode(event.getExtendedKeyCode());
             changeKeyCode=event.getExtendedKeyCode();
-            if(debug){
-                System.out.print(event.getKeyChar());
-            }
-            if(debug){
-                System.out.println(":"+event.getExtendedKeyCode()+":"+getKeyStringFromKeyCode(event.getExtendedKeyCode()));
-            }
+
+            log(event.getKeyChar());
+
+            logln(":"+event.getExtendedKeyCode()+":"+getKeyStringFromKeyCode(event.getExtendedKeyCode()));
             changeKeyCode=event.getExtendedKeyCode();
         }
     }
@@ -2288,9 +2351,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      */
     @Override
     public void keyPressed(KeyEvent event) {
-        if(debug){
-            System.out.println("KeyText (extended): "+KeyEvent.getKeyText(event.getExtendedKeyCode())+"    KeyText: "+KeyEvent.getKeyText(event.getKeyCode())+"    KeyString (eigenbau&&extended): "+getKeyStringFromKeyCode(event.getExtendedKeyCode())+"    KeyString(eigenbau): "+getKeyStringFromKeyCode(event.getKeyCode()));
-        }
+
+        logln("KeyText (extended): "+KeyEvent.getKeyText(event.getExtendedKeyCode())+"    KeyText: "+KeyEvent.getKeyText(event.getKeyCode())+"    KeyString (eigenbau&&extended): "+getKeyStringFromKeyCode(event.getExtendedKeyCode())+"    KeyString(eigenbau): "+getKeyStringFromKeyCode(event.getKeyCode()));
         if(keyCombinationsEnabled){
             if(event.getExtendedKeyCode()==TOGGLE_FULLSCREEN_MODE_KEY_CODE&&event.isAltDown()==TOGGLE_FULLSCREEN_MODE_ALT_REQUIRED&&event.isControlDown()==TOGGLE_FULLSCREEN_MODE_CTRL_REQUIRED&&event.isShiftDown()==TOGGLE_FULLSCREEN_MODE_SHIFT_REQUIRED){
                 toggleFullscreen();
@@ -2328,9 +2390,11 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void saveImages() {
-    	System.out.println("SAVING");
+
+        logln("SAVING");
         if(saveJpeg){
-        	System.out.println("JPG");
+
+            logln("JPG");
             try {
                 ChartUtilities.saveChartAsJPEG(new File(csvFile.getName()+".jpeg"), jFreeChart, imageWidth, imageHeight);
             } catch (IOException e) {
@@ -2338,7 +2402,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             }
         }
         if(savePng){
-        	System.out.println("PNG");
+
+            logln("PNG");
             try {
                 ChartUtilities.saveChartAsPNG(new File(csvFile.getName()+".png"), jFreeChart, imageWidth, imageHeight);
             } catch (IOException e) {
@@ -2355,23 +2420,20 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private void CheckFullscreenAvailability(){
         try{
             if(System.getProperty("os.name").contains("Win")||System.getProperty("os.name").contains("WIN")||System.getProperty("os.name").contains("win")){//System ist irgend eine Windows Version
-                if(debug){
-                    System.out.println("WINDOWS");
-                }
+
+                logln("WINDOWS");
                 br=new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("wmic path win32_VideoController get name").getInputStream()));//cmd parameter von https://superuser.com/questions/723506/get-the-video-card-model-via-command-line-in-windows
             }
             else{//System ist irgendwas (Linux/UNIX/Mac OS)... Jedenfalls was mit bash (99% wahrscheinlich)
-                if(debug){
-                    System.out.println("LINUX");
-                }
+
+                logln("LINUX");
                 br=new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("lspci -vnn | grep VGA -A 12").getInputStream()));//cmd parameter von http://www.binarytides.com/linux-get-gpu-information/
             }
             String zeile=br.readLine();
             String alles="";
             while(true){
-                if(debug){
-                    System.out.println("\t\""+zeile+"\"");
-                }
+
+                logln("\t\""+zeile+"\"");
                 if(zeile==null/*||zeile.equals("")*/){
                     break;
                 }
@@ -2434,4 +2496,3 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     @Override
     public void focusLost(FocusEvent arg0) {}
 }
-

@@ -1,0 +1,221 @@
+UTF-8
+https://raw.githubusercontent.com/lukasaldersley/Raumklima/master/PublicVersion/VERSION
+1 | 1
+9 | 9
+1 | 1
+5 | 0
+file:/C:/Raumklima/Java/Raumklima/Resources/Weather.png
+CFG: ##Beispiel
+CFG: #KeyCode
+CFG: #KeyString
+CFG: #AltRequired
+CFG: #CtrlRequired
+CFG: #ShiftRequired
+CFG: #
+CFG: #CloseWindow
+CFG: 87
+CFG: W
+CFG: NO
+CFG: YES
+CFG: NO
+CFG: #OpenHelp
+CFG: 112
+CFG: F1
+CFG: NO
+CFG: NO
+CFG: NO
+CFG: #OpenNewPlot
+CFG: 79
+CFG: O
+CFG: NO
+CFG: YES
+CFG: NO
+CFG: #OpenNewWindow
+CFG: 78
+CFG: N
+CFG: NO
+CFG: YES
+CFG: NO
+CFG: #OpenSettings
+CFG: 73
+CFG: I
+CFG: NO
+CFG: YES
+CFG: NO
+CFG: #Refresh
+CFG: 116
+CFG: F5
+CFG: NO
+CFG: NO
+CFG: NO
+CFG: #SaveGraphImages
+CFG: 83
+CFG: S
+CFG: NO
+CFG: YES
+CFG: NO
+CFG: #ToggleBottomPanelVisibility
+CFG: 69
+CFG: E
+CFG: NO
+CFG: YES
+CFG: NO
+CFG: #ToggleFullscreenMode
+CFG: 122
+CFG: F11
+CFG: NO
+CFG: NO
+CFG: NO
+CFG: #
+CFG: #DataTypes
+CFG: #PNG
+CFG: YES
+CFG: #JPEG
+CFG: YES
+CFG: #IMAGE WIDTH
+CFG: 1920
+CFG: #IMAGE HEIGHT
+CFG: 1080
+CFG: #AUTOMATICALLY DETERMINE IMAGE SIZE
+CFG: YES
+CFG: #
+CFG: #General Status
+CFG: #FullscreenOnStartup
+CFG: NO
+CFG: #FullscreenPossible
+CFG: YES
+CFG: #BottomPanelExpandedOnStartup
+CFG: NO
+CFG: #AutoUpdate
+CFG: YES
+CFG: #INTERPOLATION RATE
+CFG: 1
+CFG: #INTERPOLATION IS CUSTOM
+CFG: NO
+CFG: #INTERPOLATION OFFSET
+CFG: 0
+CFG: #GEO MODE
+CFG: NO
+WINDOWS
+	"Name                "
+	""
+	"AMD Radeon HD 5450  "
+	""
+	""
+	""
+	"null"
+﻿Betriebsanweisung:
+ 
+Java Programm:
+ 
+Beim Starten des Programms öffnet sich zunächst eine Dateiauswahl, in der die anzuzeigende Datei ausgewählt werden muss.
+Die anzeigbaren Dateien sind die CSV Dateien, die vom Gerät aufgezeichnet werden, aber alle anderen CSV Dateien,
+die nur Zahlen enthalten, können ebenfalls angezeigt werden (möglicherweise mit eingeschränktem Funktionsumfang, vor allem
+bei verwendung des Geographie-Anzeigemodus).
+Nach dem Klick auf "Öffnen" wird die ausgewählte Datei eingelesen und alle Werte gezeichnet.
+Bei einem Klick auf "Abbrechen" in der Dateiauswahl wird das Programm beendet.
+Nachdem eine Datei ausgewählt wurde, wird diese automatisch gelesen und versucht die enthaltenen Werte zu zeichnen.
+Abhängig davon, was in der Datei RaumklimaConfig.txt oder in den Einstellungen des Programms festgelegt wurde, werden entweder
+alle Wertereihen gezeichnet (Standardmodus) oder nur die Wertereihen mit dem Titel Temperatur oder Niederschlagsmenge gezeichnet,
+auch wenn noch andere Werte vorhanden sind (Geographie Modus). Hierbei werden immer 4 Werte eingelesen, der Durchschnitt der
+Temperatur und die Summe der Niederschläge gebildet und gezeichnet.
+Nun sollten Sie in der mitte des Fensters die Graphen der Messwerte sehen können. Direkt darunter befindet sich eine Legende,
+der Sie entnehmen können welche Farbe welchem Messwert zugeordnet ist.
+Am oberen Rand des Fensters befindet sich eine Menüleiste. Im Untermenü "Datei" finden Sie drei Optionen:
+"Datei öffnen", "neues Fenster öffnen" und "Fenster schließen".
+Wenn Sie "Datei öffnen" anklicken öffnet sich wieder die Dateiauswahl und Sie können sich eine andere Datei anzeigen lassen.
+"neues Fenster öffnen" tut fast das gleiche, abgesehen davon, dass in diesem Fall ein weiteres Fenster geöffnet wird und Sie so
+zwei (oder mehr) Dateien gleichzeitig betrachten können.
+"Fenster schließen" schließt einfach nur das momentan aktive Fenster.
+Neben dem Dateimenü finden Sie das Menü "Einstellungen", worauf später noch eingegangen wird.
+Rechts daneben befindet sich ein Knopf um das Programm im Vollbildmodus anzeigen zu lassen, oder diesen wieder zu verlassen.
+Abhängig davon welche Grafikkarte im Computer eingebaut ist, kann es sein, dass der Vollbildmodus nicht unterstützt wird.
+In diesem Fall wird das Fenster maximiert.
+Ein Klick auf "Hilfe" wird dieses Fenster öffnen.
+Nachdem Sie auf "Graphen speichern" geklickt haben wird, je nach den , was Sie unter "Einstellungen" gewählt haben ein Bild der
+Wertereihen gespeichert.
+Wenn Sie "Detailansicht" wählen wird sich unten ein weiterer Bereich einblenden, in dem die genauen Werte für einen bestimmten
+Punkt angezeigt werden können. Um sich hier die Werte anzuzeigen lassen klicken Sie bitte auf den Gewünschten Punkt im 
+Graphenbereich. Um den Detailbereich wieder auszublenden klicken Sie einfach ein weiteres mal auf "Detailbereich".
+ 
+Nachdem sie in der Menüleiste auf "Einstellungen" geklickt haben, öffnet sich ein Fenster, in dem Sie die wichtigsten Einstellungen
+vornehmen können.
+Sie sehen oben drei Registerkarten: "Allgemeine Einstellungen", "Graphenbereich" und "Tastenkombinationen".
+ 
+Unter "Allgemeine Einstellungen" haben Sie zunächst die Möglichkeit zu konfigurieren was beim Speichern des Bildes der
+Wertereihen geschehen soll. Als Dateitypen stehen "JPG" und "PNG" zur Auswahl. Wenn ein Haken vor einem Dateityp gesetzt ist, wird
+ein Bild mit diesem Dateityp gespeichert, unabhängig davon, ob noch ein anderer Dateityp gewählt ist oder nicht.
+Direkt darunter haben Sie die Möglickeit die Auflösung des Bildes festzulegen. Wenn "Automatisch festlegen" gewählt ist, wird
+die Bildschirmauflösung Ihres Computers verwendet.
+Die nächste Einstellmöglichkeit legt fest, was beim klick auf "Vollbildmodus" geschehen soll. Falls Ihr Computer eine Integrierte
+Grafikeineheit von Intel verwendet, können Sie hier nichts verändern und die option "Vollbildmodus" ist ausgegraut. Auf Computern
+mit Intel Grafik wurde diese Funktion deaktiviert, da der Vollbildmodus zwar offiziell unterstützt wird, in der Praxis das Programm
+jedoch unbenutzbar macht. Falls Ihr Computer irgend eine andere Grafiklösung verwendet können Sie wählen ob das Fenster "nur"
+Maximiert werden soll, oder ob in den Vollbildmodus gewechselt werden soll.
+Die möglickeiten für den Anzeigemodus wurden eingangs schon erklärt. Falls die Vorraussetzungen für den Geographie-modus
+(Wertereihen mit dem Titel "Temperatur" oder "Niederschlagsmenge" müssen vorhanden sein) nichtgegeben sind, wird automatisch
+der Standardmodus verwendet.
+Für diese Einstellung müssen sie durch klicken auf den Knopf "Übernehmen" bestätigen, dass Sie eine änderung wünschen,
+da hierfür alle werte erneut eingelesen werden müssen und es deshalb etwas dauern könnte bis die Aktion abgeschlossen ist.
+Bei "Update Optionen" können Sie wählen, ob das Programm bei jedem Start automatisch prüfen soll, ob Softwareupdates vorhanden sind.
+Wenn Sie auf den Knopf "Jetzt auf Updates Prüfen" klicken wird das Programm überprüfen, ob es Updates gibt und gegbenenfalls
+die Updates Installieren und neu starten.
+ 
+In der Registerkarte "Graphenbereich" haben Sie die möglickeit einzelne Wertereihen auszublenden, indem Sie links vor dem jeweiligen
+Namen das Häkchen entfernen.
+Rechts haben Sie die Möglichkeit, die Interpolation (d.h. wie viele Aufgezeichnete Werte sollen zwischen gezeichneten Werten
+übersprungen werden) zu konfigurieren. Sie können zwischen einigen vordefinierten Werten wählen oder, wenn Sie "Benutzerdefiniert"
+auswählen, in das Textfeld eine positive Zahl zwischen 1 und 4294967295 (der Obergrenze für Integer (=einfache zahlen) in Java)
+eingeben. Wenn Sie die Interpolationsstufe gewählt haben, klicken Sie bitte "OK (nur Interpolation)". Dies wird wieder alle in der
+Datei vorhandenen Messwerte sichtbar machen (falls Sie welche ausgeblendet hatten).
+
+In der Registerkarte "Tastenkombinationen" können Sie die Tastenkombinationen ändern, indem Sie auf den Knopf "Ändern" hinter der
+jeweiligen Funktion klicken und den Anweisungen folgen.
+ 
+Hinweis: Immer wenn hinter einem Knopf eine Tastenkombination in Klammern steht, können Sie diese Funktion auch durch drücken dieser
+Tastenkombination aufrufen.
+ 
+ 
+ 
+ 
+ 
+ 
+Gerät:
+ 
+ 
+ 
+ 
+ 
+Benutzte Bibliotheken:
+    Java Programm:
+        -JFreeChart
+        -jSerialComm
+    
+    Arduino:
+        -LiquidCrystal_I2C
+        -DS3232RTC
+        -TimeLib
+        -Arduino
+        -Wire
+        -SPI
+        -SD
+        -Servo
+        -Adafruit_Sensor
+        -Adafruit_BME280
+        -hx711
+java.awt.Dimension[width=800,height=480]
+java.awt.Dimension[width=785,height=419]
+14 | 2x7
+java.awt.Dimension[width=785,height=419]
+java.awt.Dimension[width=785,height=175]
+
+KeyText (extended): Strg    KeyText: Strg    KeyString (eigenbau&&extended): STRG    KeyString(eigenbau): STRG
+KeyText (extended): E    KeyText: E    KeyString (eigenbau&&extended): E    KeyString(eigenbau): E
+java.awt.Dimension[width=800,height=480]
+java.awt.Dimension[width=785,height=419]
+14 | 2x7
+java.awt.Dimension[width=785,height=244]
+java.awt.Dimension[width=785,height=175]
+
+updating config
+writing Config
