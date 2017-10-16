@@ -1,0 +1,20 @@
+package Raumklima;
+
+public class fib {
+static int[] a;
+public static void main(String[] args){
+	a=new int[100001];
+	fib(100000);
+}
+
+static int fib(int start){
+	if(start<2){
+		a[start]=1;
+	}
+	else{
+		a[start]=a[start-1]+a[start-2];
+	}
+	System.out.println(a[start]);
+	return a[start];
+}
+}

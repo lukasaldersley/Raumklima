@@ -38,6 +38,7 @@ import java.io.LineNumberReader;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.charset.Charset;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -95,7 +96,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static String projectUri="https://raw.githubusercontent.com/lukasaldersley/Raumklima/";
     public static String downloadTargetUri="https://github.com/lukasaldersley/Raumklima/raw/";
 
-    public static final String VERSION="1.9.0.0";
+    public static final String VERSION="1.9.1.0";
 
     public static boolean CLOSE_WINDOW_ALT_REQUIRED=false;
     public static boolean OPEN_HELP_WINDOW_ALT_REQUIRED=false;
@@ -150,7 +151,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static int HEIGHT_OF_DATA_BLOCK=25;
     public static int WIDTH_OF_DATA_BLOCK=370;
     public static int NUMBER_OF_KEY_COMBOS=9;
-    public static int NUMBER_OF_COPYRIGHT_NOTES=66;
+    public static int NUMBER_OF_COPYRIGHT_NOTES=2000;
     public static int NUMBER_OF_CONFIG_ENTRIES=91;
 
     private boolean allowKeyCombinationChange=false;
@@ -241,6 +242,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private JMenu openSettingsWindowMenu;
     private JMenu toggleFullscreenModeMenu;
     private JMenu saveGraphImagesMenu;
+    private JMenu toggleDataPanelMenu;
 
     private JMenuBar mainWindowMenuBar;
 
@@ -329,7 +331,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private JButton GeoModeOkButton;
     private boolean geoMode;
     private boolean replotting=false;
-	private boolean onlyInterpolationChanging=false;
+    private boolean onlyInterpolationChanging=false;
 
     public static void main(String[] args){
         for(int i=0;i<args.length;i++){
@@ -342,6 +344,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             }
         }
         new Raumklima();
+        System.out.println(Charset.defaultCharset());
     }
 
     /**
@@ -414,7 +417,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         //Initialise and fill the pleaseWaitMessagePanel
         pleaseWaitMessagePanel=new JPanel(new BorderLayout());
-        pleaseWaitMessageText=new JLabel("Bitte Warten.");
+        pleaseWaitMessageText=new JLabel("Bitte Warten...");
         pleaseWaitMessageText.setHorizontalAlignment(SwingConstants.CENTER);
         pleaseWaitMessagePanel.add(pleaseWaitMessageText,BorderLayout.CENTER);
 
@@ -447,7 +450,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         fileChooser=new JFileChooser();
         fileChooser.setDialogTitle("Bitte CSV-Datei auswählen");
         fileChooser.setMultiSelectionEnabled(false);
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Aufgezeichnete Klimadaten (.csv/.CSV)","csv","CSV","Csv"));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Aufgezeäichnete Klimadaten (.csv/.CSV)","csv","CSV","Csv"));//TODO
 
         //setup the MainWindow
         mainWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -517,7 +520,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         if(dataPanelX*dataPanelY<numberOfGraphs){
             //Something went TERRIBLY WRONG!!!!
             //HASN'T BEEN OBSERVED FOR A LONG TIME (a lot of options have been tested)
-        	//Probably will never occur again
+            //Probably will never occur again
             System.err.println("HELP: SPACIAL COLLISION OF numberOfGraphs and panelX/Y: "+numberOfGraphs+"|"+dataPanelX+"x"+dataPanelY);
         }
 
@@ -603,13 +606,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         SettingsPageTabbedPane=new JTabbedPane();
         GeneralSettings=new JPanel(); //F11, Updates prüfen, Update policy, Dateitypen 
         GraphSettings=new JPanel();  //sichtbarkeit, interplolation
-        KeyCombinationSettings=new JPanel();  //keysändern
+        KeyCombinationSettings=new JPanel();  //keys ändern
 
         GeneralSettings.setLayout(new BoxLayout(GeneralSettings, BoxLayout.Y_AXIS));
 
         FileTypePanel=new JPanel();
         FileTypePanel.setLayout(new BoxLayout(FileTypePanel, BoxLayout.Y_AXIS));
-        FileTypePanel.add(new JLabel("Optionen für das abspeichern des momentanen Bildes"));
+        FileTypePanel.add(new JLabel("Optionen für das Abspeichern des momentanen Bildes"));
         FiletypePngCheckBox=new JCheckBox("PNG");
         FiletypePngCheckBox.setSelected(savePng);
         FiletypePngCheckBox.addActionListener(this);
@@ -993,8 +996,12 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         mainWindowMenuBar.add(openHelpWindowMenu);
 
         saveGraphImagesMenu=new JMenu("Graphen speichern (Strg+"+SAVE_GRAPH_IMAGE_KEY_STRING+")");
-        saveGraphImagesMenu.addActionListener(this);
+        saveGraphImagesMenu.addMouseListener(this);
         mainWindowMenuBar.add(saveGraphImagesMenu);
+
+        toggleDataPanelMenu=new JMenu("Detailansicht (Strg+E)");
+        toggleDataPanelMenu.addMouseListener(this);
+        mainWindowMenuBar.add(toggleDataPanelMenu);
 
         mainWindowMenuBar.addKeyListener(this);
         return mainWindowMenuBar;
@@ -1256,10 +1263,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 helpWindowText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
                 helpPanel.add(helpWindowText[i]);
             }
-            br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("CopyrightNotes.txt")));
+            br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("CopyrightNotes.txt"),"UTF-8"));//https://stackoverflow.com/questions/12920039/encoding-in-exported-jar antwort von davmac 
             try{
                 copyrightNotes=new JLabel[NUMBER_OF_COPYRIGHT_NOTES+3];
-                copyrightNotes[0]=new JLabel(" ");
+                copyrightNotes[0]=new JLabel(" ");//TODO
                 helpPanel.add(copyrightNotes[0]);
                 copyrightNotes[1]=new JLabel(" ");
                 helpPanel.add(copyrightNotes[1]);
@@ -1267,7 +1274,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 helpPanel.add(copyrightNotes[2]);
                 for(int i=3;i<NUMBER_OF_COPYRIGHT_NOTES+3;i++){
                     line=br.readLine();
-                    System.out.println(line);
+                    if(debug){
+                        System.out.println(line);
+                    }
                     copyrightNotes[i]=new JLabel(line);
                     helpPanel.add(copyrightNotes[i]);
                 }
@@ -1374,9 +1383,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             openNewWindowMenuItem.setText("neues Fenster öffnen ("+helpWindowText[3].getText()+")");
             openSettingsWindowMenu.setText("Einstellungen ("+helpWindowText[4].getText()+")");
             saveGraphImagesMenu.setText("Graphen speichern ("+helpWindowText[6].getText()+")");
+            toggleDataPanelMenu.setText("Detailansicht ("+helpWindowText[7].getText()+")");
             toggleFullscreenModeMenu.setText("Vollbildmodus ("+helpWindowText[8].getText()+")");
 
-            br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("HelpTexts.txt")));
+            br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("HelpTexts.txt"),"UTF-8"));//https://stackoverflow.com/questions/12920039/encoding-in-exported-jar antwort von davmac 
             for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
                 line=br.readLine();
                 setNewKeyCombinationTexts[i]=line;
@@ -1561,14 +1571,14 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 }
                 xYSeries=new XYSeries[numberOfGraphs];
                 if(!onlyInterpolationChanging){
-                graphIsVisible=new boolean[numberOfGraphs];
+                    graphIsVisible=new boolean[numberOfGraphs];
                 }
 
                 xYSeries[0] = new XYSeries((Comparable)((Object)(dataValueDescriptors[temps])));
                 xYSeries[1] = new XYSeries((Comparable)((Object)(dataValueDescriptors[drops])));
                 if(!onlyInterpolationChanging){
-                graphIsVisible[0]=true;
-                graphIsVisible[1]=true;
+                    graphIsVisible[0]=true;
+                    graphIsVisible[1]=true;
                 }
 
                 if(interpolationFactor<1){
@@ -1621,13 +1631,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             else{
                 xYSeries=new XYSeries[numberOfGraphs];
                 if(!onlyInterpolationChanging){
-                graphIsVisible=new boolean[numberOfGraphs];
+                    graphIsVisible=new boolean[numberOfGraphs];
                 }
 
                 for (int i = 0; i < numberOfGraphs; ++i) {
                     xYSeries[i] = new XYSeries((Comparable)((Object)(dataValueDescriptors[i])));
                     if(!onlyInterpolationChanging){
-                    graphIsVisible[i]=true;
+                        graphIsVisible[i]=true;
                     }
                 }
                 if(interpolationFactor<1){
@@ -1698,7 +1708,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     @SuppressWarnings("unused")
-	private int numberOfLinesInFile(File inputFile) {
+    private int numberOfLinesInFile(File inputFile) {
         //https://stackoverflow.com/questions/453018/number-of-lines-in-a-file-in-java
         //antwort von Telmo Marques und er.vikas
         LineNumberReader lnr;
@@ -1895,9 +1905,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         }
         else if(event.getSource()==closeWindowMenuItem){
             closeWindow();
-        }
-        else if(event.getSource()==saveGraphImagesMenu){
-            saveImages();
         }
         else if(event.getSource()==helpWindowCloseButton){
             helpWindow.setVisible(false);
@@ -2129,6 +2136,12 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         if(event.getSource()==toggleFullscreenModeMenu){
             toggleFullscreen();
         }
+        else if(event.getSource()==saveGraphImagesMenu){
+            saveImages();
+        }
+        else if(event.getSource()==toggleDataPanelMenu){
+            toggleBottomPanel();
+        }
     }
 
     /**
@@ -2315,7 +2328,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     private void saveImages() {
+    	System.out.println("SAVING");
         if(saveJpeg){
+        	System.out.println("JPG");
             try {
                 ChartUtilities.saveChartAsJPEG(new File(csvFile.getName()+".jpeg"), jFreeChart, imageWidth, imageHeight);
             } catch (IOException e) {
@@ -2323,6 +2338,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             }
         }
         if(savePng){
+        	System.out.println("PNG");
             try {
                 ChartUtilities.saveChartAsPNG(new File(csvFile.getName()+".png"), jFreeChart, imageWidth, imageHeight);
             } catch (IOException e) {

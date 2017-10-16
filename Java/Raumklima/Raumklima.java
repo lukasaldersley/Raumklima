@@ -450,7 +450,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         fileChooser=new JFileChooser();
         fileChooser.setDialogTitle("Bitte CSV-Datei auswählen");
         fileChooser.setMultiSelectionEnabled(false);
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Aufgezeichnete Klimadaten (.csv/.CSV)","csv","CSV","Csv"));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Aufgezeichnete Klimadaten (.csv/.CSV)","csv","CSV","Csv"));//TODO
 
         //setup the MainWindow
         mainWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);

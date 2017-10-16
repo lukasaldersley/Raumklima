@@ -44,7 +44,7 @@ die Bildschirmauflösung Ihres Computers verwendet.
 Die nächste Einstellmöglichkeit legt fest, was beim klick auf "Vollbildmodus" geschehen soll. Falls Ihr Computer eine Integrierte
 Grafikeineheit von Intel verwendet, können Sie hier nichts verändern und die option "Vollbildmodus" ist ausgegraut. Auf Computern
 mit Intel Grafik wurde diese Funktion deaktiviert, da der Vollbildmodus zwar offiziell unterstützt wird, in der Praxis das Programm
-jedoch unbenutzbar macht. Falls Ihr Computer irgend eine andere Frfiklösung verwendet können Sie wählen ob das Fenster "nur"
+jedoch unbenutzbar macht. Falls Ihr Computer irgend eine andere Grafiklösung verwendet können Sie wählen ob das Fenster "nur"
 Maximiert werden soll, oder ob in den Vollbildmodus gewechselt werden soll.
 Die möglickeiten für den Anzeigemodus wurden eingangs schon erklärt. Falls die Vorraussetzungen für den Geographie-modus
 (Wertereihen mit dem Titel "Temperatur" oder "Niederschlagsmenge" müssen vorhanden sein) nichtgegeben sind, wird automatisch

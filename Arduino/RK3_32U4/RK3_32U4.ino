@@ -8,9 +8,9 @@
 #define SERVO_PIN 0
 #define HX711_CLK 0
 #define HX711_DAT 0
-#define CO2_PIN 0
-#define LOUDNESS_SENSOR_PIN 0
-#define BRIGHTNESS_SENSOR_PIN 0
+#define CO2_PIN A2
+#define LOUDNESS_SENSOR_PIN A3
+#define BRIGHTNESS_SENSOR_PIN A6
 
 #define SERVO_MAX 180
 #define SERVO_MIN 10
@@ -28,11 +28,12 @@ int servoValue = 0;
 #include <SPI.h>
 #include <SD.h>
 
+#define PCB_POWER_PIN 5
 #define lcdA_Addr 0x27
 #define lcdB_Addr 0x28
 #define MenuInterruptNumber 0
 #define ValueInterruptNumber 1
-#define SD_PIN 0
+#define SD_PIN 4
 unsigned long displayCounter = 0;
 int changeScreenThreshold = 10;
 boolean lcdAEnabled = true;
@@ -47,7 +48,7 @@ double LOUD;
 double CO2;
 double RAIN;
 boolean ph = true; //ob gerät im physik modus
-String dataString = "";
+String dataString = "kldj<slkvfhjlkj";
 
 #if defined (__AVR_ATmega32U4__)
 byte nextWake = 0;
@@ -75,25 +76,34 @@ LiquidCrystal_I2C lcdA(lcdA_Addr, 20, 4);
 LiquidCrystal_I2C lcdB(lcdB_Addr, 16, 2);
 #endif
 void setup() {
+  Serial.println("SETUP BEGINNING");
 #if defined (__AVR_ATmega32U4__)
   attachInterrupt(MenuInterruptNumber, iterateMenu, RISING);
 #endif
   initBoard();
+  Serial.println("SETUP DONE");
 }
 
 void loop() {
 #if defined (__AVR_ATmega32U4__)
 
   if (millis() % 1000 < 10) {
+    Serial.println("GETTING DATA");
     Serial1.println("GIMME!");
     dataString = Serial1.readString();
+    Serial.println("READ DATA");
+    Serial.println(dataString);
     if (rc) {
+      Serial.println("in RC if");
       printDataToSD(dataString);
       if (!ph) {
+        Serial.println("in geo if-- Powering down");
+      }
+        digitalWrite(PCB_POWER_PIN,LOW);
         sleepUntil(nextWake, 0);
       }
     }
-
+/*
     if (displayCounter < changeScreenThreshold) { //BME280
       displayCounter++;
       lcdA.clear();
@@ -284,11 +294,11 @@ void loop() {
       }
     }
   }
-
+*/
 #elif defined (__AVR_ATmega328P__)
   if (Serial.available()) {
     String msg = Serial.readString();
-    if (msg.startsWith("MODE")) {
+    /*if (msg.startsWith("MODE")) {
       if (msg.endsWith("PHYSIK")) {
         ph = true;
       }
@@ -296,7 +306,7 @@ void loop() {
         ph = false;
       }
     }
-    else if (msg.startsWith("GIMME!")) {
+    else */if (msg.startsWith("GIMME!")) {
       getData();
       Serial.println(dataString);
     }
@@ -306,6 +316,7 @@ void loop() {
 
 void initBoard() {
 #if defined (__AVR_ATmega32U4__)
+digitalWrite(PCB_POWER_PIN,HIGH);
   Serial.begin(baud);
   Serial1.begin(interPcbBaud);
   attachInterrupt(ValueInterruptNumber, increaseValue, RISING);
@@ -313,7 +324,9 @@ void initBoard() {
   lcdB.init();
   SD.begin(SD_PIN);
 #elif defined (__AVR_ATmega328P__)
-
+Serial.begin(interPcbBaud);
+Serial.println("FUCK OFF");
+  BME280.begin();
 #endif
 }
 
