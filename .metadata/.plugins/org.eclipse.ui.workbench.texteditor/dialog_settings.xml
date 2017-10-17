@@ -2,20 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="" key="selection"/>
+		<item value="Copy" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="copy"/>
+			<item value="helpTe"/>
+			<item value="KeyCombos"/>
+			<item value="InTex"/>
+			<item value="In"/>
+			<item value="readIn"/>
+			<item value="redIn"/>
 			<item value="JTextA"/>
-			<item value="toggleBottomPanel()"/>
-			<item value="saveGraphImagesMenu"/>
-			<item value="&quot;UTF-8&quot;"/>
-			<item value="&quot;&quot;"/>
-			<item value="�"/>
-			<item value="file"/>
-			<item value="fileIn"/>
 		</list>
 		<list key="replacehistory">
 			<item value=".equals(&quot;&quot;)"/>
