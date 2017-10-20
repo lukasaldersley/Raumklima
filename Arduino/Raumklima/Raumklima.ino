@@ -1,6 +1,7 @@
-#include <LiquidCrystal.h>
+//#include <LiquidCrystal.h>
 #include "DS3232RTC.h"
 #include <TimeLib.h>
+#include <Time.h> 
 #include <LiquidCrystal_I2C.h>
 #include <Wire.h>
 #include <SPI.h>
@@ -9,69 +10,45 @@
 #include <Adafruit_BME280.h>
 #include <Servo.h>
 #include <LowPower.h>
-#include "hx711.h"
+#include <hx711.h>
+
+#define SERVO_PIN 9
+#define HX711_CLK A0
+#define HX711_DAT A1
+#define SERVO_MAX 180
+#define SERVO_MIN 10
+
+#define MenuInterruptNumber 0
+#define ValueInterruptNumber 1
+#define SD_PIN 8
+#define BRIGHTNESS_SENSOR_A_PIN A2
+#define LOUDNESS_SENSOR_PIN A3
+#define CO2_PIN A1
+#define POWER_ON true
+#define POWER_OFF false
+#define VERSION "1.0.0.0"
 
 
 
-//INFORMATION----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/**
-  Files/Examples/Websites referenced in this sketch
-
-  Websites:
-  -https://www.sunfounder.com/learn/Super-Kit-V2-0-for-Arduino/lesson-8-lcd1602-super-kit.html              File:LCD1602SunFounder.htm
-  Files/Examples:
-  -SD\ReadWrite
-*/
-
-//PINS-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-/*INTERRUPTS:
-  -pin 2: Interrupt0//MENU
-  -pin 3: Interrupt1//increaseValue
-  -pin 18: interrupt5
-  -pin 19: interrupt4
-
-  UNBENUTZBAR WEGEN Iï¿½C
-  -pin 20 (=SDA): Interrupt5
-  -pin 21 (=SCL): Interrupt6
-*/
-
-const int SD_PIN = 8;
-const int BRIGHTNESS_PIN = A2;
-const int LOUDNESS_PIN = A3;
-const int MQ_2_PIN = A0;
-const int MQ_135_PIN = A1;
-
-const int DIRECT_LCD_RS_PIN = 49;
-const int DIRECT_LCD_E_PIN = 47;
-const int DIRECT_LCD_CONTRAST_PIN = 45;
-const int DIRECT_LCD_BACKLIGHT_PIN = 44;
-const int DIRECT_LCD_D4_PIN = 41;
-const int DIRECT_LCD_D5_PIN = 39;
-const int DIRECT_LCD_D6_PIN = 37;
-const int DIRECT_LCD_D7_PIN = 35;
+bool pwr = true; //hier wird gespeichert ob sich der controller im schlafmodus befinden sollte
+time_t t;
 
 
-const bool POWER_ON = true;
-const bool POWER_OFF = false;
 
-byte Port_A;
-byte Port_B;
-byte Port_C;
-byte Port_D;
-byte Port_E;
-byte Port_F;
-byte Port_G;
-byte Port_H;
-byte Port_J;
-byte Port_K;
-byte Port_L;
+Hx711 scale(HX711_DAT, HX711_CLK);
+File file;
+Adafruit_BME280 BME280;
+LiquidCrystal_I2C directLcd(0x26, 20, 4);
+LiquidCrystal_I2C indirectLcd(0x27, 16, 2);
+Servo servo;
 
-int nextWakeTime;
-int minutesPriorToWakeTime = 15;
-int wakeTimeDistance = 6;
+String titles = "Temperatur (in C);Luftfeuchtigkeit (in %);Luftdruck (in hPa);Helligkeit (0%-100%);CO2-Level (ppm);Lautstärke (#EH)";
 
-//GENERAL SYSTEM VARS--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+int nextWake;
+int minutesPriorToWakeTime = 5;
+int wakeRate = 6;
+
+//GENERAL SYSTEM VARS--
 boolean directLcdEnabled = true;
 boolean indirectLcdEnabled = false;
 boolean needsUpdate = false;
@@ -85,11 +62,9 @@ int changeScreenThreshold = 10;
 int displayCounter = 0;
 int menuPage = 0;
 int directLcdContrast = 75;
-int directLcdBrightness = 255;
-
+int directindirectLcdrightness = 255;
 
 long baudrate = 115200;
-
 String sendoff = "";
 String fileName = "";
 String recievedCommand = "";
@@ -100,10 +75,6 @@ unsigned long lastData;
 unsigned long counter = 0;
 boolean servoIsTipped = false;
 int servoValue = 0;
-int SERVO_MAX=180;
-int SERVO_MIN=10;
-const int SERVO_PIN=9;
-
 
 byte AE[8] = {
   0b01010,
@@ -138,44 +109,41 @@ byte UE[8] = {
   0b00000
 };
 
-
-//DEVICES--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-File file;
-Adafruit_BME280 BME280;
-LiquidCrystal directLcd(DIRECT_LCD_RS_PIN, DIRECT_LCD_E_PIN, DIRECT_LCD_D4_PIN, DIRECT_LCD_D5_PIN, DIRECT_LCD_D6_PIN, DIRECT_LCD_D7_PIN);
-LiquidCrystal_I2C indirectLcd(0x27, 16, 2);
-Servo servo;
-
-
-//DATA VARS------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-double TOTAL_Temperature = 0.0;
-double BME280_Airpressure = 0.0;
-double BME280_Temperature = 0.0;
-double BME280_Humidity = 0.0;
+//DATA VARS
+double Airpressure = 0.0;
+double Temperature = 0.0;
+double Humidity = 0.0;
 double RTC_Temperature = 0.0;
-double Loudness = 0.0;
-double Brightness = 0.0;
-double MQ_2_Value = 0.0;
-double MQ_135_Value = 0.0;
+double LOUD = 0.0;
+double LDR = 0.0;
+double CO2 = 0.0;
+double RAIN = 0.0;
 
-//METHODS--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//METHODS--
+//
 
-//INITIALISATION-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//INITIALISATION-
 void setup() {
-  servo.attach(SERVO_PIN);
   Serial.begin(115200);
+  delay(10);
+  Serial.println("HELLO WORLD; I AM INITIALIZING");
+  attachInterrupt(MenuInterruptNumber, iterateMenu, RISING);
+  servo.attach(SERVO_PIN);
+  initBoard();
+}
+
+void initBoard() {
   Serial.println("INITING");
 
-  analogWrite(DIRECT_LCD_CONTRAST_PIN, directLcdContrast);
-  analogWrite(DIRECT_LCD_BACKLIGHT_PIN, directLcdBrightness);
+  //analogWrite(DIRECT_LCD_CONTRAST_PIN, directLcdContrast);
+  //analogWrite(DIRECT_LCD_BACKLIGHT_PIN, directindirectLcdrightness);
 
   indirectLcd.init();
   indirectLcd.noBacklight();
 
-  directLcd.begin(20, 4);
+  directLcd.init();//.begin(20, 4);
   directLcd.clear();
+  directLcd.backlight();
   directLcd.print("Initialisieren...");
 
   createChars();
@@ -205,13 +173,12 @@ void setup() {
     directLcd.setCursor(0, 3);
     directLcd.print(fileName);*/
 
-  Serial.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;RTC_Temperature;TOTAL_Temperature;Brightness;Loudness;MQ2;MQ135");
+  Serial.println(titles);
 
   delay(500);
   directLcd.clear();
   directLcd.print("SD-Schreibzugriff:");
   directLcd.setCursor(0, 1);
-
 
   directLcd.setCursor(0, 2);
   directLcd.print("BME280: ");
@@ -227,74 +194,27 @@ void setup() {
   //delay(2000);
 }
 
-//GET SENSOR DATA-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void getSensorData() {
-  getBMEValues();
-  getRTCValues();
-  getLoudnessValues();
-  getBrightnessValues();
-  getTemperatureValues();
-  getGasValues();
-}
+//OUTPUT DATA--
+void getData() {
+  Temperature = BME280.readTemperature();
+  Airpressure = BME280.readPressure() / 100; // /1000 um von Pa auf hPa umzurechnen
+  Humidity = BME280.readHumidity();
 
-void getGasValues() {
-  MQ_2_Value = analogRead(MQ_2_PIN) / 10;
-  MQ_135_Value = analogRead(MQ_135_PIN) / 10;
-}
-
-void getRTCValues() {
-  RTC_Temperature = RTC.temperature() / 4.0;
-}
-
-void getBMEValues() {
-  BME280_Temperature = BME280.readTemperature();
-  BME280_Airpressure = BME280.readPressure() / 1000.00;
-  BME280_Humidity = BME280.readHumidity();
-}
-
-void getTemperatureValues() {
-  TOTAL_Temperature = (BME280_Temperature + RTC_Temperature) / 2.0;
-}
-
-void getBrightnessValues() {
-  Brightness = analogRead(BRIGHTNESS_PIN);
-  Brightness = map(Brightness, 0, 1023, 100, 0);
-}
-
-void getLoudnessValues() {
-  Loudness = analogRead(LOUDNESS_PIN);
-}
-
-//PREPARE DATA----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void constructSendoffString() {
-  sendoff = "";
-  sendoff += BME280_Temperature;
-  sendoff += ";";
-  sendoff += BME280_Humidity;
-  sendoff += ";";
-  sendoff += BME280_Airpressure;
-  sendoff += ";";
-  sendoff += RTC_Temperature;
-  sendoff += ";";
-  sendoff += TOTAL_Temperature;
-  sendoff += ";";
-  sendoff += Brightness;
-  sendoff += ";";
-  sendoff += Loudness;
-  sendoff += ";";
-  sendoff += MQ_2_Value;
-  sendoff += ";";
-  sendoff += MQ_135_Value;
-  sendoff += ";";
-  sendoff += (double)((millis() - lastData) / 10.0);
-  lastData = millis();
-  sendoff.replace('.', ',');
-}
-
-//OUTPUT DATA-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void getDATA() {
-  getSensorData();
-  constructSendoffString();
+  LDR = analogRead(BRIGHTNESS_SENSOR_A_PIN);
+  LDR = map(LDR, 0, 1023, 100, 0);
+  LOUD = analogRead(LOUDNESS_SENSOR_PIN);
+  LOUD = map(LOUD, 0, 1023, 100, 0);
+  CO2 = analogRead(CO2_PIN);
+  CO2 = map(CO2, 0, 1023, 100, 0);
+  sendoff = String(Temperature) + ";" + Humidity + ";" + Airpressure + ";" + LDR + ";" + CO2 + ";" + LOUD;
+  if (!physik) {
+    RAIN = scale.getGram();
+    flipServo();
+    RAIN = scale.getGram() - RAIN;
+    flipServo();
+    sendoff += ";";
+    sendoff += RAIN;
+  }
 }
 
 void printDataToSD() {
@@ -325,55 +245,50 @@ void printDataToUART0() { //Main Serial Port
   Serial.println(sendoff);
 }
 
-void printDataToUART2() { //BT-Module
-  int x = ((int)(sendoff.length()));
-  //Serial.println(x);
-  for (int i = x; i < 140; i++) { //sollten 140 zeichen sein
-    sendoff += "X";
-  }
-  x = ((int)(sendoff.length()));
-  //Serial.println(x);
-  Serial2.print(sendoff);
-}
-
-//CRUCIAL SYSTEM METHODS------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//CRUCIAL SYSTEM METHODS
 void(*resetSystem)(void) = 0; //RESETS THE SYSTEM
 
 void loop() {
 
   if (Serial.available()) {
     recievedCommand = Serial.readString();
-    Serial.println("RECIEVED: " + recievedCommand);
-  }
-  if (!recievedCommand.equals("")) {
-    if (recievedCommand.equals("READY")) {
-      if (!SDFail) {
-        sending = true;
-        Serial.println("OK");
-        Serial.println(counter);
-        file.close();
-        file = SD.open(fileName);
-        if (file) {
-          for (unsigned long i = 0; i < counter; i++) {
-            Serial.println(file.readString());
-          }
-        }
-        else {
-          file.close();
-          file = SD.open(fileName);
-          if (file) {
-            for (unsigned long i = 0; i < counter; i++) {
-              Serial.println(file.readString());
-            }
-          }
-        }
-        sending = false;
+    //Serial.println("RECIEVED: " + recievedCommand);
+    if (!recievedCommand.equals("")) {
+      if (recievedCommand.startsWith("VERSION")) {
+        Serial.println(VERSION);
       }
-      else {
-        Serial.print("FAILED");
-        //TODO in DESKTOP
+      else if (recievedCommand.equals("GETTIME")) {
+        time_t tGET=RTC.get();
+        Serial.println("TIME: "+String(day(tGET))+"."+month(tGET)+"."+year(tGET)+" "+hour(tGET)+":"+minute(tGET)+":"+second(tGET));
+      }
+      else if (recievedCommand.startsWith("SETTIME")) {//bsp: "SETTIME_20.10.2017_21.55.18"
+        //recievedCommand = recievedCommand.substring(0, 7);
+        time_t tSET;
+        tmElements_t tm;
+        Serial.println(recievedCommand.substring(8, 10).toInt());
+        tm.Day=recievedCommand.substring(8, 10).toInt();
+        Serial.println(recievedCommand.substring(11, 13).toInt());
+        tm.Month=recievedCommand.substring(11, 13).toInt();
+        Serial.println(CalendarYrToTm(recievedCommand.substring(14, 18).toInt()));
+        tm.Year=CalendarYrToTm(recievedCommand.substring(14, 18).toInt());
+        Serial.println(recievedCommand.substring(19,21).toInt());
+        tm.Hour=recievedCommand.substring(19,21).toInt();
+        Serial.println(recievedCommand.substring(22,24).toInt());
+        tm.Hour=recievedCommand.substring(22,24).toInt();
+        Serial.println(recievedCommand.substring(25,27).toInt());
+        tm.Hour=recievedCommand.substring(25,27).toInt();
+        tm.Day=24;
+        tm.Month=10;
+        tm.Year=29;
+        tm.Hour=22;
+        tm.Minute=30;
+        tm.Second=30;
+        tSET=makeTime(tm);        
+        Serial.println("TIME (SET): "+String(day(tSET))+"."+month(tSET)+"."+year(tSET)+" "+hour(tSET)+":"+minute(tSET)+":"+second(tSET));
+        //RTC.set(t);
       }
     }
+    delay(1000);
   }
 
   if (!sending) {
@@ -402,7 +317,7 @@ void loop() {
           }
         }
         else {
-          indirectLcd.print("NICHT VERFÃœGBAR");
+          indirectLcd.print("NICHT VERFUEGBAR");
         }
       }
       else if (menuPage == 2) {
@@ -447,8 +362,12 @@ void loop() {
           fileName = getTimeName();
           file = SD.open(fileName, FILE_WRITE);
           if (file) {
-            //file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness;MQ2;MQ135;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity");
-            file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;RTC_Temperature;TOTAL_Temperature;Brightness;Loudness;MQ2;MQ135;");
+            if (physik) {
+              file.println(titles);
+            }
+            else {
+              file.println(titles + ";Niederschlagsmenge (in mm)");
+            }
             file.close();
             //directLcd.print("OK");
           }
@@ -456,14 +375,18 @@ void loop() {
             file = SD.open(fileName, FILE_WRITE);
             if (file) {
               Serial.println("SD FAILED ONCE While writing the titles");
-              //file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness;MQ2;MQ135;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity");
-              file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;RTC_Temperature;TOTAL_Temperature;Brightness;Loudness;MQ2;MQ135;");
+              if (physik) {
+                file.println(titles);
+              }
+              else {
+                file.println(titles + ";Niederschlagsmenge (in mm)");
+              }
               file.close();
               //directLcd.print("OK");
             }
             else {
               Serial.println("SD FAILED twice While writing the titles");
-              indirectLcd.print("NICHT mÃ¶glich!");
+              indirectLcd.print("NICHT moeglich!");
             }
           }
 
@@ -499,83 +422,77 @@ void loop() {
           indirectLcd.print("AUS");
         }
         if (directLcdEnabled) {
-          analogWrite(DIRECT_LCD_BACKLIGHT_PIN, directLcdBrightness);
-          analogWrite(DIRECT_LCD_CONTRAST_PIN, directLcdContrast);
+          directLcd.backlight();
         }
         else {
-          analogWrite(DIRECT_LCD_BACKLIGHT_PIN, 0);
-          analogWrite(DIRECT_LCD_CONTRAST_PIN, 255);
+          directLcd.noBacklight();
         }
       }
     }
 
     if (millis() % 1000 == 0) {
-      Serial.println("HALLOUHGOZTUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIISD");
-      getDATA();
+      //Serial.println("GETTING DATA");
+      getData();
       if (physik) {
         if (recording) {
           printDataToSD();
         }
         printDataToUART0();
-        printDataToUART2();
       }
       else {
         //if(geoReady()){
         //geoMessen();
-        Serial.println("powerDown" + getTimeName());
+        Serial.println("powerDown: " + getTimeName());
         delay(2000);
-        sleepUntil(nextWakeTime, 0);
-        Serial.println(getTimeName());
+        sleepUntil(nextWake, 0);
+        Serial.println("woken: " + getTimeName());
         // }
       }
 
       if (displayCounter < changeScreenThreshold) { //BME280
         displayCounter++;
         directLcd.clear();
-        directLcd.print("BME280-Werte");
+        directLcd.print("MESSWERTE (I)");
         directLcd.setCursor(0, 1);
         directLcd.print("Temp: ");
-        directLcd.print(BME280_Temperature);
+        directLcd.print(Temperature);
         directLcd.setCursor(0, 2);
         directLcd.print("Luftdruck: ");
-        directLcd.print(BME280_Airpressure);
+        directLcd.print(Airpressure);
         directLcd.setCursor(0, 3);
         directLcd.print("Hum: ");
-        directLcd.print(BME280_Humidity);
+        directLcd.print(Humidity);
       }
       else if (displayCounter < changeScreenThreshold * 2) { //RTC,LOUDNESS,BRIGHTNESS
         displayCounter++;
         directLcd.clear();
-        directLcd.print("SONSTIGES");
+        directLcd.print("MESSWERTE (II)");
         directLcd.setCursor(0, 1);
-        directLcd.print("RTC-Temp: ");
-        directLcd.print(RTC_Temperature);
+        directLcd.print("CO2: ");
+        directLcd.print(CO2);
+        directLcd.print(" %");
         directLcd.setCursor(0, 2);
         directLcd.print("Helligkeit: ");
-        directLcd.print(Brightness);
+        directLcd.print(LDR);
+        directLcd.print(" %");
         directLcd.setCursor(0, 3);
         directLcd.print("Lautstaerke: ");
-        directLcd.print(Loudness);
+        directLcd.print(LOUD);
       }
-      else if (displayCounter < changeScreenThreshold * 3) { //sondtiges
+      else if (displayCounter < changeScreenThreshold * 3) { //sonstiges
         displayCounter++;
         directLcd.clear();
-        directLcd.print("SONSTIGES (II)");
+        directLcd.print("SONSTIGES");
         directLcd.setCursor(0, 1);
         directLcd.print("DATEI: ");
         directLcd.print(fileName);
         directLcd.setCursor(0, 2);
         directLcd.print("AUFZEICHNUNG ");
-        if (!SDFail) {
-          if (recording) {
-            directLcd.print("LAEUFT");
-          }
-          else {
-            directLcd.print("GESTOPPT");
-          }
+        if (recording) {
+          directLcd.print("LAEUFT");
         }
         else {
-          directLcd.print("N/A");
+          directLcd.print("GESTOPPT");
         }
         directLcd.setCursor(0, 3);
         directLcd.print("MODUS: ");
@@ -586,46 +503,13 @@ void loop() {
           directLcd.print("GEOGRAPHIE");
         }
       }
-      else if (displayCounter < changeScreenThreshold * 4) { //temperaturen
-        displayCounter++;
-        directLcd.clear();
-        directLcd.print("TEMPERATUREN");
-        directLcd.setCursor(0, 1);
-        directLcd.print("BME: ");
-        directLcd.print(BME280_Temperature);
-        directLcd.setCursor(0, 2);
-        directLcd.print("RTC: ");
-        directLcd.print(RTC_Temperature);
-        directLcd.setCursor(0, 3);
-        directLcd.print("DURCHSCHNITT: ");
-        directLcd.print(TOTAL_Temperature);
-      }
-      else if (displayCounter < changeScreenThreshold * 5) { //luftfeuchtigkeiten
-        displayCounter++;
-        directLcd.clear();
-        directLcd.print("LUFTFEUCHTIGKEITEN");
-        directLcd.setCursor(0, 1);
-        directLcd.print("BME280 ");
-        directLcd.print(BME280_Humidity);
-      }
-      else if (displayCounter < changeScreenThreshold * 6) { //luftdrï¿½cke
-        displayCounter++;
-        directLcd.clear();
-        directLcd.print("LUFTDRUECKE");
-        directLcd.setCursor(0, 1);
-        directLcd.print("BME280: ");
-        directLcd.print(BME280_Airpressure);
-      }
       else if (displayCounter < changeScreenThreshold * 7) { //gaswerte
         displayCounter++;
         directLcd.clear();
         directLcd.print("GAS-SENSOREN");
         directLcd.setCursor(0, 1);
-        directLcd.print("MQ_2: ");
-        directLcd.print(MQ_2_Value);
-        directLcd.setCursor(0, 2);
-        directLcd.print("MQ_135: ");
-        directLcd.print(MQ_135_Value);
+        directLcd.print("ROHWERT: ");
+        directLcd.print(CO2);
       }
       else {
         displayCounter = 0;
@@ -715,51 +599,54 @@ void createChars() {
 }
 
 void sleepUntil(int HT, int MT) {
-  nextWakeTime += wakeTimeDistance;
-  if (nextWakeTime > 23) {
-    nextWakeTime -= 24;
+  pwr = false;
+  detachInterrupt(ValueInterruptNumber);
+  nextWake += wakeRate;
+  if (nextWake > 23) {
+    nextWake -= 24;
   }
-  time_t t = RTC.get();
-  int HC = hour(t);
-  int MC = minute(t);
+  t = RTC.get();
+  byte HC = hour(t);
+  byte MC = minute(t);
   if (HT < HC) {
     HT += 24;
   }
-  int HTS = HT - HC;
+  byte HTS = HT - HC;
   if (MT < MC) {
     HTS--;
     MT += 60;
   }
   int MTS = MT - MC;
   MTS += HTS * 60;
-  sleep(MTS);
-}
-
-void sleep(int minutes) {
- //PCB_POWER(POWER_OFF);
-  long eightSecondsSleepIterations = (minutes - minutesPriorToWakeTime) * 7.5;//sollte auf die zu schlafende zeit -minutesPriorToWakeTime minuten kommen
-  for (; eightSecondsSleepIterations > 0; eightSecondsSleepIterations--) {
-    LowPower.powerDown(SLEEP_8S,ADC_OFF,BOD_OFF);
+  MTS *= 7.5;
+  for (; MTS > 0; MTS--) {
+    sleep8S();
   }
-  //PCB_POWER(POWER_ON);
+  pwr = true;
+  initBoard();
 }
 
-void powerDown() {
+void sleep8S() {
+  LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
+  //http://www.rocketscream.com/blog/2011/07/04/lightweight-low-power-arduino-library/
 }
+
+void poweroff() {}
+
+void poweron() {}
 
 void flipServo() {
   servoIsTipped != servoIsTipped;
   if (servoIsTipped) {
-    for (servoValue = SERVO_MIN; servoValue <= SERVO_MAX; servoValue++) {
+    for (; servoValue < SERVO_MAX; servoValue++) {
       servo.write(servoValue);
       delay(10);
     }
   }
   else {
-    for (servoValue = SERVO_MAX; servoValue >= SERVO_MIN; servoValue--) {
+    for (; servoValue > SERVO_MIN; servoValue--) {
       servo.write(servoValue);
       delay(10);
     }
   }
 }
-
