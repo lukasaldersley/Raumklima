@@ -1702,7 +1702,12 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 }
 
                 for (int i = 0; i < numberOfGraphs; ++i) {
-                    xYSeries[i] = new XYSeries((Comparable)((Object)(dataValueDescriptors[i].substring(0, dataValueDescriptors[i].indexOf('(')))));
+                	try{
+                    xYSeries[i] = new XYSeries(dataValueDescriptors[i].substring(0, dataValueDescriptors[i].indexOf('(')));
+                	}
+                	catch(StringIndexOutOfBoundsException e){
+                		xYSeries[i]=new XYSeries(dataValueDescriptors[i]);
+                	}
                     if(!onlyInterpolationChanging){
                         graphIsVisible[i]=true;
                     }
@@ -1801,18 +1806,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     @Override
-    public void chartMouseClicked(ChartMouseEvent chartMouseEvent) {
-        Rectangle2D rectangle2D = chartPanel.getScreenDataArea();
-        JFreeChart jFreeChart = chartMouseEvent.getChart();
-        XYPlot xYPlot = (XYPlot)jFreeChart.getPlot();
-        ValueAxis valueAxis = xYPlot.getDomainAxis();
-        double d = valueAxis.java2DToValue((double)chartMouseEvent.getTrigger().getX(), rectangle2D, RectangleEdge.BOTTOM);
-        this.xCrosshair.setValue(d);
+    public void chartMouseClicked(ChartMouseEvent e) {
+        int x=e.getTrigger().getX();
+        xCrosshair.setValue(x);
         int correctedIndex=0;
         for (int i = 0; i < numberOfGraphs; ++i) {
             if(graphIsVisible[i]){
-                double d2 = DatasetUtilities.findYValue((XYDataset)xYPlot.getDataset(), (int)correctedIndex, (double)d);
-                dataBoxes[i].setText(String.valueOf(new DecimalFormat("###.#").format(d2)));//https://stackoverflow.com/questions/13210491/math-round-java antwort von arshajii
+                dataBoxes[i].setText(String.valueOf(new DecimalFormat("###.#").format(xYSeries[correctedIndex].getY(x).doubleValue())));//https://stackoverflow.com/questions/13210491/math-round-java antwort von arshajii
                 correctedIndex++;
             }
             else{
@@ -1822,18 +1822,15 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     @Override
-    public void chartMouseMoved(ChartMouseEvent chartMouseEvent) {
-        Rectangle2D rectangle2D = chartPanel.getScreenDataArea();
-        JFreeChart jFreeChart = chartMouseEvent.getChart();
-        XYPlot xYPlot = (XYPlot)jFreeChart.getPlot();
-        ValueAxis valueAxis = xYPlot.getDomainAxis();
-        double d = valueAxis.java2DToValue((double)chartMouseEvent.getTrigger().getX(), rectangle2D, RectangleEdge.BOTTOM);
-        this.xCrosshair.setValue(d);
+    public void chartMouseMoved(ChartMouseEvent e){
+        int x=e.getTrigger().getX();
+        System.out.println(chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().getWidth());
+        System.out.println(x);
+        xCrosshair.setValue(x);
         int correctedIndex=0;
         for (int i = 0; i < numberOfGraphs; ++i) {
             if(graphIsVisible[i]){
-                double d2 = DatasetUtilities.findYValue((XYDataset)xYPlot.getDataset(), (int)correctedIndex, (double)d);
-                yCrosshairs[i].setValue(d2);
+                yCrosshairs[i].setValue(xYSeries[correctedIndex].getY(x).doubleValue());
                 correctedIndex++;
             }
         }
