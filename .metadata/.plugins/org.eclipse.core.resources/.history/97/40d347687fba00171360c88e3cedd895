@@ -1816,9 +1816,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         int x=e.getTrigger().getX();
         int maxRAW=chartPanel.getWidth();
         double minCAL=chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().getX();
-        double maxCAL=chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().getWidth();
-        x=reMap(0,maxRAW,minCAL,maxCAL,x);
-        x=reMap(0,maxCAL,0,counter,x);
+        //double maxCAL=chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().getWidth();
+        x=reMap(0,maxRAW,minCAL,xYSeries[0].getItemCount(),x);
         xCrosshair.setValue(x);
         int correctedIndex=0;
         for (int i = 0; i < numberOfGraphs; ++i) {
@@ -1851,9 +1850,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     	int x=e.getTrigger().getX();
         int maxRAW=chartPanel.getWidth();
         double minCAL=chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().getX();
-        double maxCAL=chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().getWidth();
-        x=reMap(0,maxRAW,minCAL,maxCAL,x);
-        x=reMap(minCAL,maxCAL,0,counter,x);
+        //double maxCAL=chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().getWidth();
+        x=reMap(0,maxRAW,minCAL,xYSeries[0].getItemCount(),x);
         xCrosshair.setValue(x);
         int correctedIndex=0;
         for (int i = 0; i < numberOfGraphs; ++i) {

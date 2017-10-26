@@ -1814,11 +1814,17 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     @Override
     public void chartMouseClicked(ChartMouseEvent e) {
         int x=e.getTrigger().getX();
-        int maxRAW=chartPanel.getWidth();
-        double minCAL=chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().getX();
-        double maxCAL=chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().getWidth();
-        x=reMap(0,maxRAW,minCAL,maxCAL,x);
-        x=reMap(0,maxCAL,0,counter,x);
+        System.out.println("<D>");
+       /* System.out.println(chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().getWidth());
+       // System.out.println(chartPanel.getChartRenderingInfo().getPlotInfo().getPlotArea().);
+        System.out.println(mainWindow.getX());
+        System.out.println(chartPanel.getWidth());
+        System.out.println(chartPanel.getInsets().left);*/
+        System.out.println(chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().getWidth());
+        System.out.println(chartPanel.getWidth());
+        System.out.println(chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().getX());
+        System.out.println(chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().getWidth()/chartPanel.getWidth());
+        System.out.println("</D>");
         xCrosshair.setValue(x);
         int correctedIndex=0;
         for (int i = 0; i < numberOfGraphs; ++i) {
@@ -1831,29 +1837,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             }
         }
     }
-    
-    public int reMap(double minPre,double maxPre,double minPost,double maxPost,double val){
-        double Fact=val/(maxPre-minPre);
-        System.out.println(Fact);
-        double zws=Fact*(maxPost-minPost);
-        zws+=minPost;
-        if(zws>maxPost){
-        	zws=maxPost;
-        }
-        if(zws<minPost){
-        	zws=minPost;
-        }
-        return (int)zws;
-    }
 
     @Override
     public void chartMouseMoved(ChartMouseEvent e){
-    	int x=e.getTrigger().getX();
-        int maxRAW=chartPanel.getWidth();
-        double minCAL=chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().getX();
-        double maxCAL=chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().getWidth();
-        x=reMap(0,maxRAW,minCAL,maxCAL,x);
-        x=reMap(minCAL,maxCAL,0,counter,x);
+        int x=0;//int x=e.getTrigger().getX();
         xCrosshair.setValue(x);
         int correctedIndex=0;
         for (int i = 0; i < numberOfGraphs; ++i) {

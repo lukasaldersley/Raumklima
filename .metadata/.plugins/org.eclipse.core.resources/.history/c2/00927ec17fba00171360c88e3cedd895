@@ -1853,7 +1853,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         double minCAL=chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().getX();
         double maxCAL=chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().getWidth();
         x=reMap(0,maxRAW,minCAL,maxCAL,x);
-        x=reMap(minCAL,maxCAL,0,counter,x);
+        x=reMap(0,maxCAL,0,counter,x);
         xCrosshair.setValue(x);
         int correctedIndex=0;
         for (int i = 0; i < numberOfGraphs; ++i) {
