@@ -147,7 +147,7 @@ void initBoard() {
   //analogWrite(DIRECT_LCD_BACKLIGHT_PIN, directindirectLcdrightness);
 
   indirectLcd.init();
-  indirectLcd.noBacklight();
+  //TODOindirectLcd.noBacklight();
 
   directLcd.init();//.begin(20, 4);
   directLcd.clear();
@@ -265,7 +265,7 @@ void loop() {
 
   if (Serial.available()) {//Falls befehle von der Software an das gerät gesendet weren (Einstellungen, Versionsabfragen, Zeitdefinitionen etc. wird das hier verarbeitet
     recievedCommand = Serial.readString();
-    //Serial.println("RECIEVED: " + recievedCommand);
+    Serial.println("RECIEVED: " + recievedCommand);
     if (!recievedCommand.equals("")) {
       if (recievedCommand.startsWith("VERSION")) {
         Serial.println(VERSION);
@@ -274,7 +274,7 @@ void loop() {
         time_t tGET=RTC.get();
         Serial.println("TIME: "+String(day(tGET))+"."+month(tGET)+"."+year(tGET)+" "+hour(tGET)+":"+minute(tGET)+":"+second(tGET));
       }
-      else if (recievedCommand.startsWith("SETTIME")) {//bsp: "SETTIME_20.10.2017_21.55.18"
+      else if (recievedCommand.startsWith("SETTIME")) {//bsp: "SETTIME_29.10.2017_22.34.00"
         //recievedCommand = recievedCommand.substring(0, 7);
         time_t tSET;
         tmElements_t tm;
@@ -290,9 +290,11 @@ void loop() {
         tm.Minute=recievedCommand.substring(22,24).toInt();
         Serial.println(recievedCommand.substring(25,27).toInt());
         tm.Second=recievedCommand.substring(25,27).toInt();
-        tSET=makeTime(tm);        
+        tSET=makeTime(tm);
         Serial.println("TIME (SET): "+String(day(tSET))+"."+month(tSET)+"."+year(tSET)+" "+hour(tSET)+":"+minute(tSET)+":"+second(tSET));
-        //TODO enable RTC.set(t);
+        Serial.println(RTC.set(t));
+        tSET=RTC.get();
+        Serial.println("TIME (GET): "+String(day(tSET))+"."+month(tSET)+"."+year(tSET)+" "+hour(tSET)+":"+minute(tSET)+":"+second(tSET));
       }
     }
     delay(1000);
