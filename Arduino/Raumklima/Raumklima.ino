@@ -27,6 +27,7 @@
 #define POWER_ON true
 #define POWER_OFF false
 #define VERSION "1.0.0.0"
+#define PWR_PIN 5
 
 
 
@@ -42,7 +43,7 @@ LiquidCrystal_I2C directLcd(0x26, 20, 4);
 LiquidCrystal_I2C indirectLcd(0x27, 16, 2);
 Servo servo;
 
-String titles = "Temperatur (in C);Luftfeuchtigkeit (in %);Luftdruck (in hPa);Helligkeit (0%-100%);CO2-Level (ppm);Lautstärke (#EH)";
+String titles = "Temperatur (in C);Luftfeuchtigkeit (in %);Luftdruck (in hPa);Helligkeit (0%-100%);CO2-Level (ppm);Lautstärke (#Einheit)";
 
 int nextWake;
 int minutesPriorToWakeTime = 5;
