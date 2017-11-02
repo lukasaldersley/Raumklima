@@ -1,4 +1,3 @@
-//#include <LiquidCrystal.h>
 #include "DS3232RTC.h"
 #include <TimeLib.h>
 #include <Time.h> 
@@ -20,10 +19,11 @@
 
 #define MenuInterruptNumber 0
 #define ValueInterruptNumber 1
-#define SD_PIN 8
+#define SD_PIN 4
 #define BRIGHTNESS_SENSOR_A_PIN A2
-#define LOUDNESS_SENSOR_PIN A3
-#define CO2_PIN A1
+#define BRIGHTNESS_SENSOR_B_PIN A3
+#define LOUDNESS_SENSOR_PIN A5
+#define CO2_PIN A4
 #define POWER_ON true
 #define POWER_OFF false
 #define VERSION "1.0.0.0"
@@ -474,7 +474,7 @@ void loop() {
         directLcd.setCursor(0, 2);
         directLcd.print("Luftdruck: ");
         directLcd.print(Airpressure);
-        directLcd.print(" hPa");
+        directLcd.print("hPa");
         directLcd.setCursor(0, 3);
         directLcd.print("Luftfeuchte: ");
         directLcd.print(Humidity);
