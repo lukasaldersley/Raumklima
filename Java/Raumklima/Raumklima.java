@@ -1573,6 +1573,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     private void avtivateFullscreen(){
         if(fullscreenOk){
+        	graphicsDevice=GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
             graphicsDevice.setFullScreenWindow(mainWindow);
         }
         else{
@@ -2465,11 +2466,11 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 alles+=zeile;
                 zeile=br.readLine();
             }
-            if(alles.contains("Intel")||alles.contains("Intel")||alles.contains("intel")){
+            /*if(alles.contains("Intel")||alles.contains("Intel")||alles.contains("intel")){
                 FullscreenExclusiveRadioButton.setEnabled(false);
                 MaximizeWindowRadioButton.setSelected(true);
                 fullscreenOk=false;
-            }
+            }*/
         }
         catch(Exception e){
             e.printStackTrace();

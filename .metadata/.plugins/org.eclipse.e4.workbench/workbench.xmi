@@ -3,7 +3,7 @@
   <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;workbench>&#xD;&#xA;&lt;mruList>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;Raumklima.java&quot; tooltip=&quot;Java/Raumklima/Raumklima.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/Java/Raumklima/Raumklima.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;FT_TX.java&quot; tooltip=&quot;Java/serialIO/IO/NETWORK/FT_TX.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/Java/serialIO/IO/NETWORK/FT_TX.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;gfs.java&quot; tooltip=&quot;Java/Raumklima/gfs.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/Java/Raumklima/gfs.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;sdf.java&quot; tooltip=&quot;Java/Raumklima/sdf.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/Java/Raumklima/sdf.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;fib.java&quot; tooltip=&quot;Java/Raumklima/fib.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/Java/Raumklima/fib.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;tst.java&quot; tooltip=&quot;Java/tst.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/Java/tst.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;Uploader.java&quot; tooltip=&quot;Java/Raumklima/Uploader.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/Java/Raumklima/Uploader.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;LCD_LAYOUT.java&quot; tooltip=&quot;Java/LCD_LAYOUT.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/Java/LCD_LAYOUT.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;HALLO.java&quot; tooltip=&quot;Java/Raumklima/HALLO.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/Java/Raumklima/HALLO.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;Downloader.java&quot; tooltip=&quot;Java/Downloader.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/Java/Downloader.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;FILES.java&quot; tooltip=&quot;Java/CSV_PLOTTER/FILES.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/Java/CSV_PLOTTER/FILES.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;STATE.java&quot; tooltip=&quot;Java/CSV_PLOTTER/STATE.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/Java/CSV_PLOTTER/STATE.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.ui.DefaultTextEditor&quot; name=&quot;FILES.ctxt&quot; tooltip=&quot;Java/CSV_PLOTTER/FILES.ctxt&quot;>&#xD;&#xA;&lt;persistable path=&quot;/Java/CSV_PLOTTER/FILES.ctxt&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;CSV_PLOTTER.java&quot; tooltip=&quot;Java/CSV_PLOTTER/CSV_PLOTTER.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/Java/CSV_PLOTTER/CSV_PLOTTER.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;/mruList>&#xD;&#xA;&lt;/workbench>"/>
   <tags>activeSchemeId:org.eclipse.ui.defaultAcceleratorConfiguration</tags>
   <tags>ModelMigrationProcessor.001</tags>
-  <children xsi:type="basic:TrimmedWindow" xmi:id="_XzuMcZQdEeeffc7lZoqOhA" elementId="IDEWindow" contributorURI="platform:/plugin/org.eclipse.platform" selectedElement="_XzuMcpQdEeeffc7lZoqOhA" label="%trimmedwindow.label.eclipseSDK" x="285" y="-11" width="1241" height="815">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_XzuMcZQdEeeffc7lZoqOhA" elementId="IDEWindow" contributorURI="platform:/plugin/org.eclipse.platform" selectedElement="_XzuMcpQdEeeffc7lZoqOhA" label="%trimmedwindow.label.eclipseSDK" x="0" y="0" width="1241" height="815">
     <persistedState key="coolBarVisible" value="true"/>
     <persistedState key="perspectiveBarVisible" value="true"/>
     <persistedState key="isRestored" value="true"/>
@@ -87,7 +87,7 @@
                 <children xsi:type="advanced:Placeholder" xmi:id="_XzuMfpQdEeeffc7lZoqOhA" elementId="org.eclipse.egit.ui.RepositoriesView" toBeRendered="false" ref="_XzuO5ZQdEeeffc7lZoqOhA"/>
               </children>
             </children>
-            <children xsi:type="basic:PartSashContainer" xmi:id="_XzuMf5QdEeeffc7lZoqOhA" containerData="7358" selectedElement="_XzuMgJQdEeeffc7lZoqOhA">
+            <children xsi:type="basic:PartSashContainer" xmi:id="_XzuMf5QdEeeffc7lZoqOhA" containerData="7358" selectedElement="_XzuMiZQdEeeffc7lZoqOhA">
               <children xsi:type="basic:PartSashContainer" xmi:id="_XzuMgJQdEeeffc7lZoqOhA" containerData="5273" selectedElement="_XzuMgZQdEeeffc7lZoqOhA" horizontal="true">
                 <children xsi:type="advanced:Placeholder" xmi:id="_XzuMgZQdEeeffc7lZoqOhA" elementId="org.eclipse.ui.editorss" containerData="7500" ref="_XzuNtpQdEeeffc7lZoqOhA">
                   <tags>Maximized</tags>
@@ -113,6 +113,8 @@
                 <tags>Git</tags>
                 <tags>Minimized</tags>
                 <tags>MinimizedByZoom</tags>
+                <tags>active</tags>
+                <tags>noFocus</tags>
                 <children xsi:type="advanced:Placeholder" xmi:id="_XzuMipQdEeeffc7lZoqOhA" elementId="org.eclipse.ui.views.ProblemView" ref="_XzuOKJQdEeeffc7lZoqOhA"/>
                 <children xsi:type="advanced:Placeholder" xmi:id="_XzuMi5QdEeeffc7lZoqOhA" elementId="org.eclipse.jdt.ui.JavadocView" ref="_XzuOOJQdEeeffc7lZoqOhA"/>
                 <children xsi:type="advanced:Placeholder" xmi:id="_XzuMjJQdEeeffc7lZoqOhA" elementId="org.eclipse.jdt.ui.SourceView" ref="_XzuOOZQdEeeffc7lZoqOhA"/>
@@ -158,7 +160,6 @@
     </sharedElements>
     <sharedElements xsi:type="advanced:Area" xmi:id="_XzuNtpQdEeeffc7lZoqOhA" elementId="org.eclipse.ui.editorss" selectedElement="_xXP3cZf2Eee40cwr-Im9zg">
       <children xsi:type="basic:PartStack" xmi:id="_xXP3cZf2Eee40cwr-Im9zg" elementId="PartStack@66b9c797" selectedElement="_mspTgJ1oEeeD0oJrQ6KgJg">
-        <tags>active</tags>
         <children xsi:type="basic:Part" xmi:id="_hpj2kJf2Eee40cwr-Im9zg" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="CSV_PLOTTER.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.png" closeable="true">
           <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;CSV_PLOTTER.java&quot; partName=&quot;CSV_PLOTTER.java&quot; title=&quot;CSV_PLOTTER.java&quot; tooltip=&quot;Java/CSV_PLOTTER/CSV_PLOTTER.java&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/Java/CSV_PLOTTER/CSV_PLOTTER.java&quot;/>&#xD;&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;155&quot; selectionOffset=&quot;9118&quot; selectionTopPixel=&quot;2487&quot;/>&#xD;&#xA;&lt;/editor>"/>
           <tags>Editor</tags>
@@ -172,12 +173,10 @@
           <tags>removeOnHide</tags>
         </children>
         <children xsi:type="basic:Part" xmi:id="_mspTgJ1oEeeD0oJrQ6KgJg" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="Raumklima.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.png" closeable="true">
-          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;Raumklima.java&quot; partName=&quot;Raumklima.java&quot; title=&quot;Raumklima.java&quot; tooltip=&quot;Java/Raumklima/Raumklima.java&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/Java/Raumklima/Raumklima.java&quot;/>&#xD;&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;80592&quot; selectionTopPixel=&quot;25935&quot;/>&#xD;&#xA;&lt;/editor>"/>
+          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;Raumklima.java&quot; partName=&quot;Raumklima.java&quot; title=&quot;Raumklima.java&quot; tooltip=&quot;Java/Raumklima/Raumklima.java&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/Java/Raumklima/Raumklima.java&quot;/>&#xD;&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;70844&quot; selectionTopPixel=&quot;21812&quot;/>&#xD;&#xA;&lt;/editor>"/>
           <tags>Editor</tags>
           <tags>org.eclipse.jdt.ui.CompilationUnitEditor</tags>
           <tags>removeOnHide</tags>
-          <tags>active</tags>
-          <tags>activeOnClose</tags>
         </children>
         <children xsi:type="basic:Part" xmi:id="_EzqXYJf4Eee40cwr-Im9zg" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="STATE.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.png" closeable="true">
           <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;STATE.java&quot; partName=&quot;STATE.java&quot; title=&quot;STATE.java&quot; tooltip=&quot;Java/CSV_PLOTTER/STATE.java&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/Java/CSV_PLOTTER/STATE.java&quot;/>&#xD;&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;4300&quot; selectionTopPixel=&quot;701&quot;/>&#xD;&#xA;&lt;/editor>"/>
@@ -298,6 +297,8 @@
       <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;view/>"/>
       <tags>View</tags>
       <tags>categoryTag:General</tags>
+      <tags>active</tags>
+      <tags>activeOnClose</tags>
       <menus xmi:id="_XzuOPJQdEeeffc7lZoqOhA" elementId="org.eclipse.ui.console.ConsoleView">
         <tags>ViewMenu</tags>
         <tags>menuContribution:menu</tags>
@@ -454,7 +455,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_XzuPEpQdEeeffc7lZoqOhA" elementId="org.eclipse.ui.workbench.file">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_t2s7cMAPEeeKCo0i9tWMaw" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="_XzuXKJQdEeeffc7lZoqOhA"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_ADdNEcCPEeeg1e9WkkwviA" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="_XzuXKJQdEeeffc7lZoqOhA"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_XzuPH5QdEeeffc7lZoqOhA" elementId="additions" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -478,7 +479,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_XzuPYpQdEeeffc7lZoqOhA" elementId="org.eclipse.ui.workbench.navigate">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_t2s7esAPEeeKCo0i9tWMaw" elementId="org.eclipse.ui.window.pinEditor" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_XzuWn5QdEeeffc7lZoqOhA"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_ADdNG8CPEeeg1e9WkkwviA" elementId="org.eclipse.ui.window.pinEditor" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_XzuWn5QdEeeffc7lZoqOhA"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_XzuPbZQdEeeffc7lZoqOhA" elementId="group.editor" toBeRendered="false">
         <tags>toolbarSeparator</tags>

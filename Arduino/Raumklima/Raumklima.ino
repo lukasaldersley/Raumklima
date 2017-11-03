@@ -67,7 +67,7 @@ int directindirectLcdrightness = 255;
 
 long baudrate = 115200;
 String sendoff = "";
-String fileName = "";
+String fileName = "NICHTS";
 String recievedCommand = "";
 
 unsigned long lastMenuTime = 0;
@@ -148,21 +148,21 @@ void initBoard() {
   //analogWrite(DIRECT_LCD_BACKLIGHT_PIN, directindirectLcdrightness);
 
   indirectLcd.init();
-  //TODOindirectLcd.noBacklight();
-
+  indirectLcd.noBacklight();
+  Serial.println("I_DIR_LCD");
   directLcd.init();//.begin(20, 4);
   directLcd.clear();
   directLcd.backlight();
   directLcd.print("Initialisieren...");
-
+  Serial.println("PRE_CHAR");
   createChars();
-
+  Serial.println("LCD_DONE");
   //pinMode(3, INPUT); //ich hab den widerstand auf dem board vergessen deswegen der interne
-  //attachInterrupt(1, alwaysInterruptButton_Push, RISING);
-  attachInterrupt(0, iterateMenu, RISING); //TODO ï¿½berlegen
-  attachInterrupt(1, increaseValue, RISING);
-
+  attachInterrupt(ValueInterruptNumber, increaseValue, RISING);
+  Serial.println("INTERRUPT");
   directLcd.setCursor(0, 1);
+  time_t tGET = RTC.get();
+  Serial.println("TIME: " + String(day(tGET)) + "." + month(tGET) + "." + year(tGET) + " " + hour(tGET) + ":" + minute(tGET) + ":" + second(tGET));
   directLcd.print("SD-Karte: ");
   if (!SD.begin(SD_PIN)) { //readWrite Sample   //INITIALIZE SD-CARD
     Serial.println("SD-FAIL");
@@ -174,6 +174,7 @@ void initBoard() {
     directLcd.print("OK");
     SDFail = false;
   }
+  Serial.println("SD");
 
   /*fileName = getTimeName();
     Serial.println(fileName);
@@ -266,6 +267,10 @@ void loop() {
 
   if (Serial.available()) {//Falls befehle von der Software an das gerät gesendet weren (Einstellungen, Versionsabfragen, Zeitdefinitionen etc. wird das hier verarbeitet
     recievedCommand = Serial.readString();
+    recievedCommand.trim();
+    recievedCommand.replace("\r", "");
+    recievedCommand.replace("\n", "");
+    recievedCommand.trim();
     Serial.println("RECIEVED: " + recievedCommand);
     if (!recievedCommand.equals("")) {
       if (recievedCommand.startsWith("VERSION")) {
@@ -282,6 +287,8 @@ void loop() {
       }
       else if (recievedCommand.startsWith("REC")) {
         recording = recievedCommand.endsWith("ON");
+        Serial.print("REC: ");
+        Serial.println(recording);
         if (recording) {
           fileName = getTimeName();
           file = SD.open(fileName, FILE_WRITE);
@@ -295,9 +302,11 @@ void loop() {
             file.close();
             Serial.println("OK");
           }
-          else{
+          else {
             Serial.println("FAIL");
           }
+        }
+        else{
           Serial.println("N/A");
         }
       }
@@ -553,12 +562,12 @@ void loop() {
         directLcd.print("DATEI: ");
         directLcd.print(fileName);
         directLcd.setCursor(0, 2);
-        directLcd.print("AUFZEICHNUNG ");
+        directLcd.print("AUFZEICHNUNG: ");
         if (recording) {
-          directLcd.print("LAEUFT");
+          directLcd.print("AN");
         }
         else {
-          directLcd.print("GESTOPPT");
+          directLcd.print("AUS");
         }
         directLcd.setCursor(0, 3);
         directLcd.print("MODUS: ");
