@@ -1,6 +1,6 @@
 #include "DS3232RTC.h"
 #include <TimeLib.h>
-#include <Time.h> 
+#include <Time.h>
 #include <LiquidCrystal_I2C.h>
 #include <Wire.h>
 #include <SPI.h>
@@ -76,7 +76,7 @@ unsigned long lastData;
 unsigned long counter = 0;
 boolean servoIsTipped = false;
 int servoValue = 0;
-int phC=0;
+int phC = 0;
 
 byte AE[8] = {
   0b01010,
@@ -126,8 +126,8 @@ double RAIN = 0.0;
 
 //INITIALISATION-
 void setup() {
-  for(int i=0;i<54;i++){
-    digitalWrite(i,LOW);
+  for (int i = 0; i < 54; i++) {
+    digitalWrite(i, LOW);
   }
   Serial.begin(115200);
   delay(10);
@@ -135,8 +135,8 @@ void setup() {
   attachInterrupt(MenuInterruptNumber, iterateMenu, RISING);
   servo.attach(SERVO_PIN);
   servo.write(SERVO_MIN);
-  for(int i=0;i<54;i++){
-    digitalWrite(i,LOW);
+  for (int i = 0; i < 54; i++) {
+    digitalWrite(i, LOW);
   }
   initBoard();
 }
@@ -260,8 +260,8 @@ void printDataToUART0() { //Main Serial Port
 void(*resetSystem)(void) = 0; //RESETS THE SYSTEM
 
 void loop() {
-  if(!pwr){//board SOLLTE im schalfmodus sein und NICHT in der normalen ausführung
-    sleepUntil(nextWake,minutesPriorToWakeTime);
+  if (!pwr) { //board SOLLTE im schalfmodus sein und NICHT in der normalen ausführung
+    sleepUntil(nextWake, minutesPriorToWakeTime);
   }
 
   if (Serial.available()) {//Falls befehle von der Software an das gerät gesendet weren (Einstellungen, Versionsabfragen, Zeitdefinitionen etc. wird das hier verarbeitet
@@ -271,31 +271,78 @@ void loop() {
       if (recievedCommand.startsWith("VERSION")) {
         Serial.println(VERSION);
       }
-      else if (recievedCommand.equals("GETTIME")) {
-        time_t tGET=RTC.get();
-        Serial.println("TIME: "+String(day(tGET))+"."+month(tGET)+"."+year(tGET)+" "+hour(tGET)+":"+minute(tGET)+":"+second(tGET));
+      else if (recievedCommand.startsWith("LCD")) {
+        directLcdEnabled = recievedCommand.endsWith("ON");
+        if (directLcdEnabled) {
+          directLcd.backlight();
+        }
+        else {
+          directLcd.noBacklight();
+        }
       }
-      else if (recievedCommand.startsWith("SETTIME")) {//bsp: "SETTIME_29.10.2017_22.34.00"
+      else if (recievedCommand.startsWith("REC")) {
+        recording = recievedCommand.endsWith("ON");
+        if (recording) {
+          fileName = getTimeName();
+          file = SD.open(fileName, FILE_WRITE);
+          if (file) {
+            if (physik) {
+              file.println(titles);
+            }
+            else {
+              file.println(titles + ";Niederschlagsmenge (in mm)");
+            }
+            file.close();
+            Serial.println("OK");
+          }
+          else{
+            Serial.println("FAIL");
+          }
+          Serial.println("N/A");
+        }
+      }
+      else if (recievedCommand.startsWith("GETTIME")) {
+        Serial.println("sending time Info:");
+        time_t tGET = RTC.get();
+        Serial.println("TIME: " + String(day(tGET)) + "." + month(tGET) + "." + year(tGET) + " " + hour(tGET) + ":" + minute(tGET) + ":" + second(tGET));
+      }
+      else if (recievedCommand.startsWith("SETTIME")) {//bsp: "SETTIME_02.11.2017_22.13.00"
+        Serial.println("SETTING TIME");
         //recievedCommand = recievedCommand.substring(0, 7);
         time_t tSET;
         tmElements_t tm;
         Serial.println(CalendarYrToTm(recievedCommand.substring(14, 18).toInt()));
-        tm.Year=CalendarYrToTm(recievedCommand.substring(14, 18).toInt());
+        tm.Year = CalendarYrToTm(recievedCommand.substring(14, 18).toInt());
         Serial.println(recievedCommand.substring(11, 13).toInt());
-        tm.Month=recievedCommand.substring(11, 13).toInt();
+        tm.Month = recievedCommand.substring(11, 13).toInt();
         Serial.println(recievedCommand.substring(8, 10).toInt());
-        tm.Day=recievedCommand.substring(8, 10).toInt();
-        Serial.println(recievedCommand.substring(19,21).toInt());
-        tm.Hour=recievedCommand.substring(19,21).toInt();
-        Serial.println(recievedCommand.substring(22,24).toInt());
-        tm.Minute=recievedCommand.substring(22,24).toInt();
-        Serial.println(recievedCommand.substring(25,27).toInt());
-        tm.Second=recievedCommand.substring(25,27).toInt();
-        tSET=makeTime(tm);
-        Serial.println("TIME (SET): "+String(day(tSET))+"."+month(tSET)+"."+year(tSET)+" "+hour(tSET)+":"+minute(tSET)+":"+second(tSET));
-        Serial.println(RTC.set(t));
-        tSET=RTC.get();
-        Serial.println("TIME (GET): "+String(day(tSET))+"."+month(tSET)+"."+year(tSET)+" "+hour(tSET)+":"+minute(tSET)+":"+second(tSET));
+        tm.Day = recievedCommand.substring(8, 10).toInt();
+        Serial.println(recievedCommand.substring(19, 21).toInt());
+        tm.Hour = recievedCommand.substring(19, 21).toInt();
+        Serial.println(recievedCommand.substring(22, 24).toInt());
+        tm.Minute = recievedCommand.substring(22, 24).toInt();
+        Serial.println(recievedCommand.substring(25, 27).toInt());
+        tm.Second = recievedCommand.substring(25, 27).toInt();
+        /*tm.Year=10;
+          tm.Month=11;
+          tm.Day=2;
+          tm.Hour=17;
+          tm.Minute=32;
+          tm.Second=16;*/
+
+        /*tm.Year=1;
+          tm.Month=1;
+          tm.Day=1;
+          tm.Hour=1;
+          tm.Minute=1;
+          tm.Second=1;*/
+        tSET = makeTime(tm);
+        Serial.println("TIME (SET): " + String(day(tSET)) + "." + month(tSET) + "." + year(tSET) + " " + hour(tSET) + ":" + minute(tSET) + ":" + second(tSET));
+        Serial.print("RETURNED: ");
+        Serial.println(RTC.set(tSET));
+        time_t tGET = RTC.get();
+        Serial.println("TIME (GET): " + String(day(tGET)) + "." + month(tGET) + "." + year(tGET) + " " + hour(tGET) + ":" + minute(tGET) + ":" + second(tGET));
+        //tm.Year=1
       }
     }
     delay(1000);
@@ -380,6 +427,7 @@ void loop() {
             }
             file.close();
             //directLcd.print("OK");
+            indirectLcd.print("LAEUFT");
           }
           else {//RETRY ONCE MORE
             file = SD.open(fileName, FILE_WRITE);
@@ -393,6 +441,7 @@ void loop() {
               }
               file.close();
               //directLcd.print("OK");
+              indirectLcd.print("LAEUFT");
             }
             else {
               Serial.println("SD FAILED twice While writing the titles");
@@ -400,7 +449,6 @@ void loop() {
             }
           }
 
-          indirectLcd.print("LAEUFT");
         }
         else {
           indirectLcd.print("GESTOPPT");
@@ -443,25 +491,25 @@ void loop() {
     if (millis() % 1000 < 10) {//hier geschieht das eigentliche: 1x pro Sekunde (ungefähr)wird überprüft ob daten geholt werden müssen, und ob gezeichnet werdne soll.
       //Serial.println("GETTING DATA");
       getData();
-      if (physik&&phC==10) {//physik und aufzeichnen
-        phC=0;
+      if (physik && phC == 10) { //physik und aufzeichnen
+        phC = 0;
         if (recording) {
           printDataToSD();
         }
         printDataToUART0();
       }
-      else if(physik){//physik ohne aufzeichnen
+      else if (physik) { //physik ohne aufzeichnen
         phC++;
       }
-      else if(recording) {//muss geo sein und aufzeichnen
+      else if (recording) { //muss geo sein und aufzeichnen
         Serial.println("powerDown: " + getTimeName());//debugging
         delay(2000);
         sleepUntil(nextWake, minutesPriorToWakeTime);//schlafen bis zum nächsten geo-messzeitpunkt aber minutesPriorToWakeTime minuten früher aufwachen, damit die Sensoren aufheizen bzw. sich vorbereiten können
         Serial.println("woken: " + getTimeName());//debugging
-        while(minute(RTC.get())>0){
+        while (minute(RTC.get()) > 0) {
           delay(30000);//abwarten bis die zeit um ist. d.h. die volle stunde erreicht ist. nur alle halbe minute abprüfen
         }
-          printDataToSD();
+        printDataToSD();
       }
 
       if (displayCounter < changeScreenThreshold) { //BME280

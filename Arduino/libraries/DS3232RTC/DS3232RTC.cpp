@@ -64,6 +64,8 @@
 #define i2cWrite Wire.send
 #endif
 
+byte DS3232RTC::errCode;     //for debug
+
 /*----------------------------------------------------------------------*
  * Constructor.                                                         *
  *----------------------------------------------------------------------*/
@@ -106,7 +108,7 @@ byte DS3232RTC::read(tmElements_t &tm)
 {
     i2cBeginTransmission(RTC_ADDR);
     i2cWrite((uint8_t)RTC_SECONDS);
-    if ( byte e = i2cEndTransmission() ) return e;
+    if ( byte e = i2cEndTransmission() ) { errCode = e; return e; }
     //request 7 bytes (secs, min, hr, dow, date, mth, yr)
     i2cRequestFrom(RTC_ADDR, tmNbrFields);
     tm.Second = bcd2dec(i2cRead() & ~_BV(DS1307_CH));   
@@ -214,7 +216,7 @@ void DS3232RTC::setAlarm(ALARM_TYPES_t alarmType, byte seconds, byte minutes, by
     if (alarmType & 0x01) seconds |= _BV(A1M1);
     if (alarmType & 0x02) minutes |= _BV(A1M2);
     if (alarmType & 0x04) hours |= _BV(A1M3);
-    if (alarmType & 0x10) hours |= _BV(DYDT);
+    if (alarmType & 0x10) daydate |= _BV(DYDT);
     if (alarmType & 0x08) daydate |= _BV(A1M4);
     
     if ( !(alarmType & 0x80) ) {    //alarm 1
