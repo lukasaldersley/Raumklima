@@ -211,6 +211,8 @@ void getData() {
   Humidity = BME280.readHumidity();
 
   LDR = analogRead(BRIGHTNESS_SENSOR_A_PIN);
+  LDR += analogRead(BRIGHTNESS_SENSOR_B_PIN);
+  LDR = LDR / 2.0;
   LDR = map(LDR, 0, 1023, 100, 0);
   LOUD = analogRead(LOUDNESS_SENSOR_PIN);
   LOUD = map(LOUD, 0, 1023, 100, 0);
@@ -306,13 +308,14 @@ void loop() {
             Serial.println("FAIL");
           }
         }
-        else{
+        else {
           Serial.println("N/A");
         }
       }
       else if (recievedCommand.startsWith("GETTIME")) {
         Serial.println("sending time Info:");
         time_t tGET = RTC.get();
+        t=RTC.get();
         Serial.println("TIME: " + String(day(tGET)) + "." + month(tGET) + "." + year(tGET) + " " + hour(tGET) + ":" + minute(tGET) + ":" + second(tGET));
       }
       else if (recievedCommand.startsWith("SETTIME")) {//bsp: "SETTIME_02.11.2017_22.13.00"
@@ -332,26 +335,13 @@ void loop() {
         tm.Minute = recievedCommand.substring(22, 24).toInt();
         Serial.println(recievedCommand.substring(25, 27).toInt());
         tm.Second = recievedCommand.substring(25, 27).toInt();
-        /*tm.Year=10;
-          tm.Month=11;
-          tm.Day=2;
-          tm.Hour=17;
-          tm.Minute=32;
-          tm.Second=16;*/
-
-        /*tm.Year=1;
-          tm.Month=1;
-          tm.Day=1;
-          tm.Hour=1;
-          tm.Minute=1;
-          tm.Second=1;*/
         tSET = makeTime(tm);
         Serial.println("TIME (SET): " + String(day(tSET)) + "." + month(tSET) + "." + year(tSET) + " " + hour(tSET) + ":" + minute(tSET) + ":" + second(tSET));
         Serial.print("RETURNED: ");
         Serial.println(RTC.set(tSET));
         time_t tGET = RTC.get();
         Serial.println("TIME (GET): " + String(day(tGET)) + "." + month(tGET) + "." + year(tGET) + " " + hour(tGET) + ":" + minute(tGET) + ":" + second(tGET));
-        //tm.Year=1
+        t=RTC.get();
       }
     }
     delay(1000);

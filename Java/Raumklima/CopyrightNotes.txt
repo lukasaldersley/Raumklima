@@ -59,7 +59,7 @@ In der Registerkarte "Graphenbereich" haben Sie die möglickeit einzelne Wertere
 Namen das Häkchen entfernen.
 Rechts haben Sie die Möglichkeit, die Interpolation (d.h. wie viele Aufgezeichnete Werte sollen zwischen gezeichneten Werten
 übersprungen werden) zu konfigurieren. Sie können zwischen einigen vordefinierten Werten wählen oder, wenn Sie "Benutzerdefiniert"
-auswählen, in das Textfeld eine positive Zahl zwischen 1 und 4294967295 (der Obergrenze für Integer (=einfache zahlen) in Java)
+auswählen, in das Textfeld eine positive Zahl zwischen 1 und 4.294.967.295 (der Obergrenze für Integer (=einfache zahlen) in Java)
 eingeben. Wenn Sie die Interpolationsstufe gewählt haben, klicken Sie bitte "OK (nur Interpolation)". Dies wird wieder alle in der
 Datei vorhandenen Messwerte sichtbar machen (falls Sie welche ausgeblendet hatten).
 
@@ -76,6 +76,14 @@ Tastenkombination aufrufen.
  
 Gerät:
  
+Das Gerät hat zwei Displays: ein größeres Haupt-Display und ein kleineres für Einstellungen. Ferner hat das Gerät zwei Knöpfe,
+um die Einstellungen aufzurufen bzw. zu verändern. Wenn Sie den linken Knopf drücken, wird sich das kleinere Display aktivieren
+und die erste Menüseite anzeigen. Das erneute drücken des linken Knopfes wird solange auf die nächste Menüseite weiterblättern,
+bis alle Menüseiten angezeigt wurden. Dann wird sich das kleine Display wieder deaktivieren. Wenn Sie den linken Knopf nun
+nochmals betätigen, aktiviert sich das kleinere Display wieder und zeigt die erste Menüseite an. Der rechte Knopf könnte als 
+"Ändern" bezeicnet werden. Auf den Menüseiten wird der Knopf die jeweilige Funktion umschalten. Wenn z.B. die Menüseite
+"Haupt-LCD Status" angezeigt wird, wird das drücken des Rechten knopfes des Status des Hauptbildschirms von "AN" nach "AUS",
+oder umgekehrt, ändern. 
  
  
  
