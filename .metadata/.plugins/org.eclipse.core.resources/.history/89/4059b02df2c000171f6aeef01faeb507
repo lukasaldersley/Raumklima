@@ -2450,7 +2450,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 logln("WINDOWS");
                 br=new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("wmic path win32_VideoController get name").getInputStream()));//cmd parameter von https://superuser.com/questions/723506/get-the-video-card-model-via-command-line-in-windows
             }
-            else{//System ist irgendwas (Linux/UNIX/Mac OS)... Jedenfalls was mit bash
+            else{//System ist irgendwas (Linux/UNIX/Mac OS)... Jedenfalls was mit bash (99% wahrscheinlich)
 
                 logln("LINUX");
                 br=new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("lspci -vnn | grep VGA -A 12").getInputStream()));//cmd parameter von http://www.binarytides.com/linux-get-gpu-information/
@@ -2466,11 +2466,11 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 alles+=zeile;
                 zeile=br.readLine();
             }
-            if(alles.contains("Intel")||alles.contains("Intel")||alles.contains("intel")){
+            /*if(alles.contains("Intel")||alles.contains("Intel")||alles.contains("intel")){
                 FullscreenExclusiveRadioButton.setEnabled(false);
                 MaximizeWindowRadioButton.setSelected(true);
                 fullscreenOk=false;
-            }
+            }*/
         }
         catch(Exception e){
             e.printStackTrace();
