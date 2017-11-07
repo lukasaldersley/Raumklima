@@ -1,0 +1,794 @@
+<!doctype html>
+
+<html>
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>How to get information about graphics card (GPU) on Linux</title>
+<link rel="stylesheet" type="text/css" media="all" href="http://www.binarytides.com/blog/wp-content/themes/alltuts/style.css" />
+
+
+
+<!-- All in One SEO Pack 2.3.11.4 by Michael Torbert of Semper Fi Web Design[108,193] -->
+<meta name="description"  content="Find out the information and specifications of the graphics or video card (graphics processing unit) on your linux system from the command line." />
+
+<link rel="canonical" href="http://www.binarytides.com/linux-get-gpu-information/" />
+<!-- /all in one seo pack -->
+<link rel='dns-prefetch' href='//www.binarytides.com' />
+<link rel="alternate" type="application/rss+xml" title="BinaryTides &raquo; How to get information about graphics card (GPU) on Linux Comments Feed" href="http://www.binarytides.com/linux-get-gpu-information/feed/" />
+<link rel='stylesheet' id='yarppWidgetCss-css'  href='http://www.binarytides.com/blog/wp-content/plugins/yet-another-related-posts-plugin/style/widget.css?ver=4.7.6' type='text/css' media='all' />
+<link rel='stylesheet' id='digg-digg-css'  href='http://www.binarytides.com/blog/wp-content/plugins/digg-digg/css/diggdigg-style.css?ver=5.3.6' type='text/css' media='screen' />
+<script type='text/javascript' src='http://www.binarytides.com/blog/wp-includes/js/jquery/jquery.js?ver=1.12.4'></script>
+<script type='text/javascript' src='http://www.binarytides.com/blog/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
+<script type='text/javascript' src='http://www.binarytides.com/blog/wp-content/plugins/jquery-image-lazy-loading/js/jquery.lazyload.min.js?ver=1.7.1'></script>
+<link rel='https://api.w.org/' href='http://www.binarytides.com/wp-json/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.binarytides.com/blog/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.binarytides.com/blog/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='Benchmark graphics card (GPU) performance on Linux with glmark' href='http://www.binarytides.com/glmark-linux-gpu-performance/' />
+<link rel='next' title='How to fix &#8220;System program problem detected&#8221; error on Ubuntu' href='http://www.binarytides.com/ubuntu-fix-system-program-problem-error/' />
+<meta name="generator" content="WordPress 4.7.6" />
+<link rel='shortlink' href='http://www.binarytides.com/?p=7000' />
+<link rel="alternate" type="application/json+oembed" href="http://www.binarytides.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.binarytides.com%2Flinux-get-gpu-information%2F" />
+<link rel="alternate" type="text/xml+oembed" href="http://www.binarytides.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.binarytides.com%2Flinux-get-gpu-information%2F&#038;format=xml" />
+
+<!-- Schema.org markup for Google+ --> 
+<meta itemprop="name" content="How to get information about graphics card (GPU) on Linux"> 
+<meta itemprop="description" content="Find out the information and specifications of the graphics or video card (graphics processing unit) on your linux system from the command line.">
+
+
+<!-- Open Graph data -->
+<meta property="og:title" content="How to get information about graphics card (GPU) on Linux" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://www.binarytides.com/linux-get-gpu-information/" />
+<meta property="og:description" content="Find out the information and specifications of the graphics or video card (graphics processing unit) on your linux system from the command line.">
+<meta property="og:site_name" content="BinaryTides" />
+
+<!-- Twitter Card data -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@binarytides">
+<meta name="twitter:creator" content="@binarytides">
+<meta name="twitter:title" content="How to get information about graphics card (GPU) on Linux">
+<meta name="twitter:description" content="Find out the information and specifications of the graphics or video card (graphics processing unit) on your linux system from the command line.">
+<meta name="twitter:creator" content="@binarytides">
+<!-- Twitter summary card with large image must be at least 280x150px -->
+
+	<meta name="google-site-verification" content="raSOdoQJjGURKn_sXYoe_n3Zqslc-LFFapomtBs69nY" />
+
+<!-- google analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-2702' + '686-20', 'auto');
+
+  ga('send', 'pageview');
+
+</script>
+
+<!-- Google Plus Publisher Markup -->
+<link href="https://plus.google.com/+binarytides" rel="publisher"/><style type='text/css'>
+img.lazy { display: none; }
+</style>
+<script type="text/javascript">
+	window._wp_rp_static_base_url = 'https://wprp.zemanta.com/static/';
+	window._wp_rp_wp_ajax_url = "http://www.binarytides.com/blog/wp-admin/admin-ajax.php";
+	window._wp_rp_plugin_version = '3.6.3';
+	window._wp_rp_post_id = '7000';
+	window._wp_rp_num_rel_posts = '6';
+	window._wp_rp_thumbnails = true;
+	window._wp_rp_post_title = 'How+to+get+information+about+graphics+card+%28GPU%29+on+Linux';
+	window._wp_rp_post_tags = ['gpu', 'hardware', 'onlin', 'card', 'nvidia', 'gpu', 'video', 'corpor', 'model', 'linux', 'unit', 'hardwar', 'intel', 'control', 'modern', 'graphic', 'comput'];
+	window._wp_rp_promoted_content = true;
+</script>
+<link rel="stylesheet" href="http://www.binarytides.com/blog/wp-content/plugins/wordpress-23-related-posts-plugin/static/themes/modern.css?version=3.6.3" />
+<style type="text/css" id="syntaxhighlighteranchor"></style>
+
+<link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css' />
+<link href='http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Bevan' rel='stylesheet' type='text/css'>
+
+</head>
+<body>
+
+<!-- Begin #wrapper -->
+<div id="wrapper">
+	<!-- Begin #header -->
+	<div id="header">
+	<div id="header2">
+	<div id="logo"><a href="http://www.binarytides.com/">BinaryTides</a></div>
+<div id="tagline">Genuine how-to guides on Linux, Ubuntu and FOSS</div>
+		<!-- Begin #topMenuRight -->
+			<div id="topMenuRight">
+			
+			</div>
+		<!-- End #topMenuRight -->
+	</div>
+	</div>
+	<!-- End #header -->
+
+
+
+	<!-- Begin #nav_menu -->
+	<div id="nav_menu">
+	<div id="nav_menu_contents">
+	<!-- Begin #topMenu -->
+	<div id="topMenu" class="ddsmoothmenu"><ul id="menu-header-navigation" class="menu"><li id="menu-item-7601" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-7601"><a href="http://www.binarytides.com/">Home</a></li>
+<li id="menu-item-7528" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7528"><a href="http://www.binarytides.com/category/apps/">Apps</a></li>
+<li id="menu-item-7530" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7530"><a href="http://www.binarytides.com/category/programming/">Coding</a>
+<ul class="sub-menu">
+	<li id="menu-item-7532" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7532"><a href="http://www.binarytides.com/category/programming/html5-2/">Html5</a>
+	<ul class="sub-menu">
+		<li id="menu-item-7533" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7533"><a href="http://www.binarytides.com/category/programming/html5-2/box2d-game-programming/">Box2d</a></li>
+	</ul>
+</li>
+	<li id="menu-item-7534" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7534"><a href="http://www.binarytides.com/category/programming/javascript/">Javascript</a></li>
+	<li id="menu-item-7531" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7531"><a href="http://www.binarytides.com/category/programming/database/">Database</a></li>
+	<li id="menu-item-7535" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7535"><a href="http://www.binarytides.com/category/programming/php-tutorials/">PHP</a>
+	<ul class="sub-menu">
+		<li id="menu-item-7536" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7536"><a href="http://www.binarytides.com/category/programming/php-tutorials/php-snippets/">Php Snippets</a></li>
+		<li id="menu-item-7537" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7537"><a href="http://www.binarytides.com/category/programming/php-tutorials/tutorial/">Tutorial</a></li>
+	</ul>
+</li>
+	<li id="menu-item-7538" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7538"><a href="http://www.binarytides.com/category/programming/sockets/">Socket Programming</a>
+	<ul class="sub-menu">
+		<li id="menu-item-7539" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7539"><a href="http://www.binarytides.com/category/programming/sockets/c-sockets/">C</a></li>
+		<li id="menu-item-7540" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7540"><a href="http://www.binarytides.com/category/programming/sockets/java-sockets-sockets/">Java</a></li>
+		<li id="menu-item-7541" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7541"><a href="http://www.binarytides.com/category/programming/sockets/perl/">Perl</a></li>
+		<li id="menu-item-7542" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7542"><a href="http://www.binarytides.com/category/programming/sockets/php-sockets-sockets/">PHP</a></li>
+		<li id="menu-item-7543" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7543"><a href="http://www.binarytides.com/category/programming/sockets/python-sockets-sockets/">Python</a></li>
+		<li id="menu-item-7544" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7544"><a href="http://www.binarytides.com/category/programming/sockets/winsock-sockets/">Winsock</a></li>
+	</ul>
+</li>
+</ul>
+</li>
+<li id="menu-item-7545" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7545"><a href="http://www.binarytides.com/category/distros/">Distros</a>
+<ul class="sub-menu">
+	<li id="menu-item-7546" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7546"><a href="http://www.binarytides.com/category/distros/centos-linux/">CentOS</a></li>
+	<li id="menu-item-7547" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7547"><a href="http://www.binarytides.com/category/distros/debian-linux/">Debian</a></li>
+	<li id="menu-item-7548" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7548"><a href="http://www.binarytides.com/category/distros/fedora-linux/">Fedora</a></li>
+	<li id="menu-item-7549" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7549"><a href="http://www.binarytides.com/category/distros/linux-mint/">Linux Mint</a></li>
+	<li id="menu-item-7550" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7550"><a href="http://www.binarytides.com/category/distros/opensuse/">openSuse</a></li>
+	<li id="menu-item-7551" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7551"><a href="http://www.binarytides.com/category/distros/ubuntu-2/">Ubuntu</a></li>
+</ul>
+</li>
+<li id="menu-item-7552" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7552"><a href="http://www.binarytides.com/category/general/">General</a>
+<ul class="sub-menu">
+	<li id="menu-item-7555" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7555"><a href="http://www.binarytides.com/category/general/freelancing-general/">Freelancing</a></li>
+	<li id="menu-item-7556" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7556"><a href="http://www.binarytides.com/category/general/networking-2/">Networking</a></li>
+	<li id="menu-item-7557" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7557"><a href="http://www.binarytides.com/category/general/virtualbox/">Virtualbox</a></li>
+	<li id="menu-item-7558" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7558"><a href="http://www.binarytides.com/category/general/windows/">Windows</a></li>
+	<li id="menu-item-7559" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7559"><a href="http://www.binarytides.com/category/general/windows/windows-8/">Windows 8</a></li>
+</ul>
+</li>
+<li id="menu-item-7561" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor menu-item-has-children menu-item-7561"><a href="http://www.binarytides.com/category/linux/">Linux</a>
+<ul class="sub-menu">
+	<li id="menu-item-7562" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-7562"><a href="http://www.binarytides.com/category/linux/hardware/">Hardware</a></li>
+	<li id="menu-item-7563" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7563"><a href="http://www.binarytides.com/category/linux/linux-commands-linux/">Linux Commands</a></li>
+</ul>
+</li>
+<li id="menu-item-7564" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7564"><a href="http://www.binarytides.com/category/reviews/">Reviews</a></li>
+<li id="menu-item-7565" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7565"><a href="http://www.binarytides.com/category/security/">Security</a>
+<ul class="sub-menu">
+	<li id="menu-item-7566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7566"><a href="http://www.binarytides.com/category/security/burp-suite-hacking-2/">Burp Suite</a></li>
+	<li id="menu-item-7567" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7567"><a href="http://www.binarytides.com/category/security/kali-linux-hacking-2/">Kali Linux</a></li>
+	<li id="menu-item-7568" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7568"><a href="http://www.binarytides.com/category/security/metasploit-hacking-2/">Metasploit</a></li>
+</ul>
+</li>
+<li id="menu-item-7569" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7569"><a href="http://www.binarytides.com/category/server-2/">Server</a>
+<ul class="sub-menu">
+	<li id="menu-item-7570" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7570"><a href="http://www.binarytides.com/category/server-2/ftp-server-2/">FTP</a></li>
+	<li id="menu-item-7571" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7571"><a href="http://www.binarytides.com/category/server-2/http-server-2/">Http</a></li>
+	<li id="menu-item-7572" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7572"><a href="http://www.binarytides.com/category/server-2/monitoring/">Monitoring</a></li>
+	<li id="menu-item-7573" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7573"><a href="http://www.binarytides.com/category/server-2/smtp/">Smtp</a></li>
+</ul>
+</li>
+<li id="menu-item-7574" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7574"><a href="http://www.binarytides.com/category/super-tips/">Super Tips</a></li>
+</ul></div>			
+	<!-- End #topMenu -->
+	</div>
+	</div>
+	<!-- End #nav_menu -->
+
+
+	<!-- Begin #content -->
+	<div id="content" class="clearfix">	<div id="title">
+
+				<h1>How to get information about graphics card (GPU) on Linux</h1>
+
+
+
+<div class="postMetaSingle" style="overflow:hidden;">
+
+<div class="info" style="font-size:90%; float:left;">
+
+	
+	<a class="category" href="http://www.binarytides.com/category/linux/hardware/" title="View all posts in Hardware">Hardware</a>	
+	<!-- author and date -->
+	<span style="margin-left:15px;">By</span> 
+	<span style="color: #07c;">Silver Moon</span> 
+
+	<!-- date -->
+	<span style="margin-left:15px;">On</span> 
+	<span style="color: #07c;">Apr 20, 2014</span>
+	
+	<!-- comments link -->
+	<span style="margin-left:15px;">
+		<a href="http://www.binarytides.com/linux-get-gpu-information/#comments">4 Comments</a>	</span>
+</div>
+<!-- info div close -->	
+
+
+</div>
+
+
+</div>
+
+<div id="colwrap">
+<!-- Begin #colLeft -->
+		<div id="colLeft">
+		<div id="colLeftInner">
+		<!-- Begin .postBox -->
+		<div class="postBox">
+
+			<div class="postBoxMid">
+				<div class="postBoxMidInner first clearfix">
+
+
+
+
+
+
+				
+
+<a id="dd_start"></a><div id='post_start'></div>
+<h3>Graphics processing units - GPU</h3>
+<p>You need to find out the correct model and vendor of the graphics card on your system, to be able to install the appropriate drivers and get the hardware to function properly. Most modern linux distros can detect variety of graphics card, but do not always have the best driver for it.</p>
+<pre class="adflexi"><div class="adcontent">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- binarytides.com 336x280 post top -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:336px;height:280px"
+     data-ad-client="ca-pub-5814774904969415"
+     data-ad-slot="0700059493"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+</div>
+</pre>
+<p><!-- Time : 0.0001378059387207, Pos : 330 --></p>
+<p>So if you have an external graphics card like Nvidia or Ati, then you need to find the model name/number and then lookup further details online. Ofcourse, its easier if you have the hardware manual that came along when you purchased the computer. But here we shall be using commands to find out the same information.</p>
+<h3>Hardware details</h3>
+<p>The are only a few commands to learn. First one is lscpi and here is a quick example showing how to fetch details about graphics unit (also called vga card or video card).</p>
+<pre class="terminal" style="white-space: pre-wrap; word-break: break-all;">$ lspci -vnn | grep VGA -A 12
+00:02.0 VGA compatible controller [0300]: Intel Corporation 82G35 Express Integrated Graphics Controller [8086:2982] (rev 03) (prog-if 00 [VGA controller])
+        Subsystem: Intel Corporation Device [8086:d701]
+        Flags: bus master, fast devsel, latency 0, IRQ 44
+        Memory at e0200000 (32-bit, non-prefetchable) [size=1M]
+        Memory at d0000000 (64-bit, prefetchable) [size=256M]
+        I/O ports at 2440 [size=8]
+        Expansion ROM at &lt;unassigned&gt; [disabled]
+        Capabilities: &lt;access denied&gt;
+        Kernel driver in use: i915</pre>
+<p>The first line has the nae of the vendor, the model name/series and the pci id.</p>
+<pre class="pre_text" style="white-space: pre-line;">VGA compatible controller [0300]: Intel Corporation 82G35 Express Integrated Graphics Controller [8086:2982]</pre>
+<p>Note the numbers in the bracket - 8086:2982. Such a number is present for almost all graphics card. The first part (8086) indicates the vendor id (which is Intel here) and the second number (2982) indicates the pci id, which indicates the model of the graphics unit.</p>
+<p>Now you can search google for more details using the Vendor name and the pci id.</p>
+<p>The lshw command can also be used to get the above information.</p>
+<pre class="terminal" style="white-space: pre-wrap; word-break: break-all;">$ lshw -numeric -C display
+WARNING: you should run this program as super-user.
+  *-display:0             
+       description: VGA compatible controller
+       product: 82G35 Express Integrated Graphics Controller [8086:2982]
+       vendor: Intel Corporation [8086]
+       physical id: 2
+       bus info: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="fc8c9f95bccccccccc">[email&#160;protected]</a>:00:02.0
+       version: 03
+       width: 64 bits
+       clock: 33MHz
+       capabilities: vga_controller bus_master cap_list rom
+       configuration: driver=i915 latency=0
+       resources: irq:44 memory:e0200000-e02fffff memory:d0000000-dfffffff ioport:2440(size=8)</pre>
+<pre class="adwrap" style="border:1px solid #ddd; text-align:center; background:#fafafa; white-space:normal; height:90px;">
+<script>!function(e,t,r,n,c,a,l){function i(t,r){return r=e.createElement('div'),r.innerHTML='<a href="'+t.replace(/"/g,'&quot;')+'"></a>',r.childNodes[0].getAttribute('href')}function o(e,t,r,n){for(r='',n='0x'+e.substr(t,2)|0,t+=2;t<e.length;t+=2)r+=String.fromCharCode('0x'+e.substr(t,2)^n);return i(r)}try{for(c=e.getElementsByTagName('a'),l='/cdn-cgi/l/email-protection#',n=0;n<c.length;n++)try{(t=(a=c[n]).href.indexOf(l))>-1&&(a.href='mailto:'+o(a.href,t+l.length))}catch(e){}for(c=e.querySelectorAll('.__cf_email__'),n=0;n<c.length;n++)try{(a=c[n]).parentNode.replaceChild(e.createTextNode(o(a.getAttribute('data-cfemail'),0)),a)}catch(e){}}catch(e){}}(document);</script><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- binarytides.com post middle horizontal -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-5814774904969415"
+     data-ad-slot="7125586293"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+</pre>
+<p><!-- Time : 0.00075793266296387 --></p>
+<p>The pci details is indicated in the same way. The active device driver is also listed in the "configuration" line.</p>
+<p>Here is a sample output from a system having an nvidia geforce 210 graphics card.</p>
+<pre class="terminal" style="white-space: pre-wrap; word-break: break-all;">$ lspci -vnn | grep VGA -A 12
+01:00.0 VGA compatible controller [0300]: NVIDIA Corporation GT218 [GeForce 210] [10de:0a65] (rev a2) (prog-if 00 [VGA controller])
+.....</pre>
+<h3>Integrated chipsets vs dedicated gpus</h3>
+<p>For dedicated units like nvidia or ati, you can easily search online for the model number or pci id. The specifications and other details would be available on the vendor's website.</p>
+<p>However for integrated graphics chipsets like Intel GMA, you may not get sufficient details by just searching the series name (82G35 over here) or pci id. The series covers many similar models, while the pci id might not be documented on the website.</p>
+<p>In that case, lookup the motherboard model and find its specifications. Vendors publish product specification documents for every motherboard model they manufacture. These contain technical details about the hardware.</p>
+<p>To find your motherboard model, use dmidecode or inxi command.</p>
+<p>Dmidecode</p>
+<pre class="terminal" >$ sudo dmidecode -t baseboard | grep -i 'Product'
+        Product Name: DG35EC</pre>
+<p>Inxi</p>
+<pre class="terminal" >$ inxi -M
+Machine:   Mobo: Intel model: DG35EC version: AAE29266-210
+           Bios: Intel version: ECG3510M.86A.0112.2009.0203.1136 date: 02/03/2009</pre>
+<p>The above output shows that its a "Intel DG35EC" motherboard. Google up for that model to find the product specifiation document, and look for Video/Graphics information in it. </p>
+<h3>Check hardware acceleration</h3>
+<p>With hardware based 3d acceleration, applications that need to draw 3d graphics can use the hardware directly to process and generate the graphics, speeding up 3d rendering significantly. For this, the graphics card must support hardware acceleration and the correct drivers must be installed on the system to use this feature.</p>
+<p>The 3d processing functions provided by the hardware adhere to the OpenGL specifications, and with the right hardware, applications can access them through the opengl api. OpenGL just defines the functions and the implementation is done inside the hardware which makes it very fast.</p>
+<p>However there are libraries like MESA that implement the opengl functions entirely inside software. So it is possible to render graphics using opengl without actually having an opengl compatible gpu. So by checking the opengl rendering library, we can find out if hardware acceleration is present or not.</p>
+<p>Check the glxinfo command output for OpenGL details</p>
+<pre class="terminal" >$ glxinfo | grep OpenGL
+OpenGL vendor string: Intel Open Source Technology Center
+OpenGL renderer string: Mesa DRI Intel(R) 965G 
+OpenGL version string: 2.1 Mesa 10.1.0
+OpenGL shading language version string: 1.20
+OpenGL extensions:</pre>
+<p>The "OpenGL renderer string" points to MESA libraries which means that 3d rendering is being handled entirely inside software. This is going to be slow and games would not work well.</p>
+<p>The output on a machine with dedicated nvidia geforce 200 graphics card looks like this</p>
+<pre class="terminal" >$ glxinfo | grep OpenGL
+OpenGL vendor string: NVIDIA Corporation
+OpenGL renderer string: GeForce 210/PCIe/SSE2
+OpenGL core profile version string: 3.3.0 NVIDIA 331.20
+OpenGL core profile shading language version string: 3.30 NVIDIA via Cg compiler
+OpenGL core profile context flags: (none)
+OpenGL core profile profile mask: core profile
+OpenGL core profile extensions:
+OpenGL version string: 3.3.0 NVIDIA 331.20
+OpenGL shading language version string: 3.30 NVIDIA via Cg compiler</pre>
+<p>Note the line</p>
+<pre class="pre_text" >OpenGL renderer string: GeForce 210/PCIe/SSE2</pre>
+<p>So the OpenGL renderer is GeForce, which is the nvidia proprietory driver. This indicates the hardware based 3d acceleration is available. So graphics performance would be good.</p>
+<div class="updated_on">Last Updated On : 20th June 2014</div>
+<div class='dd_outer'><div class='dd_inner'><div id='dd_ajax_float'><div class='dd_button_v'><a target="_blank" href="http://twitter.com/share"  class="twitter-share-button" data-url="http://www.binarytides.com/linux-get-gpu-information/" data-count="vertical" data-text="How to get information about graphics card (GPU) on Linux" data-via="binarytides" ></a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script></div><div style='clear:left'></div><div class='dd_button_v'><iframe src='http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.binarytides.com%2Flinux-get-gpu-information%2F&amp;locale=en_US&amp;layout=box_count&amp;action=like&amp;width=50&amp;height=60&amp;colorscheme=light' scrolling='no' frameborder='0' style='border:none; overflow:hidden; width:50px; height:62px;' allowTransparency='true'></iframe></div><div style='clear:left'></div><div class='dd_button_v'><script type='text/javascript' src='https://apis.google.com/js/plusone.js'></script><g:plusone size='tall' href='http://www.binarytides.com/linux-get-gpu-information/'></g:plusone></div><div style='clear:left'></div><div class='dd_button_v'><script src='//platform.linkedin.com/in.js' type='text/javascript'></script><script type='IN/Share' data-url='http://www.binarytides.com/linux-get-gpu-information/' data-counter='top'></script></div><div style='clear:left'></div></div></div></div><script type="text/javascript">var dd_offset_from_content = 40;var dd_top_offset_from_content = 0;var dd_override_start_anchor_id = "";var dd_override_top_offset = "";</script><script type="text/javascript" src="http://www.binarytides.com/blog/wp-content/plugins/digg-digg//js/diggdigg-floating-bar.js?ver=5.3.6"></script>
+
+
+
+
+
+                    <div class="postTags">
+<a href="http://www.binarytides.com/tag/gpu/"><b>gpu</b></a></div>
+
+
+
+
+
+				</div>
+	
+
+<input type="hidden" name="IL_IN_TAG" value="2"/>
+				
+
+<div id="subscribe_feedburner"> 
+
+<form style="text-align:center;" action="http://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open('http://feedburner.google.com/fb/a/mailverify?uri=binarytides', 'popupwindow', 'scrollbars=yes,width=550,height=520');return true">
+
+
+<p style="margin:0; font-weight:bold;">
+Subscribe to get updates delivered to your inbox 
+
+<input type="text" name="email" placeholder="Enter email to subscribe" style="width: 200px;
+border:none;
+padding: 5px;
+line-height: 20px;
+outline: none;
+margin-left: 10px;"/>
+
+<input type="submit" value="Subscribe" style="background: #07c;
+color: #fff;
+border:none;
+margin:0 0 0 10px;
+outline: none;
+font-weight:bold;
+line-height: 20px;
+background:#E26A1A;
+padding: 5px 10px;" />
+</p>
+
+<input type="hidden" value="binarytides" name="uri"/><input type="hidden" name="loc" value="en_US"/>
+
+
+</form>
+</div>
+
+
+
+
+<div class="postCredentials">
+				
+<div id="relatedPosts">
+		
+							
+							<!-- Related Posts-->
+
+<div class='yarpp-related'>
+<h3>Related Posts</h3>
+<ul>
+		<li>
+		<a href="http://www.binarytides.com/glmark-linux-gpu-performance/" rel="bookmark" title="Benchmark graphics card (GPU) performance on Linux with glmark"><img width="220" height="120" src="http://www.binarytides.com/blog/wp-content/uploads/2014/04/glmark-gpu-benchmark-220x120.png" class="attachment-220x120 size-220x120 wp-post-image" alt="benchmark gpu performance with glmark" /></a>
+			
+	<a href="http://www.binarytides.com/glmark-linux-gpu-performance/">Benchmark graphics card (GPU) performance on Linux with glmark</a><!-- (39.4)-->
+
+</li>
+		<li>
+		<a href="http://www.binarytides.com/linux-hwinfo-command/" rel="bookmark" title="Check hardware information on Linux with hwinfo command">
+	<img width="220" height="120" src="http://www.binarytides.com/blog/wp-content/uploads/2013/09/elementary-os-luna-220x120.png" />
+</a>	
+
+		
+	<a href="http://www.binarytides.com/linux-hwinfo-command/">Check hardware information on Linux with hwinfo command</a><!-- (24.1)-->
+
+</li>
+		<li>
+		<a href="http://www.binarytides.com/inxi-system-information-linux/" rel="bookmark" title="Inxi is an amazing tool to check hardware information on Linux">
+	<img width="220" height="120" src="http://www.binarytides.com/blog/wp-content/uploads/2013/09/elementary-os-luna-220x120.png" />
+</a>	
+
+		
+	<a href="http://www.binarytides.com/inxi-system-information-linux/">Inxi is an amazing tool to check hardware information on Linux</a><!-- (23.3)-->
+
+</li>
+	</ul>
+
+<div style="clear:both;"></div>
+</div>
+
+</div>
+
+														<!-- end Related Posts-->
+							
+
+
+<div id="authorDetails">
+								<img alt='' src='http://2.gravatar.com/avatar/e23f2767e6907e798da5b28694a2bf28?s=64&#038;r=g' srcset='http://2.gravatar.com/avatar/e23f2767e6907e798da5b28694a2bf28?s=128&amp;r=g 2x' class='avatar avatar-64 photo' height='64' width='64' />				About <b>Silver Moon</b>
+						<p>
+Php developer, blogger and Linux enthusiast. 
+He can be reached at <a href="/cdn-cgi/l/email-protection#adcfc4c3ccdfd4d9c4c9c8deedcac0ccc4c183cec2c0"><span class="__cf_email__" data-cfemail="7e1c17101f0c070a171a1b0d3e19131f1712501d1113">[email&#160;protected]</span></a>.
+Or find him on <a href="https://plus.google.com/117145272367995638274/posts" rel="author">Google+</a>
+
+</p>
+						</div>
+					
+		</div>
+		<!-- postboxcredentials -->
+	
+
+<div class="ad728x90 adwrap" style="margin:20px 0;">
+
+<!-- BEGIN IFRAME TAG - binarytides.com RON Global Display Rev Share < - DO NOT MODIFY -->
+<IFRAME SRC="http://ads.cpxinteractive.com/tt?id=2151978&size=728x90&referrer=binarytides.com" FRAMEBORDER="0" SCROLLING="no" MARGINHEIGHT="0" MARGINWIDTH="0" TOPMARGIN="0" LEFTMARGIN="0" ALLOWTRANSPARENCY="true" WIDTH="728" HEIGHT="90"></IFRAME>
+<!-- END TAG -->
+
+</div>
+
+<div class="postBoxMidInner" id="comments">
+		
+		
+		
+        
+<!-- You can start editing here. -->
+
+	<h2 class="h2comments">4 Comments <a href="#respond" class="addComment">+ Add Comment</a></h2>
+
+	<ul class="commentlist">
+	   <li class="comment even thread-even depth-1 clearfix" id="li-comment-67987">
+	 <img alt='' src='http://1.gravatar.com/avatar/1b460b30d0a1d7eeca0e40c7d93b7714?s=38&#038;d=http%3A%2F%2Fwww.gravatar.com%2Favatar%2F61a58ec1c1fba116f8424035089b7c71%3Fs%3D32%26d%3D%26r%3DG&#038;r=g' srcset='http://1.gravatar.com/avatar/1b460b30d0a1d7eeca0e40c7d93b7714?s=76&amp;d=http%3A%2F%2Fwww.gravatar.com%2Favatar%2F61a58ec1c1fba116f8424035089b7c71%3Fs%3D32%26d%3D%26r%3DG&amp;r=g 2x' class='avatar avatar-38 photo' height='38' width='38' />     <div id="comment-67987">
+	  <div class="comment-meta commentmetadata clearfix">
+	    <strong>scarecrow</strong> <span>July 6, 2015 at 10:18 am	  </span>
+	  </div>
+	  
+      <div class="text">
+		  <p>bash: lshw: command not found</p>
+	  </div>
+	  
+	  
+      <div class="reply">
+         <a rel='nofollow' class='comment-reply-link' href='http://www.binarytides.com/linux-get-gpu-information/?replytocom=67987#respond' onclick='return addComment.moveForm( "comment-67987", "67987", "respond", "7000" )' aria-label='Reply to scarecrow'>Reply</a>      </div>
+     </div>
+<ul class="children">
+   <li class="comment odd alt depth-2 clearfix" id="li-comment-68053">
+	 <img alt='' src='http://2.gravatar.com/avatar/825b8edc14000cef41673d0bedc09474?s=38&#038;d=http%3A%2F%2Fwww.gravatar.com%2Favatar%2F61a58ec1c1fba116f8424035089b7c71%3Fs%3D32%26d%3D%26r%3DG&#038;r=g' srcset='http://2.gravatar.com/avatar/825b8edc14000cef41673d0bedc09474?s=76&amp;d=http%3A%2F%2Fwww.gravatar.com%2Favatar%2F61a58ec1c1fba116f8424035089b7c71%3Fs%3D32%26d%3D%26r%3DG&amp;r=g 2x' class='avatar avatar-38 photo' height='38' width='38' />     <div id="comment-68053">
+	  <div class="comment-meta commentmetadata clearfix">
+	    <strong>nope</strong> <span>September 27, 2015 at 4:35 pm	  </span>
+	  </div>
+	  
+      <div class="text">
+		  <p>apt-get install lshw</p>
+<p>&gt;_&lt;</p>
+	  </div>
+	  
+	  
+      <div class="reply">
+         <a rel='nofollow' class='comment-reply-link' href='http://www.binarytides.com/linux-get-gpu-information/?replytocom=68053#respond' onclick='return addComment.moveForm( "comment-68053", "68053", "respond", "7000" )' aria-label='Reply to nope'>Reply</a>      </div>
+     </div>
+</li><!-- #comment-## -->
+   <li class="comment even depth-2 clearfix" id="li-comment-68061">
+	 <img alt='' src='http://1.gravatar.com/avatar/d460d7fdb934f5821c097ca967ecbb62?s=38&#038;d=http%3A%2F%2Fwww.gravatar.com%2Favatar%2F61a58ec1c1fba116f8424035089b7c71%3Fs%3D32%26d%3D%26r%3DG&#038;r=g' srcset='http://1.gravatar.com/avatar/d460d7fdb934f5821c097ca967ecbb62?s=76&amp;d=http%3A%2F%2Fwww.gravatar.com%2Favatar%2F61a58ec1c1fba116f8424035089b7c71%3Fs%3D32%26d%3D%26r%3DG&amp;r=g 2x' class='avatar avatar-38 photo' height='38' width='38' />     <div id="comment-68061">
+	  <div class="comment-meta commentmetadata clearfix">
+	    <strong>George M Wallace</strong> <span>October 3, 2015 at 2:50 am	  </span>
+	  </div>
+	  
+      <div class="text">
+		  <p>You have to install lshw first</p>
+	  </div>
+	  
+	  
+      <div class="reply">
+         <a rel='nofollow' class='comment-reply-link' href='http://www.binarytides.com/linux-get-gpu-information/?replytocom=68061#respond' onclick='return addComment.moveForm( "comment-68061", "68061", "respond", "7000" )' aria-label='Reply to George M Wallace'>Reply</a>      </div>
+     </div>
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+   <li class="comment odd alt thread-odd thread-alt depth-1 clearfix" id="li-comment-66109">
+	 <img alt='' src='http://2.gravatar.com/avatar/e65a104beaaf0e8b0aafe3fc2937e1a7?s=38&#038;d=http%3A%2F%2Fwww.gravatar.com%2Favatar%2F61a58ec1c1fba116f8424035089b7c71%3Fs%3D32%26d%3D%26r%3DG&#038;r=g' srcset='http://2.gravatar.com/avatar/e65a104beaaf0e8b0aafe3fc2937e1a7?s=76&amp;d=http%3A%2F%2Fwww.gravatar.com%2Favatar%2F61a58ec1c1fba116f8424035089b7c71%3Fs%3D32%26d%3D%26r%3DG&amp;r=g 2x' class='avatar avatar-38 photo' height='38' width='38' />     <div id="comment-66109">
+	  <div class="comment-meta commentmetadata clearfix">
+	    <strong>inxiDev</strong> <span>April 23, 2014 at 12:50 am	  </span>
+	  </div>
+	  
+      <div class="text">
+		  <p>The graphic card id method you are showing is legacy, as I discovered recently with inxi and sgfxi, they started failing to report cards because they were relying on the VGA detection method, but in fact, there are now 3 different syntaxes being used to identify cards, and you cannot simply grep for them because the syntaxes are used either as a second feature of the card, like 3D controller, or Display Controller, OR those are being used to identify a real card. The only way to determine which it is is to also then check the pci bus id, and if it ends in .0, it&#8217;s a real graphic card. sgfxi had dual card detection which was failing because of this issue, it took a few user data sets to figure out and debug the issue. VGA always works, but will only return cards using the VGA id method, and it will miss all cards, often things like intel onboard cards.</p>
+<p>inxi -Gxx<br />
+Graphics:  Card: NVIDIA GT218 [GeForce 210] bus-ID: 02:00.0 chip-ID: 10de:0a65<br />
+           Display Server: X.Org 1.14.4 driver: nvidia Resolution: <a href="/cdn-cgi/l/email-protection#68595a50581059585a5c285f5d46580012">1280&#215;<span class="__cf_email__" data-cfemail="02333230364235372c326a78">[email&#160;protected]</span></a>, <a href="/cdn-cgi/l/email-protection#89b8bbb1b9f1b8b9bbbdc9bfb9a7b9e1f3">1280&#215;<span class="__cf_email__" data-cfemail="b687868482f680869886decc">[email&#160;protected]</span></a><br />
+           GLX Renderer: GeForce 210/PCIe/SSE2/3DNOW! GLX Version: 3.3.0 NVIDIA 337.12 Direct Rendering: Yes</p>
+<p>The last item, Direct Rendering, generally shows if the video driver is working, by the way. I don&#8217;t remember which release of inxi fixed this bug, but it&#8217;s certainly fixed now, in 2.1.20. I didn&#8217;t personally have a system that used alternate syntax for primary card id, but by good fortune I did have systems that showed the problem with the busID, for example, you can have a busid of 02.01.1 which is NOT a card, but just the 3D controller identifier for a VGA id&#8217;ed card at 02.01.0 . I have no idea who or what made this change, all I know is it happened sometime in the past 2 or 3 years. Obviously as well, VGA is a legacy term in the first place, which is I think why they moved to other terms. So there is no easy one step way any more to grep out card info, you have to look at the entire lspci or other info output, then find the ones that are at busid .0, which is what sgfxi and inxi now do.</p>
+<p>Your inxi review recently was good by the way, I liked it, thanks.</p>
+	  </div>
+	  
+	  
+      <div class="reply">
+         <a rel='nofollow' class='comment-reply-link' href='http://www.binarytides.com/linux-get-gpu-information/?replytocom=66109#respond' onclick='return addComment.moveForm( "comment-66109", "66109", "respond", "7000" )' aria-label='Reply to inxiDev'>Reply</a>      </div>
+     </div>
+</li><!-- #comment-## -->
+	</ul>
+<div style="height:30px;">
+<span style="float:left;">	
+ 
+</span>
+
+<span style="float:right;">	
+</span>
+</div>
+ 
+
+
+<div id="respond">
+
+<h2 id="commentsForm">Leave a comment</h2>
+
+<div class="cancel-comment-reply">
+	<small><a rel="nofollow" id="cancel-comment-reply-link" href="/linux-get-gpu-information/#respond" style="display:none;">Click here to cancel reply.</a></small>
+</div>
+
+
+<form action="http://www.binarytides.com/blog/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><label for="author">Name (required)</label>
+<input type="text" name="author" id="author" value="" size="22" tabindex="1" aria-required='true' />
+</p>
+
+<p><label for="email">Mail (will not be published) (required)</label>
+<input type="text" name="email" id="email" value="" size="22" tabindex="2" aria-required='true' />
+</p>
+
+<p><label for="url">Website</label>
+<input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+</p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: <code>&lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;s&gt; &lt;strike&gt; &lt;strong&gt; </code></small></p>-->
+
+<p><label for="comment">Comment</label>
+<textarea name="comment" id="comment" cols="100%" rows="10" tabindex="4"></textarea></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="5" value="POST COMMENT" />
+<input type='hidden' name='comment_post_ID' value='7000' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+</p>
+<p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="201"/></p>
+</form>
+
+</div>
+
+			</div>
+			</div>
+
+		</div>
+				
+		</div>
+		<!-- End #colLeftInner -->
+		</div>
+		<!-- End #colLeft -->
+
+<!-- Begin #colRight -->
+<div id="colRight">
+	
+	<div id="adsense_search" class="rightBox">
+<div class="widget_content">
+<form action="http://www.binarytides.com/search" id="cse-search-box">
+  <div>
+    <input type="hidden" name="cx" value="partner-pub-5814774904969415:4586881861" />
+    <input type="hidden" name="cof" value="FORID:10" />
+    <input type="hidden" name="ie" value="UTF-8" />
+<table><tr><td>
+    <input type="text" name="q" size="55" /></td><td>
+    <input type="submit" name="sa" value="Search" /></td></tr></table>
+  </div>
+</form>
+<script>!function(e,t,r,n,c,a,l){function i(t,r){return r=e.createElement('div'),r.innerHTML='<a href="'+t.replace(/"/g,'&quot;')+'"></a>',r.childNodes[0].getAttribute('href')}function o(e,t,r,n){for(r='',n='0x'+e.substr(t,2)|0,t+=2;t<e.length;t+=2)r+=String.fromCharCode('0x'+e.substr(t,2)^n);return i(r)}try{for(c=e.getElementsByTagName('a'),l='/cdn-cgi/l/email-protection#',n=0;n<c.length;n++)try{(t=(a=c[n]).href.indexOf(l))>-1&&(a.href='mailto:'+o(a.href,t+l.length))}catch(e){}for(c=e.querySelectorAll('.__cf_email__'),n=0;n<c.length;n++)try{(a=c[n]).parentNode.replaceChild(e.createTextNode(o(a.getAttribute('data-cfemail'),0)),a)}catch(e){}}catch(e){}}(document);</script><script type="text/javascript" src="http://www.google.com/coop/cse/brand?form=cse-search-box&lang=en"></script>
+
+</div></div>
+<!-- search box ends here -->
+<center>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- binarytides 300x250 sidebar -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:250px"
+     data-ad-client="ca-pub-5814774904969415"
+     data-ad-slot="7101063767"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
+<br /><center>
+<a target="_blank" href="http://feedburner.google.com/fb/a/mailverify?uri=binarytides&loc=en_US" style="display:block;"><img src="http://www.binarytides.com/free-linux-ebooks.png" /></a>
+</center>
+<br /><div class="rightBox"><span class="title">Connect with us</span><div class="widget_content"><ul class="lsi-social-icons icon-set-lsi_widget-2" style="text-align: left"><li class="lsi-social-facebook"><a class="tooltip" rel="nofollow" title="Facebook" aria-label="Facebook" href="https://www.facebook.com/binarytides" target="_blank"><i class="lsicon lsicon-facebook"></i></a></li><li class="lsi-social-twitter"><a class="tooltip" rel="nofollow" title="Twitter" aria-label="Twitter" href="https://twitter.com/binarytides" target="_blank"><i class="lsicon lsicon-twitter"></i></a></li><li class="lsi-social-gplus"><a class="tooltip" rel="nofollow" title="Google+" aria-label="Google+" href="https://plus.google.com/+binarytides" target="_blank"><i class="lsicon lsicon-gplus"></i></a></li><li class="lsi-social-rss"><a class="tooltip" rel="nofollow" title="RSS" aria-label="RSS" href="https://feedburner.google.com/fb/a/mailverify?uri=binarytides" target="_blank"><i class="lsicon lsicon-rss"></i></a></li></ul></div></div><div class="rightBox">
+<div class="wp_rp_wrap  wp_rp_modern" id="wp_rp_first"><div class="wp_rp_content"><span class="title">Other interesting stuff</span><div class="widget_content"><ul class="related_post wp_rp"><li data-position="0" data-poid="in-6936" data-post-type="none" ><a href="http://www.binarytides.com/glmark-linux-gpu-performance/" class="wp_rp_thumbnail"><img src="http://www.binarytides.com/blog/wp-content/uploads/2014/04/glmark-gpu-benchmark-150x150.png" alt="Benchmark graphics card (GPU) performance on Linux with glmark" width="150" height="150" /></a><a href="http://www.binarytides.com/glmark-linux-gpu-performance/" class="wp_rp_title">Benchmark graphics card (GPU) performance on Linux with glmark</a></li><li data-position="1" data-poid="in-6924" data-post-type="none" ><a href="http://www.binarytides.com/install-nvidia-drivers-linux-mint-16/" class="wp_rp_thumbnail"><img src="http://www.binarytides.com/blog/wp-content/uploads/2014/04/nvidia-linux-150x150.jpg" alt="How to install the latest Nvidia drivers on Linux Mint 16 Petra" width="150" height="150" /></a><a href="http://www.binarytides.com/install-nvidia-drivers-linux-mint-16/" class="wp_rp_title">How to install the latest Nvidia drivers on Linux Mint 16 Petra</a></li><li data-position="2" data-poid="in-7044" data-post-type="none" ><a href="http://www.binarytides.com/install-nvidia-drivers-ubuntu-14-04/" class="wp_rp_thumbnail"><img src="http://www.binarytides.com/blog/wp-content/uploads/2014/04/nvidia-linux-150x150.jpg" alt="How to install the latest Nvidia drivers on Ubuntu 14.04 Trusty Tahr" width="150" height="150" /></a><a href="http://www.binarytides.com/install-nvidia-drivers-ubuntu-14-04/" class="wp_rp_title">How to install the latest Nvidia drivers on Ubuntu 14.04 Trusty Tahr</a></li><li data-position="3" data-poid="in-8087" data-post-type="none" ><a href="http://www.binarytides.com/monitor-nvidia-gpu-temperature-kubuntu/" class="wp_rp_thumbnail"><img src="http://www.binarytides.com/blog/wp-content/plugins/wordpress-23-related-posts-plugin/static/thumbs/21.jpg" alt="How to monitor nvidia gpu temperature on Kubuntu 16.10" width="150" height="150" /></a><a href="http://www.binarytides.com/monitor-nvidia-gpu-temperature-kubuntu/" class="wp_rp_title">How to monitor nvidia gpu temperature on Kubuntu 16.10</a></li><li data-position="4" data-poid="in-7334" data-post-type="none" ><a href="http://www.binarytides.com/linux-check-processor/" class="wp_rp_thumbnail"><img src="http://www.binarytides.com/blog/wp-content/uploads/2014/07/linux-hwloc-150x150.png" alt="How to check processor and cpu details on Linux" width="150" height="150" /></a><a href="http://www.binarytides.com/linux-check-processor/" class="wp_rp_title">How to check processor and cpu details on Linux</a></li><li data-position="5" data-poid="in-7116" data-post-type="none" ><a href="http://www.binarytides.com/ubuntu-fix-nvidia-graphics/" class="wp_rp_thumbnail"><img src="http://www.binarytides.com/blog/wp-content/uploads/2014/04/nvidia-linux-150x150.jpg" alt="Fix low resolution grub and splash screen with Nvidia drivers on Ubuntu 14.04" width="150" height="150" /></a><a href="http://www.binarytides.com/ubuntu-fix-nvidia-graphics/" class="wp_rp_title">Fix low resolution grub and splash screen with Nvidia drivers on Ubuntu 14.04</a></li></ul></div></div>
+</div></div><center>
+<!-- BEGIN IFRAME TAG - binarytides.com RON Global Display Rev Share < - DO NOT MODIFY -->
+<IFRAME SRC="http://ads.cpxinteractive.com/tt?id=2151978&size=300x250&referrer=binarytides.com" FRAMEBORDER="0" SCROLLING="no" MARGINHEIGHT="0" MARGINWIDTH="0" TOPMARGIN="0" LEFTMARGIN="0" ALLOWTRANSPARENCY="true" WIDTH="300" HEIGHT="250"></IFRAME>
+<!-- END TAG -->
+</center>
+</div>
+<!-- End #colRight -->	
+
+</div>
+<!-- end of colwrap -->
+
+</div>
+		<!-- end content -->
+	
+	</div>
+	<!-- end wrapper -->
+	<!-- begin footer -->
+	
+	<div id="footer">
+		<div id="copyrightInner">
+
+<div style="line-height:32px;">			
+
+<div id="footer_links">
+	<a href="/about">About us</a>
+	<a href="/contact">Contact us</a>
+	<a href="/faq">Faq</a>
+	<a href="/advertise">Advertise</a>
+	<a href="/privacy">Privacy Policy</a>
+<!--	<a href="/terms">Terms of Service</a>-->
+</div>
+
+Copyright &copy; 2017 BinaryTides
+
+</div>
+		
+
+		</div>
+
+
+
+	</div>
+	<!-- end footer -->
+
+	
+
+<!-- google analytics event tracking -->
+<script type="text/javascript">
+
+if(window.jQuery)
+{
+
+jQuery(document).ready(function() {
+
+jQuery('li.SPOSTARBUST-Related-Post a').click(function() 
+{ 
+	ga('send', 'event', 'clicks', 'related_posts_right', $(this).html(), {'nonInteraction': 1});
+});
+	
+//For adverts and offers, save the href/link
+jQuery('a.offer').click(function() 
+{ 
+//	_gaq.push(['_trackEvent', 'clicks', 'offer', $(this).attr('href') , 5, true]);
+});
+
+jQuery('.postBoxMidInner p img').closest('p').css('clear','both');
+
+
+// detect ad blocking
+if( jQuery('.adcontent').height() == 0 )
+{
+	// console.log('Sad. You have ad blocker enabled');
+	ga('send', 'event', 'adblocks', 'adblocks', 'adblocks', {'nonInteraction': 1});
+
+	// add some content to the empty ad area
+}
+});
+
+}
+
+</script>
+
+
+
+<!-- Quantcast Tag -->
+<script type="text/javascript">
+var _qevents = _qevents || [];
+
+(function() {
+var elem = document.createElement('script');
+elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+elem.async = true;
+elem.type = "text/javascript";
+var scpt = document.getElementsByTagName('script')[0];
+scpt.parentNode.insertBefore(elem, scpt);
+})();
+
+_qevents.push({
+qacct:"p-PydpEyknvJJzJ"
+});
+</script>
+
+<noscript>
+<div style="display:none;">
+<img src="//pixel.quantserve.com/pixel/p-PydpEyknvJJzJ.gif" border="0" height="1" width="1" alt="Quantcast"/>
+</div>
+</noscript>
+<!-- End Quantcast tag --><script type='text/javascript' src='http://www.binarytides.com/blog/wp-content/plugins/akismet/_inc/form.js?ver=3.2'></script>
+<link rel='stylesheet' id='yarppRelatedCss-css'  href='http://www.binarytides.com/blog/wp-content/plugins/yet-another-related-posts-plugin/style/related.css?ver=4.7.6' type='text/css' media='all' />
+<link rel='stylesheet' id='lsi-style-css'  href='http://www.binarytides.com/blog/wp-content/plugins/lightweight-social-icons/css/style-min.css?ver=0.9' type='text/css' media='all' />
+<style id='lsi-style-inline-css' type='text/css'>
+
+			.icon-set-lsi_widget-2 a, 
+			.icon-set-lsi_widget-2 a:visited, 
+			.icon-set-lsi_widget-2 a:focus {
+				border-radius: 2px;
+				background: #1E72BD !important;
+				color: #FFFFFF !important;
+				font-size: 32px !important;
+			}
+			.icon-set-lsi_widget-2 a:hover {
+				background: #dd3333 !important;
+				color: #FFFFFF !important;
+			}
+</style>
+<script type='text/javascript' src='http://www.binarytides.com/blog/wp-includes/js/wp-embed.min.js?ver=4.7.6'></script>
+<script type='text/javascript' src='http://www.binarytides.com/blog/wp-content/plugins/lightweight-social-icons/js/jquery.tooltipster.min.js?ver=0.9'></script>
+</body>
+</html>
+<!-- *´¨)
+     ¸.•´¸.•*´¨) ¸.•*¨)
+     (¸.•´ (¸.•` ¤ Comet Cache is Fully Functional ¤ ´¨) -->
+
+<!-- Cache File Version Salt:       n/a -->
+
+<!-- Cache File URL:                http://www.binarytides.com/linux-get-gpu-information/ -->
+<!-- Cache File Path:               /cache/comet-cache/cache/http/www-binarytides-com/linux-get-gpu-information.html -->
+
+<!-- Cache File Generated Via:      HTTP request -->
+<!-- Cache File Generated On:       Sep 19th, 2017 @ 10:39 pm UTC -->
+<!-- Cache File Generated In:       0.23465 seconds -->
+
+<!-- Cache File Expires On:         Sep 26th, 2017 @ 10:39 pm UTC -->
+<!-- Cache File Auto-Rebuild On:    Sep 26th, 2017 @ 10:39 pm UTC -->
+
+<!-- Loaded via Cache On:    Sep 23rd, 2017 @ 3:42 pm UTC -->
+<!-- Loaded via Cache In:    0.00968 seconds -->
