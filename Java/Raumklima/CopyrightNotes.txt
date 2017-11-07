@@ -69,7 +69,8 @@ jeweiligen Funktion klicken und den Anweisungen folgen.
 Hinweis: Immer wenn hinter einem Knopf eine Tastenkombination in Klammern steht, können Sie diese Funktion auch durch drücken dieser
 Tastenkombination aufrufen.
 
- 
+Darüber hinaus besteht die Möglichkeit zu Zoomen. Diese Funktion kann verwendet werden, indem Sie den gewünschten Bereich,
+beginnend von links oben, markieren. Um heraus zu zoomen, beginnen Sie das markieren von rechts unten.
  
  
  
@@ -85,18 +86,21 @@ betätigen, aktiviert sich das kleinere Display wieder und zeigt die erste Menü
 bezeichnet werden. Auf den Menüseiten wird der Knopf die jeweilige Funktion umschalten. Wenn z.B. die Menüseite „Haupt-LCD Status“
 angezeigt wird, wird das drücken des Rechten Knopfes des Status des Hauptbildschirms von „AN“ nach „AUS“, oder umgekehrt, ändern. 
  
- 
+Um Werte aufzuzeichnen, stellen Sie bitte sicher, dass Sie den gewünschten Modus (Physik/Geographie) in den Einstellungen des Geräts
+gewählt haben und navigieren Sie zur Menüseite „Aufzeichnung“ und starten die Aufzeichnung durch drücken des rechten Knopfes.
  
  
 Benutzte Bibliotheken:
     Java Programm:
         -JFreeChart
         -jSerialComm
+        -Standard Java
     
     Arduino:
         -LiquidCrystal_I2C
         -DS3232RTC
         -TimeLib
+        -Time
         -Arduino
         -Wire
         -SPI
@@ -105,3 +109,5 @@ Benutzte Bibliotheken:
         -Adafruit_Sensor
         -Adafruit_BME280
         -hx711
+        -LowPower
+        -MQ135

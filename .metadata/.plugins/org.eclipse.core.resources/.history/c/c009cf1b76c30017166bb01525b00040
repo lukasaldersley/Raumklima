@@ -1852,8 +1852,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     /*
-    * für zukünftige funktionen; wird gegenwärtig nicht verwendet 
-    */
+     * für zukünftige funktionen; wird gegenwärtig nicht verwendet 
+     */
     @SuppressWarnings("unused")
     private int numberOfLinesInFile(File inputFile) {
         //https://stackoverflow.com/questions/453018/number-of-lines-in-a-file-in-java
@@ -1891,13 +1891,14 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      */
     @Override
     public void chartMouseClicked(ChartMouseEvent e) {
-
+        
         Rectangle2D rectangle2D = chartPanel.getScreenDataArea();
         XYPlot xYPlot = (XYPlot)jFreeChart.getPlot();
         ValueAxis valueAxis = xYPlot.getDomainAxis();
         double x = valueAxis.java2DToValue((double)e.getTrigger().getX(), rectangle2D, RectangleEdge.BOTTOM);
         xCrosshair.setValue(x);
-
+        
+        
         /*int x=e.getTrigger().getX();
         int maxRAW=chartPanel.getWidth();
         double minCAL=chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().getX();
@@ -1907,17 +1908,12 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         xCrosshair.setValue(x);*/
         int correctedIndex=0;
         for (int i = 0; i < numberOfGraphs; ++i) {
-            try {
-                if(graphIsVisible[i]){
-                    dataBoxes[i].setText(String.valueOf(new DecimalFormat("###.#").format(xYSeries[correctedIndex].getY((int)x).doubleValue())));//https://stackoverflow.com/questions/13210491/math-round-java antwort von arshajii
-                    correctedIndex++;
-                }
-                else{
-                    dataBoxes[i].setText("N/A (ausgeblendet)");
-                }
+            if(graphIsVisible[i]){
+                dataBoxes[i].setText(String.valueOf(new DecimalFormat("###.#").format(xYSeries[correctedIndex].getY((int)x).doubleValue())));//https://stackoverflow.com/questions/13210491/math-round-java antwort von arshajii
+                correctedIndex++;
             }
-            catch(ArrayIndexOutOfBoundsException ex) {
-                log(ex);
+            else{
+                dataBoxes[i].setText("N/A (ausgeblendet)");
             }
         }
     }
@@ -1949,7 +1945,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         ValueAxis valueAxis = xYPlot.getDomainAxis();
         double x = valueAxis.java2DToValue((double)e.getTrigger().getX(), rectangle2D, RectangleEdge.BOTTOM);
         xCrosshair.setValue(x);
-
+        
         /*int x=e.getTrigger().getX();
         int maxRAW=chartPanel.getWidth();
         double minCAL=chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().getX();
@@ -1959,14 +1955,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         xCrosshair.setValue(x);*/
         int correctedIndex=0;
         for (int i = 0; i < numberOfGraphs; ++i) {
-            try {
-                if(graphIsVisible[i]){
-                    yCrosshairs[i].setValue(xYSeries[correctedIndex].getY((int)x).doubleValue());
-                    correctedIndex++;
-                }
-            }
-            catch(ArrayIndexOutOfBoundsException ex) {
-                log(ex);
+            if(graphIsVisible[i]){
+                yCrosshairs[i].setValue(xYSeries[correctedIndex].getY((int)x).doubleValue());
+                correctedIndex++;
             }
         }
     }
