@@ -1,9 +1,6 @@
-#include <avr/sleep.h>
-#include <avr/wdt.h>
-#include <Arduino.h>
-#include <LiquidCrystal.h>
 #include "DS3232RTC.h"
 #include <TimeLib.h>
+#include <Time.h>
 #include <LiquidCrystal_I2C.h>
 #include <Wire.h>
 #include <SPI.h>
@@ -11,82 +8,54 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 #include <Servo.h>
-#include "hx711.h"
+#include <LowPower.h>
+#include <hx711.h>
+#include "MQ135.h"
+
+#define SERVO_PIN 5
+#define HX711_CLK A0
+#define HX711_DAT A1
+#define SERVO_MAX 180
+#define SERVO_MIN 10
+
+#define MenuInterruptNumber 1
+#define ValueInterruptNumber 0
+#define SD_PIN 4
+#define BRIGHTNESS_SENSOR_A_PIN A2
+#define BRIGHTNESS_SENSOR_B_PIN A3
+#define LOUDNESS_SENSOR_PIN A5
+#define CO2_PIN A4
+#define POWER_ON true
+#define POWER_OFF false
+#define VERSION "1.0.0.0"
+#define PWR_PIN 6
 
 
-//SETUP FOR SLEEP-----------------------------------------------------------------------------------------------------------------------------------------------
-//von http://www.gammon.com.au/forum/?id=11497 Sketch H
-// watchdog interrupt
-ISR (WDT_vect)
-{
-  wdt_disable();  // disable watchdog
-}  // end of WDT_vect
 
+bool pwr = true; //hier wird gespeichert ob sich der controller im schlafmodus befinden sollte
+time_t t;
 
-//INFORMATION----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/**
-  Files/Examples/Websites referenced in this sketch
+MQ135 CO2_SENSOR=MQ135(CO2_PIN);
 
-  Websites:
-  -https://www.sunfounder.com/learn/Super-Kit-V2-0-for-Arduino/lesson-8-lcd1602-super-kit.html              File:LCD1602SunFounder.htm
-  Files/Examples:
-  -SD\ReadWrite
-*/
+Hx711 scale(HX711_DAT, HX711_CLK);
+File file;
+Adafruit_BME280 BME280;
+LiquidCrystal_I2C directLcd(0x26, 20, 4);
+LiquidCrystal_I2C indirectLcd(0x27, 16, 2);
+Servo servo;
 
-//PINS-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+String titles = "Temperatur (in C);Luftfeuchtigkeit (in %);Luftdruck (in hPa);Helligkeit (0%-100%);CO2-Level (ppm);Lautstärke (#Einheit)";
 
-/*INTERRUPTS:
-  -pin 2: Interrupt0//MENU
-  -pin 3: Interrupt1//increaseValue
-  -pin 18: interrupt5
-  -pin 19: interrupt4
+int nextWake;
+int minutesPriorToWakeTime = 5;
+int wakeRate = 6;
 
-  UNBENUTZBAR WEGEN Iï¿½C
-  -pin 20 (=SDA): Interrupt5
-  -pin 21 (=SCL): Interrupt6
-*/
-
-const int SD_PIN = 8;
-const int BRIGHTNESS_PIN = A2;
-const int LOUDNESS_PIN = A3;
-const int MQ_2_PIN = A0;
-const int MQ_135_PIN = A1;
-
-const int DIRECT_LCD_RS_PIN = 49;
-const int DIRECT_LCD_E_PIN = 47;
-const int DIRECT_LCD_CONTRAST_PIN = 45;
-const int DIRECT_LCD_BACKLIGHT_PIN = 44;
-const int DIRECT_LCD_D4_PIN = 41;
-const int DIRECT_LCD_D5_PIN = 39;
-const int DIRECT_LCD_D6_PIN = 37;
-const int DIRECT_LCD_D7_PIN = 35;
-
-
-const bool POWER_ON = true;
-const bool POWER_OFF = false;
-
-byte Port_A;
-byte Port_B;
-byte Port_C;
-byte Port_D;
-byte Port_E;
-byte Port_F;
-byte Port_G;
-byte Port_H;
-byte Port_J;
-byte Port_K;
-byte Port_L;
-
-int nextWakeTime;
-int minutesPriorToWakeTime = 15;
-int wakeTimeDistance = 6;
-
-//GENERAL SYSTEM VARS--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//GENERAL SYSTEM VARS--
 boolean directLcdEnabled = true;
 boolean indirectLcdEnabled = false;
 boolean needsUpdate = false;
 boolean needsValueUpdate = false;
-boolean physik = false;
+boolean physik = true;
 boolean recording = false;
 boolean sending = false;
 boolean  SDFail = true;
@@ -95,13 +64,11 @@ int changeScreenThreshold = 10;
 int displayCounter = 0;
 int menuPage = 0;
 int directLcdContrast = 75;
-int directLcdBrightness = 255;
-
+int indirectLcdrightness = 255;
 
 long baudrate = 115200;
-
 String sendoff = "";
-String fileName = "";
+String fileName = "NICHTS";
 String recievedCommand = "";
 
 unsigned long lastMenuTime = 0;
@@ -110,92 +77,60 @@ unsigned long lastData;
 unsigned long counter = 0;
 boolean servoIsTipped = false;
 int servoValue = 0;
-int SERVO_MAX=180;
-int SERVO_MIN=10;
-const int SERVO_PIN=9;
+int phC = 0;
 
-
-byte AE[8] = {
-  0b01010,
-  0b00000,
-  0b01110,
-  0b10001,
-  0b11111,
-  0b10001,
-  0b10001,
-  0b00000
-};
-
-byte OE[8] = {
-  0b01010,
-  0b00000,
-  0b01110,
-  0b10001,
-  0b10001,
-  0b10001,
-  0b01110,
-  0b00000
-};
-
-byte UE[8] = {
-  0b01010,
-  0b00000,
-  0b10001,
-  0b10001,
-  0b10001,
-  0b10001,
-  0b01110,
-  0b00000
-};
-
-
-//DEVICES--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-File file;
-Adafruit_BME280 BME280;
-LiquidCrystal directLcd(DIRECT_LCD_RS_PIN, DIRECT_LCD_E_PIN, DIRECT_LCD_D4_PIN, DIRECT_LCD_D5_PIN, DIRECT_LCD_D6_PIN, DIRECT_LCD_D7_PIN);
-LiquidCrystal_I2C indirectLcd(0x27, 16, 2);
-Servo servo;
-
-
-//DATA VARS------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-double TOTAL_Temperature = 0.0;
-double BME280_Airpressure = 0.0;
-double BME280_Temperature = 0.0;
-double BME280_Humidity = 0.0;
+//DATA VARS
+double Airpressure = 0.0;
+double Temperature = 0.0;
+double Humidity = 0.0;
 double RTC_Temperature = 0.0;
-double Loudness = 0.0;
-double Brightness = 0.0;
-double MQ_2_Value = 0.0;
-double MQ_135_Value = 0.0;
+double LOUD = 0.0;
+double LDR = 0.0;
+double CO2 = 0.0;
+double RAIN = 0.0;
 
-//METHODS--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//METHODS--
+//
 
-//INITIALISATION-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//INITIALISATION-
 void setup() {
-  servo.attach(SERVO_PIN);
   Serial.begin(115200);
+  Serial.println("STARTING");
+  for (int i = 0; i < 54; i++) {
+    digitalWrite(i, LOW);
+  }
+  digitalWrite(PWR_PIN,HIGH);
+  delay(10);
+  Serial.println("HELLO WORLD; I AM INITIALIZING");
+  attachInterrupt(MenuInterruptNumber, iterateMenu, RISING);
+  servo.attach(SERVO_PIN);
+  servo.write(SERVO_MIN);
+  scale.setOffset(8751100);
+  scale.setScale(414.63);
+  initBoard();
+}
+
+void initBoard() {
+  digitalWrite(PWR_PIN,HIGH);
   Serial.println("INITING");
 
-  analogWrite(DIRECT_LCD_CONTRAST_PIN, directLcdContrast);
-  analogWrite(DIRECT_LCD_BACKLIGHT_PIN, directLcdBrightness);
+  //analogWrite(DIRECT_LCD_CONTRAST_PIN, directLcdContrast);
+  //analogWrite(DIRECT_LCD_BACKLIGHT_PIN, indirectLcdrightness);
 
   indirectLcd.init();
   indirectLcd.noBacklight();
-
-  directLcd.begin(20, 4);
+  Serial.println("I_DIR_LCD");
+  directLcd.init();//.begin(20, 4);
   directLcd.clear();
+  directLcd.backlight();
   directLcd.print("Initialisieren...");
-
-  createChars();
-
+  Serial.println("LCD_DONE");
   //pinMode(3, INPUT); //ich hab den widerstand auf dem board vergessen deswegen der interne
-  //attachInterrupt(1, alwaysInterruptButton_Push, RISING);
-  attachInterrupt(0, iterateMenu, RISING); //TODO ï¿½berlegen
-  attachInterrupt(1, increaseValue, RISING);
-
+  attachInterrupt(ValueInterruptNumber, increaseValue, RISING);
+  Serial.println("INTERRUPT");
   directLcd.setCursor(0, 1);
+  time_t tGET = RTC.get();
+  Serial.println("TIME: " + String(day(tGET)) + "." + month(tGET) + "." + year(tGET) + " " + hour(tGET) + ":" + minute(tGET) + ":" + second(tGET));
   directLcd.print("SD-Karte: ");
   if (!SD.begin(SD_PIN)) { //readWrite Sample   //INITIALIZE SD-CARD
     Serial.println("SD-FAIL");
@@ -207,106 +142,59 @@ void setup() {
     directLcd.print("OK");
     SDFail = false;
   }
+  Serial.println("SD");
 
-  /*fileName = getTimeName();
-    Serial.println(fileName);
-    directLcd.setCursor(0, 2);
-    directLcd.print("DATEINAME fuer CSV:");
-    directLcd.setCursor(0, 3);
-    directLcd.print(fileName);*/
-
-  Serial.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;RTC_Temperature;TOTAL_Temperature;Brightness;Loudness;MQ2;MQ135");
+  Serial.println(titles);
 
   delay(500);
   directLcd.clear();
   directLcd.print("SD-Schreibzugriff:");
   directLcd.setCursor(0, 1);
 
-
   directLcd.setCursor(0, 2);
   directLcd.print("BME280: ");
-  BME280.begin();
+  if(BME280.begin()){
   directLcd.print("OK");
+  }
+  else{
+    directLcd.print("ERROR");
+    Serial.print("!!!WARNING!!!\n\n\nBME280 NOT AVAILABLE\n\n\n!!!WARNING!!!\n\n\n\n\n\n");
+    delay(1000);
+  }
   delay(500);
-  //directLcd.clear();
-  //directLcd.print("FERTIG!");
-  //directLcd.setCursor(0, 2);
-  //directLcd.print("DATEINAME fuer CSV:");
-  //directLcd.setCursor(0, 3);
-  //directLcd.print(fileName);
-  //delay(2000);
 }
 
-//GET SENSOR DATA-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void getSensorData() {
-  getBMEValues();
-  getRTCValues();
-  getLoudnessValues();
-  getBrightnessValues();
-  getTemperatureValues();
-  getGasValues();
+//OUTPUT DATA--
+/*
+ * Liest die Sensodradten und berechnet falls nötig die durchschnitte
+*/
+void getData() {
+  Temperature = BME280.readTemperature();
+  Airpressure = BME280.readPressure() / 100; // /100 um von Pa auf hPa umzurechnen
+  Humidity = BME280.readHumidity();
+
+  LDR = analogRead(BRIGHTNESS_SENSOR_A_PIN);
+  LDR += analogRead(BRIGHTNESS_SENSOR_B_PIN);
+  LDR = LDR / 2.0;
+  LDR = map(LDR, 0, 1023, 0, 100);//von ADC-Data in % umwandeln
+  LOUD = analogRead(LOUDNESS_SENSOR_PIN);
+  LOUD = map(LOUD, 0, 1023, 0, 100);//von ADC-Data in % umwandeln
+  CO2 = CO2_SENSOR.getPPM();
+  sendoff = String(Temperature) + ";" + Humidity + ";" + Airpressure + ";" + LDR + ";" + CO2 + ";" + LOUD;
+  if (!physik) {
+    RAIN = scale.getGram();
+    flipServo();//servo auskippen
+    RAIN = scale.getGram() - RAIN;
+    RAIN=RAIN/4.8175;//umrechnung von g in mm/m²
+    flipServo();//aufrichten
+    sendoff += ";";
+    sendoff += RAIN;
+  }
 }
 
-void getGasValues() {
-  MQ_2_Value = analogRead(MQ_2_PIN) / 10;
-  MQ_135_Value = analogRead(MQ_135_PIN) / 10;
-}
-
-void getRTCValues() {
-  RTC_Temperature = RTC.temperature() / 4.0;
-}
-
-void getBMEValues() {
-  BME280_Temperature = BME280.readTemperature();
-  BME280_Airpressure = BME280.readPressure() / 1000.00;
-  BME280_Humidity = BME280.readHumidity();
-}
-
-void getTemperatureValues() {
-  TOTAL_Temperature = (BME280_Temperature + RTC_Temperature) / 2.0;
-}
-
-void getBrightnessValues() {
-  Brightness = analogRead(BRIGHTNESS_PIN);
-  Brightness = map(Brightness, 0, 1023, 100, 0);
-}
-
-void getLoudnessValues() {
-  Loudness = analogRead(LOUDNESS_PIN);
-}
-
-//PREPARE DATA----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void constructSendoffString() {
-  sendoff = "";
-  sendoff += BME280_Temperature;
-  sendoff += ";";
-  sendoff += BME280_Humidity;
-  sendoff += ";";
-  sendoff += BME280_Airpressure;
-  sendoff += ";";
-  sendoff += RTC_Temperature;
-  sendoff += ";";
-  sendoff += TOTAL_Temperature;
-  sendoff += ";";
-  sendoff += Brightness;
-  sendoff += ";";
-  sendoff += Loudness;
-  sendoff += ";";
-  sendoff += MQ_2_Value;
-  sendoff += ";";
-  sendoff += MQ_135_Value;
-  sendoff += ";";
-  sendoff += (double)((millis() - lastData) / 10.0);
-  lastData = millis();
-  sendoff.replace('.', ',');
-}
-
-//OUTPUT DATA-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void getDATA() {
-  getSensorData();
-  constructSendoffString();
-}
-
+/*
+ * Shreibt den inhalt der String varaible sendoff in die datei auf der sd-karte, sofern beim start eine sd-karte erkannt wurde
+ */
 void printDataToSD() {
   if (!SDFail) {
     counter++;
@@ -331,64 +219,100 @@ void printDataToSD() {
   }
 }
 
+/*
+ * Sendet inhalt der String variable sendoff an den Serielle port
+ */
 void printDataToUART0() { //Main Serial Port
   Serial.println(sendoff);
 }
 
-void printDataToUART2() { //BT-Module
-  int x = ((int)(sendoff.length()));
-  //Serial.println(x);
-  for (int i = x; i < 140; i++) { //sollten 140 zeichen sein
-    sendoff += "X";
-  }
-  x = ((int)(sendoff.length()));
-  //Serial.println(x);
-  Serial2.print(sendoff);
-}
-
-//CRUCIAL SYSTEM METHODS------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void(*resetSystem)(void) = 0; //RESETS THE SYSTEM
-
 void loop() {
-
-  if (Serial.available()) {
-    recievedCommand = Serial.readString();
-    Serial.println("RECIEVED: " + recievedCommand);
+  if (!pwr) { //board SOLLTE im schalfmodus sein und NICHT in der normalen ausführung und wird deshalb in den schlafmodus geschickt
+    sleepUntil(nextWake, minutesPriorToWakeTime);
   }
-  if (!recievedCommand.equals("")) {
-    if (recievedCommand.equals("READY")) {
-      if (!SDFail) {
-        sending = true;
-        Serial.println("OK");
-        Serial.println(counter);
-        file.close();
-        file = SD.open(fileName);
-        if (file) {
-          for (unsigned long i = 0; i < counter; i++) {
-            Serial.println(file.readString());
+
+  if (Serial.available()) {//Falls befehle von der Software an das gerät gesendet weren (Einstellungen, Versionsabfragen, Zeitdefinitionen etc. wird das hier verarbeitet
+    recievedCommand = Serial.readString();
+    recievedCommand.trim();//möglicherweise vorhandenene zeilenvorschübe entfernen
+    recievedCommand.replace("\r", "");
+    recievedCommand.replace("\n", "");
+    recievedCommand.trim();
+    Serial.println("RECIEVED: " + recievedCommand);
+    if (!recievedCommand.equals("")) {
+      if (recievedCommand.startsWith("VERSION")) {
+        Serial.println(VERSION);
+      }
+      else if (recievedCommand.startsWith("LCD")) {//Haupt lcd status setzen
+        directLcdEnabled = recievedCommand.endsWith("ON");
+        if (directLcdEnabled) {
+          directLcd.backlight();
+        }
+        else {
+          directLcd.noBacklight();
+        }
+      }
+      else if (recievedCommand.startsWith("REC")) {//status der aufzeichnung setzen
+        recording = recievedCommand.endsWith("ON");
+        Serial.print("REC: ");
+        Serial.println(recording);
+        if (recording) {
+          fileName = getTimeName();//von der RTC die zeit holenn und nen dateinamen draus basteln
+          file = SD.open(fileName, FILE_WRITE);
+          if (file) {//Titelzeile für die Aufzeichnung schreiben
+            if (physik) {
+              file.println(titles);
+            }
+            else {
+              file.println(titles + ";Niederschlagsmenge (in mm)");
+            }
+            file.close();
+            Serial.println("OK");
+          }
+          else {
+            Serial.println("FAIL");
           }
         }
         else {
-          file.close();
-          file = SD.open(fileName);
-          if (file) {
-            for (unsigned long i = 0; i < counter; i++) {
-              Serial.println(file.readString());
-            }
-          }
+          Serial.println("N/A");
         }
-        sending = false;
       }
-      else {
-        Serial.print("FAILED");
-        //TODO in DESKTOP
+      else if (recievedCommand.startsWith("GETTIME")) {//RTC zeit senden (für debugging/kontrolle)
+        Serial.println("sending time Info:");
+        time_t tGET = RTC.get();
+        t=RTC.get();
+        Serial.println("TIME: " + String(day(tGET)) + "." + month(tGET) + "." + year(tGET) + " " + hour(tGET) + ":" + minute(tGET) + ":" + second(tGET));
+      }
+      else if (recievedCommand.startsWith("SETTIME")) {//bsp: "SETTIME_02.11.2017_22.13.00"           //setzt die zeit der RTC und gibt die gesetzte zeit zur kontrolle aus
+        Serial.println("SETTING TIME");
+        time_t tSET;
+        tmElements_t tm;
+        Serial.println(CalendarYrToTm(recievedCommand.substring(14, 18).toInt()));
+        tm.Year = CalendarYrToTm(recievedCommand.substring(14, 18).toInt());
+        Serial.println(recievedCommand.substring(11, 13).toInt());
+        tm.Month = recievedCommand.substring(11, 13).toInt();
+        Serial.println(recievedCommand.substring(8, 10).toInt());
+        tm.Day = recievedCommand.substring(8, 10).toInt();
+        Serial.println(recievedCommand.substring(19, 21).toInt());
+        tm.Hour = recievedCommand.substring(19, 21).toInt();
+        Serial.println(recievedCommand.substring(22, 24).toInt());
+        tm.Minute = recievedCommand.substring(22, 24).toInt();
+        Serial.println(recievedCommand.substring(25, 27).toInt());
+        tm.Second = recievedCommand.substring(25, 27).toInt();
+        tSET = makeTime(tm);
+        Serial.println("TIME (SET): " + String(day(tSET)) + "." + month(tSET) + "." + year(tSET) + " " + hour(tSET) + ":" + minute(tSET) + ":" + second(tSET));
+        Serial.print("RETURNED: ");
+        Serial.println(RTC.set(tSET));//wenns '0' ist wars erfolgreich, sonst nicht
+        time_t tGET = RTC.get();
+        Serial.println("TIME (GET): " + String(day(tGET)) + "." + month(tGET) + "." + year(tGET) + " " + hour(tGET) + ":" + minute(tGET) + ":" + second(tGET));
+        t=RTC.get();
       }
     }
+    delay(1000);//zum entschleunigen
   }
 
-  if (!sending) {
+  if (!sending) {//für ein noch nicht verwendetes feature (es gibt einen auto-updater, deshalb wird es vermutlich in zukunft verwendet werden
 
-    if (needsUpdate) {
+    if (needsUpdate) {//wenn auf eine anderen Menüseite gewechselt wird, geschieht das hier
       Serial.println("AN UPDATE IS NEEDED");
       if (menuPage == 0) {
         needsUpdate = false;
@@ -403,16 +327,14 @@ void loop() {
         indirectLcd.setCursor(0, 1);
         if (!SDFail) {
           if (recording) {
-            indirectLcd.print("L");
-            indirectLcd.write(0);
-            indirectLcd.print("UFT");
+            indirectLcd.print("LAEUFT");
           }
           else {
             indirectLcd.print("GESTOPPT");
           }
         }
         else {
-          indirectLcd.print("NICHT VERFÃœGBAR");
+          indirectLcd.print("NICHT VERFUEGBAR");
         }
       }
       else if (menuPage == 2) {
@@ -446,44 +368,53 @@ void loop() {
       }
     }
 
-    if (needsValueUpdate) {
-      if (menuPage == 1) {
+    if (needsValueUpdate) {//falls teile auf einem Display abgeändert werden müssen bzw. aufzeichnung oder displays an/ausgeschaltet werden, geschieht das hier
+      if (menuPage == 1) {//menüseite für die aufzeichnung
         needsValueUpdate = false;
         recording = !recording;
         indirectLcd.clear();
         indirectLcd.print("AUFZEICHNUNG:");
         indirectLcd.setCursor(0, 1);
-        if (recording) {
+        if (recording) {//wenn die aufzeichnung noch nicht läuft, starten, sonst stoppen
           fileName = getTimeName();
           file = SD.open(fileName, FILE_WRITE);
           if (file) {
-            //file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness;MQ2;MQ135;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity");
-            file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;RTC_Temperature;TOTAL_Temperature;Brightness;Loudness;MQ2;MQ135;");
+            if (physik) {
+              file.println(titles);
+            }
+            else {
+              file.println(titles + ";Niederschlagsmenge (in mm)");
+            }
             file.close();
             //directLcd.print("OK");
+            indirectLcd.print("LAEUFT");
           }
           else {//RETRY ONCE MORE
             file = SD.open(fileName, FILE_WRITE);
             if (file) {
               Serial.println("SD FAILED ONCE While writing the titles");
-              //file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness;MQ2;MQ135;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity");
-              file.println("BME280_Temperature;BME280_Humidity;BME280_Airpressure;RTC_Temperature;TOTAL_Temperature;Brightness;Loudness;MQ2;MQ135;");
+              if (physik) {
+                file.println(titles);
+              }
+              else {
+                file.println(titles + ";Niederschlagsmenge (in mm)");
+              }
               file.close();
               //directLcd.print("OK");
+              indirectLcd.print("LAEUFT");
             }
             else {
               Serial.println("SD FAILED twice While writing the titles");
-              indirectLcd.print("NICHT mÃ¶glich!");
+              indirectLcd.print("NICHT moeglich!");
             }
           }
 
-          indirectLcd.print("LAEUFT");
         }
         else {
           indirectLcd.print("GESTOPPT");
         }
       }
-      else if (menuPage == 2) {
+      else if (menuPage == 2) {//Modus (Physik/GEO)
         needsValueUpdate = false;
         physik = !physik;
         indirectLcd.clear();
@@ -496,7 +427,7 @@ void loop() {
           indirectLcd.print("GEOGRAPHIE");
         }
       }
-      else if (menuPage == 3) {
+      else if (menuPage == 3) {//LCD-Status
         needsValueUpdate = false;
         directLcdEnabled = !directLcdEnabled;
         indirectLcd.clear();
@@ -509,83 +440,93 @@ void loop() {
           indirectLcd.print("AUS");
         }
         if (directLcdEnabled) {
-          analogWrite(DIRECT_LCD_BACKLIGHT_PIN, directLcdBrightness);
-          analogWrite(DIRECT_LCD_CONTRAST_PIN, directLcdContrast);
+          directLcd.backlight();
         }
         else {
-          analogWrite(DIRECT_LCD_BACKLIGHT_PIN, 0);
-          analogWrite(DIRECT_LCD_CONTRAST_PIN, 255);
+          directLcd.noBacklight();
         }
       }
     }
 
-    if (millis() % 1000 == 0) {
-      Serial.println("HALLOUHGOZTUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIISD");
-      getDATA();
-      if (physik) {
+    if (millis() % 1000 < 10) {//hier geschieht das eigentliche: 1x pro Sekunde +/- 10ms (ungefähr)wird überprüft ob daten geholt werden müssen, und ob gezeichnet werden soll.
+      //Serial.println("GETTING DATA");
+      getData();//sensordaten holen
+      if (physik && phC == 10) { //physik und aufzuzeichnender datensatz
+        phC = 0;//phC ist der counter damit aufzeichnung nur alle 10 sekunden, reaktion auf einstellungen und live daten aber 1x pro sekunde
         if (recording) {
-          printDataToSD();
+          printDataToSD();//falls aufgezeichnet werden soll, an die sd schicken
         }
-        printDataToUART0();
-        printDataToUART2();
+        printDataToUART0();//auf der konsole ausgeben
       }
-      else {
-        //if(geoReady()){
-        //geoMessen();
-        Serial.println("powerDown" + getTimeName());
-        delay(2000);
-        sleepUntil(nextWakeTime, 0);
-        Serial.println(getTimeName());
-        // }
+      else if (physik) { //physik und "Füllmaterial datensatz"
+        phC++;
+      }
+      else if (recording) { //muss geo sein und aufzeichnen
+        //ausführung kommt hioer nicht mehr raus bios die zeit abgelaufen ist und gemessen wurde
+        Serial.println("powerDown: " + getTimeName());//debugging
+        digitalWrite(PWR_PIN,LOW);//stromversorgung fürs board abschalten
+        delay(2000);//letzes "üms überleben kämpfen" abwaretn
+        sleepUntil(nextWake, minutesPriorToWakeTime);//schlafen bis zum nächsten geo-messzeitpunkt aber minutesPriorToWakeTime minuten früher aufwachen, damit die Sensoren aufheizen bzw. sich vorbereiten können
+        digitalWrite(PWR_PIN,HIGH);//strom wieder an
+        Serial.println("woken: " + getTimeName());//debugging
+        initBoard();//sensoren initialisieren
+        while (minute(RTC.get()) > 0) {//waren bis die volle stunde erreicht ist
+          delay(30000);//abwarten bis die zeit um ist. d.h. die volle stunde erreicht ist. nur alle halbe minute abprüfen
+          getData();//manche Sensoren müssen ein paar mal abgefragt werden bis die werte passen
+        }
+        getData();//endgültig die werte holen
+        printDataToSD();//ENDLICH aufzeichnen
       }
 
+//ALLES WAS FOLGT SIND DIE LIVE-DATEN
+//Ich kommentier des jetz nicht alles, des is mir zu aufwendig
       if (displayCounter < changeScreenThreshold) { //BME280
         displayCounter++;
         directLcd.clear();
-        directLcd.print("BME280-Werte");
+        directLcd.print("MESSWERTE (I)");
         directLcd.setCursor(0, 1);
-        directLcd.print("Temp: ");
-        directLcd.print(BME280_Temperature);
+        directLcd.print("Temperatur: ");
+        directLcd.print(Temperature);
+        directLcd.print(" C");
         directLcd.setCursor(0, 2);
         directLcd.print("Luftdruck: ");
-        directLcd.print(BME280_Airpressure);
+        directLcd.print(Airpressure);
+        directLcd.print("hPa");
         directLcd.setCursor(0, 3);
-        directLcd.print("Hum: ");
-        directLcd.print(BME280_Humidity);
+        directLcd.print("Luftfeuchte: ");
+        directLcd.print(Humidity);
+        directLcd.print("%");
       }
       else if (displayCounter < changeScreenThreshold * 2) { //RTC,LOUDNESS,BRIGHTNESS
         displayCounter++;
         directLcd.clear();
-        directLcd.print("SONSTIGES");
+        directLcd.print("MESSWERTE (II)");
         directLcd.setCursor(0, 1);
-        directLcd.print("RTC-Temp: ");
-        directLcd.print(RTC_Temperature);
+        directLcd.print("CO2: ");
+        directLcd.print(CO2);
+        directLcd.print(" ppm");
         directLcd.setCursor(0, 2);
         directLcd.print("Helligkeit: ");
-        directLcd.print(Brightness);
+        directLcd.print(LDR);
+        directLcd.print(" %");
         directLcd.setCursor(0, 3);
         directLcd.print("Lautstaerke: ");
-        directLcd.print(Loudness);
+        directLcd.print(LOUD);
       }
-      else if (displayCounter < changeScreenThreshold * 3) { //sondtiges
+      else if (displayCounter < changeScreenThreshold * 3) { //sonstiges
         displayCounter++;
         directLcd.clear();
-        directLcd.print("SONSTIGES (II)");
+        directLcd.print("SONSTIGES");
         directLcd.setCursor(0, 1);
         directLcd.print("DATEI: ");
         directLcd.print(fileName);
         directLcd.setCursor(0, 2);
-        directLcd.print("AUFZEICHNUNG ");
-        if (!SDFail) {
-          if (recording) {
-            directLcd.print("LAEUFT");
-          }
-          else {
-            directLcd.print("GESTOPPT");
-          }
+        directLcd.print("AUFZEICHNUNG: ");
+        if (recording) {
+          directLcd.print("AN");
         }
         else {
-          directLcd.print("N/A");
+          directLcd.print("AUS");
         }
         directLcd.setCursor(0, 3);
         directLcd.print("MODUS: ");
@@ -596,46 +537,18 @@ void loop() {
           directLcd.print("GEOGRAPHIE");
         }
       }
-      else if (displayCounter < changeScreenThreshold * 4) { //temperaturen
-        displayCounter++;
-        directLcd.clear();
-        directLcd.print("TEMPERATUREN");
-        directLcd.setCursor(0, 1);
-        directLcd.print("BME: ");
-        directLcd.print(BME280_Temperature);
-        directLcd.setCursor(0, 2);
-        directLcd.print("RTC: ");
-        directLcd.print(RTC_Temperature);
-        directLcd.setCursor(0, 3);
-        directLcd.print("DURCHSCHNITT: ");
-        directLcd.print(TOTAL_Temperature);
-      }
-      else if (displayCounter < changeScreenThreshold * 5) { //luftfeuchtigkeiten
-        displayCounter++;
-        directLcd.clear();
-        directLcd.print("LUFTFEUCHTIGKEITEN");
-        directLcd.setCursor(0, 1);
-        directLcd.print("BME280 ");
-        directLcd.print(BME280_Humidity);
-      }
-      else if (displayCounter < changeScreenThreshold * 6) { //luftdrï¿½cke
-        displayCounter++;
-        directLcd.clear();
-        directLcd.print("LUFTDRUECKE");
-        directLcd.setCursor(0, 1);
-        directLcd.print("BME280: ");
-        directLcd.print(BME280_Airpressure);
-      }
       else if (displayCounter < changeScreenThreshold * 7) { //gaswerte
         displayCounter++;
         directLcd.clear();
         directLcd.print("GAS-SENSOREN");
-        directLcd.setCursor(0, 1);
-        directLcd.print("MQ_2: ");
-        directLcd.print(MQ_2_Value);
-        directLcd.setCursor(0, 2);
-        directLcd.print("MQ_135: ");
-        directLcd.print(MQ_135_Value);
+        directLcd.setCursor(0,1);
+        directLcd.print("KEINE ABSOLUTE WERTE");
+        directLcd.setCursor(0,2);
+        directLcd.print("NUR FUER ZEITVERLAUF");
+        directLcd.setCursor(0, 3);
+        directLcd.print("CO2: ");
+        directLcd.print(CO2);
+        directLcd.print(" ppm");
       }
       else {
         displayCounter = 0;
@@ -645,9 +558,10 @@ void loop() {
 }
 
 String getTimeName() {
-  time_t t = RTC.get(); //get current UNIX-Timestamp from the Temperaturecompensated Oscillator of the DS3132 Real-Time-Clock
-  //problem sind die 8.3 dateinamen mit maximallï¿½nge von 12 zeichen (8 fï¿½r den dateinamen und 4 z.b. .csv fï¿½r die dateiendung
-  String a = "";
+  time_t t = RTC.get(); //momentane zeit von der RTC abfragen
+  //problem sind die 8.3 dateinamen mit maximallänge von 12 zeichen (8 für den dateinamen und 4 z.b. .csv für die dateiendung
+  String a = "";//String in den alles reingebastelt wird
+  //die ganzen "IF" sind um führende nullen hinzubekommen
   int zwsp = 0;
   zwsp = month(t);
   if (zwsp < 10) {
@@ -674,8 +588,15 @@ String getTimeName() {
 }
 
 void iterateMenu() {
-  if (millis() - lastMenuTime > 300) {
-    lastMenuTime = millis();
+  if (millis() - lastMenuTime > 300) {//wenn der letze knopfdruck über 1/3S her ist weitermachen, ansonsten könnten des noch die nachwirkungen vom non-debounced switch (bei interesse googlen) sein
+    lastMenuTime = millis();//millis() ist die zeit in millisekunden, die der sketch schon läuft
+    //eigentliche aktion beim nächsten loop durchgang
+    //um eine seite weiterschalten und am ende zurück zu 0
+    if(!pwr){//des sollte den controller wieder wachbekommen falls man aus versehen des ding schlafen geschickt hat
+    pwr=true;
+    digitalWrite(PWR_PIN,HIGH);
+    initBoard();
+    }
     Serial.println("MENU");
     if (menuPage == 0) { //recording
       menuPage = 1;
@@ -701,140 +622,63 @@ void iterateMenu() {
 }
 
 void increaseValue() {
-  if (millis() - lastValueTime > 300) {
+  if (millis() - lastValueTime > 300) {//gleiches wie bei iteraterMenu
+    //verarbeitung im loop
     lastValueTime = millis();
-    if (menuPage == 1) {
-      needsValueUpdate = true;
-    }
-    else if (menuPage == 2) {
-      needsValueUpdate = true;
-    }
-    else if (menuPage == 3) {
-      needsValueUpdate = true;
+    if (menuPage >0) {
+      needsValueUpdate = true;//solange irgend eine menüseite offen ist im loop ggf zeug anpassen
     }
   }
 }
 
-void createChars() {
-  indirectLcd.createChar('0', AE);
-  indirectLcd.createChar(1, OE);
-  indirectLcd.createChar(2, UE);
-  directLcd.createChar('0', AE);
-  directLcd.createChar(1, OE);
-  directLcd.createChar(2, UE);
-}
-
-void PCB_POWER(bool state) {
-  if (state == POWER_ON) {
-    PORTA = Port_A; //&=B01111111;
-    PORTB = Port_B;
-    PORTC = Port_C;
-    PORTD = Port_D;
-    PORTE = Port_E;
-    PORTF = Port_F;
-    PORTG = Port_G;
-    PORTH = Port_H;
-    PORTJ = Port_J;
-    PORTK = Port_K;
-    PORTL = Port_L;
-  }
-  else {
-    //PORTA|=B10000000;
-    Port_A = PORTA;
-    Port_B = PORTB;
-    Port_C = PORTC;
-    Port_D = PORTD;
-    Port_E = PORTE;
-    Port_F = PORTF;
-    Port_G = PORTG;
-    Port_H = PORTH;
-    Port_J = PORTJ;
-    Port_K = PORTK;
-    Port_L = PORTL;
-    PORTA = B00000000;
-    PORTB = B00000000;
-    PORTC = B00000000;
-    PORTD = B00000000;
-    PORTE = B00000000;
-    PORTF = B00000000;
-    PORTG = B00000000;
-    PORTH = B00000000;
-    PORTJ = B00000000;
-    PORTK = B00000000;
-    PORTL = B00000000;
-  }
-}
-
-void sleepUntil(int HT, int MT) {
-  nextWakeTime += wakeTimeDistance;
-  if (nextWakeTime > 23) {
-    nextWakeTime -= 24;
-  }
-  time_t t = RTC.get();
-  int HC = hour(t);
-  int MC = minute(t);
+void sleepUntil(int HT, int MT) {//GUTE NACHT
+  //der ganze berechnungsquatsch rechent aus wie oft 8 sekunden in die zu schlafende zeit reinpasst
+  pwr = false;
+  detachInterrupt(ValueInterruptNumber);//damit die buttons nicht nerven
+  t = RTC.get();
+  byte HC = hour(t);
+  byte MC = minute(t);
   if (HT < HC) {
     HT += 24;
   }
-  int HTS = HT - HC;
+  byte HTS = HT - HC;
   if (MT < MC) {
     HTS--;
     MT += 60;
   }
   int MTS = MT - MC;
   MTS += HTS * 60;
-  sleep(MTS);
-}
-
-void sleep(int minutes) {
-  PCB_POWER(POWER_OFF);
-  long eightSecondsSleepIterations = (minutes - minutesPriorToWakeTime) * 7.5;//sollte auf die zu schlafende zeit -minutesPriorToWakeTime minuten kommen
-  for (; eightSecondsSleepIterations > 0; eightSecondsSleepIterations--) {
-    powerDown();
+  MTS *= 7.5;
+  for (; MTS > 0; MTS--) {//je nachdem wie oft 8 sekunden in die zeit reinpasst, wird gepennt
+    sleep8S();
   }
-  PCB_POWER(POWER_ON);
+  pwr = true;
+  nextWake += wakeRate;//organisiert die nächste aufwachzeit für den nächsten durchgang
+  if (nextWake > 23) {//passt <uf bei overflow der tagesstunden
+    nextWake -= 24;
+  }
+  initBoard();//sensoren wieder aktivuieren
 }
 
-void powerDown() {
-  //von http://www.gammon.com.au/forum/?id=11497 Sketch H
-  // disable ADC
-  ADCSRA = 0;
-
-  // clear various "reset" flags
-  MCUSR = 0;
-  // allow changes, disable reset
-  WDTCSR = bit (WDCE) | bit (WDE);
-  // set interrupt mode and an interval
-  WDTCSR = bit (WDIE) | bit (WDP3) | bit (WDP0);    // set WDIE, and 8 seconds delay
-  wdt_reset();  // pat the dog
-
-  set_sleep_mode (SLEEP_MODE_PWR_DOWN);
-  noInterrupts ();           // timed sequence follows
-  sleep_enable();
-
-  // turn off brown-out enable in software
-  //MCUCR = bit (BODS) | bit (BODSE);
-  //MCUCR = bit (BODS);
-  interrupts ();             // guarantees next instruction executed
-  sleep_cpu ();
-
-  // cancel sleep as a precaution
-  sleep_disable();
+void sleep8S() {//acht sekunden schlafern (ist die längste zeit, die geschlafen werden kann (abgesehen von "FÜR IMMER", dann krig ich den aber nicht mehr wach außer irgendwer drücht nen knopf
+  LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
+  //http://www.rocketscream.com/blog/2011/07/04/lightweight-low-power-arduino-library/
 }
 
-void flipServo() {
-  servoIsTipped != servoIsTipped;
-  if (servoIsTipped) {
-    for (servoValue = SERVO_MIN; servoValue <= SERVO_MAX; servoValue++) {
+void flipServo() {//Niederschlagsmesser umdrehen
+  servoIsTipped =! servoIsTipped;
+  if (!servoIsTipped) {
+    Serial.println("UP");
+    for (; servoValue > SERVO_MIN; servoValue--) {
       servo.write(servoValue);
       delay(10);
     }
   }
   else {
-    for (servoValue = SERVO_MAX; servoValue >= SERVO_MIN; servoValue--) {
+    Serial.println("DOWNWQARDS");
+    for (; servoValue < SERVO_MAX; servoValue++) {
       servo.write(servoValue);
       delay(10);
     }
   }
 }
-
