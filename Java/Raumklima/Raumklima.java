@@ -1592,7 +1592,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      * verlässt den vollbildmodus
      */
     private void deactivateFullscreen(){
-        if(fullscreenOk){
+        if(fullscreenOk){//GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(new JFrame("HI"));
             graphicsDevice.setFullScreenWindow(null);
         }
         else{
