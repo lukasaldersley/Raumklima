@@ -171,7 +171,7 @@
           <tags>removeOnHide</tags>
         </children>
         <children xsi:type="basic:Part" xmi:id="_mspTgJ1oEeeD0oJrQ6KgJg" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="Raumklima.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.png" closeable="true">
-          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;Raumklima.java&quot; partName=&quot;Raumklima.java&quot; title=&quot;Raumklima.java&quot; tooltip=&quot;Java/Raumklima/Raumklima.java&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/Java/Raumklima/Raumklima.java&quot;/>&#xD;&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;82773&quot; selectionTopPixel=&quot;28245&quot;/>&#xD;&#xA;&lt;/editor>"/>
+          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;Raumklima.java&quot; partName=&quot;Raumklima.java&quot; title=&quot;Raumklima.java&quot; tooltip=&quot;Java/Raumklima/Raumklima.java&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/Java/Raumklima/Raumklima.java&quot;/>&#xD;&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;82773&quot; selectionTopPixel=&quot;28185&quot;/>&#xD;&#xA;&lt;/editor>"/>
           <tags>Editor</tags>
           <tags>org.eclipse.jdt.ui.CompilationUnitEditor</tags>
           <tags>removeOnHide</tags>
@@ -453,7 +453,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_XzuPEpQdEeeffc7lZoqOhA" elementId="org.eclipse.ui.workbench.file">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_Btr-B8NzEeeS741tuueOJw" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="_XzuXKJQdEeeffc7lZoqOhA"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_l7KQgMo8Eee8P_TQo9CGqQ" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="_XzuXKJQdEeeffc7lZoqOhA"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_XzuPH5QdEeeffc7lZoqOhA" elementId="additions" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -477,7 +477,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_XzuPYpQdEeeffc7lZoqOhA" elementId="org.eclipse.ui.workbench.navigate">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_Bt1vBMNzEeeS741tuueOJw" elementId="org.eclipse.ui.window.pinEditor" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_XzuWn5QdEeeffc7lZoqOhA"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_l7Mswso8Eee8P_TQo9CGqQ" elementId="org.eclipse.ui.window.pinEditor" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_XzuWn5QdEeeffc7lZoqOhA"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_XzuPbZQdEeeffc7lZoqOhA" elementId="group.editor" toBeRendered="false">
         <tags>toolbarSeparator</tags>
