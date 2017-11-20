@@ -35,19 +35,23 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Scanner;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -60,6 +64,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -80,6 +85,8 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.RectangleAnchor;
 import org.jfree.ui.RectangleEdge;
 
+import com.fazecast.jSerialComm.SerialPort;
+
 //TODO concat CSV-files
 //TODO arduino Config
 
@@ -99,7 +106,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static String projectUri="https://raw.githubusercontent.com/lukasaldersley/Raumklima/";
     public static String downloadTargetUri="https://github.com/lukasaldersley/Raumklima/raw/";
 
-    public static final String VERSION="2.0.0.0";
+    public static final String VERSION="2.1.0.0";
 
     public static boolean CLOSE_WINDOW_ALT_REQUIRED=false;
     public static boolean OPEN_HELP_WINDOW_ALT_REQUIRED=false;
@@ -338,6 +345,35 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private XYSeries[] xYSeries;
 
     private XYSeriesCollection xYSeriesCollection;
+    private JPanel DeviceSettings;
+    private JLabel DeviceOptionsTitle;
+    private JLabel DeviceSettingsTitle;
+    private JButton SetRTCButton;
+    private JLabel SystemTimeLabel;
+    private JLabel DeviceTimeLabel;
+    private JPanel SystemTimePanel;
+    private JPanel DeviceTimePanel;
+    private JTextField SystemTimeField;
+    private Timer SystemTimeFieldTimer;
+    private SimpleDateFormat SystemTimeFormatter;
+    private JTextField DeviceTimeField;
+    private Timer DeviceTimeFieldTimer;
+    private Date DeviceDate;
+    private long DeviceMillis;
+    private SerialPort[] ports;
+    private SerialPort port;
+    private Scanner serialScanner;
+    private BufferedWriter serialWriter;
+    private String[] RXD;
+    private String[] RXD0;
+    private String[] RXD1;
+    private SimpleDateFormat DeviceDateFormat;
+    private boolean SerialAvailable;
+    private JPanel DeviceConnPanel;
+    private JComboBox<String> DeviceConnComboBox;
+    private JButton DeviceConnRefreshButton;
+    private JButton DeviceConnConnectButton;
+    private int selectedPort;
 
     public static void main(String[] args){//Startet das Programm (ggf mnit debug/logging)
         for(int i=0;i<args.length;i++){
@@ -483,6 +519,34 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             if(checkIfUpdateAvailable()){
                 updateJar();
             }
+        }
+
+        ports=SerialPort.getCommPorts();
+        SerialPort P;
+        for(int i=0;i<ports.length;i++) {
+            P=ports[i];
+            logln(P.getDescriptivePortName()+"|"+P.getSystemPortName());
+            if(P.getDescriptivePortName().startsWith("Arduino Mega 2560")) {
+                port=P;
+                port.setBaudRate(115200);
+                SerialAvailable=port.openPort();
+                System.out.println(port.isOpen());
+                SerialAvailable=port.isOpen();
+                selectedPort=i;
+            }
+        }
+        System.out.println(SerialAvailable);
+        if(port==null) {
+            logln("NO APROPRIATE SERIAL PORT");
+            SerialAvailable=false;
+        }
+        else {
+        	if(SerialAvailable) {
+            System.out.println(port);
+            serialScanner=new Scanner(new InputStreamReader(port.getInputStream()));
+            serialWriter=new BufferedWriter(new OutputStreamWriter(port.getOutputStream()));
+            SerialAvailable=true;
+        	}
         }
 
         //intialise JFrames
@@ -704,6 +768,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         GeneralSettings=new JPanel(); //F11, Updates prüfen, Update policy, Dateitypen 
         GraphSettings=new JPanel();  //sichtbarkeit, interplolation
         KeyCombinationSettings=new JPanel();  //keys ändern
+        DeviceSettings=new JPanel();
 
         GeneralSettings.setLayout(new BoxLayout(GeneralSettings, BoxLayout.Y_AXIS));
 
@@ -882,9 +947,134 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         loadTextForHelpWindowAndKeyCombinations();
         KeyCombinationSettings.add(KeyCombinationSettingsFramePanel);
 
+        DeviceSettings.setLayout(new BoxLayout(DeviceSettings,BoxLayout.Y_AXIS));
+
+        DeviceSettingsTitle=new JLabel("Geräte-Einstellungen");
+        DeviceSettings.add(DeviceSettingsTitle);
+
+        DeviceConnPanel=new JPanel();
+        DeviceConnComboBox=new JComboBox<String>();
+        DeviceConnRefreshButton=new JButton("Aktualisieren");
+        DeviceConnConnectButton=new JButton("Verbinden");
+        for(SerialPort P:ports) {
+            DeviceConnComboBox.addItem(P.getDescriptivePortName());
+        }
+        if(SerialAvailable) {
+            DeviceConnComboBox.setSelectedIndex(selectedPort);
+        }
+        DeviceConnPanel.add(new JLabel("Verbinden"), BorderLayout.NORTH);
+        DeviceConnPanel.add(DeviceConnComboBox, BorderLayout.CENTER);
+        DeviceConnPanel.add(DeviceConnConnectButton, BorderLayout.EAST);
+        DeviceConnPanel.add(DeviceConnRefreshButton, BorderLayout.SOUTH);
+
+        DeviceSettings.add(DeviceConnPanel);
+
+        SystemTimePanel=new JPanel();
+        SystemTimeLabel=new JLabel("Systemzeit: ");
+        SystemTimeField=new JTextField();
+        SystemTimeField.setEditable(false);
+        SystemTimeFormatter=new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        SystemTimeField.setText(SystemTimeFormatter.format(new Date(System.currentTimeMillis())));
+        SystemTimeFieldTimer=new Timer(1000, new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e)
+                {
+                    SystemTimeField.setText(SystemTimeFormatter.format(new Date(System.currentTimeMillis())));
+                }
+            }
+        );
+        SystemTimeFieldTimer.start();
+
+        SystemTimePanel.add(SystemTimeLabel,BorderLayout.WEST);
+        SystemTimePanel.add(SystemTimeField,BorderLayout.EAST);
+        SystemTimePanel.setPreferredSize(new Dimension(200,25));
+        SystemTimePanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+
+        DeviceSettings.add(SystemTimePanel);
+
+        DeviceTimePanel=new JPanel();
+        DeviceTimeLabel=new JLabel("Gerätezeit: ");
+        DeviceTimeField=new JTextField("UNBEKANNT");
+        DeviceTimeField.setEditable(false);
+
+        DeviceDateFormat=new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        String RXDate="";//"11.11.2011 11:10:11";
+        if(SerialAvailable) {
+            try {
+                serialWriter.write("GETTIME");
+            } catch (IOException e2) {
+                logln(e2);
+            }
+            try {
+                Thread.sleep(1500);
+            } catch (Exception ex) {
+                logln(ex);
+            }
+            for(int i=0;i<20;i++) {
+           // while(true) {
+                try{
+                    RXDate=serialScanner.nextLine();
+                }
+                catch(Exception ey){
+                    logln(ey);
+                }
+                if(RXDate.startsWith("TIME: ")) {
+                    System.out.println("FOUND THE DATE");
+                    break;
+                }
+                else {
+                    System.out.println("HAVNT FOUND TIME YET");
+                }
+
+                try {
+                    Thread.sleep(100);
+                } catch (Exception ex) {
+                    logln(ex);
+                }
+            }
+            if(RXDate.startsWith("TIME: ")) {
+                RXDate=RXDate.replace("TIME: ", "");
+                RXDate=RXDate.trim();
+            }
+            try {
+                DeviceDate=DeviceDateFormat.parse(RXDate);
+                DeviceMillis=DeviceDate.getTime();
+            } catch (ParseException e1) {
+                logln(e1);
+            }
+        }
+        DeviceTimeFieldTimer=new Timer(1000, new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e)
+                {
+                    DeviceMillis+=1000;
+                    DeviceTimeField.setText(SystemTimeFormatter.format(new Date(DeviceMillis)));
+                }
+            }
+        );
+        if(SerialAvailable) {
+            DeviceTimeFieldTimer.start();
+        }
+
+        DeviceTimePanel.add(DeviceTimeLabel,BorderLayout.WEST);
+        DeviceTimePanel.add(DeviceTimeField,BorderLayout.EAST);
+        DeviceTimePanel.setPreferredSize(new Dimension(200,25));
+        DeviceTimePanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+
+        DeviceSettings.add(DeviceTimePanel);
+
+        SetRTCButton=new JButton("Uhr Stellen");
+        SetRTCButton.addActionListener(this);
+        DeviceSettings.add(SetRTCButton);
+
         SettingsPageTabbedPane.addTab("Allgemeine Einstellungen",GeneralSettings);
         SettingsPageTabbedPane.addTab("Graphenbereich",GraphSettings);
         SettingsPageTabbedPane.addTab("Tastenkombinationen",KeyCombinationSettings);
+        //TODO SettingsPageTabbedPane.addTab("Gerät", DeviceSettings);
+        JPanel soon=new JPanel();
+        JLabel sonn=new JLabel("KOMMT BALD (1-2 Tage/22-24.11.2017). Backend ist schon fertig");
+        soon.add(sonn);
+        SettingsPageTabbedPane.addTab("Gerät", soon);
         settingsWindow.add(SettingsPageTabbedPane);
         settingsWindow.setResizable(false);
     }

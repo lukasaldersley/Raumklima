@@ -90,6 +90,7 @@ double LOUD = 0.0;
 double LDR = 0.0;
 double CO2 = 0.0;
 double RAIN = 0.0;
+boolean calcPPM=true;
 
 //METHODS--
 //
@@ -103,7 +104,6 @@ void setup() {
   }
   digitalWrite(PWR_PIN, HIGH);
   delay(10);
-  Serial.println("HELLO WORLD; I AM INITIALIZING");
   attachInterrupt(MenuInterruptNumber, iterateMenu, RISING);
   servo.attach(SERVO_PIN);
   servo.write(SERVO_MIN);
@@ -114,37 +114,41 @@ void setup() {
 
 void initBoard() {
   digitalWrite(PWR_PIN, HIGH);
+  Serial.println("\n\n\nACHTUNG!!!\n\nDIE CO2-WERTE SIND NICHT ECHT KALIBRIERT!!!!\nA U F  K E I N E N   F A L L\nDÜRFEN DIE WERTE ALS ABSOLUTE WERTE BEHANDELT WERDEN!!!\nDie Werte dürfen nur zum Vergleich innerhalb der Aufzeichnung verwendet werden\n\n\n\n");
+  delay(5000); 
   Serial.println("INITING");
 
   //analogWrite(DIRECT_LCD_CONTRAST_PIN, directLcdContrast);
   //analogWrite(DIRECT_LCD_BACKLIGHT_PIN, indirectLcdrightness);
 
+Serial.println("Init Auxilliary LCD");
   indirectLcd.init();
   indirectLcd.noBacklight();
-  Serial.println("I_DIR_LCD");
+  Serial.println("Aux LCD Done\nInit Main LCD");
   directLcd.init();//.begin(20, 4);
   directLcd.clear();
   directLcd.backlight();
   directLcd.print("Initialisieren...");
-  Serial.println("LCD_DONE");
+  Serial.println("Main LCD DONE\nINTERRUPTS");
   //pinMode(3, INPUT); //ich hab den widerstand auf dem board vergessen deswegen der interne
   attachInterrupt(ValueInterruptNumber, increaseValue, RISING);
-  Serial.println("INTERRUPT");
+  Serial.println("INTERRUPT DONE");
   directLcd.setCursor(0, 1);
   time_t tGET = RTC.get();
   Serial.println("TIME: " + String(day(tGET)) + "." + month(tGET) + "." + year(tGET) + " " + hour(tGET) + ":" + minute(tGET) + ":" + second(tGET));
   directLcd.print("SD-Karte: ");
+  Serial.println("SD");
   if (!SD.begin(SD_PIN)) { //readWrite Sample   //INITIALIZE SD-CARD
-    Serial.println("SD-FAIL");
+    Serial.println("FAIL");
     directLcd.print("FAIL");
     SDFail = true;
   }
   else {
-    Serial.println("SD-Success");
+    Serial.println("OK");
     directLcd.print("OK");
     SDFail = false;
   }
-  Serial.println("SD");
+  Serial.println("SD DONE");
 
   Serial.println(titles);
 
@@ -181,7 +185,12 @@ void getData() {
   LDR = map(LDR, 0, 1023, 0, 100);//von ADC-Data in % umwandeln
   LOUD = analogRead(LOUDNESS_SENSOR_PIN);
   LOUD = map(LOUD, 0, 1023, 0, 100);//von ADC-Data in % umwandeln
+  if(calcPPM){
   CO2 = CO2_SENSOR.getPPM();
+  }
+  else{
+    CO2=map(analogRead(CO2_PIN),0,1023,0,100);
+  }
   sendoff = String(Temperature) + ";" + Humidity + ";" + Airpressure + ";" + LDR + ";" + CO2 + ";" + LOUD;
   if (recording&&(!physik)&&(!GeoPause)) {
     RAIN = scale.getGram();
