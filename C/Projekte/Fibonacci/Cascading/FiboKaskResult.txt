@@ -1,0 +1,1 @@
+Benoetigte Zeit fuer die ersten 50 Fibonacci-Zahlen: 577.463013 Sekunden

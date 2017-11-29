@@ -2,12 +2,16 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="addTab" key="selection"/>
+		<item value="RXDate" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="RXDate"/>
+			<item value="RXDte"/>
+			<item value="//TODO HALP"/>
+			<item value="windowCl"/>
 			<item value="addTab"/>
 			<item value="�"/>
 			<item value="check"/>
@@ -19,10 +23,9 @@
 			<item value="KeyCombos"/>
 			<item value="InTex"/>
 			<item value="In"/>
-			<item value="readIn"/>
-			<item value="redIn"/>
 		</list>
 		<list key="replacehistory">
+			<item value=""/>
 			<item value=".equals(&quot;&quot;)"/>
 			<item value="public"/>
 			<item value="STATE.CLOSE_WINDOW_CTRL_REQUIRED"/>
