@@ -34,8 +34,10 @@
 
 bool pwr = true; //hier wird gespeichert ob sich der controller im schlafmodus befinden sollte
 time_t t;
+bool GeoPause=false;
+unsigned long lastInteraction=0;
 
-MQ135 CO2_SENSOR=MQ135(CO2_PIN);
+MQ135 CO2_SENSOR = MQ135(CO2_PIN);
 
 Hx711 scale(HX711_DAT, HX711_CLK);
 File file;
@@ -88,6 +90,7 @@ double LOUD = 0.0;
 double LDR = 0.0;
 double CO2 = 0.0;
 double RAIN = 0.0;
+boolean calcPPM=true;
 
 //METHODS--
 //
@@ -99,9 +102,8 @@ void setup() {
   for (int i = 0; i < 54; i++) {
     digitalWrite(i, LOW);
   }
-  digitalWrite(PWR_PIN,HIGH);
+  digitalWrite(PWR_PIN, HIGH);
   delay(10);
-  Serial.println("HELLO WORLD; I AM INITIALIZING");
   attachInterrupt(MenuInterruptNumber, iterateMenu, RISING);
   servo.attach(SERVO_PIN);
   servo.write(SERVO_MIN);
@@ -111,38 +113,42 @@ void setup() {
 }
 
 void initBoard() {
-  digitalWrite(PWR_PIN,HIGH);
+  digitalWrite(PWR_PIN, HIGH);
+  Serial.println("\n\n\nACHTUNG!!!\n\nDIE CO2-WERTE SIND NICHT ECHT KALIBRIERT!!!!\nA U F  K E I N E N   F A L L\nDÜRFEN DIE WERTE ALS ABSOLUTE WERTE BEHANDELT WERDEN!!!\nDie Werte dürfen nur zum Vergleich innerhalb der Aufzeichnung verwendet werden\n\n\n\n");
+  delay(5000); 
   Serial.println("INITING");
 
   //analogWrite(DIRECT_LCD_CONTRAST_PIN, directLcdContrast);
   //analogWrite(DIRECT_LCD_BACKLIGHT_PIN, indirectLcdrightness);
 
+Serial.println("Init Auxilliary LCD");
   indirectLcd.init();
   indirectLcd.noBacklight();
-  Serial.println("I_DIR_LCD");
+  Serial.println("Aux LCD Done\nInit Main LCD");
   directLcd.init();//.begin(20, 4);
   directLcd.clear();
   directLcd.backlight();
   directLcd.print("Initialisieren...");
-  Serial.println("LCD_DONE");
+  Serial.println("Main LCD DONE\nINTERRUPTS");
   //pinMode(3, INPUT); //ich hab den widerstand auf dem board vergessen deswegen der interne
   attachInterrupt(ValueInterruptNumber, increaseValue, RISING);
-  Serial.println("INTERRUPT");
+  Serial.println("INTERRUPT DONE");
   directLcd.setCursor(0, 1);
   time_t tGET = RTC.get();
   Serial.println("TIME: " + String(day(tGET)) + "." + month(tGET) + "." + year(tGET) + " " + hour(tGET) + ":" + minute(tGET) + ":" + second(tGET));
   directLcd.print("SD-Karte: ");
+  Serial.println("SD");
   if (!SD.begin(SD_PIN)) { //readWrite Sample   //INITIALIZE SD-CARD
-    Serial.println("SD-FAIL");
+    Serial.println("FAIL");
     directLcd.print("FAIL");
     SDFail = true;
   }
   else {
-    Serial.println("SD-Success");
+    Serial.println("OK");
     directLcd.print("OK");
     SDFail = false;
   }
-  Serial.println("SD");
+  Serial.println("SD DONE");
 
   Serial.println(titles);
 
@@ -153,10 +159,10 @@ void initBoard() {
 
   directLcd.setCursor(0, 2);
   directLcd.print("BME280: ");
-  if(BME280.begin()){
-  directLcd.print("OK");
+  if (BME280.begin()) {
+    directLcd.print("OK");
   }
-  else{
+  else {
     directLcd.print("ERROR");
     Serial.print("!!!WARNING!!!\n\n\nBME280 NOT AVAILABLE\n\n\n!!!WARNING!!!\n\n\n\n\n\n");
     delay(1000);
@@ -166,7 +172,7 @@ void initBoard() {
 
 //OUTPUT DATA--
 /*
- * Liest die Sensodradten und berechnet falls nötig die durchschnitte
+   Liest die Sensodradten und berechnet falls nötig die durchschnitte
 */
 void getData() {
   Temperature = BME280.readTemperature();
@@ -179,13 +185,18 @@ void getData() {
   LDR = map(LDR, 0, 1023, 0, 100);//von ADC-Data in % umwandeln
   LOUD = analogRead(LOUDNESS_SENSOR_PIN);
   LOUD = map(LOUD, 0, 1023, 0, 100);//von ADC-Data in % umwandeln
+  if(calcPPM){
   CO2 = CO2_SENSOR.getPPM();
+  }
+  else{
+    CO2=map(analogRead(CO2_PIN),0,1023,0,100);
+  }
   sendoff = String(Temperature) + ";" + Humidity + ";" + Airpressure + ";" + LDR + ";" + CO2 + ";" + LOUD;
-  if (!physik) {
+  if (recording&&(!physik)&&(!GeoPause)) {
     RAIN = scale.getGram();
     flipServo();//servo auskippen
     RAIN = scale.getGram() - RAIN;
-    RAIN=RAIN/4.8175;//umrechnung von g in mm/m²
+    RAIN = RAIN / 4.8175; //umrechnung von g in mm/m²
     flipServo();//aufrichten
     sendoff += ";";
     sendoff += RAIN;
@@ -193,8 +204,8 @@ void getData() {
 }
 
 /*
- * Shreibt den inhalt der String varaible sendoff in die datei auf der sd-karte, sofern beim start eine sd-karte erkannt wurde
- */
+   Shreibt den inhalt der String varaible sendoff in die datei auf der sd-karte, sofern beim start eine sd-karte erkannt wurde
+*/
 void printDataToSD() {
   if (!SDFail) {
     counter++;
@@ -220,16 +231,18 @@ void printDataToSD() {
 }
 
 /*
- * Sendet inhalt der String variable sendoff an den Serielle port
- */
+   Sendet inhalt der String variable sendoff an den Serielle port
+*/
 void printDataToUART0() { //Main Serial Port
   Serial.println(sendoff);
 }
 
 void loop() {
-  if (!pwr) { //board SOLLTE im schalfmodus sein und NICHT in der normalen ausführung und wird deshalb in den schlafmodus geschickt
+  /*if ((!pwr)&&(!GeoPause)&&millis()>lastInteraction) { //board SOLLTE im schalfmodus sein und NICHT in der normalen ausführung und wird deshalb in den schlafmodus geschickt
+    directLcd.noBacklight();
+    indirectLcd.noBacklight();
     sleepUntil(nextWake, minutesPriorToWakeTime);
-  }
+  }*/
 
   if (Serial.available()) {//Falls befehle von der Software an das gerät gesendet weren (Einstellungen, Versionsabfragen, Zeitdefinitionen etc. wird das hier verarbeitet
     recievedCommand = Serial.readString();
@@ -279,7 +292,7 @@ void loop() {
       else if (recievedCommand.startsWith("GETTIME")) {//RTC zeit senden (für debugging/kontrolle)
         Serial.println("sending time Info:");
         time_t tGET = RTC.get();
-        t=RTC.get();
+        t = RTC.get();
         Serial.println("TIME: " + String(day(tGET)) + "." + month(tGET) + "." + year(tGET) + " " + hour(tGET) + ":" + minute(tGET) + ":" + second(tGET));
       }
       else if (recievedCommand.startsWith("SETTIME")) {//bsp: "SETTIME_02.11.2017_22.13.00"           //setzt die zeit der RTC und gibt die gesetzte zeit zur kontrolle aus
@@ -304,7 +317,7 @@ void loop() {
         Serial.println(RTC.set(tSET));//wenns '0' ist wars erfolgreich, sonst nicht
         time_t tGET = RTC.get();
         Serial.println("TIME (GET): " + String(day(tGET)) + "." + month(tGET) + "." + year(tGET) + " " + hour(tGET) + ":" + minute(tGET) + ":" + second(tGET));
-        t=RTC.get();
+        t = RTC.get();
       }
     }
     delay(1000);//zum entschleunigen
@@ -360,6 +373,13 @@ void loop() {
         else {
           indirectLcd.print("AUS");
         }
+      }
+      else if(menuPage==4){
+        needsUpdate=false;
+        indirectLcd.clear();
+        indirectLcd.print("GEO-TEST");
+        indirectLcd.setCursor(0,1);
+        indirectLcd.print("STARTEN");
       }
       else {
         needsUpdate = false;
@@ -446,6 +466,29 @@ void loop() {
           directLcd.noBacklight();
         }
       }
+      else if (menuPage == 4) {
+        needsValueUpdate = false;
+        indirectLcd.setCursor(0, 1);
+        indirectLcd.print("                ");
+        indirectLcd.setCursor(0, 1);
+        indirectLcd.print("WARTEN...TARE");
+        double TEST = scale.getGram();
+        indirectLcd.setCursor(0,1);
+        indirectLcd.print("WARTEN...LEEREN");
+        delay(1000);
+        flipServo();//servo auskippen
+        indirectLcd.setCursor(0,1);
+        indirectLcd.print("WARTEN...MESSEN");
+        TEST = scale.getGram() - TEST;
+        delay(1000);
+        indirectLcd.setCursor(0,1);
+        indirectLcd.print(TEST);
+        indirectLcd.print("g - ");
+        TEST = TEST / 4.8175; //umrechnung von g in mm/m²
+        indirectLcd.print(TEST);
+        indirectLcd.print("mm");
+        flipServo();//aufrichten
+      }
     }
 
     if (millis() % 1000 < 10) {//hier geschieht das eigentliche: 1x pro Sekunde +/- 10ms (ungefähr)wird überprüft ob daten geholt werden müssen, und ob gezeichnet werden soll.
@@ -461,13 +504,16 @@ void loop() {
       else if (physik) { //physik und "Füllmaterial datensatz"
         phC++;
       }
-      else if (recording) { //muss geo sein und aufzeichnen
+      else if (recording&&lastInteraction-millis()>60000) { //muss geo sein und aufzeichnen
+        GeoPause=false;
+        directLcd.noBacklight();
+        indirectLcd.noBacklight();
         //ausführung kommt hioer nicht mehr raus bios die zeit abgelaufen ist und gemessen wurde
         Serial.println("powerDown: " + getTimeName());//debugging
-        digitalWrite(PWR_PIN,LOW);//stromversorgung fürs board abschalten
+        digitalWrite(PWR_PIN, LOW); //stromversorgung fürs board abschalten
         delay(2000);//letzes "üms überleben kämpfen" abwaretn
         sleepUntil(nextWake, minutesPriorToWakeTime);//schlafen bis zum nächsten geo-messzeitpunkt aber minutesPriorToWakeTime minuten früher aufwachen, damit die Sensoren aufheizen bzw. sich vorbereiten können
-        digitalWrite(PWR_PIN,HIGH);//strom wieder an
+        digitalWrite(PWR_PIN, HIGH); //strom wieder an
         Serial.println("woken: " + getTimeName());//debugging
         initBoard();//sensoren initialisieren
         while (minute(RTC.get()) > 0) {//waren bis die volle stunde erreicht ist
@@ -478,8 +524,8 @@ void loop() {
         printDataToSD();//ENDLICH aufzeichnen
       }
 
-//ALLES WAS FOLGT SIND DIE LIVE-DATEN
-//Ich kommentier des jetz nicht alles, des is mir zu aufwendig
+      //ALLES WAS FOLGT SIND DIE LIVE-DATEN
+      //Ich kommentier des jetz nicht alles, des is mir zu aufwendig
       if (displayCounter < changeScreenThreshold) { //BME280
         displayCounter++;
         directLcd.clear();
@@ -541,9 +587,9 @@ void loop() {
         displayCounter++;
         directLcd.clear();
         directLcd.print("GAS-SENSOREN");
-        directLcd.setCursor(0,1);
+        directLcd.setCursor(0, 1);
         directLcd.print("KEINE ABSOLUTE WERTE");
-        directLcd.setCursor(0,2);
+        directLcd.setCursor(0, 2);
         directLcd.print("NUR FUER ZEITVERLAUF");
         directLcd.setCursor(0, 3);
         directLcd.print("CO2: ");
@@ -588,14 +634,18 @@ String getTimeName() {
 }
 
 void iterateMenu() {
+  lastInteraction=millis();
+  if((!physik)&&recording){
+    GeoPause=true;
+  }
   if (millis() - lastMenuTime > 300) {//wenn der letze knopfdruck über 1/3S her ist weitermachen, ansonsten könnten des noch die nachwirkungen vom non-debounced switch (bei interesse googlen) sein
     lastMenuTime = millis();//millis() ist die zeit in millisekunden, die der sketch schon läuft
     //eigentliche aktion beim nächsten loop durchgang
     //um eine seite weiterschalten und am ende zurück zu 0
-    if(!pwr){//des sollte den controller wieder wachbekommen falls man aus versehen des ding schlafen geschickt hat
-    pwr=true;
-    digitalWrite(PWR_PIN,HIGH);
-    initBoard();
+    if (!pwr) { //des sollte den controller wieder wachbekommen falls man aus versehen des ding schlafen geschickt hat
+      pwr = true;
+      digitalWrite(PWR_PIN, HIGH);
+      initBoard();
     }
     Serial.println("MENU");
     if (menuPage == 0) { //recording
@@ -613,6 +663,11 @@ void iterateMenu() {
       menuPage = 3;
       needsUpdate = true;
     }
+    else if (menuPage == 3) {
+      Serial.println("GEO-DEMO");
+      menuPage = 4;
+      needsUpdate=true;
+    }
     else {
       menuPage = 0;
       Serial.println("OFF");
@@ -622,10 +677,14 @@ void iterateMenu() {
 }
 
 void increaseValue() {
+  lastInteraction=millis();
+  if((!physik)&&recording){
+    GeoPause=true;
+  }
   if (millis() - lastValueTime > 300) {//gleiches wie bei iteraterMenu
     //verarbeitung im loop
     lastValueTime = millis();
-    if (menuPage >0) {
+    if (menuPage > 0) {
       needsValueUpdate = true;//solange irgend eine menüseite offen ist im loop ggf zeug anpassen
     }
   }
@@ -666,7 +725,7 @@ void sleep8S() {//acht sekunden schlafern (ist die längste zeit, die geschlafen
 }
 
 void flipServo() {//Niederschlagsmesser umdrehen
-  servoIsTipped =! servoIsTipped;
+  servoIsTipped = ! servoIsTipped;
   if (!servoIsTipped) {
     Serial.println("UP");
     for (; servoValue > SERVO_MIN; servoValue--) {

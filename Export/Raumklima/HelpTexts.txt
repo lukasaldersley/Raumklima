@@ -1,0 +1,9 @@
+﻿Fenster schließen
+Fenster Hilfe öffnen
+Datei öffnen
+Neues Fenster öffnen
+Fenster Einstellungen öffnen
+Graphen aktualisieren
+Graphen Speichern
+Detailbereich ein/ausblenden
+Vollbildmodus umschalten

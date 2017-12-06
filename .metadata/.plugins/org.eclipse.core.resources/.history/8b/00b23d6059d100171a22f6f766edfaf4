@@ -1,7 +1,0 @@
-package Raumklima;
-public class SerialThread implements Runnable
-{
-    public SerialThread()
-    {
-    }
-}

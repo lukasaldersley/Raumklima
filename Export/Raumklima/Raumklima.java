@@ -102,7 +102,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static String projectUri="https://raw.githubusercontent.com/lukasaldersley/Raumklima/";
     public static String downloadTargetUri="https://github.com/lukasaldersley/Raumklima/raw/";
 
-    public static final String VERSION="2.2.0.0";
+    public static final String VERSION="2.4.9.3";
 
     public static boolean CLOSE_WINDOW_ALT_REQUIRED=false;
     public static boolean OPEN_HELP_WINDOW_ALT_REQUIRED=false;
@@ -979,6 +979,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         DeviceConnPanel.add(DeviceConnRefreshButton, BorderLayout.SOUTH);
 
         DeviceSettings.add(DeviceConnPanel);
+        DeviceConnPanel.setEnabled(false);
+        DeviceConnComboBox.setEnabled(false);
+        DeviceConnConnectButton.setEnabled(false);
+        DeviceConnRefreshButton.setEnabled(false);
 
         SystemTimePanel=new JPanel();
         SystemTimePanel.setAlignmentX(Component.RIGHT_ALIGNMENT);

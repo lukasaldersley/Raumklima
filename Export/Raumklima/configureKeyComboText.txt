@@ -1,0 +1,12 @@
+﻿Mögliche Tastenkombinationen sind:
+	Alt, Strg, Shift (keine davon bis alle sind möglich)
+	und EINE Beliebige andere Taste
+	(z.b. Funktionstasten, Zahlen, Sonderzeichen, Buchstaben usw.)
+
+Um die Tatenkombination für: 
+zu ändern, klicken Sie bitte auf den knopf "Ändern" und drücken sie dann
+bitte alle gewünschten Tasten gleichzeitig und lassen die letzte Taste
+(die Funktionstaste, Zahl, den Buuchstaben oder das Sonderzeichen)
+als ERSTES LOS. Die Gewählte Tastenkombination erscheint im Textfeld unten.
+Sie können die Tastenkombination durch erneutes klicken auf den knopf nochmals ändern.
+Zum Speichern drücken Sie bitte auf den Knopf "Schließen"

@@ -661,3 +661,5 @@ java.io.FileNotFoundException: C:\Users\alder\.tooling\gradle\versions.json (Zug
 	at com.gradleware.tooling.toolingutils.distribution.PublishedGradleVersions.create(PublishedGradleVersions.java:127) [com.gradleware.tooling.utils_0.19.3.v20170801075239.jar:na]
 	at org.eclipse.buildship.core.util.gradle.PublishedGradleVersionsWrapper$LoadVersionsJob.run(PublishedGradleVersionsWrapper.java:66) [org.eclipse.buildship.core_2.1.2.v20170807-1324.jar:na]
 	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:56) [org.eclipse.core.jobs_3.9.1.v20170714-0547.jar:na]
+2017-12-06 22:16:08,329 [Worker-1] INFO  c.g.t.t.d.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.
+2017-12-06 22:16:20,027 [Worker-1] INFO  c.g.t.t.d.PublishedGradleVersions - Updating Gradle version information cache failed. Using outdated cache.
