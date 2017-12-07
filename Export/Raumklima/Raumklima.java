@@ -371,7 +371,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private Thread SerialThread;
     String RXDate;
     JPanel TimePanel;
-	private boolean SerialForbidden;
+    private boolean SerialForbidden;
 
     public static void main(String[] args){//Startet das Programm (ggf mnit debug/logging)
         for(int i=0;i<args.length;i++){
@@ -519,38 +519,38 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 updateJar();
             }
         }
-        
+
         if(!SerialForbidden) {
-        ports=SerialPort.getCommPorts();
-        SerialPort P;
-        for(int i=0;i<ports.length;i++) {
-            P=ports[i];
-            logln(P.getDescriptivePortName()+"|"+P.getSystemPortName());
-            if(P.getDescriptivePortName().startsWith("Arduino Mega 2560")) {//"Arduino Leonardo")){
-                port=P;
-                port.setBaudRate(115200);
-                SerialAvailable=port.openPort();
-                logln(port.isOpen());
-                SerialAvailable=port.isOpen();
-                selectedPort=i;
+            ports=SerialPort.getCommPorts();
+            SerialPort P;
+            for(int i=0;i<ports.length;i++) {
+                P=ports[i];
+                logln(P.getDescriptivePortName()+"|"+P.getSystemPortName());
+                if(P.getDescriptivePortName().startsWith("Arduino Mega 2560")) {//"Arduino Leonardo")){
+                    port=P;
+                    port.setBaudRate(115200);
+                    SerialAvailable=port.openPort();
+                    logln(port.isOpen());
+                    SerialAvailable=port.isOpen();
+                    selectedPort=i;
+                }
+            }
+            logln(SerialAvailable);
+            if(port==null) {
+                logln("NO APROPRIATE SERIAL PORT");
+                SerialAvailable=false;
+            }
+            else {
+                if(SerialAvailable) {
+                    logln(port);
+                    serialScanner=new Scanner(new InputStreamReader(port.getInputStream()));
+                    serialWriter=new BufferedWriter(new OutputStreamWriter(port.getOutputStream()));
+                    SerialAvailable=true;
+                }
             }
         }
-        logln(SerialAvailable);
-        if(port==null) {
-            logln("NO APROPRIATE SERIAL PORT");
+        else {
             SerialAvailable=false;
-        }
-        else {
-            if(SerialAvailable) {
-                logln(port);
-                serialScanner=new Scanner(new InputStreamReader(port.getInputStream()));
-                serialWriter=new BufferedWriter(new OutputStreamWriter(port.getOutputStream()));
-                SerialAvailable=true;
-            }
-        }
-        }
-        else {
-        	SerialAvailable=false;
         }
 
         //intialise JFrames
@@ -630,7 +630,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             helpWindow.validate();
 
             //Remove the temporary pleaseWaitMessagePanel
-            //TODO WTF Why does it have worked even with this NOT beeing commented out? mainWindow.remove(pleaseWaitMessagePanel);
+            //WTF Why does it have worked even with this NOT beeing commented out? mainWindow.remove(pleaseWaitMessagePanel);
 
             mainWindow.add(chartPanel,BorderLayout.NORTH);
             mainWindow.add(dataPanel,BorderLayout.SOUTH);
@@ -977,15 +977,15 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         if(!SerialForbidden) {
             DeviceConnConnectButton.addActionListener(this);
             DeviceConnRefreshButton.addActionListener(this);
-        for(SerialPort P:ports) {
-            DeviceConnComboBox.addItem(P.getDescriptivePortName());
-        }
-        if(SerialAvailable) {
-            DeviceConnComboBox.setSelectedIndex(selectedPort);
-        }
+            for(SerialPort P:ports) {
+                DeviceConnComboBox.addItem(P.getDescriptivePortName());
+            }
+            if(SerialAvailable) {
+                DeviceConnComboBox.setSelectedIndex(selectedPort);
+            }
         }
         if(SerialForbidden) {
-        	DeviceConnPanel.add(new JLabel("KEIN ZUGRIFF AUF SERIELLE SCHNITTSTELLE - Bitte Programm neustarten um Zugriff zu Bekommen"), BorderLayout.NORTH);
+            DeviceConnPanel.add(new JLabel("KEIN ZUGRIFF AUF SERIELLE SCHNITTSTELLE - Bitte Programm neustarten um Zugriff zu Bekommen"), BorderLayout.NORTH);
         }
         DeviceConnPanel.add(new JLabel("Verbinden mit: "), BorderLayout.NORTH);
         DeviceConnPanel.add(DeviceConnComboBox, BorderLayout.CENTER);
@@ -994,10 +994,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         DeviceSettings.add(DeviceConnPanel);
         if(SerialForbidden) {
-        DeviceConnPanel.setEnabled(false);
-        DeviceConnComboBox.setEnabled(false);
-        DeviceConnConnectButton.setEnabled(false);
-        DeviceConnRefreshButton.setEnabled(false);
+            DeviceConnPanel.setEnabled(false);
+            DeviceConnComboBox.setEnabled(false);
+            DeviceConnConnectButton.setEnabled(false);
+            DeviceConnRefreshButton.setEnabled(false);
         }
 
         SystemTimePanel=new JPanel();
@@ -1047,9 +1047,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         DeviceDateFormat=new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         RXDate="";//"11.11.2011 11:10:11";
         if((!SerialForbidden)&&SerialAvailable) {
-        SerialListener=new SerialWorker(this);
-        SerialThread=new Thread(SerialListener);
-        SerialThread.start();
+            SerialListener=new SerialWorker(this);
+            SerialThread=new Thread(SerialListener);
+            SerialThread.start();
         }
         DeviceTimeFieldTimer=new Timer(1000, new ActionListener()
             {
@@ -1080,17 +1080,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         SetRTCButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         DeviceSettings.add(SetRTCButton);
         if(SerialForbidden||(!SerialAvailable)) {
-        	SetRTCButton.setEnabled(false);
+            SetRTCButton.setEnabled(false);
         }
 
         SettingsPageTabbedPane.addTab("Allgemeine Einstellungen",GeneralSettings);
         SettingsPageTabbedPane.addTab("Graphenbereich",GraphSettings);
         SettingsPageTabbedPane.addTab("Tastenkombinationen",KeyCombinationSettings);
         SettingsPageTabbedPane.addTab("Gerät", DeviceSettings);
-        JPanel soon=new JPanel();
-        JLabel sonn=new JLabel("KOMMT BALD (1-2 Tage/22-24.11.2017). Backend ist schon fertig");
-        soon.add(sonn);
-        //TODO SettingsPageTabbedPane.addTab("Gerät", soon);
         settingsWindow.add(SettingsPageTabbedPane);
         settingsWindow.setResizable(false);
     }
@@ -1518,10 +1514,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                     return true;
                 }
                 else if(Integer.parseInt(local[i])==Integer.parseInt(remote[i])) {
-                	;
+                    ;
                 }
                 else {
-                	return false;
+                    return false;
                 }
             }
             return false;
@@ -1536,7 +1532,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      * After the Programm has checked whether an update from github is available it performs this update
      */
     public void updateJar(){
-    	logln("\n\nUPDATING\n\n");
+        logln("\n\nUPDATING\n\n");
         try{
             //quelle wie oben bei der config datei
             oldFile=new File("Raumklima.jar");
@@ -2142,7 +2138,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 }
             }
             catch(IndexOutOfBoundsException ex) {
-                break;//TODO maybe log(ex);
+            	log("PROBABLY FINE (ChartMouseClicked): ");
+            	logln(ex);
+                break;
             }
         }
     }
@@ -2191,8 +2189,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 }
             }
             catch(IndexOutOfBoundsException ex) {
+                log("PROBABLY FINE (ChartMouseMoved): ");
+                logln(ex);
                 break;
-                //TODO Maybe log?
             }
         }
     }
@@ -2251,10 +2250,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     /*
-     * alle ActionListener werden hier verarbeitet
-     */
+    * alle ActionListener werden hier verarbeitet
+    */
     @SuppressWarnings("deprecation")
-	@Override
+    @Override
     public void actionPerformed(ActionEvent event) {
         logln("EVENT FIRED");
         if(event.getSource()==imageSizeAutoCheckBox){//in den winstellungen bildgröße automatisch festlegen
@@ -2467,73 +2466,73 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             return;
         }
         else if(event.getSource()==DeviceConnRefreshButton) {
-        	DeviceConnComboBox.removeAllItems();
-        	ports=SerialPort.getCommPorts();
-        	        SerialPort P;
-        	        for(int i=0;i<ports.length;i++) {
-        	            P=ports[i];
-        	            logln(P.getDescriptivePortName()+"|"+P.getSystemPortName());
-        	            if(P.getDescriptivePortName().startsWith("Arduino Mega 2560")) {//"Arduino Leonardo")){
-        	                /*port=P;
-        	                port.setBaudRate(115200);
-        	                SerialAvailable=port.openPort();
-        	                logln(port.isOpen());
-        	                SerialAvailable=port.isOpen();*/
-        	                selectedPort=i;
-        	            }
-        	        }
-        	        logln(SerialAvailable);
-        	for(SerialPort PT:ports) {
-        	            DeviceConnComboBox.addItem(PT.getDescriptivePortName());
-        	        }
-        	        if(SerialAvailable) {
-        	            DeviceConnComboBox.setSelectedIndex(selectedPort);
-        	        }
-        	        return;
+            DeviceConnComboBox.removeAllItems();
+            ports=SerialPort.getCommPorts();
+            SerialPort P;
+            for(int i=0;i<ports.length;i++) {
+                P=ports[i];
+                logln(P.getDescriptivePortName()+"|"+P.getSystemPortName());
+                if(P.getDescriptivePortName().startsWith("Arduino Mega 2560")) {//"Arduino Leonardo")){
+                    /*port=P;
+                    port.setBaudRate(115200);
+                    SerialAvailable=port.openPort();
+                    logln(port.isOpen());
+                    SerialAvailable=port.isOpen();*/
+                    selectedPort=i;
+                }
+            }
+            logln(SerialAvailable);
+            for(SerialPort PT:ports) {
+                DeviceConnComboBox.addItem(PT.getDescriptivePortName());
+            }
+            if(SerialAvailable) {
+                DeviceConnComboBox.setSelectedIndex(selectedPort);
+            }
+            return;
         }
         else if(event.getSource()==DeviceConnConnectButton) {
-        	DeviceTimeField.setText("BITTE WARTEN");
-        	try {
-            port.closePort();
+            DeviceTimeField.setText("BITTE WARTEN");
             try {
-        	SerialThread.stop();
-        	SerialThread.destroy();
+                port.closePort();
+                try {
+                    SerialThread.stop();
+                    SerialThread.destroy();
+                }
+                catch(NoSuchMethodError er) {
+                    log("SOMEWHAT EXPECTED: ");
+                    logln(er);
+                }
             }
-            catch(NoSuchMethodError er) {
-            	log("SOMEWHAT EXPECTED: ");
-        		logln(er);
+            catch(NullPointerException exc) {
+                log("EXPECTED: ");
+                logln(exc);
             }
-        	}
-        	catch(NullPointerException exc) {
-        		log("EXPECTED: ");
-        		logln(exc);
-        	}
-        	catch(Exception exy) {
-        		log("CRITICAL: ");
-        		logln(exy);
-        	}
-        	SerialThread=null;
-        	SerialListener=null;
-        	System.gc();
-        	port=ports[DeviceConnComboBox.getSelectedIndex()];
-        	if(port==null) {
+            catch(Exception exy) {
+                log("CRITICAL: ");
+                logln(exy);
+            }
+            SerialThread=null;
+            SerialListener=null;
+            System.gc();
+            port=ports[DeviceConnComboBox.getSelectedIndex()];
+            if(port==null) {
                 logln("NO APROPRIATE SERIAL PORT");
                 SerialAvailable=false;
             }
             else {
-                    logln(port);
-                    port.setBaudRate(115200);
-                    SerialAvailable=port.openPort();
-                    logln(port.isOpen());
-                    SerialAvailable=port.isOpen();
-                    serialScanner=new Scanner(new InputStreamReader(port.getInputStream()));
-                    serialWriter=new BufferedWriter(new OutputStreamWriter(port.getOutputStream()));
-                    SerialAvailable=true;
+                logln(port);
+                port.setBaudRate(115200);
+                SerialAvailable=port.openPort();
+                logln(port.isOpen());
+                SerialAvailable=port.isOpen();
+                serialScanner=new Scanner(new InputStreamReader(port.getInputStream()));
+                serialWriter=new BufferedWriter(new OutputStreamWriter(port.getOutputStream()));
+                SerialAvailable=true;
             }
-	        SerialListener=new SerialWorker(this);
-	        SerialThread=new Thread(SerialListener);
-	        SerialThread.start();
-	        return;
+            SerialListener=new SerialWorker(this);
+            SerialThread=new Thread(SerialListener);
+            SerialThread.start();
+            return;
         }
         else if(event.getSource()==GeoModeOkButton){//Geo-Modus/Physik-modus
             geoMode=GeoModeButton.isSelected();
@@ -3014,6 +3013,6 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     @Override
     public void focusLost(FocusEvent arg0) {}
 
-	public void initDeviceTimer() {
-	}
+    public void initDeviceTimer() {
+    }
 }

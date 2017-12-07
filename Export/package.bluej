@@ -1,0 +1,18 @@
+#BlueJ package file
+objectbench.height=100
+objectbench.width=480
+package.editor.height=314
+package.editor.width=687
+package.editor.x=674
+package.editor.y=118
+package.numDependencies=0
+package.numTargets=1
+package.showExtends=true
+package.showUses=true
+project.charset=windows-1252
+target1.height=62
+target1.name=Raumklima
+target1.type=PackageTarget
+target1.width=90
+target1.x=70
+target1.y=10
