@@ -1,27 +1,23 @@
 # Raumklima
 Software für ein Arduino-basiertes Gerät zur Überwachung des Raumklimas.
 
-Dieses Projekt wird/wurde durchgeführt im Rahmen eines W-Seminares von Lukas Aldersley am Josef-Effner-Gymnasium in Dachau.
+Dieses Projekt wurde durchgeführt im Rahmen eines W-Seminares von Lukas Aldersley am Josef-Effner-Gymnasium in Dachau.
 
-Die Aktuelle Version ist 1.9.0.1
-Die Software wird alle Updates automatisch installieren.
+Die Aktuelle Version ist 2.5.0.0
+Die Software wird alle Updates automatisch installieren, sofern diese Option in den Einstellungen aktiviert ist.
 
 Funktionsfähige Software befindet sich im Ordner PublicVersion (als .jar oder als .ino Datei. Die VERSION datei wird nur vom updater gebraucht. Unter Umständen ist diese Software noch mit Bugs behaftet)
-Natürlich ist die Software unter Releases (der Tab in der Navigation) auch lauffähig und fertiggestellt (nicht unbedingt auf dem allerneuesten stand, dafür aber einigermaßen stabil).
+Natürlich ist die Software unter Releases (der Tab in der Navigation) auch lauffähig und fertiggestellt (nicht unbedingt auf dem allerneuesten stand, dafür aber relativ stabil und fehlerfrei).
 
 Dieses Projekt soll sich in mehrere teile gliedern:
-  - Den Code für ´die Arduinos (Arduino Leonardo + Arduino Pro Mini)
+  - Der Code für das Gerät (die Firmware), Arduino Sketch für Arduino MEGA 2560
   - Eine Auswertungssoftware für die aufgezeichneten Klimadaten (JAVA mit JFreeChart)
   
 Der Aktuelle entwicklungsstatus ist: 
-  - Die Arduino-Software funktioniert, muss aber noch optimiert werden
-  - Die Java Software ist fertig, zusätzliche Features werden aber noch hinzugefügt
+  - Relativ fertig
+  - Kleine Fehlerbehebungen noch notwendig
+  - Zusätzliche Funktionen werden noch hinzugefügt
 
-  
-Noch zu tun ist:
-  - Viel Testen
-  - Code Optimieren
-  - Arduino Niederschlagssensor fertigmachen und in code implementieren
-  - Arduino Updater implementieren
-  - Gehäuse
-  - Seminararbeit fertig machen
+Noch geplant ist:
+  - Firmware Updater
+  - Performance Verbesserungen
