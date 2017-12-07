@@ -1,5 +1,0 @@
-Benoetigte Zeit fuer die ersten 50 Fibonacci-Zahlen: 549.666992 Sekunden
-Benoetigte Zeit fuer die ersten 30 Fibonacci-Zahlen: 0.052000 Sekunden
-Benoetigte Zeit fuer die ersten 40 Fibonacci-Zahlen: 4.456000 Sekunden
-Benoetigte Zeit fuer die ersten 45 Fibonacci-Zahlen: 49.237000 Sekunden
-Benoetigte Zeit fuer die ersten 46 Fibonacci-Zahlen: 79.486000 Sekunden
