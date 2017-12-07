@@ -16,7 +16,7 @@ public class SerialWorker implements Runnable
     public void run() {
         if(raum.SerialAvailable) {
             try{
-                Thread.sleep(5000);
+                Thread.sleep(1000);
             }
             catch(Exception e){
                 Raumklima.logln(e);

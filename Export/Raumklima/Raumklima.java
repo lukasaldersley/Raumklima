@@ -102,7 +102,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static String projectUri="https://raw.githubusercontent.com/lukasaldersley/Raumklima/";
     public static String downloadTargetUri="https://github.com/lukasaldersley/Raumklima/raw/";
 
-    public static final String VERSION="2.4.9.8";
+    public static final String VERSION="2.5.0.0";
 
     public static boolean CLOSE_WINDOW_ALT_REQUIRED=false;
     public static boolean OPEN_HELP_WINDOW_ALT_REQUIRED=false;
@@ -1009,6 +1009,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         SystemTimeLabel=new JLabel("Systemzeit: ");
         SystemTimeField=new JTextField();
         SystemTimeField.setEditable(false);
+        SystemTimeField.setPreferredSize(new Dimension(120,20));
+        SystemTimeField.setMinimumSize(new Dimension(120,20));
+        SystemTimeField.setMaximumSize(new Dimension(120,20));
         SystemTimeFormatter=new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         SystemTimeField.setText(SystemTimeFormatter.format(new Date(System.currentTimeMillis())));
         SystemTimeFieldTimer=new Timer(1000, new ActionListener()
@@ -1036,6 +1039,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         DeviceTimePanel.setMinimumSize(new Dimension(220,22));
         DeviceTimeLabel=new JLabel("Gerätezeit: ");
         DeviceTimeField=new JTextField("UNBEKANNT");
+        DeviceTimeField.setPreferredSize(new Dimension(120,20));
+        DeviceTimeField.setMinimumSize(new Dimension(120,20));
+        DeviceTimeField.setMaximumSize(new Dimension(120,20));
         DeviceTimeField.setEditable(false);
 
         DeviceDateFormat=new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
@@ -1044,6 +1050,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         SerialListener=new SerialWorker(this);
         SerialThread=new Thread(SerialListener);
         SerialThread.start();
+        }
         DeviceTimeFieldTimer=new Timer(1000, new ActionListener()
             {
                 public void actionPerformed(ActionEvent e)
@@ -1053,6 +1060,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 }
             }
         );
+        if((!SerialForbidden)&&SerialAvailable) {
             DeviceTimeFieldTimer.start();
         }
 
@@ -1062,7 +1070,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         DeviceTimePanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
         TimePanel.add(DeviceTimePanel,BorderLayout.CENTER);
-        TimePanel.add(new JLabel("HINWEIS: Bitte warten Sie etwa 30 Sekunden, bevor Sie Versuchen die Uhr zu Stellen."),BorderLayout.SOUTH);
+        TimePanel.add(new JLabel("HINWEIS: Bitte warten Sie etwa 30 Sekunden, bevor Sie versuchen die Uhr zu Stellen."),BorderLayout.SOUTH);
 
         TimePanel.validate();
         DeviceSettings.add(TimePanel);
@@ -1509,6 +1517,12 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 if(Integer.parseInt(remote[i])>Integer.parseInt(local[i])){
                     return true;
                 }
+                else if(Integer.parseInt(local[i])==Integer.parseInt(remote[i])) {
+                	;
+                }
+                else {
+                	return false;
+                }
             }
             return false;
         }
@@ -1522,6 +1536,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      * After the Programm has checked whether an update from github is available it performs this update
      */
     public void updateJar(){
+    	logln("\n\nUPDATING\n\n");
         try{
             //quelle wie oben bei der config datei
             oldFile=new File("Raumklima.jar");
@@ -2238,7 +2253,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     /*
      * alle ActionListener werden hier verarbeitet
      */
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public void actionPerformed(ActionEvent event) {
         logln("EVENT FIRED");
         if(event.getSource()==imageSizeAutoCheckBox){//in den winstellungen bildgröße automatisch festlegen
@@ -2440,7 +2456,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             onlyInterpolationChanging=true;
             replot();
         }
-        if(event.getSource()==SetRTCButton){
+        else if(event.getSource()==SetRTCButton){
             try{
                 serialWriter.write("SETTIME "+SystemTimeField.getText());
                 serialWriter.flush();
@@ -2448,8 +2464,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             catch(Exception e){
                 logln(e);
             }
+            return;
         }
-        if(event.getSource()==DeviceConnRefreshButton) {
+        else if(event.getSource()==DeviceConnRefreshButton) {
         	DeviceConnComboBox.removeAllItems();
         	ports=SerialPort.getCommPorts();
         	        SerialPort P;
@@ -2472,21 +2489,31 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         	        if(SerialAvailable) {
         	            DeviceConnComboBox.setSelectedIndex(selectedPort);
         	        }
+        	        return;
         }
-        if(event.getSource()==DeviceConnConnectButton) {
+        else if(event.getSource()==DeviceConnConnectButton) {
+        	DeviceTimeField.setText("BITTE WARTEN");
         	try {
+            port.closePort();
+            try {
         	SerialThread.stop();
         	SerialThread.destroy();
-        	SerialThread=null;
-        	SerialListener=null;
+            }
+            catch(NoSuchMethodError er) {
+            	log("SOMEWHAT EXPECTED: ");
+        		logln(er);
+            }
         	}
         	catch(NullPointerException exc) {
+        		log("EXPECTED: ");
         		logln(exc);
         	}
         	catch(Exception exy) {
         		log("CRITICAL: ");
         		logln(exy);
         	}
+        	SerialThread=null;
+        	SerialListener=null;
         	System.gc();
         	port=ports[DeviceConnComboBox.getSelectedIndex()];
         	if(port==null) {
@@ -2494,18 +2521,21 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 SerialAvailable=false;
             }
             else {
-                if(SerialAvailable) {
                     logln(port);
+                    port.setBaudRate(115200);
+                    SerialAvailable=port.openPort();
+                    logln(port.isOpen());
+                    SerialAvailable=port.isOpen();
                     serialScanner=new Scanner(new InputStreamReader(port.getInputStream()));
                     serialWriter=new BufferedWriter(new OutputStreamWriter(port.getOutputStream()));
                     SerialAvailable=true;
-                }
             }
 	        SerialListener=new SerialWorker(this);
 	        SerialThread=new Thread(SerialListener);
 	        SerialThread.start();
+	        return;
         }
-        if(event.getSource()==GeoModeOkButton){//Geo-Modus/Physik-modus
+        else if(event.getSource()==GeoModeOkButton){//Geo-Modus/Physik-modus
             geoMode=GeoModeButton.isSelected();
             replot();
         }
@@ -2983,4 +3013,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     @Override
     public void focusLost(FocusEvent arg0) {}
+
+	public void initDeviceTimer() {
+	}
 }
