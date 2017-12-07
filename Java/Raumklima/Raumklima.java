@@ -371,6 +371,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private Thread SerialThread;
     String RXDate;
     JPanel TimePanel;
+    boolean SerialForbidden=false;
 
     public static void main(String[] args){//Startet das Programm (ggf mnit debug/logging)
         for(int i=0;i<args.length;i++){
@@ -482,6 +483,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         previous=newPrevious;
         next=newNext;
         setup(true,"");
+        SerialForbidden=true;
     }
 
     /**
@@ -518,32 +520,37 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             }
         }
 
-        ports=SerialPort.getCommPorts();
-        SerialPort P;
-        for(int i=0;i<ports.length;i++) {
-            P=ports[i];
-            logln(P.getDescriptivePortName()+"|"+P.getSystemPortName());
-            if(P.getDescriptivePortName().startsWith("Arduino Leonardo")){//"Arduino Mega 2560")) {
-                port=P;
-                port.setBaudRate(115200);
-                SerialAvailable=port.openPort();
-                logln(port.isOpen());
-                SerialAvailable=port.isOpen();
-                selectedPort=i;
+        if(!SerialForbidden){
+            ports=SerialPort.getCommPorts();
+            SerialPort P;
+            for(int i=0;i<ports.length;i++) {
+                P=ports[i];
+                logln(P.getDescriptivePortName()+"|"+P.getSystemPortName());
+                if(P.getDescriptivePortName().startsWith("Arduino Mega 2560")) {//"Arduino Leonardo")){
+                    port=P;
+                    port.setBaudRate(115200);
+                    SerialAvailable=port.openPort();
+                    logln(port.isOpen());
+                    SerialAvailable=port.isOpen();
+                    selectedPort=i;
+                }
+            }
+            logln(SerialAvailable);
+            if(port==null) {
+                logln("NO APROPRIATE SERIAL PORT");
+                SerialAvailable=false;
+            }
+            else {
+                if(SerialAvailable) {
+                    logln(port);
+                    serialScanner=new Scanner(new InputStreamReader(port.getInputStream()));
+                    serialWriter=new BufferedWriter(new OutputStreamWriter(port.getOutputStream()));
+                    SerialAvailable=true;
+                }
             }
         }
-        logln(SerialAvailable);
-        if(port==null) {
-            logln("NO APROPRIATE SERIAL PORT");
+        else{
             SerialAvailable=false;
-        }
-        else {
-            if(SerialAvailable) {
-                logln(port);
-                serialScanner=new Scanner(new InputStreamReader(port.getInputStream()));
-                serialWriter=new BufferedWriter(new OutputStreamWriter(port.getOutputStream()));
-                SerialAvailable=true;
-            }
         }
 
         //intialise JFrames

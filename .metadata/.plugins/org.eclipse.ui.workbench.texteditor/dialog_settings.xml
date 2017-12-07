@@ -2,12 +2,14 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="Enabled(false)" key="selection"/>
+		<item value="actionP" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="actionP"/>
+			<item value="SerialWorker"/>
 			<item value="enabled(false)"/>
 			<item value="RXDate"/>
 			<item value="RXDte"/>
@@ -21,8 +23,6 @@
 			<item value="&quot;Zeit"/>
 			<item value="copy"/>
 			<item value="helpTe"/>
-			<item value="KeyCombos"/>
-			<item value="InTex"/>
 		</list>
 		<list key="replacehistory">
 			<item value=""/>

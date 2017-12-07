@@ -77,6 +77,7 @@ public class SerialWorker implements Runnable
                 raum.DeviceDate=raum.DeviceDateFormat.parse(raum.RXDate);
                 raum.DeviceMillis=raum.DeviceDate.getTime();
                 raum.DeviceTimeFieldTimer.start();
+                raum.SetRTCButton.setEnabled(true);
             } catch (ParseException e1) {
                 Raumklima.logln(e1);
             }
