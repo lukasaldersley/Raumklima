@@ -10,6 +10,30 @@
       <link>http://www.eclipse.org</link>
     </image>
     <item>
+      <title><![CDATA[Eclipse Newsletter | Capella: open source MBSE solution]]></title>
+      <link><![CDATA[https://www.eclipse.org/community/eclipse_newsletter/2017/december/]]></link>
+      <description><![CDATA[Learn everything about Capella, an open source workbench based on Eclipse technology that allows engineers to design complex systems.]]></description>
+      <pubDate>Thu, 14 Dec 2017 10:10:00 EST</pubDate>
+      <category>news</category>
+      <pressrelease>0</pressrelease>
+    </item>
+     <item>
+      <title><![CDATA[Open Source Community Accelerates Big Data Analytics for Geospatial Solutions]]></title>
+      <link><![CDATA[https://eclipse.org/org/press-release/20171214_locationtechopensource.php]]></link>
+      <description><![CDATA[LocationTech announces new project releases that provide core technology for geospatial big data analytic solutions.]]></description>
+      <pubDate>Thu, 14 Dec 2017 08:00:00 EST</pubDate>
+      <category>news</category>
+      <pressrelease>1</pressrelease>
+    </item>
+    <item>
+      <title><![CDATA[Announcing Open IoT Challenge 4.0 Scholars]]></title>
+      <link><![CDATA[https://medium.com/@roxanne.iot/open-iot-challenge-4-0-scholars-cf750ec3b14b]]></link>
+      <description><![CDATA[Congratulations to the Top 12 teams who submitted the best proposals for the fourth Open IoT Challenge!]]></description>
+      <pubDate>Wed, 13 Dec 2017 09:45:00 EST</pubDate>
+      <category>news</category>
+      <pressrelease>0</pressrelease>
+    </item>
+    <item>
       <title><![CDATA[Eclipse Newsletter | Location Matters]]></title>
       <link><![CDATA[https://www.eclipse.org/community/eclipse_newsletter/2017/november/]]></link>
       <description><![CDATA[This newsletter is everything geospacial (LocationTech) + a featured article about creating video games.]]></description>
