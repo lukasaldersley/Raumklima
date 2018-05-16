@@ -1,8 +1,0 @@
-#BlueJ class context
-comment0.params=hexfile
-comment0.target=int\ upload(java.lang.String)
-comment1.params=boardModel\ comPort
-comment1.target=void\ prepare(java.lang.String,\ java.lang.String)
-comment2.params=
-comment2.target=java.lang.String[]\ getPorts()
-numComments=3

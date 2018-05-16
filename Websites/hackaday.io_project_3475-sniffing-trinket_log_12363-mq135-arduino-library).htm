@@ -1,0 +1,946 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+
+<head>
+    
+    
+
+<title>MQ135 Arduino library | Details | Hackaday.io</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#333333">
+<link rel="apple-touch-icon-precomposed" href="apple-touch-icon.png">
+<link rel="stylesheet" href="//cdn.hackaday.io/css/style.css?version=0.95.4" />
+<script type="text/javascript" src="//use.typekit.net/ymb0lgk.js"></script>
+<script type="text/javascript">try{Typekit.load({ async: true });}catch(e){}</script>
+
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    
+
+
+
+<!-- Twitter Card data -->
+<meta name="twitter:site" content="@hackadayio">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MQ135 Arduino library | Details | Hackaday.io">
+<meta name="twitter:description" content="&lt;p&gt;This is the first of two logs about the software needed for the SniffingTrinket project. Because I guess that a general Arduino library for the MQ135 might be of use for other projects, I decided to split the software in a dedicated library and a sketch specifically for the SniffingTrinket. So, this is solely about the MQ135 lib, which, btw. you can find in my &lt;a href=&#34;https://github.com/GeorgK/MQ135&#34; target=&#34;_blank&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;First, some theory: My interest in those cheap gas sensors was sparked by a video from &lt;a href=&#34;http://benkrasnow.blogspot.de/2014/02/how-breathalyzer-works-alcohol-sensor.html&#34; target=&#34;_blank&#34;&gt;Ben Krasnow&lt;/a&gt; who takes a look at a cheap breathalyzer with a very similar sensor. He links a paper in his blog post that goes into the theory of the operation of these sensors. In short, they consist of a heated piece of tin dioxide (doped with other stuff) that changes resistance as it reacts with the ambient gas (the heat accelerates the chemical reaction). There are several versions of these sensor, sensitive to several gas types. &lt;em&gt;However, no sensor material is sensitive to a single gas only!&lt;/em&gt; I did some more research and found in principle two sensor of immediate interest to me: The &lt;a href=&#34;https://www.olimex.com/Products/Components/Sensors/SNS-MQ135/resources/SNS-MQ135.pdf&#34; target=&#34;_blank&#34;&gt;MQ135&lt;/a&gt; for &#34;air quality&#34; and the &lt;a href=&#34;http://sandboxelectronics.com/files/SEN-000007/MG811.pdf&#34;">
+<meta name="twitter:image" content="https://cdn.hackaday.io/images/8756401420120834688.jpg">
+
+<!-- Open Graph data -->
+<meta property="og:type" content="website" />
+
+
+    <meta property="og:url" content="https://hackaday.io/project/project/3475-sniffing-trinket/log/12363-mq135-arduino-library">
+
+<meta property="og:title" content="MQ135 Arduino library | Details | Hackaday.io">
+<meta property="og:description" content="&lt;p&gt;This is the first of two logs about the software needed for the SniffingTrinket project. Because I guess that a general Arduino library for the MQ135 might be of use for other projects, I decided to split the software in a dedicated library and a sketch specifically for the SniffingTrinket. So, this is solely about the MQ135 lib, which, btw. you can find in my &lt;a href=&#34;https://github.com/GeorgK/MQ135&#34; target=&#34;_blank&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;First, some theory: My interest in those cheap gas sensors was sparked by a video from &lt;a href=&#34;http://benkrasnow.blogspot.de/2014/02/how-breathalyzer-works-alcohol-sensor.html&#34; target=&#34;_blank&#34;&gt;Ben Krasnow&lt;/a&gt; who takes a look at a cheap breathalyzer with a very similar sensor. He links a paper in his blog post that goes into the theory of the operation of these sensors. In short, they consist of a heated piece of tin dioxide (doped with other stuff) that changes resistance as it reacts with the ambient gas (the heat accelerates the chemical reaction). There are several versions of these sensor, sensitive to several gas types. &lt;em&gt;However, no sensor material is sensitive to a single gas only!&lt;/em&gt; I did some more research and found in principle two sensor of immediate interest to me: The &lt;a href=&#34;https://www.olimex.com/Products/Components/Sensors/SNS-MQ135/resources/SNS-MQ135.pdf&#34; target=&#34;_blank&#34;&gt;MQ135&lt;/a&gt; for &#34;air quality&#34; and the &lt;a href=&#34;http://sandboxelectronics.com/files/SEN-000007/MG811.pdf&#34;">
+<meta property="og:image" content="https://cdn.hackaday.io/images/8756401420120834688.jpg">
+
+</head>
+<body>
+    
+
+<div class="header" id="header">
+    
+    <div class="container">
+
+        <a href="/" title="Hackaday.io Home" class="logo">Hack a Day</a>
+
+        <a href="javascript:void(0);" class="button-menu">Menu</a>
+
+        <ul class="nav" role="navigation">
+            <li><a href="/projects" class="">Projects</a></li>
+            <li><a href="/lists" class="">Lists</a></li>
+            <li><a href="/contests" class="">Contests</a></li>
+            <li><a href="/stack" class="">Stack</a></li>
+            <li class="dropdown j-more-open">
+                <a href="javascript:void(0)" class="dropdown-link">More 
+
+
+
+
+    <div class="icon icon-arrow-down">
+        <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><title>arrow-down</title><path d="M8 9.702l4.79-4.79a.707.707 0 0 1 1 .999l-5.14 5.14a.705.705 0 0 1-.652.197.712.712 0 0 1-.646-.196l-5.14-5.14a.703.703 0 0 1-.004-1.002.708.708 0 0 1 1.003.004L8 9.702z" fill-rule="evenodd"/></svg>
+    </div>
+</a>
+                <ul role="menu" class="dropdown-menu more-menu" id="j-more">
+                    <li><a href="http://hackaday.com/blog/" target="_blank">Blog</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/hackerspaces">Hackerspaces</a></li>
+                    <li><a href="/hackers">Profiles</a></li>
+                    <li><a href="/submissions/prize2017/list">2017 Prize Entries</a></li>
+                    <li><a href="http://store.hackaday.com/" class="j-store-tracking" target="_blank">Store</a></li>
+                    <li><a href="/project/8563-jobs-board">Jobs Board</a></li>
+                </ul>
+            </li>
+            <li class="search-holder">
+                <form id="search-form" action="/search" onsubmit="return submitSearch();" method="GET">
+
+                    <input type="text" placeholder="Search projects, profiles ..." name="term" class="input-field j-add-search" id="j-add-search" value="" autocomplete="off" pattern=".{2,}" required title="2 characters minimum"  />
+                    <button type="submit" class="button-search">
+                        
+
+
+
+
+    <div class="icon icon-search">
+        <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><title>search</title><path d="M10.542 9.368a4.547 4.547 0 1 0-1.015 1.079c.04.086.094.166.165.237l2.727 2.727a.8.8 0 0 0 1.137.006.801.801 0 0 0-.006-1.136l-2.726-2.727a.812.812 0 0 0-.282-.185zm-1.72-.473a2.91 2.91 0 1 0-4.114-4.116 2.91 2.91 0 0 0 4.114 4.117z" fill-rule="evenodd"/></svg>
+    </div>
+
+                    </button>
+                </form>
+            </li>
+        </ul>
+
+        
+
+            <ul class="nav right nav-signin" role="navigation">
+                <li><a href="/signup" class="gold-white-button">Sign up</a></li>
+                <li><a href="/signin?returnUrl=%2Fproject%2F3475-sniffing-trinket%2Flog%2F12363-mq135-arduino-library)">Log In</a></li>
+            </ul>
+
+        
+    </div>
+</div>
+
+<div id="topMessage" class="alert small hide">
+    <span class="j-top-content"></span>
+    <a href="javascript:void(0);" class="alert-close j-top-message-close">
+
+
+
+
+    <div class="icon icon-close-circle">
+        <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><title>close-circle</title><path d="M10.047 10.658a.562.562 0 0 1-.398-.165L7.984 8.828 6.32 10.493a.562.562 0 0 1-.961-.398.56.56 0 0 1 .164-.398L7.19 8.033 5.523 6.368a.561.561 0 1 1 .795-.796l1.665 1.665L9.65 5.572a.563.563 0 0 1 .795.796L8.78 8.033l1.665 1.664a.562.562 0 0 1-.398.961zm-2.062-7.5a4.875 4.875 0 1 0 .002 9.75 4.875 4.875 0 0 0-.004-9.75zm0 10.875a6 6 0 1 1 0-12 6 6 0 0 1 0 12z" fill-rule="evenodd"/></svg>
+    </div>
+ Close</a>
+</div>
+
+
+
+
+<script>
+    var HIO = HIO || {};
+    HIO.enableFeedV3 = true
+</script>
+
+
+    
+
+    
+        <div class="headline">
+    <div class="container">
+        
+            
+            <h1>MQ135 Arduino library</h1>
+            <p class="description-title">A project log for <a href="/project/3475">Sniffing Trinket</a></p>
+            <p class="description-summary">A room climate monitor</p>
+            <div class="description-metainfo">
+                
+                    <span class="identity-card" data-id="38722"><a href="/hacker/38722-georg-krocker"><img src="https://cdn.hackaday.io/images/resize/24x24/default-avatar.png" />Georg Krocker</a></span>
+                    <span class="bull">&bull;</span>
+                
+                
+                <span class='time-card' style='margin: 0' title='3 years ago'>01/01/2015 at 14:57</span><span class="bull">&bull;</span><a href="#discussion-list" title="See Comments"><span id="comment_count">12</span> Comments</a></span>
+            </div>
+        
+
+    </div>
+</div>
+
+
+        <div class="container post-content">
+            <p>This is the first of two logs about the software needed for the SniffingTrinket project. Because I guess that a general Arduino library for the MQ135 might be of use for other projects, I decided to split the software in a dedicated library and a sketch specifically for the SniffingTrinket. So, this is solely about the MQ135 lib, which, btw. you can find in my <a href="https://github.com/GeorgK/MQ135" target="_blank">GitHub</a>.</p><p>First, some theory: My interest in those cheap gas sensors was sparked by a video from <a href="http://benkrasnow.blogspot.de/2014/02/how-breathalyzer-works-alcohol-sensor.html" target="_blank">Ben Krasnow</a> who takes a look at a cheap breathalyzer with a very similar sensor. He links a paper in his blog post that goes into the theory of the operation of these sensors. In short, they consist of a heated piece of tin dioxide (doped with other stuff) that changes resistance as it reacts with the ambient gas (the heat accelerates the chemical reaction). There are several versions of these sensor, sensitive to several gas types. <em>However, no sensor material is sensitive to a single gas only!</em> I did some more research and found in principle two sensor of immediate interest to me: The <a href="https://www.olimex.com/Products/Components/Sensors/SNS-MQ135/resources/SNS-MQ135.pdf" target="_blank">MQ135</a> for "air quality" and the <a href="http://sandboxelectronics.com/files/SEN-000007/MG811.pdf" target="_blank">MQ811</a> for CO2. The MQ811 is much more expensive (30$ compared to 3$). </p><p>The datasheet claims that the MQ135 is sensitive for CO2, Alkohol, Benzene, NOx, NH3 and the Fig 3 shows the change in resistance depending on the concentration of these gases in the ambient air in ppm (of the total gas volume). It turns out the the general sensitivity is the roughly same for all the gases. This is where you think: Wait a minute! CO2 is the 4th most abundant trace gas in the earths atmosphere with about <a href="http://co2now.org/">400ppm</a> concentration (N2, O2, and Ar are on place 1-3). All of the other gases the sensor detects are much less common than CO2 and luckily so, as they are harmful. This means, in a normal atmosphere the sensor mostly detects CO2 and with the right calibration we can use it as a cheap replacement for the MQ811 (which by the way is also sensitive to other gases). Turns out, somebody already hat a go at this: I will leave you with great explanation of <a href="http://davidegironi.blogspot.de/2014/01/cheap-co2-meter-using-mq135-sensor-with.html#.VJXAgsC3b" target="_blank">David Gironi</a> for the details, but mostly he just extracts data from the figures in the datasheet, throws some math at the problem and cross-checks the results with a different kind of sensor for CO2.</p><p>The <a href="https://github.com/GeorgK/MQ135" target="_blank">Library</a> I have written basically just implements his approach for the Arduino. It's pretty easy to use. Copy it to your Arduino library folder and put</p><p><span></span></p><pre><span>#<span>include</span> "MQ135.h"</span>
+
+MQ135 gasSensor = MQ135(ANALOGPIN);</pre><p>to your sketch. ANALOGPIN is the ADC input for the sensor readings (refer to the post with the SniffingTrinket schematic for explanation).</p><p>Before you can use the sensor, it has to be calibrated. For this, connect the sensor to your circuit and leave it powered on for 12-24 h to burn it in. Then put it into outside air, preferably at 20°C/35% rel. hum. (humidity is not so crucial). Read out the calibration value as such</p><pre><span>float</span> rzero = gasSensor.getRZero();
+</pre><p>Wait until the value has somewhat settled (30min-1h). Remember, this is an ADC measurement so you might not want to wait some time between reading the sensor and also do some averaging. Once you have determined your RZero, put it into the MQ135.h. <strong>Note: Different sensors will likely have different RZero!</strong></p><p><strong></strong></p><pre><span>#<span>define</span> RZERO 76.63</span></pre><strong><br></strong><strong></strong>Congrats, you have calibrated the sensor and can now read the CO2 ppm value in your sketch<p><span></span></p><pre><span>float</span> ppm = gasSensor.getPPM();
+</pre>The library also provides functions to apply the temperature/humidity correction that is shown in Fig 4 of the datasheet, but I do not trust the datasheet there, so this should not be used for the moment.<p>If you want to know more, look at the code. I tried to make it very readable and self explaining and provided lots of comments. <strong>If you do not understand something, ask: I will happily explain it.</strong></p>
+        </div>
+
+        
+    <div class="container post-pagination">
+        <section class="section">
+            
+                <div class="prevnext-log-link">
+                    <span>Previous Log</span>
+                    <h3 class="element-title"><a href="/project/3475/log/12361">Power Supply</a></h3>
+                    <small class="authorship"><span class='time-card' style='margin: 0' title='3 years ago'>01/01/2015 at 13:52</span>  &bull;
+                        <a class="gray-link" href="/project/3475/log/12361#discussion-list">
+                            0 comments
+                        </a>
+                    </small>
+                </div>
+            
+
+            
+                <div class="prevnext-log-link next-log-link">
+                    <span>Next Log</span>
+                    <h3 class="element-title">
+                        <a href="/project/3475/log/12412">
+                            SniffingTrinket sketch
+                        </a>
+                    </h3>
+                    <small class="authorship"><span class='time-card' style='margin: 0' title='3 years ago'>01/02/2015 at 15:52</span>  &bull;
+                        <a class="gray-link" href="/project/3475/log/12412#discussion-list"
+                        >
+                            0 comments
+                        </a>
+                    </small>
+                </div>
+            
+        </section>
+    </div>
+
+
+
+        
+            <div class="container post-content post-comments" id="post-comments">
+                <section class="section last">
+    <h2 id="j-discussions-title" class="section-title">Discussions</h2>
+
+    <form id="j-discussion-add-top" action="/discussions/add" name="add-comment" method="POST" class="skip-global-form discussion-form j-discussion-add hide">
+
+        <textarea placeholder="Add your comment" name="comment" class="redactor-comment textarea-field"></textarea>
+
+        <div class="error-message alert-danger hide" id="addCommentErrorMessageTop"></div>
+
+        <input type="hidden" name="categoryId" value="12363" />
+        <input type="hidden" name="category" value="log" />
+        <input type="hidden" name="_csrf" value="pKrxOdAz-41l8eYJ0fJ3GzsHXbh6RnyEgYIU" />
+        <input type="hidden" name="replyTo" value="0" />
+
+        <input type="submit" class="button-grey-gold-medium" value="Post comment" />
+    </form>
+
+    <div id="discussion-list" class="discussion-list">
+        
+<p>
+    <div class="signup-holder textarea-holder">
+        <textarea placeholder="Log In or become a member to leave your comment" name="comment" class="editable input-comment"></textarea>
+    </div>
+    <a href="#" class="button-grey-gold-small login-comment login-button">Log In/Sign up to comment</a>
+</p>
+<div class="modal-content-holder login-modal" id="login-modal">
+    <div class="submissions-close modal-close">
+        
+
+
+
+
+    <div class="icon icon-close">
+        <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><title>close</title><path d="M8 6.99L4.767 3.76a.714.714 0 1 0-1.01 1.01L6.992 8 3.76 11.233a.714.714 0 1 0 1.01 1.01L8 9.008l3.233 3.232a.714.714 0 1 0 1.01-1.01L9.008 8l3.232-3.233a.714.714 0 1 0-1.01-1.01L8 6.992z" fill-rule="evenodd"/></svg>
+    </div>
+
+    </div>
+    <div class="signup-holder">
+        <h2>Become a member</h2>
+        <p>In order to follow projects & hackers or give likes
+        <br />you need to create an account.</p>
+        <form action="/signup" method="POST">
+            <fieldset class="form-left">
+                <input type="text" class="input-field" placeholder="Enter your email address" required name="email"  />
+                <input type="password" class="input-field" placeholder="Pick a secure password" required name="password"  />
+            </fieldset>
+            <fieldset class="form-right">
+                <button class="gold-gold-button signup" type="submit">Sign up</button>
+          </fieldset>
+          <input type="hidden" name="_csrf" value="pKrxOdAz-41l8eYJ0fJ3GzsHXbh6RnyEgYIU" />
+          <input class="input-field" placeholder="Invitation Code" required name="invitation_code" value="5Ad0ix2-b96J" type="hidden" />
+        </form>
+        <a id="login-modal-signin" href="/signin">Already a member?</a>
+    </div>
+</div>
+
+
+
+
+
+    
+    
+
+    <div id="j-discussion-77669" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/201976">
+                <img src="https://cdn.hackaday.io/images/resize/100x100/default-avatar.png" alt="">
+            </a>
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <span class="identity-card" data-id="201976"><a href="/hacker/201976-tanya">Tanya</a></span>
+
+                wrote <a class="gray-link" href="/project/3475-sniffing-trinket/log/12363-mq135-arduino-library/discussion-77669"><span class='time-card' style='margin: 0' title='8 months ago'>02/23/2017 at 14:53</span></a>
+
+                <span id="comment-points-holder-77669" class="hide">
+                    &bull; <span id="comment-points-77669">
+                         point
+                    </span>
+                </span>
+
+            </small>
+            <div class="comment-content">
+                <div id="comment-77669-content">
+                    <p>How to&#xA0;calibrate my MQ135 sensor to give no2 concentration ?</p>
+                </div>
+                <p id="comment-77669-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="comment-actions" id="actions-77669">
+                    
+                    
+                    &nbsp;
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes">yes</a> | <a href="#" class="delete-no">no</a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-77668" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/201976">
+                <img src="https://cdn.hackaday.io/images/resize/100x100/default-avatar.png" alt="">
+            </a>
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <span class="identity-card" data-id="201976"><a href="/hacker/201976-tanya">Tanya</a></span>
+
+                wrote <a class="gray-link" href="/project/3475-sniffing-trinket/log/12363-mq135-arduino-library/discussion-77668"><span class='time-card' style='margin: 0' title='8 months ago'>02/23/2017 at 14:53</span></a>
+
+                <span id="comment-points-holder-77668" class="hide">
+                    &bull; <span id="comment-points-77668">
+                         point
+                    </span>
+                </span>
+
+            </small>
+            <div class="comment-content">
+                <div id="comment-77668-content">
+                    <p>h</p>
+                </div>
+                <p id="comment-77668-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="comment-actions" id="actions-77668">
+                    
+                    
+                    &nbsp;
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes">yes</a> | <a href="#" class="delete-no">no</a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-74100" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/95925">
+                <img src="https://cdn.hackaday.io/images/resize/100x100/default-avatar.png" alt="">
+            </a>
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <span class="identity-card" data-id="95925"><a href="/hacker/95925-bub-rascal">Bub Rascal</a></span>
+
+                wrote <a class="gray-link" href="/project/3475-sniffing-trinket/log/12363-mq135-arduino-library/discussion-74100"><span class='time-card' style='margin: 0' title='10 months ago'>01/13/2017 at 12:08</span></a>
+
+                <span id="comment-points-holder-74100" class="hide">
+                    &bull; <span id="comment-points-74100">
+                         point
+                    </span>
+                </span>
+
+            </small>
+            <div class="comment-content">
+                <div id="comment-74100-content">
+                    <p>Any updates on the issue with the alleged &quot;wrong sensor resistance calculation&quot; in the formula in your&#xA0;library ?<a href="https://github.com/GeorgK/MQ135/issues/2">https://github.com/GeorgK/MQ135/issues/2</a></p><p>((1023./(float)val) - 1.)*RLOAD</p><p>vs</p><p>((1023./(float)val) * 5. - 1.)*RLOAD;</p><p>the ppm results vary&#xA0;enormously</p><p>could it be the explanation to the comment in the code &quot;his currently relies on&#xA0;the datasheet but the information there seems to be wrong.&#xA0;&quot;</p>
+                </div>
+                <p id="comment-74100-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="comment-actions" id="actions-74100">
+                    
+                    
+                    &nbsp;
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes">yes</a> | <a href="#" class="delete-no">no</a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-72330" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/188467">
+                <img src="https://cdn.hackaday.io/images/resize/100x100/default-avatar.png" alt="">
+            </a>
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <span class="identity-card" data-id="188467"><a href="/hacker/188467-swen">Swen</a></span>
+
+                wrote <a class="gray-link" href="/project/3475-sniffing-trinket/log/12363-mq135-arduino-library/discussion-72330"><span class='time-card' style='margin: 0' title='a year ago'>12/22/2016 at 15:40</span></a>
+
+                <span id="comment-points-holder-72330" class="hide">
+                    &bull; <span id="comment-points-72330">
+                         point
+                    </span>
+                </span>
+
+            </small>
+            <div class="comment-content">
+                <div id="comment-72330-content">
+                    <p>Hello,</p><p>rzero bring me a value of 1000... If i use this i get ppm value more than 4000-5000. If i read out analog value i get 130 in room.</p><p>I don&apos;t understand to calibrate it right. I put this out of window for more then 30min and i get a value of 1000. If i use this, i get totally strange values for ppm.</p><p>Are my sensor bad or did i something wrong? I sit here 5 days and i don&apos;t get any well value indoor.</p><p>EDIT:</p><p>In the most libs there are wrong resistor calculation. We would find the resistor of measuring.</p><p>But we get voltage. In both libs also in Vilius.&#xA0;</p><p>float MQ135::getResistance() {<br>&#xA0; int val = analogRead(_pin);<br>&#xA0; return ((1023./(float)val) - 1.)*RLOAD;<br>}</p><p>This is right now! You don&apos;t need 5. 1023 is max digital reading of analog pin.  And the readed val is the now readed digital value. 1023 is max 5V so there is no need for calc with 5!</p><p>The right formular was R1 = (5V/(sensorValue * (5.0 / 1023.0))-1)*RLOAD</p><p>Heureka to much complicated i think.</p><p>So you get the write resistance with this:</p><p>return ((1023./(float)val) - 1.)*RLOAD;</p><p>That is one point! Another Point is R2. R2 is on my PCB 1K. You calculate with ohms not with kilo ohms so it&apos;s important that you type not 10 in settings... This are 10 ohms. RLOAD is then 10 ohms. That is much too less... I use 1000! 1k = 1000. RZERO is then very very high. You get something about 25000... The calculated resistance is round about 16k</p><p>So I get this:</p><p>MQ135 RZero: 25434.99 Resistance: 16338.98 PPM: 397.13</p><p>I use at this time Vilius lib and the values looks now well!</p><p>But! I think the measures in room will be wrong and too low. Will test this now over few days but i get very low measures. I have a reference and what i think is that this MQ135 reads well if you breathe direct into it. It&apos;s nice to build a alcoholic tester. But i will wait a few days if CO2 will be increase to the right values i measure with my weather station from Netatmo.</p><p>Netatmo use IR for measuring and i get complete far away values from MQ135. As this artical writes there are more sensors much expensive and you can riddle now why. ;)<br></p>
+                </div>
+                <p id="comment-72330-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="comment-actions" id="actions-72330">
+                    
+                    
+                    &nbsp;
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes">yes</a> | <a href="#" class="delete-no">no</a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-71991" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/187286">
+                <img src="https://cdn.hackaday.io/images/resize/100x100/4851871501715329901.jpeg" alt="">
+            </a>
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <span class="identity-card" data-id="187286"><a href="/hacker/187286-vilius-kraujutis">Vilius Kraujutis</a></span>
+
+                wrote <a class="gray-link" href="/project/3475-sniffing-trinket/log/12363-mq135-arduino-library/discussion-71991"><span class='time-card' style='margin: 0' title='a year ago'>12/17/2016 at 12:27</span></a>
+
+                <span id="comment-points-holder-71991" class="hide">
+                    &bull; <span id="comment-points-71991">
+                         point
+                    </span>
+                </span>
+
+            </small>
+            <div class="comment-content">
+                <div id="comment-71991-content">
+                    <p>I&apos;ve merged all changes from other repositories and made a PR to main repository. George, please merge my changes from&#xA0;<a href="https://github.com/ViliusKraujutis/MQ135">https://github.com/ViliusKraujutis/MQ135</a><br><br>Thanks.<br><br></p>
+                </div>
+                <p id="comment-71991-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="comment-actions" id="actions-71991">
+                    
+                    
+                    &nbsp;
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes">yes</a> | <a href="#" class="delete-no">no</a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-61960" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/158282">
+                <img src="https://cdn.hackaday.io/images/resize/100x100/3679051469976139839.jpg" alt="">
+            </a>
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <span class="identity-card" data-id="158282"><a href="/hacker/158282-christian-kunst">Christian KUNST</a></span>
+
+                wrote <a class="gray-link" href="/project/3475-sniffing-trinket/log/12363-mq135-arduino-library/discussion-61960"><span class='time-card' style='margin: 0' title='a year ago'>07/31/2016 at 14:52</span></a>
+
+                <span id="comment-points-holder-61960" class="hide">
+                    &bull; <span id="comment-points-61960">
+                         point
+                    </span>
+                </span>
+
+            </small>
+            <div class="comment-content">
+                <div id="comment-61960-content">
+                    <p>Hi to all of you. I have added a small print with the sensor mounted and connectd it to&#xA0;</p><p>the arduino pin 1. THen used the step as described, but get only out values around 0.2.</p><p>If RL is different can I just change the value in the library?</p><p>How can I transmit air temperature und humidity to the function. Is there any exaple?<br>Best regards and thanks from Vienna<br>Christian</p>
+                </div>
+                <p id="comment-61960-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="comment-actions" id="actions-61960">
+                    
+                    
+                    &nbsp;
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes">yes</a> | <a href="#" class="delete-no">no</a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-62032" data-level="2" class="discussions-item" style="margin-left: 25px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/158529">
+                <img src="https://cdn.hackaday.io/images/resize/100x100/default-avatar.png" alt="">
+            </a>
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <span class="identity-card" data-id="158529"><a href="/hacker/158529-christiangassner">christian.gassner</a></span>
+
+                wrote <a class="gray-link" href="/project/3475-sniffing-trinket/log/12363-mq135-arduino-library/discussion-62032"><span class='time-card' style='margin: 0' title='a year ago'>08/01/2016 at 18:54</span></a>
+
+                <span id="comment-points-holder-62032" class="hide">
+                    &bull; <span id="comment-points-62032">
+                         point
+                    </span>
+                </span>
+
+            </small>
+            <div class="comment-content">
+                <div id="comment-62032-content">
+                    <p>Started yesterday and had also&#xA0;very low readings between 0.2 and 0.7.&#xA0;I let it burn in&#xA0;for about 24h as described and did the calibration afterwards, which gave me a&#xA0;RZERO value of 1018.5. Way more than it was initially. With this calibration the&#xA0;getPPM() now returns reasonable values of about 500 ppm indoors (but very fresh air with open windows), which quickly increase to 800-1100&#xA0;if I breath at the sensor. Can&#xA0;you experience similar behaviour ? Outdoors it shows values between 380 and 400 ppm (20&#xB0;C at night)</p><p>EDIT: It seems that my sensor needed a few days for the burn in. Now the readings with the&#xA0;1018.5 rzero are ways to high (4000-5000+). I will do the calibration&#xA0;again&#xA0;today at&#xA0;evening and expect a much lower rzero.</p><p>Greetings from Munich :)</p><p>Christian</p>
+                </div>
+                <p id="comment-62032-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="comment-actions" id="actions-62032">
+                    
+                    
+                    &nbsp;
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes">yes</a> | <a href="#" class="delete-no">no</a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-54690" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/137037">
+                <img src="https://cdn.hackaday.io/images/resize/100x100/5370781501648720648.png" alt="">
+            </a>
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <span class="identity-card" data-id="137037"><a href="/hacker/137037-duarte">Duarte</a></span>
+
+                wrote <a class="gray-link" href="/project/3475-sniffing-trinket/log/12363-mq135-arduino-library/discussion-54690"><span class='time-card' style='margin: 0' title='2 years ago'>04/25/2016 at 23:17</span></a>
+
+                <span id="comment-points-holder-54690" class="hide">
+                    &bull; <span id="comment-points-54690">
+                         point
+                    </span>
+                </span>
+
+            </small>
+            <div class="comment-content">
+                <div id="comment-54690-content">
+                    <p>Hello, I did everything that was supposed to with regard to calibration but when I read the CO2 ppm value, sometimes the Arduino show small values (2 to 3 ppm) and a seconds after, show great values (moreless 680ppm, that&apos;s more realistic, I think)... It returns to show a small values and so on... I don&apos;t understand why, can you help me?</p>
+                </div>
+                <p id="comment-54690-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="comment-actions" id="actions-54690">
+                    
+                    
+                    &nbsp;
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes">yes</a> | <a href="#" class="delete-no">no</a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-48739" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/123093">
+                <img src="https://cdn.hackaday.io/images/resize/100x100/default-avatar.png" alt="">
+            </a>
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <span class="identity-card" data-id="123093"><a href="/hacker/123093-jasonrlester">jasonrlester</a></span>
+
+                wrote <a class="gray-link" href="/project/3475-sniffing-trinket/log/12363-mq135-arduino-library/discussion-48739"><span class='time-card' style='margin: 0' title='2 years ago'>02/28/2016 at 20:39</span></a>
+
+                <span id="comment-points-holder-48739" class="hide">
+                    &bull; <span id="comment-points-48739">
+                         point
+                    </span>
+                </span>
+
+            </small>
+            <div class="comment-content">
+                <div id="comment-48739-content">
+                    <p>Has anybody been able to confirm the accuracy of the MQ135?</p>
+                </div>
+                <p id="comment-48739-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="comment-actions" id="actions-48739">
+                    
+                    
+                    &nbsp;
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes">yes</a> | <a href="#" class="delete-no">no</a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-38263" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/97817">
+                <img src="https://cdn.hackaday.io/images/resize/100x100/default-avatar.png" alt="">
+            </a>
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <span class="identity-card" data-id="97817"><a href="/hacker/97817-chchchoondk">chchchoon.dk</a></span>
+
+                wrote <a class="gray-link" href="/project/3475-sniffing-trinket/log/12363-mq135-arduino-library/discussion-38263"><span class='time-card' style='margin: 0' title='2 years ago'>10/16/2015 at 19:07</span></a>
+
+                <span id="comment-points-holder-38263" class="hide">
+                    &bull; <span id="comment-points-38263">
+                         point
+                    </span>
+                </span>
+
+            </small>
+            <div class="comment-content">
+                <div id="comment-38263-content">
+                    <p>Hello,</p><p>how can i correct ppm with dht22?</p>
+                </div>
+                <p id="comment-38263-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="comment-actions" id="actions-38263">
+                    
+                    
+                    &nbsp;
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes">yes</a> | <a href="#" class="delete-no">no</a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-35325" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/91335">
+                <img src="https://cdn.hackaday.io/images/resize/100x100/default-avatar.png" alt="">
+            </a>
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <span class="identity-card" data-id="91335"><a href="/hacker/91335-nicomueller1991">nicomueller1991</a></span>
+
+                wrote <a class="gray-link" href="/project/3475-sniffing-trinket/log/12363-mq135-arduino-library/discussion-35325"><span class='time-card' style='margin: 0' title='2 years ago'>09/09/2015 at 20:44</span></a>
+
+                <span id="comment-points-holder-35325" class="hide">
+                    &bull; <span id="comment-points-35325">
+                         point
+                    </span>
+                </span>
+
+            </small>
+            <div class="comment-content">
+                <div id="comment-35325-content">
+                    <p>how can i do calibration with another temperature?</p>
+                </div>
+                <p id="comment-35325-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="comment-actions" id="actions-35325">
+                    
+                    
+                    &nbsp;
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes">yes</a> | <a href="#" class="delete-no">no</a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+    
+    
+
+    <div id="j-discussion-18963" data-level="1" class="discussions-item" style="margin-left: 0px;">
+        <div class="discussions-item-image">
+
+            <a href="/hacker/53610">
+                <img src="https://cdn.hackaday.io/images/resize/100x100/default-avatar.png" alt="">
+            </a>
+
+            
+        </div>
+        <div class="discussions-item-body">
+            <small class="authorship">
+
+                <span class="identity-card" data-id="53610"><a href="/hacker/53610-stanohorvath">stano.horvath</a></span>
+
+                wrote <a class="gray-link" href="/project/3475-sniffing-trinket/log/12363-mq135-arduino-library/discussion-18963"><span class='time-card' style='margin: 0' title='3 years ago'>02/24/2015 at 22:15</span></a>
+
+                <span id="comment-points-holder-18963" class="hide">
+                    &bull; <span id="comment-points-18963">
+                         point
+                    </span>
+                </span>
+
+            </small>
+            <div class="comment-content">
+                <div id="comment-18963-content">
+                    <p>Hello,</p><p>I would like to thank you for the guidance of cheap CO2 sensor, but I have few questions.&nbsp;</p><p>I have followed your instructions and my value rzero = 583.12. My senzor is maybe little different, but is it not too much?</p><p>In your code is RLOAD = 10.0.&nbsp; How do I know my value? On the board is potentiometer. Is it a constant for all sensors or adjustable value?</p><p>When I change RLOAD I need change PARA and PARB?</p><p>What is range ppm for CO2 for this sensor? (10 - 1000ppm?)</p><p>My sensor show value in range 400-12000.&nbsp;</p><p>12000 is the maximum and it is too much for the living room.</p><p>Please help me calibrate my sensor for my little meteostation. </p><p>If you give me an email I will send screenshots and a link to my meteostation.</p><p>Thank you for your help .</p><p>Sincerely Stano</p>
+                </div>
+                <p id="comment-18963-editor" class="hide"></p>
+            </div>
+            <p>
+                <span class="comment-actions" id="actions-18963">
+                    
+                    
+                    &nbsp;
+                </span>
+                <span class="delete-confirm hide"><span class="delete-q">Are you sure?</span> <a href="#" class="delete-yes">yes</a> | <a href="#" class="delete-no">no</a></span>
+            </p>
+        </div>
+    </div>
+
+    
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</section>
+
+
+
+
+            </div>
+        
+    
+
+    
+<div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <div class="close"><a href="" id="modal-cancel"><span class="modal-close">
+        
+
+
+
+
+    <div class="icon icon-close">
+        <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><title>close</title><path d="M8 6.99L4.767 3.76a.714.714 0 1 0-1.01 1.01L6.992 8 3.76 11.233a.714.714 0 1 0 1.01 1.01L8 9.008l3.233 3.232a.714.714 0 1 0 1.01-1.01L9.008 8l3.232-3.233a.714.714 0 1 0-1.01-1.01L8 6.992z" fill-rule="evenodd"/></svg>
+    </div>
+
+    </span></a></div>
+    <p class="text-center" id="modal-message"></p>
+    <p class="text-center">
+        <a class="grey-grey-button" id="modal-yes" href="javascript:void(0);" data-projecttype="project" data-projectid="3475" data-pageid="12363" data-pagetype="log">Yes, delete it</a>
+        <a class="gold-gold-button" id="modal-cancel" href="">Cancel</a>
+    </p>
+</div>
+
+    
+
+
+    <script>
+        var usersFromComments = '[{"id":201976,"username":"tan812","screen_name":"Tanya","avatar_url":"https://cdn.hackaday.io/images/default-avatar.png"},{"id":95925,"username":"bubrascal","screen_name":"Bub Rascal","avatar_url":"https://cdn.hackaday.io/images/default-avatar.png"},{"id":188467,"username":"Wikibear","screen_name":"Swen","avatar_url":"https://cdn.hackaday.io/images/default-avatar.png"},{"id":187286,"username":"viliusk","screen_name":"Vilius Kraujutis","avatar_url":"https://cdn.hackaday.io/images/4851871501715329901.jpeg"},{"id":158282,"username":"ChristianKunst","screen_name":"Christian KUNST","avatar_url":"https://cdn.hackaday.io/images/3679051469976139839.jpg"},{"id":158529,"username":"ChristianG","screen_name":"christian.gassner","avatar_url":"https://cdn.hackaday.io/images/default-avatar.png"},{"id":137037,"username":"Segurado","screen_name":"Duarte","avatar_url":"https://cdn.hackaday.io/images/5370781501648720648.png"},{"id":123093,"username":"ClosetGeek","screen_name":"jasonrlester","avatar_url":"https://cdn.hackaday.io/images/default-avatar.png"},{"id":97817,"username":"ActiveChooN","screen_name":"chchchoon.dk","avatar_url":"https://cdn.hackaday.io/images/default-avatar.png"},{"id":91335,"username":"niecore","screen_name":"nicomueller1991","avatar_url":"https://cdn.hackaday.io/images/default-avatar.png"},{"id":53610,"username":"stano.horvath","screen_name":"stano.horvath","avatar_url":"https://cdn.hackaday.io/images/default-avatar.png"}]';
+    </script>
+
+
+
+    <div id="footer" class="footer">
+    
+        <a href="#header" class="back-to-top">
+
+
+
+
+    <div class="icon icon-long-arrow-up">
+        <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><title>long-arrow-up</title><path d="M8.023 2.03L4.78 5.26h2.688v1.11h1.11V5.26h2.688L8.023 2.03zm-.555 5.505V8.92h1.11V7.534H7.47zm0 2.56v1.383h1.11v-1.384H7.47zm0 2.55v1.384h1.11v-1.385H7.47z" fill-rule="evenodd"/></svg>
+    </div>
+ Going up?</a>
+    
+    <p>
+        <a href="http://hackaday.com/about/">About Us</a>
+        <a href="mailto:projects-contact@hackaday.com">Contact Hackaday.io</a>
+        <a href="/project/37">Give Feedback</a> <a href="/tos">Terms of Use</a>
+        <a href="/privacy-policy">Privacy Policy</a>
+        <a href="https://dev.hackaday.io/" target="_blank">Hackaday API</a>
+    </p>
+    <p><a id="footer--home" href="/">&copy; 2017 Hackaday</a></p>
+
+    
+</div>
+
+<script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+</script>
+
+<script>
+    var csrftoken = 'pKrxOdAz-41l8eYJ0fJ3GzsHXbh6RnyEgYIU';
+</script>
+
+
+<img src="//analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&amp;zone=HIO_log&amp;extra=logged%3Dfalse%7ChaveAccountCookie%3D0%7C&amp;ab=undefined" class="sf-impression" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    
+    
+    <script src="//cdn.hackaday.io/build/h%2FydgsYIeDTf7pqgYQEKK8Ngblw0IkZCDqfJ9S2tk7zsBoxIHt5iOd49Qp%2BF4vdxEuRj%2BGpGDLbX4aGOQGmbjaOxUZvklg4ReFk68R95OQsiaGOetIyqiBjykSE1wLdhID4Z5OSbC750yz%2BkxBofQgsj8VOmMwgzRtwxKMNnGYS%2BhKpnp80P7LF6Fa6FEp0WxtmzIDZ7NEo7LuIrJGn2iPPK3y%2Fq14G%2FOe9gXx7Mbxo%2FpRPwAtMNfV8eOl6QkgSBR%2B9f3mXTTwB3HhXJVdZ4VUZKjNzUJkkp%2Bd21C4r7Ota7fTmWU6PjMalEQ4tQNtspggxqZDQE8ZJ926Bz9QEIGHYNjZndDjEOcB3DpT7nnoRzPxp5v4o%2BdpmIM1DCXcuERemyAB0Drr6VVBwYSTxoFPx%2By3XjphkGMQAiEaJTp8itCqCREfYW7nTQHpmCXbIHakv%2BW25uL5%2F72mJxBWqy%2FA%3D%3D-0.95.4.js" ></script>
+</body>
+</html>

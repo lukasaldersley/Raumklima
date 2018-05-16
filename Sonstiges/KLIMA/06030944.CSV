@@ -1,5 +1,0 @@
-BME280_Temperature;BME280_Humidity;BME280_Airpressure;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness
-41,14;22,15;964,80;40,53;961,48;38,60;44,04;38,40;37,25;39,38;963,14;30,28;4,00;60,00
-41,01;22,52;964,78;40,28;961,43;38,60;44,04;38,40;37,25;39,29;963,11;30,46;4,00;58,00
-41,12;22,32;964,75;40,34;961,40;38,50;43,49;37,70;37,25;39,30;963,08;30,01;4,00;56,00
-BME280_Temperature;BME280_Humidity;BME280_Airpressure;BMP180_Temperature;BMP180_Airpressure;DHT_Temperature;DHT_HEAT_INDEX;DHT_Humidity;RTC_Temperature;TOTAL_Temperature;TOTAL_Airpressure;TOTAL_Humidity;Brightness;Loudness

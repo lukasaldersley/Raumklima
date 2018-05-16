@@ -1,4 +1,5 @@
 Die seminararbeit als worddatei befindet sich im Ordner SEMINARARBEIT
+Bilder def fertigen Projekts finden sich im Ordner BILDER
 das java Programm als jar in Public Version, ebenso wie die ino-datei vom arduino
 code für arduino ist im ordner Arduino/Raumklima/Raumklima.ino
 code für java ist im ordner Java/Raumklima/Raumklima.java

@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html class="client-nojs" lang="de" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<title>File Allocation Table – Wikipedia</title>
+<script>document.documentElement.className = document.documentElement.className.replace( /(^|\s)client-nojs(\s|$)/, "$1client-js$2" );</script>
+<script>(window.RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"File_Allocation_Table","wgTitle":"File Allocation Table","wgCurRevisionId":168585102,"wgRevisionId":168585102,"wgArticleId":1735,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":["Dateisystem","Dateiverwaltung","DOS-Betriebssystemkomponente","Linux-Betriebssystemkomponente","OS/2-Betriebssystemkomponente","Windows-Betriebssystemkomponente"],"wgBreakFrames":false,"wgPageContentLanguage":"de","wgPageContentModel":"wikitext","wgSeparatorTransformTable":[",\t.",".\t,"],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"],"wgMonthNamesShort":["","Jan.","Feb.","Mär.","Apr.","Mai","Jun.","Jul.","Aug.","Sep.","Okt.","Nov.","Dez."],"wgRelevantPageName":"File_Allocation_Table","wgRelevantArticleId":1735,"wgRequestId":"WeUHtwpAEKoAAEIUrv8AAAAS","wgIsProbablyEditable":true,"wgRelevantPageIsProbablyEditable":true,"wgRestrictionEdit":[],"wgRestrictionMove":[],"wgFlaggedRevsParams":{"tags":{"accuracy":{"levels":1,"quality":2,"pristine":4}}},"wgStableRevisionId":168585102,"wgWikiEditorEnabledModules":{"toolbar":true,"preview":false,"publish":false},"wgBetaFeaturesFeatures":[],"wgMediaViewerOnClick":true,"wgMediaViewerEnabledByDefault":false,"wgPopupsShouldSendModuleToUser":false,"wgPopupsConflictsWithNavPopupGadget":false,"wgVisualEditor":{"pageLanguageCode":"de","pageLanguageDir":"ltr","pageVariantFallbacks":"de","usePageImages":true,"usePageDescriptions":true},"wgPreferredVariant":"de","wgMFExpandAllSectionsUserOption":false,"wgMFDisplayWikibaseDescriptions":{"search":true,"nearby":true,"watchlist":true,"tagline":true},"wgRelatedArticles":null,"wgRelatedArticlesUseCirrusSearch":true,"wgRelatedArticlesOnlyUseCirrusSearch":false,"wgULSCurrentAutonym":"Deutsch","wgNoticeProject":"wikipedia","wgCentralNoticeCookiesToDelete":[],"wgCentralNoticeCategoriesUsingLegacy":["Fundraising","fundraising"],"wgCategoryTreePageCategoryOptions":"{\"mode\":0,\"hideprefix\":20,\"showcount\":true,\"namespaces\":false}","wgWikibaseItemId":"Q190167","wgCentralAuthMobileDomain":false,"wgCodeMirrorEnabled":false,"wgVisualEditorToolbarScrollOffset":0,"wgVisualEditorUnsupportedEditParams":["undo","undoafter","veswitched"],"wgEditSubmitButtonLabelPublish":false});mw.loader.state({"ext.globalCssJs.user.styles":"ready","ext.globalCssJs.site.styles":"ready","site.styles":"ready","noscript":"ready","user.styles":"ready","user":"ready","user.options":"loading","user.tokens":"loading","ext.cite.styles":"ready","wikibase.client.init":"ready","ext.visualEditor.desktopArticleTarget.noscript":"ready","ext.uls.interlanguage":"ready","ext.wikimediaBadges":"ready","ext.flaggedRevs.basic":"ready","skins.vector.styles.experimental.print":"ready","mediawiki.legacy.shared":"ready","mediawiki.legacy.commonPrint":"ready","mediawiki.sectionAnchor":"ready","mediawiki.skinning.interface":"ready","skins.vector.styles":"ready","ext.globalCssJs.user":"ready","ext.globalCssJs.site":"ready"});mw.loader.implement("user.options@18yzhtg",function($,jQuery,require,module){mw.user.options.set({"variant":"de"});});mw.loader.implement("user.tokens@1dqfd7l",function ( $, jQuery, require, module ) {
+mw.user.tokens.set({"editToken":"+\\","patrolToken":"+\\","watchToken":"+\\","csrfToken":"+\\"});/*@nomin*/
+
+});mw.loader.load(["ext.cite.a11y","site","mediawiki.page.startup","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.toc","mediawiki.searchSuggest","ext.gadget.WikiMiniAtlas","ext.gadget.OpenStreetMap","ext.gadget.CommonsDirekt","ext.centralauth.centralautologin","ext.visualEditor.desktopArticleTarget.init","ext.visualEditor.targetLoader","ext.eventLogging.subscriber","ext.wikimediaEvents","ext.navigationTiming","ext.uls.eventlogger","ext.uls.init","ext.uls.interface","ext.centralNotice.geoIP","ext.centralNotice.startUp","ext.flaggedRevs.advanced","skins.vector.js"]);});</script>
+<link rel="stylesheet" href="/w/load.php?debug=false&amp;lang=de&amp;modules=ext.cite.styles%7Cext.flaggedRevs.basic%7Cext.uls.interlanguage%7Cext.visualEditor.desktopArticleTarget.noscript%7Cext.wikimediaBadges%7Cmediawiki.legacy.commonPrint%2Cshared%7Cmediawiki.sectionAnchor%7Cmediawiki.skinning.interface%7Cskins.vector.styles%7Cskins.vector.styles.experimental.print%7Cwikibase.client.init&amp;only=styles&amp;skin=vector"/>
+<script async="" src="/w/load.php?debug=false&amp;lang=de&amp;modules=startup&amp;only=scripts&amp;skin=vector"></script>
+<meta name="ResourceLoaderDynamicStyles" content=""/>
+<link rel="stylesheet" href="/w/load.php?debug=false&amp;lang=de&amp;modules=site.styles&amp;only=styles&amp;skin=vector"/>
+<meta name="generator" content="MediaWiki 1.31.0-wmf.3"/>
+<meta name="referrer" content="origin-when-cross-origin"/>
+<meta name="robots" content="noindex,nofollow"/>
+<link rel="alternate" type="application/x-wiki" title="Seite bearbeiten" href="/w/index.php?title=File_Allocation_Table&amp;action=edit"/>
+<link rel="edit" title="Seite bearbeiten" href="/w/index.php?title=File_Allocation_Table&amp;action=edit"/>
+<link rel="apple-touch-icon" href="/static/apple-touch/wikipedia.png"/>
+<link rel="shortcut icon" href="/static/favicon/wikipedia.ico"/>
+<link rel="search" type="application/opensearchdescription+xml" href="/w/opensearch_desc.php" title="Wikipedia (de)"/>
+<link rel="EditURI" type="application/rsd+xml" href="//de.wikipedia.org/w/api.php?action=rsd"/>
+<link rel="license" href="//creativecommons.org/licenses/by-sa/3.0/"/>
+<link rel="alternate" type="application/atom+xml" title="Atom-Feed für „Wikipedia“" href="/w/index.php?title=Spezial:Letzte_%C3%84nderungen&amp;feed=atom"/>
+<link rel="canonical" href="https://de.wikipedia.org/wiki/File_Allocation_Table"/>
+<link rel="dns-prefetch" href="//login.wikimedia.org"/>
+<link rel="dns-prefetch" href="//meta.wikimedia.org" />
+<!--[if lt IE 9]><script src="/w/load.php?debug=false&amp;lang=de&amp;modules=html5shiv&amp;only=scripts&amp;skin=vector&amp;sync=1"></script><![endif]-->
+</head>
+<body class="mediawiki ltr sitedir-ltr capitalize-all-nouns mw-hide-empty-elt ns-0 ns-subject page-File_Allocation_Table rootpage-File_Allocation_Table vector-experimental-print-styles vector-nav-directionality skin-vector action-view">		<div id="mw-page-base" class="noprint"></div>
+		<div id="mw-head-base" class="noprint"></div>
+		<div id="content" class="mw-body" role="main">
+			<a id="top"></a>
+
+							<div id="siteNotice" class="mw-body-content"><!-- CentralNotice --></div>
+						<div class="mw-indicators mw-body-content">
+</div>
+			<h1 id="firstHeading" class="firstHeading" lang="de">File Allocation Table</h1>
+									<div id="bodyContent" class="mw-body-content">
+									<div id="siteSub" class="noprint">aus Wikipedia, der freien Enzyklopädie</div>
+								<div id="contentSub"><div class="mw-revision"><div id="mw-revision-info-current">Dies ist die <a href="/wiki/Hilfe:Versionen" title="Hilfe:Versionen">aktuelle Version</a> dieser Seite, zuletzt bearbeitet am 29. August 2017 um 10:04 Uhr durch <a href="/wiki/Benutzer:Gerbil" class="mw-userlink" title="Benutzer:Gerbil"><bdi>Gerbil</bdi></a> <span class="mw-usertoollinks">(<a href="/wiki/Benutzer_Diskussion:Gerbil" class="mw-usertoollinks-talk" title="Benutzer Diskussion:Gerbil">Diskussion</a> | <a href="/wiki/Spezial:Beitr%C3%A4ge/Gerbil" class="mw-usertoollinks-contribs" title="Spezial:Beiträge/Gerbil">Beiträge</a>)</span> <span class="comment">(Änderungen von <a href="/wiki/Spezial:Beitr%C3%A4ge/193.196.188.67" title="Spezial:Beiträge/193.196.188.67">193.196.188.67</a> (<a href="/w/index.php?title=Benutzer_Diskussion:193.196.188.67&amp;action=edit&amp;redlink=1" class="new" title="Benutzer Diskussion:193.196.188.67 (Seite nicht vorhanden)">Diskussion</a>) auf die letzte Version von <a href="/w/index.php?title=Benutzer:2003:5F:2C17:1100:2D59:97B4:BAAE:AB4D&amp;action=edit&amp;redlink=1" class="new" title="Benutzer:2003:5F:2C17:1100:2D59:97B4:BAAE:AB4D (Seite nicht vorhanden)">2003:5F:2C17:1100:2D59:97B4:BAAE:AB4D</a> zurückgesetzt)</span>.</div><div id="mw-revision-nav">(<a href="/w/index.php?title=File_Allocation_Table&amp;diff=prev&amp;oldid=168585102" title="File Allocation Table">Unterschied</a>) <a href="/w/index.php?title=File_Allocation_Table&amp;direction=prev&amp;oldid=168585102" title="File Allocation Table">← Nächstältere Version</a> | Aktuelle Version (Unterschied) | Nächstjüngere Version → (Unterschied)</div></div></div>
+												<div id="jump-to-nav" class="mw-jump">
+					Wechseln zu:					<a href="#mw-head">Navigation</a>, 					<a href="#p-search">Suche</a>
+				</div>
+				<div id="mw-content-text" lang="de" dir="ltr" class="mw-content-ltr"><div id='mw-fr-revisiontag-old' class='flaggedrevs_notice plainlinks noprint'>Eine <a class="external text" href="//de.wikipedia.org/w/index.php?title=File_Allocation_Table&amp;stableid=168585102">markierte Version</a> dieser Seite, die am <i>29. August 2017</i> <a class="external text" href="//de.wikipedia.org/w/index.php?title=Spezial:Logbuch&amp;type=review&amp;page=File_Allocation_Table">freigegeben</a> wurde, basiert auf dieser Version.</div><div class="mw-parser-output"><p><span id="XFAT"><span id="Anker:XFAT"></span></span><span id="FATX16"><span id="Anker:FATX16"></span></span><span id="FATX32"><span id="Anker:FATX32"></span></span> <b>File Allocation Table</b> (kurz <b>FAT</b> [<span class="IPA"><a href="/wiki/Liste_der_IPA-Zeichen" title="Liste der IPA-Zeichen"><span title="Aussprache im Internationalen Phonetischen Alphabet (IPA)">fæt</span></a></span>], <a href="/wiki/Englische_Sprache" title="Englische Sprache">englisch</a> für <i>Dateizuordnungstabelle</i>) bezeichnet eine ursprünglich 1977 von <a href="/wiki/Microsoft" title="Microsoft">Microsoft</a> entwickelte weit verbreitete Familie von <a href="/wiki/Dateisystem" title="Dateisystem">Dateisystemen</a>, die zum <a href="/wiki/Industriestandard" title="Industriestandard">Industriestandard</a> erhoben wurde und bis heute auch über <a href="/wiki/Betriebssystemunabh%C3%A4ngigkeit" class="mw-redirect" title="Betriebssystemunabhängigkeit">Betriebssystemgrenzen</a> hinweg als fast universelles Austauschformat dient. Wesentliche Erweiterungen wurden auch von <a href="/wiki/Seattle_Computer_Products" title="Seattle Computer Products">Seattle Computer Products</a>, <a href="/wiki/Compaq" title="Compaq">Compaq</a>, <a href="/wiki/Digital_Research" title="Digital Research">Digital Research</a> und <a href="/wiki/Novell" title="Novell">Novell</a> eingebracht. Als proprietäre Nachfolger entwickelte Microsoft <a href="/wiki/NTFS" title="NTFS">NTFS</a> und <a href="/wiki/ExFAT" class="mw-redirect" title="ExFAT">exFAT</a>.</p>
+<p></p>
+<div id="toc" class="toc">
+<div class="toctitle">
+<h2>Inhaltsverzeichnis</h2>
+</div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#Hintergrund"><span class="tocnumber">1</span> <span class="toctext">Hintergrund</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="#Typen"><span class="tocnumber">2</span> <span class="toctext">Typen</span></a>
+<ul>
+<li class="toclevel-2 tocsection-3"><a href="#FAT12"><span class="tocnumber">2.1</span> <span class="toctext">FAT12</span></a></li>
+<li class="toclevel-2 tocsection-4"><a href="#FAT16"><span class="tocnumber">2.2</span> <span class="toctext">FAT16</span></a></li>
+<li class="toclevel-2 tocsection-5"><a href="#FAT32"><span class="tocnumber">2.3</span> <span class="toctext">FAT32</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-6"><a href="#Erweiterungen"><span class="tocnumber">3</span> <span class="toctext">Erweiterungen</span></a>
+<ul>
+<li class="toclevel-2 tocsection-7"><a href="#VFAT"><span class="tocnumber">3.1</span> <span class="toctext">VFAT</span></a>
+<ul>
+<li class="toclevel-3 tocsection-8"><a href="#Unterst.C3.BCtzung_in_Betriebssystemen"><span class="tocnumber">3.1.1</span> <span class="toctext">Unterstützung in Betriebssystemen</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-9"><a href="#UMSDOS"><span class="tocnumber">3.2</span> <span class="toctext">UMSDOS</span></a></li>
+<li class="toclevel-2 tocsection-10"><a href="#UVFAT"><span class="tocnumber">3.3</span> <span class="toctext">UVFAT</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-11"><a href="#Derivate"><span class="tocnumber">4</span> <span class="toctext">Derivate</span></a>
+<ul>
+<li class="toclevel-2 tocsection-12"><a href="#exFAT"><span class="tocnumber">4.1</span> <span class="toctext">exFAT</span></a></li>
+<li class="toclevel-2 tocsection-13"><a href="#TFAT"><span class="tocnumber">4.2</span> <span class="toctext">TFAT</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-14"><a href="#Aufbau"><span class="tocnumber">5</span> <span class="toctext">Aufbau</span></a>
+<ul>
+<li class="toclevel-2 tocsection-15"><a href="#Bootsektor"><span class="tocnumber">5.1</span> <span class="toctext">Bootsektor</span></a></li>
+<li class="toclevel-2 tocsection-16"><a href="#Reservierte_Sektoren"><span class="tocnumber">5.2</span> <span class="toctext">Reservierte Sektoren</span></a></li>
+<li class="toclevel-2 tocsection-17"><a href="#FAT"><span class="tocnumber">5.3</span> <span class="toctext">FAT</span></a></li>
+<li class="toclevel-2 tocsection-18"><a href="#Stammverzeichnis_und_Unterverzeichnisse"><span class="tocnumber">5.4</span> <span class="toctext">Stammverzeichnis und Unterverzeichnisse</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-19"><a href="#Abweichungen"><span class="tocnumber">6</span> <span class="toctext">Abweichungen</span></a>
+<ul>
+<li class="toclevel-2 tocsection-20"><a href="#Dateisystem_des_Atari_ST"><span class="tocnumber">6.1</span> <span class="toctext">Dateisystem des Atari ST</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-21"><a href="#Beispiele"><span class="tocnumber">7</span> <span class="toctext">Beispiele</span></a>
+<ul>
+<li class="toclevel-2 tocsection-22"><a href="#DOS-_bzw._Windows-Diskette_mit_FAT12"><span class="tocnumber">7.1</span> <span class="toctext">DOS- bzw. Windows-Diskette mit FAT12</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-23"><a href="#Weblinks"><span class="tocnumber">8</span> <span class="toctext">Weblinks</span></a></li>
+<li class="toclevel-1 tocsection-24"><a href="#Einzelnachweise"><span class="tocnumber">9</span> <span class="toctext">Einzelnachweise</span></a></li>
+</ul>
+</div>
+<p></p>
+<h2><span class="mw-headline" id="Hintergrund">Hintergrund<span id="FAT8"><span id="Anker:FAT8"></span></span><span id="FAT10"><span id="Anker:FAT10"></span></span></span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=File_Allocation_Table&amp;veaction=edit&amp;section=1" class="mw-editsection-visualeditor" title="Abschnitt bearbeiten: Hintergrund">Bearbeiten</a><span class="mw-editsection-divider"> | </span><a href="/w/index.php?title=File_Allocation_Table&amp;action=edit&amp;section=1" title="Abschnitt bearbeiten: Hintergrund">Quelltext bearbeiten</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Das FAT-Dateisystem wurde ursprünglich 1977 in einer 8-Bit-Variante von <a href="/w/index.php?title=Marc_McDonald&amp;action=edit&amp;redlink=1" class="new" title="Marc McDonald (Seite nicht vorhanden)">Marc McDonald</a> für Microsofts <a href="/wiki/Standalone_Disk_BASIC-80" class="mw-redirect" title="Standalone Disk BASIC-80">Standalone Disk BASIC-80</a> für 8080-Prozessoren entwickelt, 1978 auf einer <a href="/wiki/DEC_PDP-10" class="mw-redirect" title="DEC PDP-10">DEC PDP-10</a> unter Zuhilfenahme eines 8086-Simulators für <a href="/wiki/Standalone_Disk_BASIC-86" class="mw-redirect" title="Standalone Disk BASIC-86">Standalone Disk BASIC-86</a> portiert, und 1979 für Microsofts Betriebssystem MDOS/MIDAS adaptiert.</p>
+<p>Ebenfalls 1979 wurde Standalone Disk BASIC-86 von <a href="/w/index.php?title=Bob_O%27Rear&amp;action=edit&amp;redlink=1" class="new" title="Bob O'Rear (Seite nicht vorhanden)">Bob O'Rear</a> auf eine von <a href="/wiki/Seattle_Computer_Products" title="Seattle Computer Products">Seattle Computer Products</a> (SCP) entwickelte <a href="/wiki/S-100-Bus" title="S-100-Bus">S-100-Bus</a>-Hardware-Plattform angepasst. Bei dieser Gelegenheit wurde <a href="/wiki/Tim_Paterson" title="Tim Paterson">Tim Paterson</a> auf das Dateisystem aufmerksam, das er 1980 als konzeptionelle Grundlage seines 12-Bit-Dateisystems für SCPs Betriebssystem QDOS wählte, welches, umbenannt in <a href="/wiki/86-DOS" title="86-DOS">86-DOS</a>, von Microsoft zunächst lizenziert, aufgekauft und daraufhin 1981 die Ausgangsbasis für <a href="/wiki/MS-DOS" title="MS-DOS">MS-DOS</a> und <a href="/wiki/PC_DOS" title="PC DOS">PC DOS</a> 1.0 wurde.</p>
+<p>Zu der Familie der FAT-Dateisysteme gehören:</p>
+<ul>
+<li><i><a href="#FAT12">FAT12</a></i> wird heute für jede <a href="/wiki/Disk_Operating_System" title="Disk Operating System">DOS</a>-<a href="/wiki/Diskette" title="Diskette">Diskette</a> verwendet (auch unter <a href="/wiki/Microsoft_Windows" title="Microsoft Windows">Windows</a>). Der <a href="/wiki/Atari_ST" title="Atari ST">Atari ST</a> benutzt ein fast identisches Dateisystem und konnte FAT12-Disketten lesen und beschreiben.</li>
+<li><i><a href="#FAT16">FAT16</a></i> wird heute meist auf allen Arten von mobilen Datenträgern (außer Disketten) mit einer Größe von bis zu 2, selten bis 4&#160;<a href="/wiki/Gibibyte" class="mw-redirect" title="Gibibyte">GiB</a> verwendet.</li>
+<li><i><a href="#FAT32">FAT32</a></i> wird z.&#160;B. in allen Arten von mobilen Speichern von mehr als 2&#160;GiB Kapazität genutzt. Von allen Windows-Versionen ab <a href="/wiki/Windows_95" class="mw-redirect" title="Windows 95">Windows 95b</a> und neueren DOS-Systemen unterstützt.</li>
+<li><i><a href="#FAT32.2B">FAT+</a></i> (<i>FAT32+</i>/<i>FAT16+</i>) ist eine rückwärtskompatible Erweiterung von <i>FAT32</i> (und – theoretisch – <i>FAT16B</i>), welche die maximale Größe einer Datei von 4&#160;<a href="/wiki/Gibibyte" class="mw-redirect" title="Gibibyte">GiB</a> auf 256&#160;GiB erhöht (wird derzeit unter anderem von <a href="/wiki/Enhanced_DR-DOS" class="mw-redirect" title="Enhanced DR-DOS">Enhanced DR-DOS</a> und <a href="/w/index.php?title=Deskwork&amp;action=edit&amp;redlink=1" class="new" title="Deskwork (Seite nicht vorhanden)">Deskwork</a> unterstützt)<sup id="cite_ref-FAT.2B_1-0" class="reference"><a href="#cite_note-FAT.2B-1">[1]</a></sup></li>
+<li><i><a href="#exFAT">exFAT</a></i> ist ein proprietäres speziell für Flash-Speicher entwickeltes Dateisystem mit einer theoretischen maximalen Dateigröße von 16 EiB, das sich konzeptionell entfernt an FAT anlehnt.</li>
+</ul>
+<h2><span class="mw-headline" id="Typen">Typen</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=File_Allocation_Table&amp;veaction=edit&amp;section=2" class="mw-editsection-visualeditor" title="Abschnitt bearbeiten: Typen">Bearbeiten</a><span class="mw-editsection-divider"> | </span><a href="/w/index.php?title=File_Allocation_Table&amp;action=edit&amp;section=2" title="Abschnitt bearbeiten: Typen">Quelltext bearbeiten</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h3><span class="mw-headline" id="FAT12">FAT12</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=File_Allocation_Table&amp;veaction=edit&amp;section=3" class="mw-editsection-visualeditor" title="Abschnitt bearbeiten: FAT12">Bearbeiten</a><span class="mw-editsection-divider"> | </span><a href="/w/index.php?title=File_Allocation_Table&amp;action=edit&amp;section=3" title="Abschnitt bearbeiten: FAT12">Quelltext bearbeiten</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Mit der 1980 erschienenen ersten Version von QDOS bzw. <a href="/wiki/86-DOS" title="86-DOS">86-DOS</a> wurde <b>FAT12</b> als Dateisystem für 8,0″- und 5,25″-Disketten eingeführt. Erst ab 86-DOS 0.42 von Februar 1981 wiesen die internen Ordnungsstrukturen jedoch ein Format auf, das dem späteren FAT12-Format in MS-DOS und PC DOS in allen wesentlichen Punkten glich. Aufgrund abweichender logischer Geometrien und der Tatsache, dass der BIOS Parameter Block (BPB) erst mit DOS 2 eingeführt wurde, können jedoch (mit Ausnahme von SCP MS-DOS 1.25) weder MS-DOS noch PC DOS auf unter 86-DOS formatierte Medien zugreifen.</p>
+<p>Anfangs wurden keine Unterverzeichnisse verwaltet. Das änderte sich mit <a href="/wiki/MS-DOS" title="MS-DOS">MS-DOS</a> Version 2.0.</p>
+<p>FAT12 wird nur auf Datenträgern bzw. Partitionen bis zu einer Größe von 16 <a href="/wiki/Mebibyte" class="mw-redirect" title="Mebibyte">MiB</a> eingesetzt; es ist bis heute auf allen FAT-formatierten 3,5″-Disketten im Einsatz.</p>
+<p>Merkmale:</p>
+<ul>
+<li>12-Bit-Clusternummern, mit denen 2<sup>12</sup>&#160;=&#160;4096 Cluster angesprochen werden können. Die Nummerierung der Cluster beginnt auf Disketten bei der Nummer&#160;2.</li>
+<li>Es werden nur Dateinamen im Schema <a href="/wiki/8.3" title="8.3">8.3</a> (acht Zeichen für den Dateinamen und drei Zeichen für die Dateinamenserweiterung) unterstützt.</li>
+<li>Die Clustergröße beträgt 512 Byte bis 4096 Byte.</li>
+<li>Das Hauptverzeichnis (Root-Directory) der Partition ist auf eine Größe von 14 Clustern beschränkt, dadurch ergibt sich eine maximale Anzahl von 224 Einträgen (Verzeichnisse <i>oder</i> Dateien). Normalerweise wird der erste Eintrag durch die Bezeichnung des Datenträgers belegt.</li>
+<li>Unterstützt die <a href="/wiki/Dateiattribut" title="Dateiattribut">Dateiattribute</a> „Schreibgeschützt“, „Versteckt“, „System“ und „Archiv“</li>
+<li>Unterstützung für Passwörter und Zugangsberechtigungen für Dateien oder Ordner ist in Microsoft-Betriebssystemen nicht implementiert, ist jedoch optional unter allen Betriebssystemen verfügbar, die die entsprechenden FAT-Erweiterungen von Digital Research und Novell unterstützen.</li>
+</ul>
+<h3><span class="mw-headline" id="FAT16">FAT16<span id="FAT16B"><span id="Anker:FAT16B"></span></span><span id="FAT16X"><span id="Anker:FAT16X"></span></span><span id="FAT16.2B"><span id="Anker:FAT16.2B"></span></span></span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=File_Allocation_Table&amp;veaction=edit&amp;section=4" class="mw-editsection-visualeditor" title="Abschnitt bearbeiten: FAT16">Bearbeiten</a><span class="mw-editsection-divider"> | </span><a href="/w/index.php?title=File_Allocation_Table&amp;action=edit&amp;section=4" title="Abschnitt bearbeiten: FAT16">Quelltext bearbeiten</a><span class="mw-editsection-bracket">]</span></span></h3>
+<table class="float-right infobox wikitable" style="font-size:90%; margin-top:0; width:270px;">
+<tr>
+<th class="hintergrundfarbe4" colspan="2" style="font-size:larger;">FAT16</th>
+</tr>
+<tr>
+<td><a href="/wiki/Produktion" title="Produktion">Hersteller</a></td>
+<td><a href="/wiki/Microsoft" title="Microsoft">Microsoft</a></td>
+</tr>
+<tr>
+<td>Vollständige Bezeichnung</td>
+<td>File Allocation Table</td>
+</tr>
+<tr>
+<td>Erstveröffentlichung</td>
+<td>1983 ()</td>
+</tr>
+<tr>
+<th class="hintergrundfarbe8" colspan="2">Maximalwerte</th>
+</tr>
+<tr>
+<td>Größe einer Datei</td>
+<td>2&#160;GiB</td>
+</tr>
+<tr>
+<td>Größe des Dateisystems</td>
+<td>4&#160;GiB</td>
+</tr>
+</table>
+<p><b>FAT16</b> ist ein Dateisystem, das 1983 zu <i>FAT12</i> dazukam. Durch die zunehmende Größe der eingesetzten Festplatten wurde eine Erweiterung des Adressraumes notwendig. Nun waren selbst mit 512-Byte-Clustern zumindest theoretisch insgesamt 32 MiB große Platten verwaltbar.</p>
+<p>Die ursprüngliche FAT16-Implementierung verwendete auf partitionierten Medien in der Regel (abhängig vom jeweiligen DOS-<a href="/wiki/Erstausr%C3%BCster" title="Erstausrüster">OEM</a>) den Partitiontyp 04h und einen noch vergleichsweise kurzen BIOS Parameter Block (BPB) im Bootsektor. Dessen genauer Aufbau und Inhalt hing insbesondere bei DOS 2.x noch stark von der verwendeten DOS-Version ab, er enthielt jedoch in allen Fällen nur einen 16-Bit breiten Eintrag für die Sektorenanzahl, was die Größe von FAT16-Laufwerken auf 32 MiB bis 512 MiB beschränkte (je nach Betriebssystemversion). Mit OS/2 Release 1 wurde ein Enhanced BIOS Parameter Block (EBPB) eingeführt, erkennbar am Signaturbyte 28h (für DOS-BPB-Version 4.0) an Offset +26h. Mit Einführung von DOS 3.31 wurde dieser durch den nochmals erweiterten, heute allgemein für FAT12 und FAT16 verwendeten <i>Extended BIOS Parameter Block</i> (XBPB) mit Signatur 29h (für DOS-BPB-Version 4.1) an Offset +26h ersetzt. EBPB und XBPB zeichnen sich u.&#160;a. dadurch aus, dass der Eintrag für die Zahl der Sektoren auf 32 Bit Breite wuchs, womit erstmals FAT16-Laufwerke mit bis zu 2 GiB, später 4 GiB, möglich wurden, auch wenn die damaligen Betriebssysteme davon noch keinen Gebrauch machen konnten. Diese größere Variante von FAT16 wurde in Entwicklerkreisen „BigDOS“ genannt, daher stammt auch ihr offizieller Name <i>FAT16B.</i> Da ältere Betriebssysteme mit diesem neuen Typ nicht arbeiten konnten, wurde für die Verwendung auf partitionierten Medien auch ein neuer Partitionstyp (06h) dafür definiert. Die alte FAT16-Variante wird zwar nach wie vor unterstützt, findet aber (bis auf die forcierte Erzeugung von sehr kleinen FAT16-Partitionen mit dem Partitionstyp 04h) in der Praxis keine Verwendung mehr, da spätestens seit DOS 5 bei der Erzeugung von FAT12- und FAT16-Partitionen gleichermaßen nur noch Bootsektoren mit XBPB geschrieben werden, um einige neue Betriebssystemfunktionen optimal zu unterstützen. Die Tatsache, dass es eigentlich zwei FAT16-Typen gibt, ist in der Allgemeinheit nicht mehr präsent, mehr noch, da <i>FAT12</i> fast nur noch für Disketten verwendet wird, wird heute <i>FAT</i> oft fälschlicherweise nur mit <i>FAT16</i> (und das auch nur in der beschriebenen <i>FAT16B</i>-Variante) gleichgesetzt, obwohl darunter eigentlich mehrere FAT12- und FAT16-Typen zu verstehen wären. Allerdings benötigt das Server-Betriebssystem Novell-<a href="/wiki/Netware" title="Netware">Netware</a> bis zur Version 4.0 noch eine bis zu 16 MiB große „DOS“-Bootpartition, die (automatisch) mit FAT12 erzeugt wurde.</p>
+<p>Erfolgt der Zugriff über LBA (Logical block addressing), wird eine FAT16-Partition auch als <i>FAT16X</i> bezeichnet.</p>
+<p>FAT16 hat folgende Merkmale:</p>
+<ul>
+<li>65.536 Einträge sind möglich, allerdings nur 512 im Root-Verzeichnis.</li>
+<li>Es können 2<sup>16</sup>&#160;−&#160;12&#160;=&#160;65.524 Cluster angesprochen werden (12 Cluster reserviert FAT16, deshalb nicht 65.536).</li>
+<li><a href="/wiki/8.3" title="8.3">8.3-Dateinamensformat</a></li>
+<li>Die Partitionsgröße ist unter MS-DOS und <a href="/wiki/Windows_9x" title="Windows 9x">Windows 9x</a> (die auf DOS basieren) bei der Neuanlage unter <a href="/wiki/Fdisk" title="Fdisk">fdisk</a> auf 2 GiB begrenzt, bei der Anlage mit Fremdprogrammen können sie knapp unter 4 GiB verwalten. Windows&#160;NT, FreeDOS und Enhanced DR-DOS können FAT16-Partitionen mit der maximalen Größe erzeugen und verwalten. (Clustergröße 64&#160;KiB)</li>
+<li>Die Cluster sind je nach Partitionsgröße zwischen 512&#160;Byte und maximal 32&#160;KiB (Windows&#160;NT und Enhanced DR-DOS maximal 64&#160;KiB) groß.</li>
+<li>Dateien dürfen bis 2&#160;GiB groß werden, unter Windows&#160;NT und Enhanced DR-DOS 4 GiB.</li>
+<li>Das Haupt-(<a href="/wiki/Stammverzeichnis" title="Stammverzeichnis">Root</a>-)Verzeichnis muss sich an einer bestimmten Position auf dem Datenträger befinden. Seine Größe wird bei Erstellung des Dateisystems festgelegt, d.&#160;h. es kann nicht wachsen.</li>
+</ul>
+<p>Eine Weiterentwicklung erfolgte mit <i>FAT32</i>.</p>
+<h3><span class="mw-headline" id="FAT32">FAT32<span id="FAT32X"><span id="Anker:FAT32X"></span></span><span id="FAT.2B"><span id="Anker:FAT.2B"></span></span><span id="FAT32.2B"><span id="Anker:FAT32.2B"></span></span></span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=File_Allocation_Table&amp;veaction=edit&amp;section=5" class="mw-editsection-visualeditor" title="Abschnitt bearbeiten: FAT32">Bearbeiten</a><span class="mw-editsection-divider"> | </span><a href="/w/index.php?title=File_Allocation_Table&amp;action=edit&amp;section=5" title="Abschnitt bearbeiten: FAT32">Quelltext bearbeiten</a><span class="mw-editsection-bracket">]</span></span></h3>
+<table class="float-right infobox wikitable" style="font-size:90%; margin-top:0; width:270px;">
+<tr>
+<th class="hintergrundfarbe4" colspan="2" style="font-size:larger;">FAT32</th>
+</tr>
+<tr>
+<td><a href="/wiki/Produktion" title="Produktion">Hersteller</a></td>
+<td><a href="/wiki/Microsoft" title="Microsoft">Microsoft</a></td>
+</tr>
+<tr>
+<td>Vollständige Bezeichnung</td>
+<td>File Allocation Table</td>
+</tr>
+<tr>
+<th class="hintergrundfarbe8" colspan="2">Maximalwerte</th>
+</tr>
+<tr>
+<td>Größe einer Datei</td>
+<td>4&#160;GiB minus 1&#160;Byte</td>
+</tr>
+<tr>
+<td>Anzahl aller Dateien</td>
+<td>268.435.456 (2<sup>28</sup>)</td>
+</tr>
+<tr>
+<td>Größe des Dateisystems</td>
+<td>8&#160;<a href="/wiki/Tebibyte" class="mw-redirect" title="Tebibyte">TiB</a> (mit 32 KiB Clustergröße)</td>
+</tr>
+<tr>
+<th class="hintergrundfarbe8" colspan="2">Eigenschaften</th>
+</tr>
+<tr>
+<td>Unterstützende <a href="/wiki/Betriebssystem" title="Betriebssystem">Betriebssysteme</a></td>
+<td><a href="/wiki/Microsoft_Windows_95" title="Microsoft Windows 95">Microsoft Windows 95</a>B und neuer; viele neuere <a href="/wiki/Unixoid" class="mw-redirect" title="Unixoid">unixoide</a> Betriebssysteme</td>
+</tr>
+</table>
+<p><b>FAT32</b> ist ein von <a href="/wiki/Microsoft" title="Microsoft">Microsoft</a> entwickeltes <a href="/wiki/Dateisystem" title="Dateisystem">Dateisystem</a>, das im Sommer 1996 mit <a href="/wiki/Microsoft_Windows_95" title="Microsoft Windows 95">Windows 95B</a> eingeführt wurde und die Vorgängerversion <i>FAT16</i> ergänzt.</p>
+<p>Partitionen kleiner als 512&#160;MiB werden nach wie vor mit FAT16 erzeugt, von 512&#160;MiB bis 2&#160;GiB hat man die Wahl, ab 2&#160;GiB wird FAT32 benutzt. Die <a href="/wiki/Adressierung_(Rechnerarchitektur)" title="Adressierung (Rechnerarchitektur)">Adressierung</a> arbeitet mit 32 <a href="/wiki/Bit" title="Bit">Bit</a>, wovon 4&#160;Bit reserviert sind, so dass 2<sup>28</sup>&#160;=&#160;268.435.456 Cluster adressiert werden können.</p>
+<p>FAT32 kann außerdem mit allen <a href="/wiki/Microsoft_Windows" title="Microsoft Windows">Windows</a>-Versionen seit Windows 95B sowie&#160;– anders als <a href="/wiki/NTFS" title="NTFS">NTFS</a>&#160;– problemlos auch mit <a href="/wiki/FreeDOS" title="FreeDOS">FreeDOS</a> und <a href="/wiki/Enhanced_DR-DOS" class="mw-redirect" title="Enhanced DR-DOS">Enhanced DR-DOS</a> verwendet werden. Da Windows je nach Version von Haus aus nur wenige Dateisysteme unterstützt, wird FAT32 trotz seiner Beschränkungen zum Datenaustausch sowohl mit anderen Windows-Systemen als auch mit Nicht-Windows-Systemen (z.&#160;B. <a href="/wiki/OS_X" class="mw-redirect" title="OS X">OS&#160;X</a>, <a href="/wiki/Linux" title="Linux">Linux</a>) eingesetzt, z.&#160;B. auf <a href="/wiki/USB-Speicherstick" class="mw-redirect" title="USB-Speicherstick">USB-Speichersticks</a> und mobilen Festplatten.</p>
+<p>Spielekonsolen wie beispielsweise die <a href="/wiki/PlayStation_3" title="PlayStation 3">PlayStation 3</a> oder digitale <a href="/wiki/Satellitenfernsehempf%C3%A4nger" title="Satellitenfernsehempfänger">Satellitenreceiver</a> setzen bei extern angeschlossenen Festplatten häufig FAT32 als Dateisystem voraus.</p>
+<p>Ein Nachteil eines standardkonformen FAT32-Dateisystems ist, dass nur Dateien erstellt werden können, die kleiner als 4&#160;GiB sind.<sup id="cite_ref-2" class="reference"><a href="#cite_note-2">[2]</a></sup> Mit der rückwärtskompatiblen Erweiterung <b>FAT32+</b> sind zwar auch Dateien bis zu 256&#160;GiB<sup id="cite_ref-FAT.2B_1-1" class="reference"><a href="#cite_note-FAT.2B-1">[1]</a></sup> möglich, diese Erweiterung wird aber nur von wenigen Systemen unterstützt. Ein weiterer Nachteil ist, dass Windows ab Version 2000 mit dem eigenen Formatierungswerkzeug nur 32 GB formatieren kann.<sup id="cite_ref-3" class="reference"><a href="#cite_note-3">[3]</a></sup></p>
+<p>Da bis zu einer <a href="/wiki/Partition_(Datentr%C3%A4ger)" title="Partition (Datenträger)">Partitionsgröße</a> von 8&#160;GiB ein Cluster nur 4&#160;KiB groß ist (bei der Standardformatierung), werden diese „kleinen und alten“ Platten verhältnismäßig besser ausgenutzt als mit FAT16, wo ein Cluster bis zu 32&#160;KiB belegt (unter <a href="/wiki/Windows_NT" class="mw-redirect" title="Windows NT">Windows NT</a> oder Windows 2000 FAT16-Clustergröße maximal 64&#160;KiB).</p>
+<p>Erfolgt der Zugriff über LBA (Logical block addressing), wird eine FAT32-Partition auch als <b>FAT32X</b> bezeichnet.</p>
+<p>FAT32 hat folgende Merkmale:</p>
+<ul>
+<li>Es werden bis zu 2<sup>28</sup>&#160;= 268.435.456 Cluster verwendet.</li>
+<li>Das Dateisystem ist auf 8&#160;<a href="/wiki/Byte#Vergleich" title="Byte">Tebibyte</a> (2<sup>43</sup>&#160;Byte) begrenzt, was ca. 8,8&#160;Terabyte entspricht. Dies ergibt sich wie folgt: Die Clustergröße ist maximal 2<sup>15</sup>&#160;Byte (= 32.768&#160;Byte&#160;= 32&#160;KiB). Es gibt 2<sup>28</sup> Adressierungsmöglichkeiten. Also kann maximal ein Bereich von 2<sup>15</sup>&#160;· 2<sup>28</sup>&#160;= 2<sup>43</sup>&#160;Byte adressiert werden.</li>
+<li>Die Cluster sind je nach Partitionsgröße zwischen 512&#160;Byte und maximal 32&#160;KiB groß.</li>
+<li>Dateien dürfen max. bis zu 4&#160;GiB − 1&#160;Byte (=&#160;4.294.967.295&#160;Byte) groß werden. Diese Grenze ist eine Folge des nur 4 Byte breiten Feldes für die Dateigröße in der Directory-Tabelle.</li>
+<li>Es können maximal 2<sup>28</sup> Dateien abgelegt werden; da jede Datei mindestens einen Cluster belegt, beschränkt die maximale Anzahl der Cluster die maximale Anzahl Dateien.</li>
+<li>Das Haupt-(<a href="/wiki/Stammverzeichnis" title="Stammverzeichnis">Root</a>-)Verzeichnis muss sich <i>nicht</i> an einer bestimmten Position auf dem Datenträger befinden und hat vor allem keine festgelegte Größe; bei den anderen FAT-Varianten wird die maximale Anzahl der Einträge im Hauptverzeichnis bei der Formatierung festgelegt (und kann nachträglich nicht geändert werden).</li>
+<li>Alte DOS-/Windows-Versionen (bis einschließlich Windows 95A, Windows NT bis Version 4.0, MS-DOS bis 6.22, PC DOS bis 2000, DR-DOS bis 7.03) können <i>nicht</i> darauf zugreifen. Für Windows NT 4.0 steht mittlerweile ein vollwertiger Treiber kostenlos zur Verfügung. Für beliebige DOS-Systeme ab 3.3 kann der von Matthias Paul für DR-DOS entwickelte dynamisch ladbare DRFAT32-Treiber verwendet werden, der FAT32-Laufwerke über das Redirector-Interface als (erweiterte) CD-Extension mit vollem Schreib-/Lesezugriff in das System einbindet.</li>
+<li>Unter Windows 2000 und Nachfolgern darf der Benutzer mit der eingebauten Funktion „Formatieren“ maximal 32&#160;GiB große FAT32-Dateisysteme neu erstellen. Auch das Kommandozeilen-Programm <i>format.com</i> hat diese Beschränkung. Der Zugriff auf größere FAT32-Dateisysteme, die mit alternativen Werkzeugen erstellt wurden, ist aber immer möglich. Mit zusätzlichen Programmen kann man jedoch auch unter Windows 2000 oder höher Partitionen größer als 32&#160;GiB mit FAT32 erstellen und formatieren.<sup id="cite_ref-4" class="reference"><a href="#cite_note-4">[4]</a></sup> Das Festplatten-Dienstprogramm von Mac OS X 10.4 und neuer sowie das Linux-Programm <i>mkdosfs</i> (in Verbindung mit <i><a href="/wiki/Fdisk#Unix-artige_Systeme" title="Fdisk">fdisk</a></i>) können auf Festplatten, die größer als 32&#160;GiB sind, eine oder mehrere FAT32-Partitionen mit mehr als 32&#160;GiB Kapazität erzeugen.</li>
+<li>Es gibt mehrere moderne DOS-Systeme, die FAT32 nativ unterstützen: <a href="/wiki/MS-DOS" title="MS-DOS">MS-DOS</a> 7.10/8.00, Enhanced DR-DOS, FreeDOS 1.0, OEM PC DOS 7.10 (der Nachfolger von PC DOS 2000) und <a href="/w/index.php?title=Datalight_ROM-DOS&amp;action=edit&amp;redlink=1" class="new" title="Datalight ROM-DOS (Seite nicht vorhanden)">Datalight ROM-DOS</a>.</li>
+<li>Das Speichern von Meta-Informationen für Dateien in <i>Extended Attributes</i> ist nicht mehr möglich.</li>
+</ul>
+<p>Da auch in aktuellen Windows-Installationen FAT32 und NTFS koexistieren können, ist zu beachten, dass bei der Übertragung von Dateien von NTFS auf FAT32 sowohl NTFS-Streams als auch die Berechtigungen verloren gehen, was je nach Anwendungszweck sinnvoll oder störend sein kann.</p>
+<h2><span class="mw-headline" id="Erweiterungen">Erweiterungen</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=File_Allocation_Table&amp;veaction=edit&amp;section=6" class="mw-editsection-visualeditor" title="Abschnitt bearbeiten: Erweiterungen">Bearbeiten</a><span class="mw-editsection-divider"> | </span><a href="/w/index.php?title=File_Allocation_Table&amp;action=edit&amp;section=6" title="Abschnitt bearbeiten: Erweiterungen">Quelltext bearbeiten</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h3><span class="mw-headline" id="VFAT">VFAT</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=File_Allocation_Table&amp;veaction=edit&amp;section=7" class="mw-editsection-visualeditor" title="Abschnitt bearbeiten: VFAT">Bearbeiten</a><span class="mw-editsection-divider"> | </span><a href="/w/index.php?title=File_Allocation_Table&amp;action=edit&amp;section=7" title="Abschnitt bearbeiten: VFAT">Quelltext bearbeiten</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p><b>VFAT</b> (<i>Virtual File Allocation Table</i>) ist eine Erweiterung des FAT-Formats zur Verwendung langer Dateinamen, die auf FAT12, FAT16 und seit dessen Einführung im Jahr 1997 auch auf FAT32 angewendet werden kann. Gelegentlich wird im Sprachgebrauch auch fälschlich <i>VFAT</i> mit <i>FAT32</i> gleichgesetzt.</p>
+<p>Die Designer von Windows 95 hatten das Ziel, die Nutzung von langen Dateinamen zu ermöglichen, obwohl die auf <a href="/wiki/MS-DOS" title="MS-DOS">MS-DOS</a> aufbauenden Versionen das unter der NT-Serie dafür vorgesehene Nachfolge-Dateisystem <a href="/wiki/NTFS" title="NTFS">NTFS</a> nicht unterstützen. Das wird durch einen Trick im Layout des Dateisystems erreicht. Die Datei wird wie bisher als 8.3-Dateiname gespeichert, bei längeren Namen wird jedoch ein Alias in der Form <tt>xxxxxx~1.xxx</tt> verwendet, wobei die Nummer hochgezählt wird. Der lange Name wird dann über mehrere Verzeichniseinträge verteilt, die ältere Systeme als ungültig ansehen. Während bisher ein Eintrag auf eine Datei verwies, kann jetzt eine Datei mehrere Einträge mit je 32 Byte belegen. Das endgültige Format erlaubt bis zu 255 Zeichen lange Dateinamen (wobei der Name inklusive Speicherpfad bis zu 260 Zeichen enthalten kann) und nutzt <a href="/wiki/Unicode" title="Unicode">Unicode</a> als Zeichensatz mit der Kodierung <a href="/wiki/UCS-2" class="mw-redirect" title="UCS-2">UCS-2</a>.</p>
+<p>In bisher von Microsoft-Systemen nicht genutzten Bereichen des Eintrages mit dem 8.3-Dateinamen werden nun auch das Erstelldatum und das Datum des letzten Zugriffes gespeichert.</p>
+<p>Auch um lange Dateinamen auf FAT12-Disketten einsetzen zu können, nutzt <a href="/wiki/Microsoft_Windows" title="Microsoft Windows">Windows</a> die VFAT-Erweiterung. Mehrere zusätzliche Verzeichniseinträge liegen vor dem eigentlichen Verzeichniseintrag im FAT12-Format zur Speicherung des langen Dateinamens. Ältere Systeme (z.&#160;B. <a href="/wiki/DOS" class="mw-redirect" title="DOS">DOS</a>) ignorieren diese Verzeichniseinträge in der Regel, da sie durch eine spezielle Kombination von Attributen markiert sind, u.&#160;a. als „Volume“ und „Hidden“. Allerdings kann es durch die Verwendung des „Volume“-Attributes zur Kennzeichnung derartiger Einträge dazu kommen, dass ältere MS-DOS (vor 7.1) im dir-Befehl solche Einträge als Volumenamen interpretieren, speziell wenn der tatsächliche Volumename im Verzeichnis nicht an erster Stelle steht oder ganz fehlt.</p>
+<h4><span id="Unterstützung_in_Betriebssystemen"></span><span class="mw-headline" id="Unterst.C3.BCtzung_in_Betriebssystemen">Unterstützung in Betriebssystemen</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=File_Allocation_Table&amp;veaction=edit&amp;section=8" class="mw-editsection-visualeditor" title="Abschnitt bearbeiten: Unterstützung in Betriebssystemen">Bearbeiten</a><span class="mw-editsection-divider"> | </span><a href="/w/index.php?title=File_Allocation_Table&amp;action=edit&amp;section=8" title="Abschnitt bearbeiten: Unterstützung in Betriebssystemen">Quelltext bearbeiten</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p><i>Windows for Workgroups 3.11</i> unterstützt <i>VFAT</i> optional, jedoch nur für Festplatten und ohne die Möglichkeit langer Dateinamen.</p>
+<p><i>VFAT</i> wird in <i>Windows 95</i> und höher und in <i>Windows NT 3.5</i> und höher unterstützt.</p>
+<p>Unter <a href="/wiki/Linux" title="Linux">Linux</a> wird die <i>VFAT</i>-Erweiterung vollständig unterstützt.</p>
+<h3><span class="mw-headline" id="UMSDOS">UMSDOS</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=File_Allocation_Table&amp;veaction=edit&amp;section=9" class="mw-editsection-visualeditor" title="Abschnitt bearbeiten: UMSDOS">Bearbeiten</a><span class="mw-editsection-divider"> | </span><a href="/w/index.php?title=File_Allocation_Table&amp;action=edit&amp;section=9" title="Abschnitt bearbeiten: UMSDOS">Quelltext bearbeiten</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>In den frühen 1990er Jahren wurde von vielen <a href="/wiki/Linux-Distribution" title="Linux-Distribution"><i>Linux</i>-Distributionen</a> die <b>UMSDOS</b>-Erweiterung für <i>FAT16</i> eingesetzt, um <i><a href="/wiki/Linux" title="Linux">Linux</a></i> zu installieren, ohne das <a href="/wiki/Festplattenlaufwerk" title="Festplattenlaufwerk">Festplattenlaufwerk</a> neu <a href="/wiki/Partition_(Datentr%C3%A4ger)" title="Partition (Datenträger)">partitionieren</a> und <a href="/wiki/Formatieren" class="mw-redirect" title="Formatieren">formatieren</a> zu müssen. <i>UMSDOS</i> fügt zu einem <i>FAT</i>-Dateisystem eine darüberliegende <i><a href="/wiki/Unix" title="Unix">Unix</a></i>-kompatible Schicht hinzu. Diese verwaltet Dateien, die den Namen <tt>--linux-.---</tt> tragen. Darin werden Benutzerrechte und auch lange Dateinamen gespeichert.</p>
+<p>In <i>Linux 2.6.11</i> wurde <i>UMSDOS</i> aus dem Kernel entfernt, da es nicht mehr weiterentwickelt wird. Es gibt als Ersatz ein <i><a href="/wiki/POSIX" class="mw-redirect" title="POSIX">POSIX</a>-Overlay</i>-Dateisystem, das <i><a href="/wiki/Filesystem_in_Userspace" title="Filesystem in Userspace">FUSE</a></i> verwendet und über einem normalen <i>FAT</i>-Dateisystem „eingeblendet“ werden kann.</p>
+<h3><span class="mw-headline" id="UVFAT">UVFAT</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=File_Allocation_Table&amp;veaction=edit&amp;section=10" class="mw-editsection-visualeditor" title="Abschnitt bearbeiten: UVFAT">Bearbeiten</a><span class="mw-editsection-divider"> | </span><a href="/w/index.php?title=File_Allocation_Table&amp;action=edit&amp;section=10" title="Abschnitt bearbeiten: UVFAT">Quelltext bearbeiten</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p><b>UVFAT</b> existierte nur für eine kurze Zeit und hat die <i>VFAT</i>-Erweiterung zur Speicherung langer Dateinamen genutzt, während der <i>UMSDOS</i>-Mechanismus für die unter allen <i>FAT</i>-Versionen fehlenden Benutzerrechte verwendet wurde. So waren unter <i>Linux</i> angelegte lange Dateinamen auch unter modernen <i>Windows</i>-Versionen lesbar und umgekehrt. Die Entwicklung wurde bereits vor derjenigen der <i>UMSDOS</i>-Erweiterung wieder eingestellt.</p>
+<h2><span class="mw-headline" id="Derivate">Derivate</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=File_Allocation_Table&amp;veaction=edit&amp;section=11" class="mw-editsection-visualeditor" title="Abschnitt bearbeiten: Derivate">Bearbeiten</a><span class="mw-editsection-divider"> | </span><a href="/w/index.php?title=File_Allocation_Table&amp;action=edit&amp;section=11" title="Abschnitt bearbeiten: Derivate">Quelltext bearbeiten</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Es gibt folgende <a href="/wiki/Abspaltung_(Softwareentwicklung)" title="Abspaltung (Softwareentwicklung)">Derivate</a>:</p>
+<h3><span class="mw-headline" id="exFAT"><span id="TexFAT"><span id="Anker:TexFAT"></span></span>exFAT</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=File_Allocation_Table&amp;veaction=edit&amp;section=12" class="mw-editsection-visualeditor" title="Abschnitt bearbeiten: exFAT">Bearbeiten</a><span class="mw-editsection-divider"> | </span><a href="/w/index.php?title=File_Allocation_Table&amp;action=edit&amp;section=12" title="Abschnitt bearbeiten: exFAT">Quelltext bearbeiten</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p><b>exFAT</b> (<i>Extended File Allocation Table</i>) ist ein speziell für <a href="/wiki/Flash-Speicher" title="Flash-Speicher">Flash-Speicher</a> entwickeltes Dateisystem. Eingeführt wurde es 2006 mit <a href="/wiki/Microsoft_Windows_CE" title="Microsoft Windows CE">Windows CE</a> 6.0. exFAT wird dort eingesetzt, wo NTFS nur schwer oder gar nicht implementierbar ist. <a href="/wiki/Microsoft_Windows_7" title="Microsoft Windows 7">Windows 7</a> unterstützt exFat nativ, <a href="/wiki/Microsoft_Windows_Vista" title="Microsoft Windows Vista">Windows Vista</a> erst ab Service Pack 1.<sup id="cite_ref-5" class="reference"><a href="#cite_note-5">[5]</a></sup> Für Windows XP ab SP2 hat Microsoft ein Aktualisierungspaket<sup id="cite_ref-6" class="reference"><a href="#cite_note-6">[6]</a></sup> bereitgestellt und beschrieben.<sup id="cite_ref-ExFAT-Dateisystemtreiber_Beschreibung_7-0" class="reference"><a href="#cite_note-ExFAT-Dateisystemtreiber_Beschreibung-7">[7]</a></sup> Ab <a href="/wiki/MacOS" title="MacOS">Mac-OS-X</a>-Version 10.6.5 wird exFAT auf Apple-Computern vollständig unterstützt.<sup id="cite_ref-8" class="reference"><a href="#cite_note-8">[8]</a></sup></p>
+<p>Die Vorteile gegenüber vorherigen Versionen sind:</p>
+<ul>
+<li>Maximale Dateigröße von 64 <a href="/wiki/Zebibyte" class="mw-redirect" title="Zebibyte">ZiB</a><sup id="cite_ref-ExFAT-Dateisystemtreiber_Beschreibung_7-1" class="reference"><a href="#cite_note-ExFAT-Dateisystemtreiber_Beschreibung-7">[7]</a></sup>, empfohlene maximale Dateigröße 512 TB (maximale Partitionsgröße).</li>
+<li>Ein Cluster darf maximal 32 <a href="/wiki/Mebibyte" class="mw-redirect" title="Mebibyte">MiB</a> groß sein (theoretisch jedoch bis zu 2<sup>255</sup> Bytes).</li>
+<li>Es wurde eine Tabelle eingeführt, welche die freien Cluster indiziert.</li>
+<li>Das Dateisystem unterstützt <a href="/wiki/Access_Control_List" title="Access Control List">erweiterte Zugriffsrechte (ACL)</a>.</li>
+<li>Es werden auch <a href="/wiki/Transaktion_(Informatik)" title="Transaktion (Informatik)">Transaktionen</a> unterstützt (nur mit <i>TexFAT</i>).</li>
+</ul>
+<p>Nachteile:</p>
+<ul>
+<li>Die exFAT-Unterstützung bei anderen Betriebssystemen als Windows und OS X ist bisher noch nicht überall vorhanden, da Microsoft die Spezifikationen nicht offengelegt hat, sondern nur Lizenznehmern zur Verfügung stellt.<sup id="cite_ref-9" class="reference"><a href="#cite_note-9">[9]</a></sup> Inzwischen hat das Unternehmen <i>Tuxera</i>, das auch einen quelloffenen NTFS-Treiber mitentwickelt hat, mit Microsoft eine Lizenzübereinkunft getroffen und infolgedessen einen exFAT-Treiber für Linux entwickelt.<sup id="cite_ref-10" class="reference"><a href="#cite_note-10">[10]</a></sup> Es gibt einen unter der <a href="/wiki/GNU_General_Public_License#GPL_Version_3" title="GNU General Public License">GPLv3</a> lizenzierten Treiber für <a href="/wiki/Filesystem_in_Userspace" title="Filesystem in Userspace">FUSE</a>,<sup id="cite_ref-11" class="reference"><a href="#cite_note-11">[11]</a></sup> von dem Ende Januar 2013 die erste stabile Version 1.0 erschienen ist.<sup id="cite_ref-12" class="reference"><a href="#cite_note-12">[12]</a></sup> Dieser FUSE-Treiber kann auf allen <a href="/wiki/Unixoides_System" title="Unixoides System">unixoiden</a> Betriebssystemen wie <a href="/wiki/MacOS" title="MacOS">macOS</a> oder <a href="/wiki/Linux" title="Linux">Linux</a> genutzt werden<sup id="cite_ref-13" class="reference"><a href="#cite_note-13">[13]</a></sup>, sofern der jeweilige Anwender eine Lizenz zur Nutzung von exFAT von Microsoft erworben hat. Die Grundlage für diesen Treiber legte die Firma <a href="/wiki/Samsung" title="Samsung">Samsung</a>, als sie <a href="/wiki/Android_(Betriebssystem)" title="Android (Betriebssystem)">Android</a>-Quellcode unter GPLv3-Lizenz veröffentlichte, der einen exFAT-Treiber enthielt.<sup id="cite_ref-14" class="reference"><a href="#cite_note-14">[14]</a></sup> Wegen der nicht offengelegten Interna und der erheblichen Unterschiede zu klassischen FAT-Dateisystemen ist für viele aktuelle <a href="/wiki/Freie_Software" title="Freie Software">freie</a> Betriebssysteme auch im Rahmen von Treiberaktualisierungen nicht mit einer Unterstützung von exFAT zu rechnen.</li>
+</ul>
+<ul>
+<li>Im Rahmen der Spezifikationen für die zukünftigen <a href="/wiki/Memory_Stick" title="Memory Stick">Memory-Stick-XC</a>- und <a href="/wiki/SD_Memory_Card" class="mw-redirect" title="SD Memory Card">SD-XC</a>-Flashspeicher-Kartentypen wird die Verwendung des exFAT-Dateisystems vorgeschrieben, so dass die Verwendung solcher Speicherkartentypen Windows oder Mac OS X erfordert. Die bisherigen SDHC- und Memory-Stick-PRO-HG-Duo-Standards stoßen bei 32 GiB an ihre jeweiligen Systemgrenzen. Die Alternative <a href="/wiki/CompactFlash" title="CompactFlash">CompactFlash</a> erlaubt Speicherkapazitäten bis 128 PiB; auch im Nachfolgestandard wurde bisher (Stand 2009) kein bestimmtes Dateisystem festgelegt, wenn auch die Verwendung von FAT16 (bis 2 GiB) bzw. FAT32 hohe Austauschbarkeit garantiert.</li>
+</ul>
+<h3><span class="mw-headline" id="TFAT"><span id="TFAT12"><span id="Anker:TFAT12"></span></span><span id="TFAT16"><span id="Anker:TFAT16"></span></span><span id="TFAT32"><span id="Anker:TFAT32"></span></span>TFAT</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=File_Allocation_Table&amp;veaction=edit&amp;section=13" class="mw-editsection-visualeditor" title="Abschnitt bearbeiten: TFAT">Bearbeiten</a><span class="mw-editsection-divider"> | </span><a href="/w/index.php?title=File_Allocation_Table&amp;action=edit&amp;section=13" title="Abschnitt bearbeiten: TFAT">Quelltext bearbeiten</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p><b>TFAT</b> (<i>Transaction-safe File Allocation Table</i>) bietet insbesondere für mobile Geräte mit fest eingebautem Flash-Speicher Schutz vor Beschädigungen des Dateisystems, zum Beispiel wenn während einer Schreiboperation die Stromversorgung des Gerätes ausfällt.</p>
+<p>Hierzu wird die FAT doppelt geführt: einmal als FAT1 mit den aktuellen Dateizuordnungen und einmal als FAT0 mit dem letzten als konsistent bekannten Stand des Dateisystems. FAT0 wird erst nach erfolgreichem Abschluss einer <a href="/wiki/Transaktion_(Informatik)" title="Transaktion (Informatik)">Transaktion</a> aktualisiert, indem FAT1 nach FAT0 kopiert wird. Eine Transaktion ist beispielsweise das Anlegen einer neuen Datei.</p>
+<p>Während des Ablaufs einer Transaktion werden Änderungen am Dateisystem in neu angelegten Clustern gespeichert, und FAT1 wird entsprechend angepasst. So kann im Fehlerfall eine unvollständig ausgeführte Transaktion durch Kopieren von FAT0 nach FAT1 rückgängig gemacht und das Dateisystem auf den Stand von vor Beginn der Transaktion zurückversetzt werden.</p>
+<p>Das rechnerische Limit für TFAT-Partitionen liegt bei einer Sektorgröße von 512 Byte bei bis zu 2 TiB.</p>
+<p>TFAT ist zwar explizit für nicht entfernbaren Speicher gedacht, kann jedoch auch mit Wechselspeichermedien verwendet werden. Allerdings kann es zu Problemen kommen, wenn ein TFAT-Medium in einem anderen Gerät ohne Unterstützung für TFAT verwendet wird. Prinzipiell ist es möglich, von dem Medium zu lesen, doch wird es hierbei wie ein normales FAT-Medium angesehen werden. Schreibvorgänge werden also nicht transaktionssicher geschrieben. Auch können mit TFAT erstellte Verzeichnisse nicht von FAT-Systemen gelöscht werden.</p>
+<p>TFAT wird üblicherweise nicht von Desktopsystemen unterstützt. Unterstützt wird es von Microsoft für Mobilgeräte seit <a href="/wiki/Windows_Mobile" class="mw-redirect" title="Windows Mobile">Windows Mobile</a> 6.5 und Windows CE ab Version 6.0.<sup id="cite_ref-15" class="reference"><a href="#cite_note-15">[15]</a></sup></p>
+<h2><span class="mw-headline" id="Aufbau">Aufbau</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=File_Allocation_Table&amp;veaction=edit&amp;section=14" class="mw-editsection-visualeditor" title="Abschnitt bearbeiten: Aufbau">Bearbeiten</a><span class="mw-editsection-divider"> | </span><a href="/w/index.php?title=File_Allocation_Table&amp;action=edit&amp;section=14" title="Abschnitt bearbeiten: Aufbau">Quelltext bearbeiten</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Ein FAT-Dateisystem gliedert sich in fünf Bereiche:</p>
+<table class="wikitable" style="&quot;text-align:center;&quot;0&quot;">
+<caption>Überblick über die Struktur innerhalb einer FAT-Partition</caption>
+<tr>
+<th>Inhalt</th>
+<td>Bootsektor</td>
+<td>FS Informations Bereich<br />
+<p>(nur FAT32)</p>
+</td>
+<td>Ggf. weitere reservierte Bereiche</td>
+<td>File Allocation Table (FAT) Nummer 1</td>
+<td>File Allocation Table Nummer 2 (&amp; ggf. weitere)</td>
+<td>Root <a href="/wiki/Verzeichnis" title="Verzeichnis">Verzeichnis</a> (nur FAT12/FAT16)</td>
+<td>Datenbereich (für Dateien und Ordnerstrukturen) ... (bis zum Ende der Partition)</td>
+</tr>
+<tr>
+<th>Größe in Sektoren</th>
+<td colspan="3">(Anzahl an reservierten Sektoren)</td>
+<td colspan="2">(Anzahl von FATs) * (Sektoren pro FAT)</td>
+<td>(Anzahl an Root Verzeichnissen *32) / (<a href="/wiki/Bytes" class="mw-redirect" title="Bytes">Bytes</a> pro Sektor)</td>
+<td>(Anzahl von Clustern) * (Sektoren pro Cluster)</td>
+</tr>
+</table>
+<p>Alle Mehrbyte-Werte (16/32 Bit) sind im <a href="/wiki/Little_Endian" class="mw-redirect" title="Little Endian">Little Endian</a> gespeichert, d.h. niederwertigste Bytes zuerst.</p>
+<h3><span class="mw-headline" id="Bootsektor">Bootsektor</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=File_Allocation_Table&amp;veaction=edit&amp;section=15" class="mw-editsection-visualeditor" title="Abschnitt bearbeiten: Bootsektor">Bearbeiten</a><span class="mw-editsection-divider"> | </span><a href="/w/index.php?title=File_Allocation_Table&amp;action=edit&amp;section=15" title="Abschnitt bearbeiten: Bootsektor">Quelltext bearbeiten</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Der Bootsektor enthält teilweise ausführbaren x86-Maschinencode, der das Betriebssystem laden soll. An anderen Stellen enthält er Informationen über das FAT-Dateisystem.</p>
+<table class="wikitable">
+<tr class="hintergrundfarbe6">
+<th>Offset (hex)</th>
+<th>Länge (in Byte)</th>
+<th>Inhalt</th>
+</tr>
+<tr>
+<td align="right">00</td>
+<td align="right">3</td>
+<td>x86-Maschinencode. In der Regel eine Sprunganweisung zum Boot-Code, um die Datenbytes im Bootsektor zu überspringen.<br />
+Beispiel: <code>EB&#160;3C&#160;90</code>; für x86-Prozessoren hat dieser Code die folgenden Anweisungen: <code>JMP&#160;SHORT&#160;003C;&#160;NOP</code>.</td>
+</tr>
+<tr>
+<td align="right">03</td>
+<td align="right">8</td>
+<td>OEM-Name (mit Leerzeichen aufgefüllt). MS-DOS ermittelt anhand dessen, welche Struktur die übrigen Daten im Bootsektor haben<sup id="cite_ref-16" class="reference"><a href="#cite_note-16">[16]</a></sup><sup id="cite_ref-17" class="reference"><a href="#cite_note-17">[17]</a></sup>. Übliche Werte sind <code>IBM&#160;&#160;3.3</code> (mit zwei Leerzeichen zwischen „IBM“ und „3.3“) und <code>MSDOS5.0</code>. Im Prinzip ist der Name frei definierbar, Formatierungsprogramme verwenden häufig ihre eigenen Namen.</td>
+</tr>
+<tr>
+<td align="right">0B</td>
+<td align="right">2</td>
+<td>Byte pro Sektor (Gültige Werte sind: 512, 1024, 2048 und 4096. In der Regel ist der Wert 512.)</td>
+</tr>
+<tr>
+<td align="right">0D</td>
+<td align="right">1</td>
+<td>Sektoren pro <a href="/wiki/Cluster_(Datentr%C3%A4ger)" title="Cluster (Datenträger)">Cluster</a> (Zweierpotenz zwischen 1 und 64, ggf. auch 128)</td>
+</tr>
+<tr>
+<td align="right">0E</td>
+<td align="right">2</td>
+<td>Anzahl reservierter Sektoren (inkl. Bootsektor, also stets mind. 1)</td>
+</tr>
+<tr>
+<td align="right">10</td>
+<td align="right">1</td>
+<td>Anzahl der FAT-Kopien (in der Regel: 2)</td>
+</tr>
+<tr>
+<td align="right">11</td>
+<td align="right">2</td>
+<td>Maximale Anzahl an Verzeichniseinträgen im Stammverzeichnis (Ungenutzt bei FAT32 und stets 0000<sub>hex</sub>)</td>
+</tr>
+<tr>
+<td align="right">13</td>
+<td align="right">2</td>
+<td>Gesamtsektoranzahl des Mediums max. 65535, bei größeren Medien ist dieser Wert 0, und der eigentliche Wert steht als 4-Byte-Wert an Offset 20<sub>hex</sub>. Bei FAT32 stets ungenutzt.</td>
+</tr>
+<tr>
+<td align="right">15</td>
+<td align="right">1</td>
+<td>Media Descriptor Byte<sup id="cite_ref-18" class="reference"><a href="#cite_note-18">[18]</a></sup>. Gilt als veraltet und wird ab Windows Server 2003 nicht mehr beachtet.
+<table>
+<tr>
+<td>0xF0</td>
+<td>Double sided, 80 Spuren, 18/36 Sektoren pro Spur (1440&#160;<a href="/wiki/Kibibyte" class="mw-redirect" title="Kibibyte">KiB</a>- sowie 2880&#160;KiB-3½″-Diskette)</td>
+</tr>
+<tr>
+<td>0xF8</td>
+<td>Festplatte</td>
+</tr>
+<tr>
+<td>0xF9</td>
+<td>Double sided, 80 Spuren, 9/15 Sektoren pro Spur (720&#160;KiB-3½″- bzw. 1200&#160;KiB-5¼″-Diskette)</td>
+</tr>
+<tr>
+<td>0xFA</td>
+<td>Single sided, 80 Spuren, 8 Sektoren pro Spur (320&#160;KiB-3½″- bzw. -5¼″-Diskette).<br />
+Wird auch für Ramdisks verwendet</td>
+</tr>
+<tr>
+<td>0xFB</td>
+<td>Double sided, 80 Spuren, 8 Sektoren pro Spur (640&#160;KiB-3½″- bzw. -5¼″-Diskette)</td>
+</tr>
+<tr>
+<td>0xFC</td>
+<td>Single sided, 40 Spuren, 9 Sektoren pro Spur (180&#160;KiB-5¼″-Diskette)</td>
+</tr>
+<tr>
+<td>0xFD</td>
+<td>Double sided, 40 Spuren, 9 Sektoren pro Spur (360&#160;KiB-5¼″-Diskette)<br />
+Double Sided, 77 Spuren, 26 Sektoren pro Spur (500&#160;KiB-8″-Disketten)</td>
+</tr>
+<tr>
+<td>0xFE</td>
+<td>Single sided, 40 Spuren, 8 Sektoren pro Spur (160&#160;KiB-5¼″-Diskette)<br />
+Single Sided, 77 Spuren, 26 Sektoren pro Spur (250&#160;KiB-8″-Disketten)<br />
+Double Sided, 77 Spuren, 8 Sektoren pro Spur (1200&#160;KiB-8″-Disketten)<br />
+Die beiden 8″-Disketten-Formate wurden darin unterschieden, ob Lesezugriffe auf die Seite 2 erfolgreich sind.</td>
+</tr>
+<tr>
+<td>0xFF</td>
+<td>Double sided, 40 Spuren, 8 Sektoren pro Spur (320&#160;KiB-5¼″-Diskette)</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td align="right">16</td>
+<td align="right">2</td>
+<td>Anzahl der Sektoren pro FAT. (Bei FAT32 ungenutzt und stets 0000<sub>hex</sub>, siehe Offset 24<sub>hex</sub>.)</td>
+</tr>
+<tr>
+<td align="right">18</td>
+<td align="right">2</td>
+<td>Sektoren pro Spur</td>
+</tr>
+<tr>
+<td align="right">1A</td>
+<td align="right">2</td>
+<td>Anzahl der Seiten bzw. Schreib-Lese-Köpfe</td>
+</tr>
+<tr>
+<td align="right">1C</td>
+<td align="right">4</td>
+<td>Anzahl der „versteckten“ Sektoren <i>vor</i> dem Bootsektor. Bei Festplatten ist das die Anzahl der Sektoren zwischen <a href="/wiki/Master_Boot_Record" title="Master Boot Record">Master Boot Record</a> und dem Bootsektor der Partition. Bei nicht partitionierten Medien (ohne <a href="/wiki/Master_Boot_Record" title="Master Boot Record">MBR</a>) stets 0.</td>
+</tr>
+<tr>
+<td align="right">20</td>
+<td align="right">4</td>
+<td>Gesamtsektoranzahl, falls größer als 65535</td>
+</tr>
+</table>
+<p>Anschließend unterscheiden sich die Daten je nach FAT-Variante. Bei FAT12 und FAT16 folgt diese Datenstruktur:</p>
+<table class="wikitable">
+<tr class="hintergrundfarbe6">
+<th>Offset (hex)</th>
+<th>Länge (in Byte)</th>
+<th>Inhalt</th>
+</tr>
+<tr>
+<td align="right">24</td>
+<td align="right">1</td>
+<td>Physische BIOS-Laufwerksnummer (00<sub>hex</sub> bei Disketten, 80<sub>hex</sub>, 81<sub>hex</sub>, … bei Festplatten). Ist nur für Bootlaufwerke relevant, da diese Nummer beim Booten für BIOS-Aufrufe zum Zugriff auf das Medium benutzt wird.</td>
+</tr>
+<tr>
+<td align="right">25</td>
+<td align="right">1</td>
+<td>Reserviert. Dieses Byte wird oft benutzt, um ein möglicherweise beschädigtes Dateisystem zu markieren.</td>
+</tr>
+<tr>
+<td align="right">26</td>
+<td align="right">1</td>
+<td>Erweiterte Bootsignatur</td>
+</tr>
+<tr>
+<td align="right">27</td>
+<td align="right">4</td>
+<td>Dateisystem-ID (Seriennummer). Wird beim Anlegen des Dateisystems erzeugt und dient der Unterscheidung verschiedener Medien (z.&#160;B. bei Wechselmedien)</td>
+</tr>
+<tr>
+<td align="right">2B</td>
+<td align="right">11</td>
+<td>Name des Dateisystems (durch Leerzeichen aufgefüllt). Veraltet. Wurde durch einen speziellen Verzeichniseintrag im Stammverzeichnis abgelöst</td>
+</tr>
+<tr>
+<td align="right">36</td>
+<td align="right">8</td>
+<td>FAT-Variante, mit Leerzeichen aufgefüllt, z.&#160;B. <code>FAT12&#160;&#160;&#160;</code>, <code>FAT16&#160;&#160;&#160;</code>.</td>
+</tr>
+<tr>
+<td align="right">3E</td>
+<td align="right">448</td>
+<td>x86-Maschinencode des Bootloaders</td>
+</tr>
+<tr>
+<td align="right">1FE</td>
+<td align="right">2</td>
+<td>BIOS-Bootsektorsignatur. Enthält die beiden Werte 55<sub>hex</sub> AA<sub>hex</sub>, anhand derer das BIOS beim Booten einen gültigen Bootsektor erkennt.</td>
+</tr>
+</table>
+<p>FAT32 benutzt eine davon abweichende Struktur ab Offset 24<sub>hex</sub>:</p>
+<table class="wikitable">
+<tr class="hintergrundfarbe6">
+<th>Offset (hex)</th>
+<th>Länge (in Byte)</th>
+<th>Inhalt</th>
+</tr>
+<tr>
+<td align="right">24</td>
+<td align="right">4</td>
+<td>Anzahl der Sektoren pro FAT</td>
+</tr>
+<tr>
+<td align="right">28</td>
+<td align="right">2</td>
+<td>FAT Flags</td>
+</tr>
+<tr>
+<td align="right">2A</td>
+<td align="right">2</td>
+<td>FAT-32-Version. Bei Microsoft stets 0000<sub>hex</sub>. (optional 0001<sub>hex</sub> für FATplus)</td>
+</tr>
+<tr>
+<td align="right">2C</td>
+<td align="right">4</td>
+<td>Clusternummer, an der das Stammverzeichnis beginnt. Meistens 2.</td>
+</tr>
+<tr>
+<td align="right">30</td>
+<td align="right">2</td>
+<td>Sektornummer des „FS Information Sector“ (In der Regel: 1)</td>
+</tr>
+<tr>
+<td align="right">32</td>
+<td align="right">2</td>
+<td>Sektornummer der Bootsektorkopie (in der Regel: 6; Microsoft empfiehlt, keinen anderen Wert zu benutzen)</td>
+</tr>
+<tr>
+<td align="right">34</td>
+<td align="right">12</td>
+<td>reserviert für spätere Erweiterungen, derzeit stets 0</td>
+</tr>
+<tr>
+<td align="right">40</td>
+<td align="right">1</td>
+<td>Physische BIOS-Laufwerksnummer</td>
+</tr>
+<tr>
+<td align="right">41</td>
+<td align="right">1</td>
+<td>Reserviert. Dieses Byte wird oft benutzt, um ein möglicherweise beschädigtes Dateisystem zu markieren.</td>
+</tr>
+<tr>
+<td align="right">42</td>
+<td align="right">1</td>
+<td>Erweiterte Bootsignatur</td>
+</tr>
+<tr>
+<td align="right">43</td>
+<td align="right">4</td>
+<td>Dateisystem-ID (Seriennummer)</td>
+</tr>
+<tr>
+<td align="right">47</td>
+<td align="right">11</td>
+<td>Name des Dateisystems (ungenutzt)</td>
+</tr>
+<tr>
+<td align="right">52</td>
+<td align="right">8</td>
+<td>FAT-Version. Stets <code>FAT32&#160;&#160;&#160;</code>.</td>
+</tr>
+<tr>
+<td align="right">5A</td>
+<td align="right">420</td>
+<td>x86-Maschinencode des Bootloaders</td>
+</tr>
+<tr>
+<td align="right">1FE</td>
+<td align="right">2</td>
+<td>BIOS-Bootsektorsignatur. Enthält die beiden Werte 55<sub>hex</sub> AA<sub>hex</sub>, anhand derer das BIOS beim Booten einen gültigen Bootsektor erkennt.</td>
+</tr>
+</table>
+<h3><span class="mw-headline" id="Reservierte_Sektoren">Reservierte Sektoren</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=File_Allocation_Table&amp;veaction=edit&amp;section=16" class="mw-editsection-visualeditor" title="Abschnitt bearbeiten: Reservierte Sektoren">Bearbeiten</a><span class="mw-editsection-divider"> | </span><a href="/w/index.php?title=File_Allocation_Table&amp;action=edit&amp;section=16" title="Abschnitt bearbeiten: Reservierte Sektoren">Quelltext bearbeiten</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Zwischen Bootsektor und der ersten FAT können Sektoren reserviert werden, die vom Dateisystem nicht benutzt werden. Dieser Bereich kann von einem <a href="/wiki/Bootmanager" title="Bootmanager">Bootmanager</a> oder für betriebssystemspezifische Erweiterungen genutzt werden. Auf den meisten FAT12- oder FAT16-Dateisystemen existieren – außer dem Bootsektor – keine weiteren reservierten Sektoren. Die FAT folgt somit direkt im Anschluss an den Bootsektor. FAT32-Dateisysteme enthalten in der Regel noch einige Erweiterungen zum Bootsektor sowie eine komplette Sicherungskopie des Bootsektors und der Erweiterungen.</p>
+<h3><span class="mw-headline" id="FAT">FAT</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=File_Allocation_Table&amp;veaction=edit&amp;section=17" class="mw-editsection-visualeditor" title="Abschnitt bearbeiten: FAT">Bearbeiten</a><span class="mw-editsection-divider"> | </span><a href="/w/index.php?title=File_Allocation_Table&amp;action=edit&amp;section=17" title="Abschnitt bearbeiten: FAT">Quelltext bearbeiten</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Die FAT ist eine Art Tabelle fester Größe, in der über die belegten und freien <i>Cluster</i> eines FAT-Dateisystems Buch geführt wird. Ein Cluster ist die aus einem oder mehreren Sektoren bestehende Zuordnungseinheit, die von einer Datei belegt werden kann. Der Datenbereich ist in eine feste Anzahl von Clustern eingeteilt. Zu jedem dieser Cluster existiert ein Eintrag in der FAT, der Folgendes über den Cluster angeben kann:</p>
+<ul>
+<li>Der Cluster ist nicht belegt, also frei.</li>
+<li>Das Medium ist an der Position dieses Clusters beschädigt.</li>
+<li>Der Cluster ist von einer Datei belegt:
+<ul>
+<li>Der FAT-Eintrag zum nächsten Cluster der Datei hat die Nummer <i>x</i>, das heißt: der nächste Cluster der Datei ist der Cluster mit der Nummer <i>x − 2</i>.</li>
+<li>Das ist der letzte Cluster der Datei.</li>
+</ul>
+</li>
+</ul>
+<p>Die Größe (in Bit) und der Wertebereich der Tabelleneinträge unterscheiden sich zw. FAT12, FAT16 und FAT32 wie folgt:</p>
+<table class="wikitable">
+<tr class="hintergrundfarbe6">
+<th rowspan="2">Bedeutung</th>
+<th colspan="3">Wert</th>
+</tr>
+<tr class="hintergrundfarbe6">
+<th>FAT12</th>
+<th>FAT16</th>
+<th>FAT32</th>
+</tr>
+<tr>
+<td>Freier Cluster</td>
+<td>000<sub>16</sub></td>
+<td>0000<sub>16</sub></td>
+<td>00000000<sub>16</sub></td>
+</tr>
+<tr>
+<td>Defekter Cluster</td>
+<td>FF7<sub>16</sub></td>
+<td>FFF7<sub>16</sub></td>
+<td>0FFFFFF7<sub>16</sub></td>
+</tr>
+<tr>
+<td>letzter Cluster einer Clusterkette</td>
+<td>FF8<sub>16</sub>…FFF<sub>16</sub></td>
+<td>FFF8<sub>16</sub>…FFFF<sub>16</sub></td>
+<td>0FFFFFF8<sub>16</sub>…0FFFFFFF<sub>16</sub></td>
+</tr>
+<tr>
+<td>sonstiger Cluster einer Clusterkette</td>
+<td>002<sub>16</sub> ≤ <i>X</i> ≤ FF6<sub>16</sub></td>
+<td>0002<sub>16</sub> ≤ <i>X</i> ≤ FFF6<sub>16</sub></td>
+<td>00000002<sub>16</sub> ≤ <i>X</i> ≤ 0FFFFFF6<sub>16</sub></td>
+</tr>
+</table>
+<p>Die Lage der belegten Cluster einer Datei können aus den Adressen der zugehörigen FAT-Einträge berechnet werden. Diese FAT-Einträge bilden eine <a href="/wiki/Einfach_verkettete_Liste" class="mw-redirect" title="Einfach verkettete Liste">einfach verkettete Liste</a>.</p>
+<p>Wegen ihrer grundlegenden Bedeutung für das Dateisystem existieren in der Regel zwei Kopien der FAT, um bei Datenverlust noch immer eine funktionsfähige zweite FAT zu haben. Mit diversen Programmen ist so eine <a href="/wiki/Datenwiederherstellung" title="Datenwiederherstellung">Datenwiederherstellung</a> in vielen Fällen möglich.</p>
+<p>Auf Installationsdisketten oder mit Spezialprogrammen formatierten Medien findet man manchmal keine zweite FAT, wodurch der verfügbare Speicherplatz etwas größer wird. Theoretisch ist es auch möglich, ein Dateisystem mit mehr als zwei FAT-Kopien zu formatieren. Diese Dateisysteme können zwar in der Regel von jedem Betriebssystem gelesen werden, jedoch wird die dritte (und jede weitere FAT-Kopie) bei Schreibzugriffen meist nicht aktualisiert, so dass bei Beschädigung der ersten beiden FATs oft keine Reparatur unter Zuhilfenahme der weiteren Kopien möglich ist.</p>
+<h3><span class="mw-headline" id="Stammverzeichnis_und_Unterverzeichnisse">Stammverzeichnis und Unterverzeichnisse</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=File_Allocation_Table&amp;veaction=edit&amp;section=18" class="mw-editsection-visualeditor" title="Abschnitt bearbeiten: Stammverzeichnis und Unterverzeichnisse">Bearbeiten</a><span class="mw-editsection-divider"> | </span><a href="/w/index.php?title=File_Allocation_Table&amp;action=edit&amp;section=18" title="Abschnitt bearbeiten: Stammverzeichnis und Unterverzeichnisse">Quelltext bearbeiten</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Das Stammverzeichnis (engl. <i>root directory</i>), auch Wurzelverzeichnis oder Hauptverzeichnis genannt, ist eine Tabelle von Verzeichniseinträgen. Jede Datei oder Unterverzeichnis wird in der Regel durch je einen Verzeichniseintrag repräsentiert. Die bei Windows 95 eingeführte Erweiterung um „lange Dateinamen“ benutzt jedoch ggf. mehrere Verzeichniseinträge pro Datei bzw. Verzeichnis, um die langen Dateinamen unterzubringen.</p>
+<p>Das Stammverzeichnis folgt bei FAT12 und FAT16 direkt der FAT und hat eine feste Größe und damit eine Maximalanzahl an Verzeichniseinträgen. Diese wird beim Formatieren des Dateisystems festgelegt und kann später – außer mit Spezialsoftware – nicht mehr geändert werden.</p>
+<p>Bei FAT32 hat das Stammverzeichnis eine variable Größe und kann an einer beliebigen Position des Datenbereichs beginnen.</p>
+<p>Je nach Medientyp gibt es unterschiedliche Vorgabegrößen für das Stammverzeichnis. Mit speziellen Formatierungsprogrammen lässt sich jedoch die Größe des Stammverzeichnisses frei wählen. So besitzen beispielsweise Installationsdisketten, die nur sehr wenige Archivdateien enthalten, oft ein minimales Stammverzeichnis, das nur einen Sektor groß ist und somit nur Platz für 16 Verzeichniseinträge bietet.</p>
+<table class="wikitable">
+<tr class="hintergrundfarbe6">
+<th>Medientyp</th>
+<th>Speicherkapazität</th>
+<th>Anzahl der Verzeichniseinträge</th>
+<th>Sektoren für Stammverzeichnis</th>
+</tr>
+<tr>
+<td>8″ SD einseitig</td>
+<td align="right">250&#160;KiB</td>
+<td align="right">68</td>
+<td align="right"></td>
+</tr>
+<tr>
+<td>8″ SD beidseitig</td>
+<td align="right">500&#160;KiB</td>
+<td align="right">68</td>
+<td align="right"></td>
+</tr>
+<tr>
+<td>8″ DD beidseitig</td>
+<td align="right">1200&#160;KiB</td>
+<td align="right">192</td>
+<td align="right"></td>
+</tr>
+<tr>
+<td>5¼″ DD einseitig</td>
+<td align="right">160&#160;KiB</td>
+<td align="right">64</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td>5¼″ DD einseitig</td>
+<td align="right">180&#160;KiB</td>
+<td align="right">64</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td>5¼″ DD beidseitig</td>
+<td align="right">320&#160;KiB</td>
+<td align="right">112</td>
+<td align="right">7</td>
+</tr>
+<tr>
+<td>5¼″ DD beidseitig</td>
+<td align="right">360&#160;KiB</td>
+<td align="right">112</td>
+<td align="right">7</td>
+</tr>
+<tr>
+<td>5¼″ HD beidseitig</td>
+<td align="right">1200&#160;KiB</td>
+<td align="right">224</td>
+<td align="right">14</td>
+</tr>
+<tr>
+<td>3½″ DD beidseitig</td>
+<td align="right">720&#160;KiB</td>
+<td align="right">112</td>
+<td align="right">7</td>
+</tr>
+<tr>
+<td>3½″ HD beidseitig</td>
+<td align="right">1440&#160;KiB</td>
+<td align="right">224</td>
+<td align="right">14</td>
+</tr>
+<tr>
+<td>3½″ ED beidseitig</td>
+<td align="right">2880&#160;KiB</td>
+<td align="right">240</td>
+<td align="right">15</td>
+</tr>
+<tr>
+<td>Festplatten</td>
+<td align="right"><i>variabel</i></td>
+<td align="right">512</td>
+<td align="right">32</td>
+</tr>
+</table>
+<p>Ein Verzeichniseintrag besteht aus 32&#160;Bytes.</p>
+<table class="wikitable">
+<tr class="hintergrundfarbe6">
+<th>Offset (hex)</th>
+<th>Länge (in Byte)</th>
+<th>Inhalt</th>
+</tr>
+<tr>
+<td>00</td>
+<td>8</td>
+<td>Dateiname ohne Erweiterung<br />
+Die nicht genutzten Bytes werden mit Leerzeichen aufgefüllt.</td>
+</tr>
+<tr>
+<td>08</td>
+<td>3</td>
+<td>Erweiterung<br />
+Die nicht genutzten Bytes werden mit Leerzeichen aufgefüllt.</td>
+</tr>
+<tr>
+<td>0B</td>
+<td>1</td>
+<td>Dateiattribute.<br />
+Bit 0: Schreibgeschützt; Bit 1: Versteckt; Bit 2: Systemdatei; Bit 3: Volume-Label; Bit 4: Unterverzeichnis; Bit 5: Archiv; Bit 6–7: ungenutzt<br />
+Die zusätzlichen Pseudo-Verzeichniseinträge für VFAT (siehe weiter unten) haben das Attribut 0x0F (Schreibgeschützt, Versteckt, Systemdatei, Volume-Label)</td>
+</tr>
+<tr>
+<td>0C</td>
+<td>1</td>
+<td>reserviert</td>
+</tr>
+<tr>
+<td>0D</td>
+<td>1</td>
+<td>Erstellzeitpunkt in 10ms. Von 0 bis 199</td>
+</tr>
+<tr>
+<td>0E</td>
+<td>2</td>
+<td>Erstellzeitpunkt (Format wie Zeit der letzten Änderung bei Offset 0x16)</td>
+</tr>
+<tr>
+<td>10</td>
+<td>2</td>
+<td>Erstelldatum (Format wie Datum der letzten Änderung bei Offset 0x18)</td>
+</tr>
+<tr>
+<td>12</td>
+<td>2</td>
+<td>Datum des letzten Zugriffs (Format wie Datum der letzten Änderung bei Offset 0x18)</td>
+</tr>
+<tr>
+<td>14</td>
+<td>2</td>
+<td>Bei FAT32 die oberen beiden Bytes des Clusters</td>
+</tr>
+<tr>
+<td>16</td>
+<td>2</td>
+<td>Zeit der letzten Änderung<br />
+(5 / 6 / 5 Bits für Stunde / Minute / Sekunden)<br />
+Die Auflösung der Sekunden beträgt 2&#160;s (0..29)</td>
+</tr>
+<tr>
+<td>18</td>
+<td>2</td>
+<td>Datum der letzten Änderung<br />
+(7 / 4 / 5 Bits für Jahr / Monat / Tag)<br />
+Jahr: Jahr seit 1980; z.&#160;B. für 2007 = 27</td>
+</tr>
+<tr>
+<td>1A</td>
+<td>2</td>
+<td>(Offset des Start-Clusters) + 2</td>
+</tr>
+<tr>
+<td>1C</td>
+<td>4</td>
+<td>Dateigröße in Byte</td>
+</tr>
+</table>
+<p>Zusammenspiel: Soll nun eine Datei gelesen werden, wird der zugehörige Verzeichniseintrag herausgesucht. Neben den Attributen kann hier nun der Startcluster selektiert werden. Die weiteren Cluster werden dann über die FAT herausgesucht. Am Ende terminiert die Weitersuche jener FAT-Tabelleneintrag, welcher den Wert FFFFFFh enthält.</p>
+<p>Ein Unterverzeichnis wird als normale Datei angelegt, außer dass der Eintrag im übergeordneten Verzeichnis mit dem entsprechenden Bit markiert ist. Der Aufbau der Einträge ist mit jenen des Hauptverzeichnisses identisch. Da die Cluster der Unterverzeichnisse über die FAT verknüpft werden, können sie beliebig wachsen und haben keine Begrenzung in der Zahl der verwaltbaren Dateien.</p>
+<h2><span class="mw-headline" id="Abweichungen">Abweichungen</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=File_Allocation_Table&amp;veaction=edit&amp;section=19" class="mw-editsection-visualeditor" title="Abschnitt bearbeiten: Abweichungen">Bearbeiten</a><span class="mw-editsection-divider"> | </span><a href="/w/index.php?title=File_Allocation_Table&amp;action=edit&amp;section=19" title="Abschnitt bearbeiten: Abweichungen">Quelltext bearbeiten</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h3><span class="mw-headline" id="Dateisystem_des_Atari_ST">Dateisystem des Atari ST</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=File_Allocation_Table&amp;veaction=edit&amp;section=20" class="mw-editsection-visualeditor" title="Abschnitt bearbeiten: Dateisystem des Atari ST">Bearbeiten</a><span class="mw-editsection-divider"> | </span><a href="/w/index.php?title=File_Allocation_Table&amp;action=edit&amp;section=20" title="Abschnitt bearbeiten: Dateisystem des Atari ST">Quelltext bearbeiten</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Der Atari ST benutzt für Disketten eine Variante des FAT12-Dateisystems und konnte daher unter MS-DOS formatierte und beschriebene Disketten lesen und schreiben. Ursprünglich konnten auf dem Atari formatierte Disketten nicht unter MS-DOS benutzt werden, wohl aber unter MS-DOS formatierte und auf dem Atari beschriebene Disketten. Diese Inkompatibilitäten wurden jedoch in späteren GEMDOS-Versionen behoben. Die Unterschiede der Atari-Implementierung im einzelnen:<sup id="cite_ref-19" class="reference"><a href="#cite_note-19">[19]</a></sup></p>
+<ul>
+<li>Ursprünglich standen in den ersten Bytes des ersten Sektors einer bootfähige Atari-Diskette die <a href="/wiki/Opcode" title="Opcode">Opcodes</a> eines Assemblerbefehls für den Motorola-68000-Prozessor, nämlich eine Sprung-Anweisung („bra“ für „branch always“), um den BPB zu überspringen. Da diese Opcodes jedoch in vielen Betriebssystemen als Kennung verwendet werden, um ein gültiges BPB-Format zu erkennen, wurde dort ab TOS 1.04 der relevante Teil eines <a href="/wiki/X86" class="mw-redirect" title="X86">x86</a>-CPU-Opcodes geschrieben.</li>
+<li>Das OEM-Label beginnt bei Atari-Disketten an Offset 2 statt 3 im Bootsektor, und es ist nur sechs statt wie sonst acht Bytes lang. In den drei hinzugewonnenen Bytes speichern Ataris eine Seriennummer, die den Wechsel von Disketten auch ohne Disketten-Wechsel-Signal sicherstellen sollen. Da das OEM-Label in vielen Microsoft-Betriebssystemen aber tatsächlich zur Erkennung des vorliegenden BPB-Formats herangezogen wird, kann ein „unübliches“ OEM-Label diverse Wechselwirkungen hervorrufen, die ein Medium unter diesen Systemen nicht mehr lesbar erscheinen lassen oder bei Schreibversuchen die Datenstrukturen im Dateisystem zerstören. Solange die BPB-Einträge nicht vom Microsoft-Standard abweichen, stellt dies jedoch kein Problem dar.</li>
+<li>Das Media-ID-Byte wurde ursprünglich bei der Formatierung nicht korrekt gesetzt, was dazu führen konnte, dass Medien unter anderen Betriebssystemen nicht erkannt wurden, insbesondere da auch das BPB-Format nicht exakt identisch ist.</li>
+<li>Der Atari-Bootsektor ist, wenn die Diskette bootfähig ist, mit einer Prüfsumme gegen Bitfehler gesichert. Die Summe aller 16-Bit-Big-Endian-Worte des Bootsektors muss 1234<sub>16</sub> ergeben, sonst wird der Bootsektor von Ataris als ungültig betrachtet. Um auf die richtige Prüfsumme zu kommen, wurde der Wert an Offset +1FE<sub>16</sub> passend verändert. Da dieser jedoch normalerweise die Signatur 55<sub>16</sub>, AA<sub>16</sub> enthält (die einen IBM-kompatiblen Bootsektor anzeigen soll) und diese von einigen Systemen ausgewertet wird, sollte stattdessen ein unbenutztes Byte im Codebereich zum Ausgleich verändert werden.</li>
+<li>Atari GEMDOS unterstützt, wie auch viele Versionen von MS-DOS bis 3.x, nur Clustergrößen bis 4 KB.</li>
+</ul>
+<h2><span class="mw-headline" id="Beispiele">Beispiele</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=File_Allocation_Table&amp;veaction=edit&amp;section=21" class="mw-editsection-visualeditor" title="Abschnitt bearbeiten: Beispiele">Bearbeiten</a><span class="mw-editsection-divider"> | </span><a href="/w/index.php?title=File_Allocation_Table&amp;action=edit&amp;section=21" title="Abschnitt bearbeiten: Beispiele">Quelltext bearbeiten</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h3><span class="mw-headline" id="DOS-_bzw._Windows-Diskette_mit_FAT12">DOS- bzw. Windows-Diskette mit FAT12</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=File_Allocation_Table&amp;veaction=edit&amp;section=22" class="mw-editsection-visualeditor" title="Abschnitt bearbeiten: DOS- bzw. Windows-Diskette mit FAT12">Bearbeiten</a><span class="mw-editsection-divider"> | </span><a href="/w/index.php?title=File_Allocation_Table&amp;action=edit&amp;section=22" title="Abschnitt bearbeiten: DOS- bzw. Windows-Diskette mit FAT12">Quelltext bearbeiten</a><span class="mw-editsection-bracket">]</span></span></h3>
+<table class="wikitable">
+<tr class="hintergrundfarbe6">
+<th>Offset</th>
+<th>Wert</th>
+<th>Bedeutung</th>
+</tr>
+<tr>
+<td align="right">000<sub>h</sub>–1FF<sub>h</sub></td>
+<td align="right"></td>
+<td><b>Bootsektor</b></td>
+</tr>
+<tr>
+<td align="right">0B<sub>h</sub>–0C<sub>h</sub></td>
+<td align="right">00<sub>h</sub>02<sub>h</sub>=512</td>
+<td>512 (=200<sub>h</sub>) Bytes pro Sektor, das höherwertige Byte steht hinten, also 0+2×256</td>
+</tr>
+<tr>
+<td align="right">0D<sub>h</sub></td>
+<td align="right">01<sub>h</sub>=1</td>
+<td>1 Sektor pro Cluster (ein Eintrag im FAT bezieht sich jeweils auf einen Cluster)</td>
+</tr>
+<tr>
+<td align="right">0E<sub>h</sub>–0F<sub>h</sub></td>
+<td align="right">01<sub>h</sub>00<sub>h</sub>=1</td>
+<td>1 reservierter Sektor, also hier nur der Bootsektor (Lage 000<sub>h</sub> bis 1FF<sub>h</sub>)</td>
+</tr>
+<tr>
+<td align="right">10<sub>h</sub></td>
+<td align="right">02<sub>h</sub>=2</td>
+<td>2 File Allocation Tables sind vorhanden (normal)</td>
+</tr>
+<tr>
+<td align="right">11<sub>h</sub>–12<sub>h</sub></td>
+<td align="right">E0<sub>h</sub>00<sub>h</sub>=224</td>
+<td>maximal 224 (=00E0<sub>h</sub>) Verzeichniseinträge im Stammverzeichnis, das <a href="/wiki/File_Allocation_Table#Stammverzeichnis_und_Unterverzeichnisse" title="File Allocation Table">Stammverzeichnis belegt 14 Sektoren</a></td>
+</tr>
+<tr>
+<td align="right">13<sub>h</sub>–14<sub>h</sub></td>
+<td align="right">40<sub>h</sub>0B<sub>h</sub>=2880</td>
+<td>2880 (=0B40<sub>h</sub>) Sektoren (zu je 512 Bytes, s.&#160;o.), also 1440&#160;KiB = 1440 · 2<sup>10</sup> = 1474560&#160;Byte</td>
+</tr>
+<tr>
+<td align="right">15<sub>h</sub></td>
+<td align="right">F0<sub>h</sub></td>
+<td>3,5-Zoll-Diskette, doppelseitig, 18 bzw. 36 Sektoren (in diesem Fall 18 Sektoren, siehe Wert unter 18<sub>h</sub>)</td>
+</tr>
+<tr>
+<td align="right">16<sub>h</sub>–17<sub>h</sub></td>
+<td align="right">09<sub>h</sub>00<sub>h</sub>=9</td>
+<td>9 Sektoren pro FAT. Die beiden FATs liegen direkt nach dem Bootsektor (Sektor 0, dem einzigen reservierten Sektor) folglich auf den Sektoren 1–9 (200<sub>h</sub> bis 13FF<sub>h</sub>) und 10–18 (1400<sub>h</sub> bis 25FF<sub>h</sub>)</td>
+</tr>
+<tr>
+<td align="right">18<sub>h</sub>–19<sub>h</sub></td>
+<td align="right">12<sub>h</sub>00<sub>h</sub>=18</td>
+<td>18 Sektoren pro Spur (die Anzahl der Spuren ergibt sich aus der Gesamtsektorenanzahl 2880, verteilt auf zwei Seiten (s.&#160;u.), dividiert durch 18 Sektoren pro Spur hier also zu 80 Spuren)</td>
+</tr>
+<tr>
+<td align="right">1A<sub>h</sub>–1B<sub>h</sub></td>
+<td align="right">02<sub>h</sub>00<sub>h</sub>=2</td>
+<td>zwei Seiten bzw. Schreib-Lese-Köpfe: Die Geometrie ergibt sich damit also zu: 2 Seiten (heads) × 80 Spuren (tracks) pro Seite × 18 Sektoren (sectors) pro Spur × 512 Bytes pro Sektor.</td>
+</tr>
+<tr>
+<td align="right">1C<sub>h</sub>–1F<sub>h</sub></td>
+<td align="right">00<sub>h</sub>00<sub>h</sub>00<sub>h</sub>00<sub>h</sub>=0</td>
+<td>kein versteckter Sektor <i>vor</i> dem Bootsektor</td>
+</tr>
+<tr>
+<td align="right">24<sub>h</sub></td>
+<td align="right">00<sub>h</sub>=0</td>
+<td>Physische Laufwerksnummer (0<sub>h</sub> bei Disketten)</td>
+</tr>
+<tr>
+<td align="right">36<sub>h</sub>–3D<sub>h</sub></td>
+<td align="right">46<sub>h</sub>41<sub>h</sub>…</td>
+<td>46<sub>h</sub> 41<sub>h</sub> 54<sub>h</sub> 31<sub>h</sub> 32<sub>h</sub> =„FAT12“ (kann, muss aber nicht dort eingetragen sein)</td>
+</tr>
+<tr>
+<td align="right">1FE<sub>h</sub>–1FF<sub>h</sub></td>
+<td align="right">55<sub>h</sub>AA<sub>h</sub></td>
+<td>Signatur des Bootsektors, muss dort stehen, damit er als gültig anerkannt wird</td>
+</tr>
+<tr>
+<td align="right">200<sub>h</sub>–13FF<sub>h</sub></td>
+<td align="right">F0<sub>h</sub>FF<sub>h</sub>…</td>
+<td><b>Erste FAT</b>. Als Beispiel sind hier die ersten Bytes aufgeführt:<br />
+F0 FF FF 03 40 00 05 60 00 FF 8F 00 09 A0 00 0B<br />
+Jeweils 3 Bytes beziehen sich auf 2 Cluster. Die Halbbytes ab cd ef stehen für die 12-Bit Zahlen dab efc. Die ersten beiden Einträge sind Pseudoeinträge, die eigentliche Nummerierung beginnt mit 2. Die Bytefolge im Beispiel entspricht also der Liste FF0 FFF 003 004 005 006 FFF 008 009 00A 00B. Cluster 2 wird über 3, 4, 5, 6 fortgesetzt und endet in Cluster 6 (Eintrag FFF = −1) Cluster 7 wird in 8, 9, A, B fortgesetzt.</td>
+</tr>
+<tr>
+<td align="right">1400<sub>h</sub>–25FF<sub>h</sub></td>
+<td align="right">F0<sub>h</sub>FF<sub>h</sub>…</td>
+<td><b>Zweite FAT</b>. Sie enthält dasselbe:<br />
+F0 FF FF 03 40 00 05 60 00 FF 8F 00 09 A0 00 0B</td>
+</tr>
+<tr>
+<td align="right">2600<sub>h</sub>–41FF<sub>h</sub></td>
+<td>[…]</td>
+<td><b>Stammverzeichnis</b> (root directory): <a href="/wiki/File_Allocation_Table#Stammverzeichnis_und_Unterverzeichnisse" title="File Allocation Table">Es belegt 14 Sektoren (s.&#160;o.)</a> und enthält Einträge, die auch im Hexdump lesbar sind (in kurzem 8.3 und evtl. langem Format).</td>
+</tr>
+<tr>
+<td align="right">4200<sub>h</sub>–45FF<sub>h</sub></td>
+<td>[…]</td>
+<td><b>Datenbereich</b>: Datencluster Nr. 2 und 3 der Diskette. (Jeder Datencluster ist hier einen Sektor groß, wie unter 0D<sub>h</sub> festgelegt.)</td>
+</tr>
+<tr>
+<td align="right">4600<sub>h</sub>–49FF<sub>h</sub></td>
+<td>[…]</td>
+<td>Datencluster 4 und 5 der Diskette.</td>
+</tr>
+</table>
+<h2><span class="mw-headline" id="Weblinks">Weblinks</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=File_Allocation_Table&amp;veaction=edit&amp;section=23" class="mw-editsection-visualeditor" title="Abschnitt bearbeiten: Weblinks">Bearbeiten</a><span class="mw-editsection-divider"> | </span><a href="/w/index.php?title=File_Allocation_Table&amp;action=edit&amp;section=23" title="Abschnitt bearbeiten: Weblinks">Quelltext bearbeiten</a><span class="mw-editsection-bracket">]</span></span></h2>
+<ul>
+<li><a rel="nofollow" class="external text" href="http://support.microsoft.com/kb/184006/de">Microsoft: Einschränkungen des FAT32-Dateisystems</a></li>
+<li><a rel="nofollow" class="external text" href="http://www.microsoft.com/whdc/system/platform/firmware/fatgen.mspx">Microsoft: FAT32-Specification</a></li>
+<li>Informationen über FAT32plus auf <a rel="nofollow" class="external autonumber" href="http://www.drdos.org/">[1]</a> und <a rel="nofollow" class="external autonumber" href="http://www.drdosprojects.de/">[2]</a></li>
+<li><a rel="nofollow" class="external text" href="http://www.deskwork.de/DOWNLOAD/DOCS/INTRO.PDF">DESKWORK: Einführung in Datenbanken und Dateisysteme</a> (inkl. FAT32plus; PDF-Datei; 2,30 MB)</li>
+<li><a rel="nofollow" class="external text" href="http://technet.microsoft.com/en-us/library/bb457112.aspx">Microsoft: Working with filesystems</a> (englisch)</li>
+<li><a rel="nofollow" class="external text" href="http://www.ridgecrop.demon.co.uk/index.htm?fat32format.htm">Programm zum Erstellen von FAT32-Partitionen &gt; 32&#160;GiB (getestet bis 2 TiB)</a></li>
+<li><a rel="nofollow" class="external text" href="http://msdn.microsoft.com/de-de/library/aa914353.aspx">Extended FAT File System</a> (englisch)</li>
+</ul>
+<h2><span class="mw-headline" id="Einzelnachweise">Einzelnachweise</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=File_Allocation_Table&amp;veaction=edit&amp;section=24" class="mw-editsection-visualeditor" title="Abschnitt bearbeiten: Einzelnachweise">Bearbeiten</a><span class="mw-editsection-divider"> | </span><a href="/w/index.php?title=File_Allocation_Table&amp;action=edit&amp;section=24" title="Abschnitt bearbeiten: Einzelnachweise">Quelltext bearbeiten</a><span class="mw-editsection-bracket">]</span></span></h2>
+<ol class="references">
+<li id="cite_note-FAT.2B-1"><span class="mw-cite-backlink">↑ <sup><a href="#cite_ref-FAT.2B_1-0">a</a></sup> <sup><a href="#cite_ref-FAT.2B_1-1">b</a></sup></span> <span class="reference-text"><span class="cite">Udo Kuhnt, Luchezar Georgiev, Jeremy Davis: <a rel="nofollow" class="external text" href="http://www.fdos.org/kernel/fatplus.txt"><i><span lang="en" xml:lang="en">FAT+ Draft release, Rev. 2</span>.</i></a> Abgerufen am <span style="white-space:nowrap;">24.&#160;März 2007</span>.</span><span style="display: none;" class="Z3988" title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Adc&amp;rfr_id=info%3Asid%2Fde.wikipedia.org%3AFile+Allocation+Table&amp;rft.title=%3Cspan+lang%3D%22en%22%3EFAT%2B+Draft+release%2C+Rev.+2%3C%2Fspan%3E&amp;rft.description=%3Cspan+lang%3D%22en%22%3EFAT%2B+Draft+release%2C+Rev.+2%3C%2Fspan%3E&amp;rft.identifier=http%3A%2F%2Fwww.fdos.org%2Fkernel%2Ffatplus.txt&amp;rft.creator=Udo+Kuhnt%2C+Luchezar+Georgiev%2C+Jeremy+Davis">&#160;</span></span></li>
+<li id="cite_note-2"><span class="mw-cite-backlink"><a href="#cite_ref-2">↑</a></span> <span class="reference-text"><span class="cite"><a rel="nofollow" class="external text" href="http://support.microsoft.com/kb/314463/de"><i>Beschränkungen des FAT32-Dateisystems in Windows XP.</i></a> In: <i>Hilfe und Support.</i> Microsoft Deutschland GmbH, <span style="white-space:nowrap;">24.&#160;Mai 2011</span>, abgerufen am <span style="white-space:nowrap;">18.&#160;Oktober 2011</span>: „Auf einer FAT32-Partition können keine Dateien erstellt werden, die größer als (2^32)-1 Byte sind (d.h. ein Byte weniger als 4 GB)“</span><span style="display: none;" class="Z3988" title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Adc&amp;rfr_id=info%3Asid%2Fde.wikipedia.org%3AFile+Allocation+Table&amp;rft.title=Beschr%C3%A4nkungen+des+FAT32-Dateisystems+in+Windows+XP&amp;rft.description=Beschr%C3%A4nkungen+des+FAT32-Dateisystems+in+Windows+XP&amp;rft.identifier=http%3A%2F%2Fsupport.microsoft.com%2Fkb%2F314463%2Fde&amp;rft.publisher=Microsoft+Deutschland+GmbH&amp;rft.date=2011-05-24">&#160;</span></span></li>
+<li id="cite_note-3"><span class="mw-cite-backlink"><a href="#cite_ref-3">↑</a></span> <span class="reference-text"><span class="cite"><a rel="nofollow" class="external text" href="https://technet.microsoft.com/de-de/library/cc938432.aspx"><i>Maximum Volume Sizes.</i></a> In: <i>TechNet.</i> Microsoft Technet, abgerufen am <span style="white-space:nowrap;">11.&#160;Januar 2016</span>: „32 GB (This is due to the Windows 2000 format utility. The maximum volume size that Windows 98 can create is 127.53 GB).“</span><span style="display: none;" class="Z3988" title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Adc&amp;rfr_id=info%3Asid%2Fde.wikipedia.org%3AFile+Allocation+Table&amp;rft.title=Maximum+Volume+Sizes&amp;rft.description=Maximum+Volume+Sizes&amp;rft.identifier=https%3A%2F%2Ftechnet.microsoft.com%2Fde-de%2Flibrary%2Fcc938432.aspx&amp;rft.publisher=Microsoft+Technet">&#160;</span></span></li>
+<li id="cite_note-4"><span class="mw-cite-backlink"><a href="#cite_ref-4">↑</a></span> <span class="reference-text"><a rel="nofollow" class="external text" href="http://www.pcfreunde.de/artikel/a592/festplatten-unter-windows-mit-fat32-partitionieren/">PCFreunde.de Tutorial: Festplatten unter Windows mit FAT32 partitionieren</a></span></li>
+<li id="cite_note-5"><span class="mw-cite-backlink"><a href="#cite_ref-5">↑</a></span> <span class="reference-text"><span class="cite">Brandon LeBlanc: <a rel="nofollow" class="external text" href="https://web.archive.org/web/20080912000214/http://windowsvistablog.com/blogs/windowsvista/pages/windows-vista-service-pack-1-beta-whitepaper.aspx"><i><span lang="en" xml:lang="en">Vista SP1 Whitepaper</span>.</i></a> <span lang="en" xml:lang="en">Microsoft</span>, <span style="white-space:nowrap;">28.&#160;August 2007</span>, archiviert vom <a rel="nofollow" class="external text" href="http://derefer.unbubble.eu?u=http://windowsvistablog.com/blogs/windowsvista/pages/windows-vista-service-pack-1-beta-whitepaper.aspx">Original</a> am <span style="white-space:nowrap;">12.&#160;September 2008</span>, abgerufen am <span style="white-space:nowrap;">22.&#160;Februar 2012</span>.</span><span style="display: none;" class="Z3988" title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Adc&amp;rfr_id=info%3Asid%2Fde.wikipedia.org%3AFile+Allocation+Table&amp;rft.title=%3Cspan+lang%3D%22en%22%3EVista+SP1+Whitepaper%3C%2Fspan%3E&amp;rft.description=%3Cspan+lang%3D%22en%22%3EVista+SP1+Whitepaper%3C%2Fspan%3E&amp;rft.identifier=https%3A%2F%2Fweb.archive.org%2Fweb%2F20080912000214%2Fhttp%3A%2F%2Fwindowsvistablog.com%2Fblogs%2Fwindowsvista%2Fpages%2Fwindows-vista-service-pack-1-beta-whitepaper.aspx&amp;rft.creator=Brandon+LeBlanc&amp;rft.publisher=%3Cspan+lang%3D%22en%22%3EMicrosoft%3C%2Fspan%3E&amp;rft.date=2007-08-28&amp;rft.source=http://windowsvistablog.com/blogs/windowsvista/pages/windows-vista-service-pack-1-beta-whitepaper.aspx">&#160;</span></span></li>
+<li id="cite_note-6"><span class="mw-cite-backlink"><a href="#cite_ref-6">↑</a></span> <span class="reference-text"><span class="cite"><a rel="nofollow" class="external text" href="http://www.microsoft.com/downloads/details.aspx?FamilyID=1cbe3906-ddd1-4ca2-b727-c2dff5e30f61&amp;DisplayLang=de"><i><span lang="de" xml:lang="de">Update für Windows XP (KB955704)</span>.</i></a> <span lang="de" xml:lang="de">Microsoft</span>, <span style="white-space:nowrap;">26.&#160;Januar 2009</span>, abgerufen am <span style="white-space:nowrap;">22.&#160;Februar 2012</span>.</span><span style="display: none;" class="Z3988" title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Adc&amp;rfr_id=info%3Asid%2Fde.wikipedia.org%3AFile+Allocation+Table&amp;rft.title=%3Cspan+lang%3D%22de%22%3EUpdate+f%C3%BCr+Windows+XP+%28KB955704%29%3C%2Fspan%3E&amp;rft.description=%3Cspan+lang%3D%22de%22%3EUpdate+f%C3%BCr+Windows+XP+%28KB955704%29%3C%2Fspan%3E&amp;rft.identifier=http%3A%2F%2Fwww.microsoft.com%2Fdownloads%2Fdetails.aspx%3FFamilyID%3D1cbe3906-ddd1-4ca2-b727-c2dff5e30f61%26DisplayLang%3Dde&amp;rft.publisher=%3Cspan+lang%3D%22de%22%3EMicrosoft%3C%2Fspan%3E&amp;rft.date=2009-01-26">&#160;</span></span></li>
+<li id="cite_note-ExFAT-Dateisystemtreiber_Beschreibung-7"><span class="mw-cite-backlink">↑ <sup><a href="#cite_ref-ExFAT-Dateisystemtreiber_Beschreibung_7-0">a</a></sup> <sup><a href="#cite_ref-ExFAT-Dateisystemtreiber_Beschreibung_7-1">b</a></sup></span> <span class="reference-text"><span class="cite"><a rel="nofollow" class="external text" href="http://support.microsoft.com/kb/955704"><i><span lang="de" xml:lang="de">Beschreibung des ExFAT-Dateisystemtreiber</span>.</i></a> <span lang="de" xml:lang="de">Microsoft</span>, <span style="white-space:nowrap;">29.&#160;September 2009</span>, abgerufen am <span style="white-space:nowrap;">22.&#160;Februar 2012</span>.</span><span style="display: none;" class="Z3988" title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Adc&amp;rfr_id=info%3Asid%2Fde.wikipedia.org%3AFile+Allocation+Table&amp;rft.title=%3Cspan+lang%3D%22de%22%3EBeschreibung+des+ExFAT-Dateisystemtreiber%3C%2Fspan%3E&amp;rft.description=%3Cspan+lang%3D%22de%22%3EBeschreibung+des+ExFAT-Dateisystemtreiber%3C%2Fspan%3E&amp;rft.identifier=http%3A%2F%2Fsupport.microsoft.com%2Fkb%2F955704&amp;rft.publisher=%3Cspan+lang%3D%22de%22%3EMicrosoft%3C%2Fspan%3E&amp;rft.date=2009-09-29">&#160;</span></span></li>
+<li id="cite_note-8"><span class="mw-cite-backlink"><a href="#cite_ref-8">↑</a></span> <span class="reference-text"><span class="cite"><a rel="nofollow" class="external text" href="http://www.golem.de/1011/79305.html"><i>Apple macht viele Macs für Microsofts Dateisystem exFAT fit.</i></a> Abgerufen am <span style="white-space:nowrap;">11.&#160;November 2010</span>.</span><span style="display: none;" class="Z3988" title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Adc&amp;rfr_id=info%3Asid%2Fde.wikipedia.org%3AFile+Allocation+Table&amp;rft.title=Apple+macht+viele+Macs+f%C3%BCr+Microsofts+Dateisystem+exFAT+fit&amp;rft.description=Apple+macht+viele+Macs+f%C3%BCr+Microsofts+Dateisystem+exFAT+fit&amp;rft.identifier=http%3A%2F%2Fwww.golem.de%2F1011%2F79305.html">&#160;</span></span></li>
+<li id="cite_note-9"><span class="mw-cite-backlink"><a href="#cite_ref-9">↑</a></span> <span class="reference-text"><span class="cite"><a rel="nofollow" class="external text" href="http://www.microsoft.com/iplicensing/productDetail.aspx?productTitle=exFAT%20File%20System%20Licensing%20Program"><i>Microsoft Intellectual Property Licensing – exFAT File System Licensing Program.</i></a> Abgerufen am <span style="white-space:nowrap;">30.&#160;August 2009</span> (englisch).</span><span style="display: none;" class="Z3988" title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Adc&amp;rfr_id=info%3Asid%2Fde.wikipedia.org%3AFile+Allocation+Table&amp;rft.title=Microsoft+Intellectual+Property+Licensing+%E2%80%93+exFAT+File+System+Licensing+Program&amp;rft.description=Microsoft+Intellectual+Property+Licensing+%E2%80%93+exFAT+File+System+Licensing+Program&amp;rft.identifier=http%3A%2F%2Fwww.microsoft.com%2Fiplicensing%2FproductDetail.aspx%3FproductTitle%3DexFAT%2520File%2520System%2520Licensing%2520Program&amp;rft.language=en">&#160;</span></span></li>
+<li id="cite_note-10"><span class="mw-cite-backlink"><a href="#cite_ref-10">↑</a></span> <span class="reference-text"><span class="cite"><a rel="nofollow" class="external text" href="https://web.archive.org/web/20110218081940/https://www.tuxera.com/about-us/news/837/"><i>Tuxera, the NTFS-3G File System Provider, Signs Intellectual Property Agreement with Microsoft.</i></a> <span style="white-space:nowrap;">26.&#160;August 2009</span>, archiviert vom <a rel="nofollow" class="external text" href="http://derefer.unbubble.eu?u=https://www.tuxera.com/about-us/news/837/">Original</a> am <span style="white-space:nowrap;">18.&#160;Februar 2011</span>, abgerufen am <span style="white-space:nowrap;">22.&#160;November 2015</span> (englisch).</span><span style="display: none;" class="Z3988" title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Adc&amp;rfr_id=info%3Asid%2Fde.wikipedia.org%3AFile+Allocation+Table&amp;rft.title=Tuxera%2C+the+NTFS-3G+File+System+Provider%2C+Signs+Intellectual+Property+Agreement+with+Microsoft&amp;rft.description=Tuxera%2C+the+NTFS-3G+File+System+Provider%2C+Signs+Intellectual+Property+Agreement+with+Microsoft&amp;rft.identifier=https%3A%2F%2Fweb.archive.org%2Fweb%2F20110218081940%2Fhttps%3A%2F%2Fwww.tuxera.com%2Fabout-us%2Fnews%2F837%2F&amp;rft.date=2009-08-26&amp;rft.source=https://www.tuxera.com/about-us/news/837/&amp;rft.language=en">&#160;</span></span></li>
+<li id="cite_note-11"><span class="mw-cite-backlink"><a href="#cite_ref-11">↑</a></span> <span class="reference-text"><span class="cite"><a rel="nofollow" class="external text" href="http://code.google.com/p/exfat"><i>exFAT fs and Linux.</i></a> <span style="white-space:nowrap;">29.&#160;Januar 2009</span>, abgerufen am <span style="white-space:nowrap;">30.&#160;August 2009</span> (englisch).</span><span style="display: none;" class="Z3988" title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Adc&amp;rfr_id=info%3Asid%2Fde.wikipedia.org%3AFile+Allocation+Table&amp;rft.title=exFAT+fs+and+Linux&amp;rft.description=exFAT+fs+and+Linux&amp;rft.identifier=http%3A%2F%2Fcode.google.com%2Fp%2Fexfat&amp;rft.date=2009-01-29&amp;rft.language=en">&#160;</span></span></li>
+<li id="cite_note-12"><span class="mw-cite-backlink"><a href="#cite_ref-12">↑</a></span> <span class="reference-text"><span class="cite"><a rel="nofollow" class="external text" href="http://www.admin-magazin.de/News/exFAT-fuer-Linux-veroeffentlicht-stabiles-Release"><i>exFAT für Linux veröffentlicht stabiles Release.</i></a> <span style="white-space:nowrap;">20.&#160;Januar 2013</span>, abgerufen am <span style="white-space:nowrap;">20.&#160;Januar 2013</span>.</span><span style="display: none;" class="Z3988" title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Adc&amp;rfr_id=info%3Asid%2Fde.wikipedia.org%3AFile+Allocation+Table&amp;rft.title=exFAT+f%C3%BCr+Linux+ver%C3%B6ffentlicht+stabiles+Release&amp;rft.description=exFAT+f%C3%BCr+Linux+ver%C3%B6ffentlicht+stabiles+Release&amp;rft.identifier=http%3A%2F%2Fwww.admin-magazin.de%2FNews%2FexFAT-fuer-Linux-veroeffentlicht-stabiles-Release&amp;rft.date=2013-01-20">&#160;</span></span></li>
+<li id="cite_note-13"><span class="mw-cite-backlink"><a href="#cite_ref-13">↑</a></span> <span class="reference-text"><a rel="nofollow" class="external text" href="https://www.heise.de/newsticker/meldung/GPLv3-Treiber-fuer-exFAT-erreicht-Version-1-0-1787705.html">GPLv3-Treiber für exFAT erreicht Version 1.0</a>, heise open, 21. Januar 2013</span></li>
+<li id="cite_note-14"><span class="mw-cite-backlink"><a href="#cite_ref-14">↑</a></span> <span class="reference-text"><a rel="nofollow" class="external text" href="https://www.heise.de/newsticker/meldung/Samsung-veroeffentlicht-exFAT-Treiber-unter-GPL-1937325.html">Samsung veröffentlicht exFAT-Treiber unter GPL</a>, heise open, 16. August 2013</span></li>
+<li id="cite_note-15"><span class="mw-cite-backlink"><a href="#cite_ref-15">↑</a></span> <span class="reference-text"><a rel="nofollow" class="external text" href="http://msdn.microsoft.com/en-us/library/aa915463.aspx">TFAT Overview auf MSDN</a> (3. April 2014)</span></li>
+<li id="cite_note-16"><span class="mw-cite-backlink"><a href="#cite_ref-16">↑</a></span> <span class="reference-text"><span class="cite">Matthias Paul: <a rel="nofollow" class="external text" href="http://groups.google.com/group/alt.msdos.programmer/msg/6b10a1ea602e61e"><i><span lang="en" xml:lang="en">Need DOS 6.22 (Not OEM)</span>.</i></a> In: <i>alt.msdos.programmer.</i> <span style="white-space:nowrap;">20.&#160;Februar 2002</span>, abgerufen am <span style="white-space:nowrap;">14.&#160;Oktober 2006</span>.</span><span style="display: none;" class="Z3988" title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Adc&amp;rfr_id=info%3Asid%2Fde.wikipedia.org%3AFile+Allocation+Table&amp;rft.title=%3Cspan+lang%3D%22en%22%3ENeed+DOS+6.22+%28Not+OEM%29%3C%2Fspan%3E&amp;rft.description=%3Cspan+lang%3D%22en%22%3ENeed+DOS+6.22+%28Not+OEM%29%3C%2Fspan%3E&amp;rft.identifier=http%3A%2F%2Fgroups.google.com%2Fgroup%2Falt.msdos.programmer%2Fmsg%2F6b10a1ea602e61e&amp;rft.creator=Matthias+Paul&amp;rft.date=2002-02-20">&#160;</span></span></li>
+<li id="cite_note-17"><span class="mw-cite-backlink"><a href="#cite_ref-17">↑</a></span> <span class="reference-text"><span class="cite"><span lang="en" xml:lang="en">Wally Bass</span>: <a rel="nofollow" class="external text" href="http://groups.google.co.uk/group/comp.os.msdos.programmer/msg/79de2d76832cfbd6"><i><span lang="en" xml:lang="en">Cluster Size</span>.</i></a> In: <i>comp.os.msdos.programmer.</i> <span style="white-space:nowrap;">14.&#160;Februar 1994</span>, abgerufen am <span style="white-space:nowrap;">14.&#160;Oktober 2006</span>.</span><span style="display: none;" class="Z3988" title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Adc&amp;rfr_id=info%3Asid%2Fde.wikipedia.org%3AFile+Allocation+Table&amp;rft.title=%3Cspan+lang%3D%22en%22%3ECluster+Size%3C%2Fspan%3E&amp;rft.description=%3Cspan+lang%3D%22en%22%3ECluster+Size%3C%2Fspan%3E&amp;rft.identifier=http%3A%2F%2Fgroups.google.co.uk%2Fgroup%2Fcomp.os.msdos.programmer%2Fmsg%2F79de2d76832cfbd6&amp;rft.creator=%3Cspan+lang%3D%22en%22%3EWally+Bass%3C%2Fspan%3E&amp;rft.date=1994-02-14">&#160;</span></span></li>
+<li id="cite_note-18"><span class="mw-cite-backlink"><a href="#cite_ref-18">↑</a></span> <span class="reference-text"><span class="cite"><a rel="nofollow" class="external text" href="http://support.microsoft.com/default.aspx?scid=kb;EN-US;q140060"><i>Floppy Disk is Not Accessible, Not Formatted, or Not Recognized by Windows.</i></a> In: <i>support.microsoft.com.</i> Abgerufen am <span style="white-space:nowrap;">22.&#160;Februar 2015</span> (englisch).</span><span style="display: none;" class="Z3988" title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Adc&amp;rfr_id=info%3Asid%2Fde.wikipedia.org%3AFile+Allocation+Table&amp;rft.title=Floppy+Disk+is+Not+Accessible%2C+Not+Formatted%2C+or+Not+Recognized+by+Windows&amp;rft.description=Floppy+Disk+is+Not+Accessible%2C+Not+Formatted%2C+or+Not+Recognized+by+Windows&amp;rft.identifier=http%3A%2F%2Fsupport.microsoft.com%2Fdefault.aspx%3Fscid%3Dkb%3BEN-US%3Bq140060&amp;rft.date=&amp;rft.language=en">&#160;</span></span></li>
+<li id="cite_note-19"><span class="mw-cite-backlink"><a href="#cite_ref-19">↑</a></span> <span class="reference-text">Christoph Pfisterer: <a rel="nofollow" class="external text" href="http://disktype.sourceforge.net/doc/ch03s03.html">disktype Documentation, Kapitel 3.3.: <i>ATARI ST</i></a></span></li>
+</ol>
+
+
+<!-- 
+NewPP limit report
+Parsed by mw1161
+Cached time: 20171009134719
+Cache expiry: 1900800
+Dynamic content: false
+CPU time usage: 0.508 seconds
+Real time usage: 0.542 seconds
+Preprocessor visited node count: 5199/1000000
+Preprocessor generated node count: 0/1500000
+Post‐expand include size: 40806/2097152 bytes
+Template argument size: 16581/2097152 bytes
+Highest expansion depth: 13/40
+Expensive parser function count: 0/500
+Lua time usage: 0.251/10.000 seconds
+Lua memory usage: 2.46 MB/50 MB
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%  452.566      1 -total
+ 88.60%  400.952     14 Vorlage:Internetquelle
+ 54.53%  246.776     50 Vorlage:FormatDate
+ 15.28%   69.149     50 Vorlage:Str_left
+ 13.02%   58.923     50 Vorlage:Str_left/Call
+  7.93%   35.888     14 Vorlage:Booland
+  4.58%   20.713     10 Vorlage:Lang
+  3.80%   17.217      1 Vorlage:EnS
+  1.69%    7.651      6 Vorlage:Anker
+  1.17%    5.277      2 Vorlage:Infobox_Dateisystem
+-->
+</div>
+<!-- Saved in parser cache with key dewiki:pcache:idhash:1735-0!canonical and timestamp 20171009134719 and revision id 168585102
+ -->
+<noscript><img src="//de.wikipedia.org/wiki/Special:CentralAutoLogin/start?type=1x1" alt="" title="" width="1" height="1" style="border: none; position: absolute;" /></noscript></div>					<div class="printfooter">
+						Abgerufen von „<a dir="ltr" href="https://de.wikipedia.org/w/index.php?title=File_Allocation_Table&amp;oldid=168585102">https://de.wikipedia.org/w/index.php?title=File_Allocation_Table&amp;oldid=168585102</a>“					</div>
+				<div id="catlinks" class="catlinks" data-mw="interface"><div id="mw-normal-catlinks" class="mw-normal-catlinks"><a href="/wiki/Wikipedia:Kategorien" title="Wikipedia:Kategorien">Kategorien</a>: <ul><li><a href="/wiki/Kategorie:Dateisystem" title="Kategorie:Dateisystem">Dateisystem</a></li><li><a href="/wiki/Kategorie:Dateiverwaltung" title="Kategorie:Dateiverwaltung">Dateiverwaltung</a></li><li><a href="/wiki/Kategorie:DOS-Betriebssystemkomponente" title="Kategorie:DOS-Betriebssystemkomponente">DOS-Betriebssystemkomponente</a></li><li><a href="/wiki/Kategorie:Linux-Betriebssystemkomponente" title="Kategorie:Linux-Betriebssystemkomponente">Linux-Betriebssystemkomponente</a></li><li><a href="/wiki/Kategorie:OS/2-Betriebssystemkomponente" title="Kategorie:OS/2-Betriebssystemkomponente">OS/2-Betriebssystemkomponente</a></li><li><a href="/wiki/Kategorie:Windows-Betriebssystemkomponente" title="Kategorie:Windows-Betriebssystemkomponente">Windows-Betriebssystemkomponente</a></li></ul></div></div>				<div class="visualClear"></div>
+							</div>
+		</div>
+		<div id="mw-navigation">
+			<h2>Navigationsmenü</h2>
+
+			<div id="mw-head">
+									<div id="p-personal" role="navigation" class="" aria-labelledby="p-personal-label">
+						<h3 id="p-personal-label">Meine Werkzeuge</h3>
+						<ul>
+							<li id="pt-anonuserpage">Nicht angemeldet</li><li id="pt-anontalk"><a href="/wiki/Spezial:Meine_Diskussionsseite" title="Diskussion über Änderungen von dieser IP-Adresse [n]" accesskey="n">Diskussionsseite</a></li><li id="pt-anoncontribs"><a href="/wiki/Spezial:Meine_Beitr%C3%A4ge" title="Eine Liste der Bearbeitungen, die von dieser IP-Adresse gemacht wurden [y]" accesskey="y">Beiträge</a></li><li id="pt-createaccount"><a href="/w/index.php?title=Spezial:Benutzerkonto_anlegen&amp;returnto=File+Allocation+Table&amp;returntoquery=oldid%3D168585102" title="Wir ermutigen dich dazu, ein Benutzerkonto zu erstellen und dich anzumelden. Es ist jedoch nicht zwingend erforderlich.">Benutzerkonto erstellen</a></li><li id="pt-login"><a href="/w/index.php?title=Spezial:Anmelden&amp;returnto=File+Allocation+Table&amp;returntoquery=oldid%3D168585102" title="Anmelden ist zwar keine Pflicht, wird aber gerne gesehen. [o]" accesskey="o">Anmelden</a></li>						</ul>
+					</div>
+									<div id="left-navigation">
+										<div id="p-namespaces" role="navigation" class="vectorTabs" aria-labelledby="p-namespaces-label">
+						<h3 id="p-namespaces-label">Namensräume</h3>
+						<ul>
+														<li id="ca-nstab-main" class="selected"><span><a href="/wiki/File_Allocation_Table" title="Seiteninhalt anzeigen [c]" accesskey="c">Artikel</a></span></li>
+							<li id="ca-talk"><span><a href="/wiki/Diskussion:File_Allocation_Table" rel="discussion" title="Diskussion zum Seiteninhalt [t]" accesskey="t">Diskussion</a></span></li>
+						</ul>
+					</div>
+										<div id="p-variants" role="navigation" class="vectorMenu emptyPortlet" aria-labelledby="p-variants-label">
+												<h3 id="p-variants-label">
+							<span>Varianten</span>
+						</h3>
+
+						<div class="menu">
+							<ul>
+															</ul>
+						</div>
+					</div>
+									</div>
+				<div id="right-navigation">
+										<div id="p-views" role="navigation" class="vectorTabs" aria-labelledby="p-views-label">
+						<h3 id="p-views-label">Ansichten</h3>
+						<ul>
+														<li id="ca-view" class="collapsible selected"><span><a href="/wiki/File_Allocation_Table">Lesen</a></span></li>
+							<li id="ca-ve-edit" class="collapsible"><span><a href="/w/index.php?title=File_Allocation_Table&amp;veaction=edit" title="Diese Seite mit dem VisualEditor bearbeiten [v]" accesskey="v">Bearbeiten</a></span></li>
+							<li id="ca-edit" class="collapsible"><span><a href="/w/index.php?title=File_Allocation_Table&amp;action=edit" title="Diese Seite bearbeiten [e]" accesskey="e">Quelltext bearbeiten</a></span></li>
+							<li id="ca-history" class="collapsible"><span><a href="/w/index.php?title=File_Allocation_Table&amp;action=history" title="Frühere Versionen dieser Seite [h]" accesskey="h">Versionsgeschichte</a></span></li>
+						</ul>
+					</div>
+										<div id="p-cactions" role="navigation" class="vectorMenu emptyPortlet" aria-labelledby="p-cactions-label">
+						<h3 id="p-cactions-label"><span>Mehr</span></h3>
+
+						<div class="menu">
+							<ul>
+															</ul>
+						</div>
+					</div>
+										<div id="p-search" role="search">
+						<h3>
+							<label for="searchInput">Suche</label>
+						</h3>
+
+						<form action="/w/index.php" id="searchform">
+							<div id="simpleSearch">
+							<input type="search" name="search" placeholder="Wikipedia durchsuchen" title="Durchsuche die Wikipedia [f]" accesskey="f" id="searchInput"/><input type="hidden" value="Spezial:Suche" name="title"/><input type="submit" name="fulltext" value="Volltext" title="Suche nach Seiten, die diesen Text enthalten" id="mw-searchButton" class="searchButton mw-fallbackSearchButton"/><input type="submit" name="go" value="Artikel" title="Gehe direkt zu der Seite mit genau diesem Namen, falls sie vorhanden ist." id="searchButton" class="searchButton"/>							</div>
+						</form>
+					</div>
+									</div>
+			</div>
+			<div id="mw-panel">
+				<div id="p-logo" role="banner"><a class="mw-wiki-logo" href="/wiki/Wikipedia:Hauptseite"  title="Hauptseite"></a></div>
+						<div class="portal" role="navigation" id='p-navigation' aria-labelledby='p-navigation-label'>
+			<h3 id='p-navigation-label'>Navigation</h3>
+
+			<div class="body">
+									<ul>
+						<li id="n-mainpage-description"><a href="/wiki/Wikipedia:Hauptseite" title="Hauptseite besuchen [z]" accesskey="z">Hauptseite</a></li><li id="n-topics"><a href="/wiki/Portal:Wikipedia_nach_Themen">Themenportale</a></li><li id="n-alphindex"><a href="/wiki/Spezial:Alle_Seiten">Von A bis Z</a></li><li id="n-randompage"><a href="/wiki/Spezial:Zuf%C3%A4llige_Seite" title="Zufällige Seite aufrufen [x]" accesskey="x">Zufälliger Artikel</a></li>					</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id='p-Mitmachen' aria-labelledby='p-Mitmachen-label'>
+			<h3 id='p-Mitmachen-label'>Mitmachen</h3>
+
+			<div class="body">
+									<ul>
+						<li id="n-Artikel-verbessern"><a href="/wiki/Wikipedia:Beteiligen">Artikel verbessern</a></li><li id="n-Neuerartikel"><a href="/wiki/Hilfe:Neuen_Artikel_anlegen">Neuen Artikel anlegen</a></li><li id="n-portal"><a href="/wiki/Wikipedia:Autorenportal" title="Info-Zentrum über Beteiligungsmöglichkeiten">Autorenportal</a></li><li id="n-help"><a href="/wiki/Hilfe:%C3%9Cbersicht" title="Hilfeseite anzeigen">Hilfe</a></li><li id="n-recentchanges"><a href="/wiki/Spezial:Letzte_%C3%84nderungen" title="Liste der letzten Änderungen in Wikipedia [r]" accesskey="r">Letzte Änderungen</a></li><li id="n-contact"><a href="/wiki/Wikipedia:Kontakt">Kontakt</a></li><li id="n-sitesupport"><a href="//donate.wikimedia.org/wiki/Special:FundraiserRedirector?utm_source=donate&amp;utm_medium=sidebar&amp;utm_campaign=C13_de.wikipedia.org&amp;uselang=de" title="Unterstütze uns">Spenden</a></li>					</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id='p-tb' aria-labelledby='p-tb-label'>
+			<h3 id='p-tb-label'>Werkzeuge</h3>
+
+			<div class="body">
+									<ul>
+						<li id="t-whatlinkshere"><a href="/wiki/Spezial:Linkliste/File_Allocation_Table" title="Liste aller Seiten, die hierher verlinken [j]" accesskey="j">Links auf diese Seite</a></li><li id="t-recentchangeslinked"><a href="/wiki/Spezial:%C3%84nderungen_an_verlinkten_Seiten/File_Allocation_Table" rel="nofollow" title="Letzte Änderungen an Seiten, die von hier verlinkt sind [k]" accesskey="k">Änderungen an verlinkten Seiten</a></li><li id="t-specialpages"><a href="/wiki/Spezial:Spezialseiten" title="Liste aller Spezialseiten [q]" accesskey="q">Spezialseiten</a></li><li id="t-permalink"><a href="/w/index.php?title=File_Allocation_Table&amp;oldid=168585102" title="Dauerhafter Link zu dieser Seitenversion">Permanenter Link</a></li><li id="t-info"><a href="/w/index.php?title=File_Allocation_Table&amp;action=info" title="Weitere Informationen über diese Seite">Seiten­informationen</a></li><li id="t-wikibase"><a href="https://www.wikidata.org/wiki/Special:EntityPage/Q190167" title="Link zum verbundenen Objekt im Datenrepositorium [g]" accesskey="g">Wikidata-Datenobjekt</a></li><li id="t-cite"><a href="/w/index.php?title=Spezial:Zitierhilfe&amp;page=File_Allocation_Table&amp;id=168585102" title="Hinweise, wie diese Seite zitiert werden kann">Artikel zitieren</a></li>					</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id='p-coll-print_export' aria-labelledby='p-coll-print_export-label'>
+			<h3 id='p-coll-print_export-label'>Drucken/­exportieren</h3>
+
+			<div class="body">
+									<ul>
+						<li id="coll-create_a_book"><a href="/w/index.php?title=Spezial:Buch&amp;bookcmd=book_creator&amp;referer=File+Allocation+Table">Buch erstellen</a></li><li id="coll-download-as-rdf2latex"><a href="/w/index.php?title=Spezial:ElectronPdf&amp;page=File+Allocation+Table&amp;action=show-download-screen">Als PDF herunterladen</a></li><li id="t-print"><a href="/w/index.php?title=File_Allocation_Table&amp;printable=yes" title="Druckansicht dieser Seite [p]" accesskey="p">Druckversion</a></li>					</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id='p-lang' aria-labelledby='p-lang-label'>
+			<h3 id='p-lang-label'>In anderen Sprachen</h3>
+
+			<div class="body">
+									<ul>
+						<li class="interlanguage-link interwiki-ar"><a href="https://ar.wikipedia.org/wiki/%D8%AC%D8%AF%D9%88%D9%84_%D8%AA%D9%88%D8%B2%D9%8A%D8%B9_%D8%A7%D9%84%D9%85%D9%84%D9%81" title="جدول توزيع الملف – Arabisch" lang="ar" hreflang="ar" class="interlanguage-link-target">العربية</a></li><li class="interlanguage-link interwiki-az"><a href="https://az.wikipedia.org/wiki/FAT_fayl_sistemi" title="FAT fayl sistemi – Aserbaidschanisch" lang="az" hreflang="az" class="interlanguage-link-target">Azərbaycanca</a></li><li class="interlanguage-link interwiki-ca"><a href="https://ca.wikipedia.org/wiki/File_Allocation_Table" title="File Allocation Table – Katalanisch" lang="ca" hreflang="ca" class="interlanguage-link-target">Català</a></li><li class="interlanguage-link interwiki-cs"><a href="https://cs.wikipedia.org/wiki/File_Allocation_Table" title="File Allocation Table – Tschechisch" lang="cs" hreflang="cs" class="interlanguage-link-target">Čeština</a></li><li class="interlanguage-link interwiki-da"><a href="https://da.wikipedia.org/wiki/FAT" title="FAT – Dänisch" lang="da" hreflang="da" class="interlanguage-link-target">Dansk</a></li><li class="interlanguage-link interwiki-el"><a href="https://el.wikipedia.org/wiki/File_Allocation_Table" title="File Allocation Table – Griechisch" lang="el" hreflang="el" class="interlanguage-link-target">Ελληνικά</a></li><li class="interlanguage-link interwiki-en"><a href="https://en.wikipedia.org/wiki/File_Allocation_Table" title="File Allocation Table – Englisch" lang="en" hreflang="en" class="interlanguage-link-target">English</a></li><li class="interlanguage-link interwiki-eo"><a href="https://eo.wikipedia.org/wiki/FAT" title="FAT – Esperanto" lang="eo" hreflang="eo" class="interlanguage-link-target">Esperanto</a></li><li class="interlanguage-link interwiki-es"><a href="https://es.wikipedia.org/wiki/Tabla_de_asignaci%C3%B3n_de_archivos" title="Tabla de asignación de archivos – Spanisch" lang="es" hreflang="es" class="interlanguage-link-target">Español</a></li><li class="interlanguage-link interwiki-et"><a href="https://et.wikipedia.org/wiki/Failipaigutustabel" title="Failipaigutustabel – Estnisch" lang="et" hreflang="et" class="interlanguage-link-target">Eesti</a></li><li class="interlanguage-link interwiki-eu"><a href="https://eu.wikipedia.org/wiki/FAT" title="FAT – Baskisch" lang="eu" hreflang="eu" class="interlanguage-link-target">Euskara</a></li><li class="interlanguage-link interwiki-fa"><a href="https://fa.wikipedia.org/wiki/%D8%AC%D8%AF%D9%88%D9%84_%D8%AA%D8%AE%D8%B5%DB%8C%D8%B5_%D9%81%D8%A7%DB%8C%D9%84" title="جدول تخصیص فایل – Persisch" lang="fa" hreflang="fa" class="interlanguage-link-target">فارسی</a></li><li class="interlanguage-link interwiki-fi"><a href="https://fi.wikipedia.org/wiki/FAT" title="FAT – Finnisch" lang="fi" hreflang="fi" class="interlanguage-link-target">Suomi</a></li><li class="interlanguage-link interwiki-fr"><a href="https://fr.wikipedia.org/wiki/File_Allocation_Table" title="File Allocation Table – Französisch" lang="fr" hreflang="fr" class="interlanguage-link-target">Français</a></li><li class="interlanguage-link interwiki-gl"><a href="https://gl.wikipedia.org/wiki/FAT" title="FAT – Galicisch" lang="gl" hreflang="gl" class="interlanguage-link-target">Galego</a></li><li class="interlanguage-link interwiki-he"><a href="https://he.wikipedia.org/wiki/File_Allocation_Table" title="File Allocation Table – Hebräisch" lang="he" hreflang="he" class="interlanguage-link-target">עברית</a></li><li class="interlanguage-link interwiki-hu"><a href="https://hu.wikipedia.org/wiki/File_Allocation_Table" title="File Allocation Table – Ungarisch" lang="hu" hreflang="hu" class="interlanguage-link-target">Magyar</a></li><li class="interlanguage-link interwiki-id"><a href="https://id.wikipedia.org/wiki/FAT" title="FAT – Indonesisch" lang="id" hreflang="id" class="interlanguage-link-target">Bahasa Indonesia</a></li><li class="interlanguage-link interwiki-it"><a href="https://it.wikipedia.org/wiki/File_Allocation_Table" title="File Allocation Table – Italienisch" lang="it" hreflang="it" class="interlanguage-link-target">Italiano</a></li><li class="interlanguage-link interwiki-ja"><a href="https://ja.wikipedia.org/wiki/File_Allocation_Table" title="File Allocation Table – Japanisch" lang="ja" hreflang="ja" class="interlanguage-link-target">日本語</a></li><li class="interlanguage-link interwiki-kk"><a href="https://kk.wikipedia.org/wiki/%D0%A4%D0%B0%D0%B9%D0%BB%D0%B4%D0%B0%D1%80%D0%B4%D1%8B%D2%A3_%D0%BE%D1%80%D0%BD%D0%B0%D0%BB%D0%B0%D1%81%D1%83_%D0%BA%D0%B5%D1%81%D1%82%D0%B5%D1%81%D1%96" title="Файлдардың орналасу кестесі – Kasachisch" lang="kk" hreflang="kk" class="interlanguage-link-target">Қазақша</a></li><li class="interlanguage-link interwiki-ko"><a href="https://ko.wikipedia.org/wiki/%ED%8C%8C%EC%9D%BC_%ED%95%A0%EB%8B%B9_%ED%85%8C%EC%9D%B4%EB%B8%94" title="파일 할당 테이블 – Koreanisch" lang="ko" hreflang="ko" class="interlanguage-link-target">한국어</a></li><li class="interlanguage-link interwiki-lt"><a href="https://lt.wikipedia.org/wiki/FAT" title="FAT – Litauisch" lang="lt" hreflang="lt" class="interlanguage-link-target">Lietuvių</a></li><li class="interlanguage-link interwiki-mhr"><a href="https://mhr.wikipedia.org/wiki/FAT" title="FAT – Ostmari" lang="mhr" hreflang="mhr" class="interlanguage-link-target">Олык марий</a></li><li class="interlanguage-link interwiki-ms"><a href="https://ms.wikipedia.org/wiki/Jadual_Penempatan_Fail" title="Jadual Penempatan Fail – Malaiisch" lang="ms" hreflang="ms" class="interlanguage-link-target">Bahasa Melayu</a></li><li class="interlanguage-link interwiki-nl"><a href="https://nl.wikipedia.org/wiki/File_Allocation_Table" title="File Allocation Table – Niederländisch" lang="nl" hreflang="nl" class="interlanguage-link-target">Nederlands</a></li><li class="interlanguage-link interwiki-no"><a href="https://no.wikipedia.org/wiki/FAT" title="FAT – Norwegisch" lang="no" hreflang="no" class="interlanguage-link-target">Norsk</a></li><li class="interlanguage-link interwiki-pl"><a href="https://pl.wikipedia.org/wiki/File_Allocation_Table" title="File Allocation Table – Polnisch" lang="pl" hreflang="pl" class="interlanguage-link-target">Polski</a></li><li class="interlanguage-link interwiki-pt"><a href="https://pt.wikipedia.org/wiki/File_Allocation_Table" title="File Allocation Table – Portugiesisch" lang="pt" hreflang="pt" class="interlanguage-link-target">Português</a></li><li class="interlanguage-link interwiki-ro"><a href="https://ro.wikipedia.org/wiki/File_Allocation_Table" title="File Allocation Table – Rumänisch" lang="ro" hreflang="ro" class="interlanguage-link-target">Română</a></li><li class="interlanguage-link interwiki-ru"><a href="https://ru.wikipedia.org/wiki/FAT" title="FAT – Russisch" lang="ru" hreflang="ru" class="interlanguage-link-target">Русский</a></li><li class="interlanguage-link interwiki-simple"><a href="https://simple.wikipedia.org/wiki/File_allocation_table" title="File allocation table – einfaches Englisch" lang="simple" hreflang="simple" class="interlanguage-link-target">Simple English</a></li><li class="interlanguage-link interwiki-sk"><a href="https://sk.wikipedia.org/wiki/File_Allocation_Table" title="File Allocation Table – Slowakisch" lang="sk" hreflang="sk" class="interlanguage-link-target">Slovenčina</a></li><li class="interlanguage-link interwiki-sl"><a href="https://sl.wikipedia.org/wiki/FAT" title="FAT – Slowenisch" lang="sl" hreflang="sl" class="interlanguage-link-target">Slovenščina</a></li><li class="interlanguage-link interwiki-sv"><a href="https://sv.wikipedia.org/wiki/File_Allocation_Table" title="File Allocation Table – Schwedisch" lang="sv" hreflang="sv" class="interlanguage-link-target">Svenska</a></li><li class="interlanguage-link interwiki-tr"><a href="https://tr.wikipedia.org/wiki/FAT" title="FAT – Türkisch" lang="tr" hreflang="tr" class="interlanguage-link-target">Türkçe</a></li><li class="interlanguage-link interwiki-uk"><a href="https://uk.wikipedia.org/wiki/FAT16" title="FAT16 – Ukrainisch" lang="uk" hreflang="uk" class="interlanguage-link-target">Українська</a></li><li class="interlanguage-link interwiki-vi"><a href="https://vi.wikipedia.org/wiki/FAT" title="FAT – Vietnamesisch" lang="vi" hreflang="vi" class="interlanguage-link-target">Tiếng Việt</a></li><li class="interlanguage-link interwiki-zh"><a href="https://zh.wikipedia.org/wiki/FAT" title="FAT – Chinesisch" lang="zh" hreflang="zh" class="interlanguage-link-target">中文</a></li>					</ul>
+				<div class="after-portlet after-portlet-lang"><span class="wb-langlinks-edit wb-langlinks-link"><a href="https://www.wikidata.org/wiki/Special:EntityPage/Q190167#sitelinks-wikipedia" title="Links auf Artikel in anderen Sprachen bearbeiten" class="wbc-editpage">Links bearbeiten</a></span></div>			</div>
+		</div>
+				</div>
+		</div>
+		<div id="footer" role="contentinfo">
+							<ul id="footer-info">
+											<li id="footer-info-lastmod"> Diese Seite wurde zuletzt am 29. August 2017 um 10:04 Uhr bearbeitet.</li>
+											<li id="footer-info-copyright"><div id="footer-info-copyright-stats"><a class="external" href="https://tools.wmflabs.org/pageviews?pages=File_Allocation_Table&amp;project=de.wikipedia.org" rel="nofollow">Abrufstatistik</a></div><div id="footer-info-copyright-separator"><br /></div><div id="footer-info-copyright-info">
+Der Text ist unter der Lizenz <a class="internal" href="//de.wikipedia.org/wiki/Wikipedia:Lizenzbestimmungen_Commons_Attribution-ShareAlike_3.0_Unported">„Creative Commons Attribution/Share Alike“</a> verfügbar; Informationen zu den Urhebern und zum Lizenzstatus eingebundener Mediendateien (etwa Bilder oder Videos) können im Regelfall durch Anklicken dieser abgerufen werden. Möglicherweise unterliegen die Inhalte jeweils zusätzlichen Bedingungen. Durch die Nutzung dieser Website erklären Sie sich mit den <a class="internal" href="//wikimediafoundation.org/wiki/Nutzungsbedingungen">Nutzungsbedingungen</a> und der <a class="internal" href="//de.wikipedia.org/wiki/Wikipedia:Datenschutz">Datenschutzrichtlinie</a> einverstanden.<br />
+Wikipedia® ist eine eingetragene Marke der Wikimedia Foundation Inc.</div></li>
+									</ul>
+							<ul id="footer-places">
+											<li id="footer-places-privacy"><a href="https://meta.wikimedia.org/wiki/Privacy_policy/de" class="extiw" title="m:Privacy policy/de">Datenschutz</a></li>
+											<li id="footer-places-about"><a href="/wiki/Wikipedia:%C3%9Cber_Wikipedia" title="Wikipedia:Über Wikipedia">Über Wikipedia</a></li>
+											<li id="footer-places-disclaimer"><a href="/wiki/Wikipedia:Impressum" title="Wikipedia:Impressum">Impressum</a></li>
+											<li id="footer-places-developers"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/How_to_contribute">Entwickler</a></li>
+											<li id="footer-places-cookiestatement"><a href="https://wikimediafoundation.org/wiki/Cookie_statement">Stellungnahme zu Cookies</a></li>
+											<li id="footer-places-mobileview"><a href="//de.m.wikipedia.org/w/index.php?title=File_Allocation_Table&amp;oldid=168585102&amp;mobileaction=toggle_view_mobile" class="noprint stopMobileRedirectToggle">Mobile Ansicht</a></li>
+									</ul>
+										<ul id="footer-icons" class="noprint">
+											<li id="footer-copyrightico">
+							<a href="https://wikimediafoundation.org/"><img src="/static/images/wikimedia-button.png" srcset="/static/images/wikimedia-button-1.5x.png 1.5x, /static/images/wikimedia-button-2x.png 2x" width="88" height="31" alt="Wikimedia Foundation"/></a>						</li>
+											<li id="footer-poweredbyico">
+							<a href="//www.mediawiki.org/"><img src="/static/images/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" srcset="/static/images/poweredby_mediawiki_132x47.png 1.5x, /static/images/poweredby_mediawiki_176x62.png 2x" width="88" height="31"/></a>						</li>
+									</ul>
+						<div style="clear:both"></div>
+		</div>
+		<script>(window.RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgPageParseReport":{"limitreport":{"cputime":"0.508","walltime":"0.542","ppvisitednodes":{"value":5199,"limit":1000000},"ppgeneratednodes":{"value":0,"limit":1500000},"postexpandincludesize":{"value":40806,"limit":2097152},"templateargumentsize":{"value":16581,"limit":2097152},"expansiondepth":{"value":13,"limit":40},"expensivefunctioncount":{"value":0,"limit":500},"entityaccesscount":{"value":0,"limit":400},"timingprofile":["100.00%  452.566      1 -total"," 88.60%  400.952     14 Vorlage:Internetquelle"," 54.53%  246.776     50 Vorlage:FormatDate"," 15.28%   69.149     50 Vorlage:Str_left"," 13.02%   58.923     50 Vorlage:Str_left/Call","  7.93%   35.888     14 Vorlage:Booland","  4.58%   20.713     10 Vorlage:Lang","  3.80%   17.217      1 Vorlage:EnS","  1.69%    7.651      6 Vorlage:Anker","  1.17%    5.277      2 Vorlage:Infobox_Dateisystem"]},"scribunto":{"limitreport-timeusage":{"value":"0.251","limit":"10.000"},"limitreport-memusage":{"value":2578795,"limit":52428800}},"cachereport":{"origin":"mw1161","timestamp":"20171009134719","ttl":1900800,"transientcontent":false}}});});</script><script>(window.RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgBackendResponseTime":118,"wgHostname":"mw1215"});});</script>
+	</body>
+</html>

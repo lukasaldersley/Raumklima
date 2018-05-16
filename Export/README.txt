@@ -1,0 +1,1 @@
+This Eclipse Project has only one Purpose: right befor exporting a new version I copy th code from the development Project into here and export it from here. The purpose of this practice is to have a cleaner and smaller jar
