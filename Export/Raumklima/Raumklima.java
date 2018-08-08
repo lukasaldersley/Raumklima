@@ -92,7 +92,6 @@ import com.fazecast.jSerialComm.SerialPort;
  * *JPanel* steht für eine Instanz eines beliebigen JPanel
  * https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/layout/BoxLayoutDemoProject/src/layout/BoxLayoutDemo.java
  */
-
 public class Raumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener, FocusListener
 {
     public static boolean debug=false;
@@ -102,7 +101,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static String projectUri="https://raw.githubusercontent.com/lukasaldersley/Raumklima/";
     public static String downloadTargetUri="https://github.com/lukasaldersley/Raumklima/raw/";
 
-    public static final String VERSION="2.5.0.0";
+    public static final String VERSION="2.6.1.2";
 
     public static boolean CLOSE_WINDOW_ALT_REQUIRED=false;
     public static boolean OPEN_HELP_WINDOW_ALT_REQUIRED=false;
@@ -211,6 +210,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private FileOutputStream fileOutputStream;
 
     private static FileWriter logWriter;
+	private static boolean fileSpecifiedAsParameter;
+	private static String specifiedFile;
 
     private GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 
@@ -384,12 +385,58 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 debug=true;
                 logln("Debugmodus aktiviert");
             }
+            if(args[i].equalsIgnoreCase("f")||args[i].equalsIgnoreCase("file")||args[i].equalsIgnoreCase("-f")||args[i].equalsIgnoreCase("-file")||args[i].equalsIgnoreCase("/f")||args[i].equalsIgnoreCase("/file")) {
+            	logln("Datei wird direkt gelesen");
+            	fileSpecifiedAsParameter=true;
+            	specifiedFile=args[i+1];
+            	i++;
+            }
+            if(args[i].equalsIgnoreCase("dlf")||args[i].equalsIgnoreCase("-dlf")||args[i].equalsIgnoreCase("/dlf")) {
+                debug=true;
+                logln("Debugmodus aktiviert");
+            	logging=true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: "+logFile.getName());
+                logln("Datei wird direkt gelesen");
+            	fileSpecifiedAsParameter=true;
+            	specifiedFile=args[i+1];
+            	i++;
+            }
+            if(args[i].equalsIgnoreCase("dl")||args[i].equalsIgnoreCase("-dl")||args[i].equalsIgnoreCase("/dl")) {
+                debug=true;
+                logln("Debugmodus aktiviert");
+            	logging=true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: "+logFile.getName());
+            }
+            if(args[i].equalsIgnoreCase("lf")||args[i].equalsIgnoreCase("-lf")||args[i].equalsIgnoreCase("/lf")) {
+            	logging=true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: "+logFile.getName());
+                logln("Datei wird direkt gelesen");
+            	fileSpecifiedAsParameter=true;
+            	specifiedFile=args[i+1];
+            	i++;
+            }
+            if(args[i].equalsIgnoreCase("df")||args[i].equalsIgnoreCase("-df")||args[i].equalsIgnoreCase("/df")) {
+            	debug=true;
+                logln("Debugmodus aktiviert");
+                logln("Datei wird direkt gelesen");
+            	fileSpecifiedAsParameter=true;
+            	specifiedFile=args[i+1];
+            	i++;
+            }
             else if(args[i].equalsIgnoreCase("?")||args[i].equalsIgnoreCase("help")||args[i].equalsIgnoreCase("h")||args[i].equalsIgnoreCase("/?")||args[i].equalsIgnoreCase("/help")||args[i].equalsIgnoreCase("/h")||args[i].equalsIgnoreCase("-?")||args[i].equalsIgnoreCase("-help")||args[i].equalsIgnoreCase("-h")){
                 System.out.println("\nBefehlszeilenparameter\n\n\"d\" oder \"debug\"\t\tDebugmodus\n\"l\" oder \"log\"\t\t\tAusgabe in Datei abspeichern\n\"h\", \"?\" oder \"help\"\t\tdiese Hilfe anzeigen");
                 System.exit(0);
             }
         }
-        new Raumklima();
+        if(fileSpecifiedAsParameter) {
+        	new Raumklima(specifiedFile);
+        }
+        else {
+        	new Raumklima();
+        }
     }
 
     public static void log(Object msg){//anstatt von System.out.print() wird log() verwendet; folgende methoden analog
@@ -484,6 +531,16 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         previous=newPrevious;
         next=newNext;
         setup(true,"");
+    }
+    
+    /**
+     * The tertiary Constructor
+     * This Constructor is used if a file is specified that should automatically be opened
+     * @param fileToOpen the filename that is to be opened
+     */
+    public Raumklima(String fileToOpen) {
+    	logln("File to open: "+fileToOpen);
+    	setup(false,fileToOpen);
     }
 
     /**

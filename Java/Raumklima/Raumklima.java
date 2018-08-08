@@ -92,7 +92,6 @@ import com.fazecast.jSerialComm.SerialPort;
  * *JPanel* steht für eine Instanz eines beliebigen JPanel
  * https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/layout/BoxLayoutDemoProject/src/layout/BoxLayoutDemo.java
  */
-
 public class Raumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener, FocusListener
 {
     public static boolean debug=false;
@@ -102,7 +101,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static String projectUri="https://raw.githubusercontent.com/lukasaldersley/Raumklima/";
     public static String downloadTargetUri="https://github.com/lukasaldersley/Raumklima/raw/";
 
-    public static final String VERSION="2.2.0.0";
+    public static final String VERSION="2.6.1.2";
 
     public static boolean CLOSE_WINDOW_ALT_REQUIRED=false;
     public static boolean OPEN_HELP_WINDOW_ALT_REQUIRED=false;
@@ -211,6 +210,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private FileOutputStream fileOutputStream;
 
     private static FileWriter logWriter;
+	private static boolean fileSpecifiedAsParameter;
+	private static String specifiedFile;
 
     private GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 
@@ -344,7 +345,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private XYSeriesCollection xYSeriesCollection;
     private JPanel DeviceSettings;
     private JLabel DeviceSettingsTitle;
-    private JButton SetRTCButton;
+    JButton SetRTCButton;
     private JLabel SystemTimeLabel;
     private JLabel DeviceTimeLabel;
     private JPanel SystemTimePanel;
@@ -371,7 +372,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private Thread SerialThread;
     String RXDate;
     JPanel TimePanel;
-    boolean SerialForbidden=false;
+    private boolean SerialForbidden;
 
     public static void main(String[] args){//Startet das Programm (ggf mnit debug/logging)
         for(int i=0;i<args.length;i++){
@@ -384,12 +385,58 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 debug=true;
                 logln("Debugmodus aktiviert");
             }
+            if(args[i].equalsIgnoreCase("f")||args[i].equalsIgnoreCase("file")||args[i].equalsIgnoreCase("-f")||args[i].equalsIgnoreCase("-file")||args[i].equalsIgnoreCase("/f")||args[i].equalsIgnoreCase("/file")) {
+            	logln("Datei wird direkt gelesen");
+            	fileSpecifiedAsParameter=true;
+            	specifiedFile=args[i+1];
+            	i++;
+            }
+            if(args[i].equalsIgnoreCase("dlf")||args[i].equalsIgnoreCase("-dlf")||args[i].equalsIgnoreCase("/dlf")) {
+                debug=true;
+                logln("Debugmodus aktiviert");
+            	logging=true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: "+logFile.getName());
+                logln("Datei wird direkt gelesen");
+            	fileSpecifiedAsParameter=true;
+            	specifiedFile=args[i+1];
+            	i++;
+            }
+            if(args[i].equalsIgnoreCase("dl")||args[i].equalsIgnoreCase("-dl")||args[i].equalsIgnoreCase("/dl")) {
+                debug=true;
+                logln("Debugmodus aktiviert");
+            	logging=true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: "+logFile.getName());
+            }
+            if(args[i].equalsIgnoreCase("lf")||args[i].equalsIgnoreCase("-lf")||args[i].equalsIgnoreCase("/lf")) {
+            	logging=true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: "+logFile.getName());
+                logln("Datei wird direkt gelesen");
+            	fileSpecifiedAsParameter=true;
+            	specifiedFile=args[i+1];
+            	i++;
+            }
+            if(args[i].equalsIgnoreCase("df")||args[i].equalsIgnoreCase("-df")||args[i].equalsIgnoreCase("/df")) {
+            	debug=true;
+                logln("Debugmodus aktiviert");
+                logln("Datei wird direkt gelesen");
+            	fileSpecifiedAsParameter=true;
+            	specifiedFile=args[i+1];
+            	i++;
+            }
             else if(args[i].equalsIgnoreCase("?")||args[i].equalsIgnoreCase("help")||args[i].equalsIgnoreCase("h")||args[i].equalsIgnoreCase("/?")||args[i].equalsIgnoreCase("/help")||args[i].equalsIgnoreCase("/h")||args[i].equalsIgnoreCase("-?")||args[i].equalsIgnoreCase("-help")||args[i].equalsIgnoreCase("-h")){
                 System.out.println("\nBefehlszeilenparameter\n\n\"d\" oder \"debug\"\t\tDebugmodus\n\"l\" oder \"log\"\t\t\tAusgabe in Datei abspeichern\n\"h\", \"?\" oder \"help\"\t\tdiese Hilfe anzeigen");
                 System.exit(0);
             }
         }
-        new Raumklima();
+        if(fileSpecifiedAsParameter) {
+        	new Raumklima(specifiedFile);
+        }
+        else {
+        	new Raumklima();
+        }
     }
 
     public static void log(Object msg){//anstatt von System.out.print() wird log() verwendet; folgende methoden analog
@@ -479,11 +526,21 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      * @param newNext the following instance of Raumklima (only used to update the numbering scheme if a window is closed or opened)
      */
     public Raumklima(int newTitleNumber, Raumklima newPrevious, Raumklima newNext) {
+        SerialForbidden=true;
         titleNumber=newTitleNumber;
         previous=newPrevious;
         next=newNext;
         setup(true,"");
-        SerialForbidden=true;
+    }
+    
+    /**
+     * The tertiary Constructor
+     * This Constructor is used if a file is specified that should automatically be opened
+     * @param fileToOpen the filename that is to be opened
+     */
+    public Raumklima(String fileToOpen) {
+    	logln("File to open: "+fileToOpen);
+    	setup(false,fileToOpen);
     }
 
     /**
@@ -520,7 +577,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             }
         }
 
-        if(!SerialForbidden){
+        if(!SerialForbidden) {
             ports=SerialPort.getCommPorts();
             SerialPort P;
             for(int i=0;i<ports.length;i++) {
@@ -549,7 +606,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 }
             }
         }
-        else{
+        else {
             SerialAvailable=false;
         }
 
@@ -630,7 +687,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             helpWindow.validate();
 
             //Remove the temporary pleaseWaitMessagePanel
-            //TODO WTF Why does it have worked even with this NOT beeing commented out? mainWindow.remove(pleaseWaitMessagePanel);
+            //WTF Why does it have worked even with this NOT beeing commented out? mainWindow.remove(pleaseWaitMessagePanel);
 
             mainWindow.add(chartPanel,BorderLayout.NORTH);
             mainWindow.add(dataPanel,BorderLayout.SOUTH);
@@ -968,24 +1025,37 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         DeviceConnPanel=new JPanel();
         //DeviceConnPanel.setBackground(Color.RED);
         DeviceConnPanel.setAlignmentX(Component.LEFT_ALIGNMENT);//|||||||||||||||||||||||||||||||||||||||||||||||||
-        DeviceConnPanel.setPreferredSize(new Dimension(550,40));
-        DeviceConnPanel.setMaximumSize(new Dimension(550,40));
-        DeviceConnPanel.setMinimumSize(new Dimension(550,40));
+        DeviceConnPanel.setPreferredSize(new Dimension(600,50));
+        DeviceConnPanel.setMaximumSize(new Dimension(600,50));
+        DeviceConnPanel.setMinimumSize(new Dimension(600,50));
         DeviceConnComboBox=new JComboBox<String>();
         DeviceConnRefreshButton=new JButton("Aktualisieren");
-        DeviceConnConnectButton=new JButton("Verbinden mit");
-        for(SerialPort P:ports) {
-            DeviceConnComboBox.addItem(P.getDescriptivePortName());
+        DeviceConnConnectButton=new JButton("Verbinden");
+        if(!SerialForbidden) {
+            DeviceConnConnectButton.addActionListener(this);
+            DeviceConnRefreshButton.addActionListener(this);
+            for(SerialPort P:ports) {
+                DeviceConnComboBox.addItem(P.getDescriptivePortName());
+            }
+            if(SerialAvailable) {
+                DeviceConnComboBox.setSelectedIndex(selectedPort);
+            }
         }
-        if(SerialAvailable) {
-            DeviceConnComboBox.setSelectedIndex(selectedPort);
+        if(SerialForbidden) {
+            DeviceConnPanel.add(new JLabel("KEIN ZUGRIFF AUF SERIELLE SCHNITTSTELLE - Bitte Programm neustarten um Zugriff zu Bekommen"), BorderLayout.NORTH);
         }
-        DeviceConnPanel.add(new JLabel("Verbinden"), BorderLayout.NORTH);
+        DeviceConnPanel.add(new JLabel("Verbinden mit: "), BorderLayout.NORTH);
         DeviceConnPanel.add(DeviceConnComboBox, BorderLayout.CENTER);
         DeviceConnPanel.add(DeviceConnConnectButton, BorderLayout.EAST);
         DeviceConnPanel.add(DeviceConnRefreshButton, BorderLayout.SOUTH);
 
         DeviceSettings.add(DeviceConnPanel);
+        if(SerialForbidden) {
+            DeviceConnPanel.setEnabled(false);
+            DeviceConnComboBox.setEnabled(false);
+            DeviceConnConnectButton.setEnabled(false);
+            DeviceConnRefreshButton.setEnabled(false);
+        }
 
         SystemTimePanel=new JPanel();
         SystemTimePanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -996,6 +1066,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         SystemTimeLabel=new JLabel("Systemzeit: ");
         SystemTimeField=new JTextField();
         SystemTimeField.setEditable(false);
+        SystemTimeField.setPreferredSize(new Dimension(120,20));
+        SystemTimeField.setMinimumSize(new Dimension(120,20));
+        SystemTimeField.setMaximumSize(new Dimension(120,20));
         SystemTimeFormatter=new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         SystemTimeField.setText(SystemTimeFormatter.format(new Date(System.currentTimeMillis())));
         SystemTimeFieldTimer=new Timer(1000, new ActionListener()
@@ -1023,13 +1096,18 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         DeviceTimePanel.setMinimumSize(new Dimension(220,22));
         DeviceTimeLabel=new JLabel("Gerätezeit: ");
         DeviceTimeField=new JTextField("UNBEKANNT");
+        DeviceTimeField.setPreferredSize(new Dimension(120,20));
+        DeviceTimeField.setMinimumSize(new Dimension(120,20));
+        DeviceTimeField.setMaximumSize(new Dimension(120,20));
         DeviceTimeField.setEditable(false);
 
         DeviceDateFormat=new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         RXDate="";//"11.11.2011 11:10:11";
-        SerialListener=new SerialWorker(this);
-        SerialThread=new Thread(SerialListener);
-        SerialThread.start();
+        if((!SerialForbidden)&&SerialAvailable) {
+            SerialListener=new SerialWorker(this);
+            SerialThread=new Thread(SerialListener);
+            SerialThread.start();
+        }
         DeviceTimeFieldTimer=new Timer(1000, new ActionListener()
             {
                 public void actionPerformed(ActionEvent e)
@@ -1039,7 +1117,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 }
             }
         );
-        if(SerialAvailable) {
+        if((!SerialForbidden)&&SerialAvailable) {
             DeviceTimeFieldTimer.start();
         }
 
@@ -1049,7 +1127,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         DeviceTimePanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
         TimePanel.add(DeviceTimePanel,BorderLayout.CENTER);
-        TimePanel.add(new JLabel("HINWEIS: Bitte warten Sie etwa 30 Sekunden, bevor Sie Versuchen die Uhr zu Stellen."),BorderLayout.SOUTH);
+        TimePanel.add(new JLabel("HINWEIS: Bitte warten Sie etwa 30 Sekunden, bevor Sie versuchen die Uhr zu Stellen."),BorderLayout.SOUTH);
 
         TimePanel.validate();
         DeviceSettings.add(TimePanel);
@@ -1058,15 +1136,14 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         SetRTCButton.addActionListener(this);
         SetRTCButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         DeviceSettings.add(SetRTCButton);
+        if(SerialForbidden||(!SerialAvailable)) {
+            SetRTCButton.setEnabled(false);
+        }
 
         SettingsPageTabbedPane.addTab("Allgemeine Einstellungen",GeneralSettings);
         SettingsPageTabbedPane.addTab("Graphenbereich",GraphSettings);
         SettingsPageTabbedPane.addTab("Tastenkombinationen",KeyCombinationSettings);
         SettingsPageTabbedPane.addTab("Gerät", DeviceSettings);
-        JPanel soon=new JPanel();
-        JLabel sonn=new JLabel("KOMMT BALD (1-2 Tage/22-24.11.2017). Backend ist schon fertig");
-        soon.add(sonn);
-        //TODO SettingsPageTabbedPane.addTab("Gerät", soon);
         settingsWindow.add(SettingsPageTabbedPane);
         settingsWindow.setResizable(false);
     }
@@ -1493,6 +1570,12 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 if(Integer.parseInt(remote[i])>Integer.parseInt(local[i])){
                     return true;
                 }
+                else if(Integer.parseInt(local[i])==Integer.parseInt(remote[i])) {
+                    ;
+                }
+                else {
+                    return false;
+                }
             }
             return false;
         }
@@ -1506,6 +1589,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      * After the Programm has checked whether an update from github is available it performs this update
      */
     public void updateJar(){
+        logln("\n\nUPDATING\n\n");
         try{
             //quelle wie oben bei der config datei
             oldFile=new File("Raumklima.jar");
@@ -2111,7 +2195,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 }
             }
             catch(IndexOutOfBoundsException ex) {
-                break;//TODO maybe log(ex);
+            	log("PROBABLY FINE (ChartMouseClicked): ");
+            	logln(ex);
+                break;
             }
         }
     }
@@ -2160,8 +2246,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
                 }
             }
             catch(IndexOutOfBoundsException ex) {
+                log("PROBABLY FINE (ChartMouseMoved): ");
+                logln(ex);
                 break;
-                //TODO Maybe log?
             }
         }
     }
@@ -2220,8 +2307,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     /*
-     * alle ActionListener werden hier verarbeitet
-     */
+    * alle ActionListener werden hier verarbeitet
+    */
+    @SuppressWarnings("deprecation")
     @Override
     public void actionPerformed(ActionEvent event) {
         logln("EVENT FIRED");
@@ -2424,7 +2512,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             onlyInterpolationChanging=true;
             replot();
         }
-        if(event.getSource()==SetRTCButton){
+        else if(event.getSource()==SetRTCButton){
             try{
                 serialWriter.write("SETTIME "+SystemTimeField.getText());
                 serialWriter.flush();
@@ -2432,8 +2520,78 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             catch(Exception e){
                 logln(e);
             }
+            return;
         }
-        if(event.getSource()==GeoModeOkButton){//Geo-Modus/Physik-modus
+        else if(event.getSource()==DeviceConnRefreshButton) {
+            DeviceConnComboBox.removeAllItems();
+            ports=SerialPort.getCommPorts();
+            SerialPort P;
+            for(int i=0;i<ports.length;i++) {
+                P=ports[i];
+                logln(P.getDescriptivePortName()+"|"+P.getSystemPortName());
+                if(P.getDescriptivePortName().startsWith("Arduino Mega 2560")) {//"Arduino Leonardo")){
+                    /*port=P;
+                    port.setBaudRate(115200);
+                    SerialAvailable=port.openPort();
+                    logln(port.isOpen());
+                    SerialAvailable=port.isOpen();*/
+                    selectedPort=i;
+                }
+            }
+            logln(SerialAvailable);
+            for(SerialPort PT:ports) {
+                DeviceConnComboBox.addItem(PT.getDescriptivePortName());
+            }
+            if(SerialAvailable) {
+                DeviceConnComboBox.setSelectedIndex(selectedPort);
+            }
+            return;
+        }
+        else if(event.getSource()==DeviceConnConnectButton) {
+            DeviceTimeField.setText("BITTE WARTEN");
+            try {
+                port.closePort();
+                try {
+                    SerialThread.stop();
+                    SerialThread.destroy();
+                }
+                catch(NoSuchMethodError er) {
+                    log("SOMEWHAT EXPECTED: ");
+                    logln(er);
+                }
+            }
+            catch(NullPointerException exc) {
+                log("EXPECTED: ");
+                logln(exc);
+            }
+            catch(Exception exy) {
+                log("CRITICAL: ");
+                logln(exy);
+            }
+            SerialThread=null;
+            SerialListener=null;
+            System.gc();
+            port=ports[DeviceConnComboBox.getSelectedIndex()];
+            if(port==null) {
+                logln("NO APROPRIATE SERIAL PORT");
+                SerialAvailable=false;
+            }
+            else {
+                logln(port);
+                port.setBaudRate(115200);
+                SerialAvailable=port.openPort();
+                logln(port.isOpen());
+                SerialAvailable=port.isOpen();
+                serialScanner=new Scanner(new InputStreamReader(port.getInputStream()));
+                serialWriter=new BufferedWriter(new OutputStreamWriter(port.getOutputStream()));
+                SerialAvailable=true;
+            }
+            SerialListener=new SerialWorker(this);
+            SerialThread=new Thread(SerialListener);
+            SerialThread.start();
+            return;
+        }
+        else if(event.getSource()==GeoModeOkButton){//Geo-Modus/Physik-modus
             geoMode=GeoModeButton.isSelected();
             replot();
         }
@@ -2911,4 +3069,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     @Override
     public void focusLost(FocusEvent arg0) {}
+
+    public void initDeviceTimer() {
+    }
 }
