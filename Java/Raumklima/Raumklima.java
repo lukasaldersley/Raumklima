@@ -101,7 +101,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static String projectUri="https://raw.githubusercontent.com/lukasaldersley/Raumklima/";
     public static String downloadTargetUri="https://github.com/lukasaldersley/Raumklima/raw/";
 
-    public static final String VERSION="2.6.1.2";
+    public static final String VERSION="2.6.1.3";
 
     public static boolean CLOSE_WINDOW_ALT_REQUIRED=false;
     public static boolean OPEN_HELP_WINDOW_ALT_REQUIRED=false;
@@ -391,7 +391,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             	specifiedFile=args[i+1];
             	i++;
             }
-            if(args[i].equalsIgnoreCase("dlf")||args[i].equalsIgnoreCase("-dlf")||args[i].equalsIgnoreCase("/dlf")) {
+            if(args[i].equalsIgnoreCase("dlf")||args[i].equalsIgnoreCase("-dlf")||args[i].equalsIgnoreCase("/dlf")||
+            		args[i].equalsIgnoreCase("dfl")||args[i].equalsIgnoreCase("-dfl")||args[i].equalsIgnoreCase("/dfl")||
+            		args[i].equalsIgnoreCase("fdl")||args[i].equalsIgnoreCase("-fdl")||args[i].equalsIgnoreCase("/fdl")||
+            		args[i].equalsIgnoreCase("fld")||args[i].equalsIgnoreCase("-fld")||args[i].equalsIgnoreCase("/fld")||
+            		args[i].equalsIgnoreCase("lfd")||args[i].equalsIgnoreCase("-lfd")||args[i].equalsIgnoreCase("/lfd")||
+            		args[i].equalsIgnoreCase("ldf")||args[i].equalsIgnoreCase("-ldf")||args[i].equalsIgnoreCase("/ldf")
+            		) {
                 debug=true;
                 logln("Debugmodus aktiviert");
             	logging=true;
@@ -402,14 +408,14 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             	specifiedFile=args[i+1];
             	i++;
             }
-            if(args[i].equalsIgnoreCase("dl")||args[i].equalsIgnoreCase("-dl")||args[i].equalsIgnoreCase("/dl")) {
+            if(args[i].equalsIgnoreCase("dl")||args[i].equalsIgnoreCase("-dl")||args[i].equalsIgnoreCase("/dl")||args[i].equalsIgnoreCase("ld")||args[i].equalsIgnoreCase("-ld")||args[i].equalsIgnoreCase("/ld")) {
                 debug=true;
                 logln("Debugmodus aktiviert");
             	logging=true;
                 log("");
                 System.out.println("Dateiname für die Aufzeichnung: "+logFile.getName());
             }
-            if(args[i].equalsIgnoreCase("lf")||args[i].equalsIgnoreCase("-lf")||args[i].equalsIgnoreCase("/lf")) {
+            if(args[i].equalsIgnoreCase("lf")||args[i].equalsIgnoreCase("-lf")||args[i].equalsIgnoreCase("/lf")||args[i].equalsIgnoreCase("fl")||args[i].equalsIgnoreCase("-fl")||args[i].equalsIgnoreCase("/fl")) {
             	logging=true;
                 log("");
                 System.out.println("Dateiname für die Aufzeichnung: "+logFile.getName());
@@ -418,7 +424,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             	specifiedFile=args[i+1];
             	i++;
             }
-            if(args[i].equalsIgnoreCase("df")||args[i].equalsIgnoreCase("-df")||args[i].equalsIgnoreCase("/df")) {
+            if(args[i].equalsIgnoreCase("df")||args[i].equalsIgnoreCase("-df")||args[i].equalsIgnoreCase("/df")||args[i].equalsIgnoreCase("fd")||args[i].equalsIgnoreCase("-fd")||args[i].equalsIgnoreCase("/fd")) {
             	debug=true;
                 logln("Debugmodus aktiviert");
                 logln("Datei wird direkt gelesen");
@@ -427,7 +433,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             	i++;
             }
             else if(args[i].equalsIgnoreCase("?")||args[i].equalsIgnoreCase("help")||args[i].equalsIgnoreCase("h")||args[i].equalsIgnoreCase("/?")||args[i].equalsIgnoreCase("/help")||args[i].equalsIgnoreCase("/h")||args[i].equalsIgnoreCase("-?")||args[i].equalsIgnoreCase("-help")||args[i].equalsIgnoreCase("-h")){
-                System.out.println("\nBefehlszeilenparameter\n\n\"d\" oder \"debug\"\t\tDebugmodus\n\"l\" oder \"log\"\t\t\tAusgabe in Datei abspeichern\n\"h\", \"?\" oder \"help\"\t\tdiese Hilfe anzeigen");
+                System.out.println("\nBefehlszeilenparameter\n\n\"d\" oder \"debug\"\t\tDebugmodus\n\"l\" oder \"log\"\t\t\tAusgabe in Datei abspeichern\n\"f\" oder \"file\"\t\t\tWenn Sie diesen Parameter angeben, MÜSSEN Sie als NÄCHSTEN Parameter den Pfad zur einer Datei angeben.\n\t\t\t\tDiese wird beim Start des "
+                		+ "Programms dann automatisch geöffnet\n\"h\", \"?\" oder \"help\"\t\tdiese Hilfe anzeigen\n\n\nBEISPIELE:\n\n\tDebugmodus und aufzeichnen der Ausgabe:\n\t\tjava -jar Raumklima.jar -dl\n\t\t oder\n\t\tjava -jar Raumklima.jar -d -l\n\n\tDebugmodus und Öffnen der Datei BEISPIEL.csv.\n\t"
+                		+ "Die Datei befindet sich auf dem Desktop des Benutzers \"benutzer\". Passen Sie bitte den Pfad und den Dateinamen an eigene Bedürfnisse an.\n\tSie dürden anstatt -df natürlich auch -d -f schreiben.\n\t\tWindows:\n\t\t\tjava -jar Raumklima.jar -df C:\\Users\\benutzer\\Desktop\\BEISPIEL.csv\n\t\tLinux:\n\t\t\tjava -jar Raumklima.jar -df /home/benutzer/Desktop/BEISPIEL.csv\n\n");
                 System.exit(0);
             }
         }
