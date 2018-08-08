@@ -1,11 +1,11 @@
-
+﻿
 # Raumklima
 Software für ein Arduino-basiertes Gerät zur Überwachung des Raumklimas.
 
 Dieses Projekt wurde durchgeführt im Rahmen eines W-Seminares von Lukas Aldersley am Josef-Effner-Gymnasium in Dachau.
 (Abgabetermin 07.11.2017)
 
-Die Aktuelle Version ist 2.6.1.3 (08.08.2018)
+Die Aktuelle Version ist 2.6.1.4 (08.08.2018)
 Die Software wird alle Updates automatisch installieren, sofern diese Option in den Einstellungen aktiviert ist.
 
 Funktionsfähige Software befindet sich im Ordner PublicVersion (als .jar oder als .ino Datei. Die VERSION datei wird nur vom updater gebraucht. Unter Umständen ist diese Software noch mit Bugs behaftet)

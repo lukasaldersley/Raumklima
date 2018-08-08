@@ -101,7 +101,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     public static String projectUri="https://raw.githubusercontent.com/lukasaldersley/Raumklima/";
     public static String downloadTargetUri="https://github.com/lukasaldersley/Raumklima/raw/";
 
-    public static final String VERSION="2.6.1.3";
+    public static final String VERSION="2.6.1.4";
 
     public static boolean CLOSE_WINDOW_ALT_REQUIRED=false;
     public static boolean OPEN_HELP_WINDOW_ALT_REQUIRED=false;
@@ -1608,7 +1608,17 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             fileOutputStream = new FileOutputStream("Raumklima.jar");
             fileOutputStream.getChannel().transferFrom(readableByteChannelFromSource, 0, Long.MAX_VALUE);
             fileOutputStream.close();
-            Runtime.getRuntime().exec("java -jar Raumklima.jar");
+            String parameters="";
+            if(debug) {
+            	parameters+=" -d";
+            }
+            if(logging) {
+            	parameters+=" -l";
+            }
+            if(fileSpecifiedAsParameter) {
+            	parameters+=" -f "+specifiedFile;
+            }
+            Runtime.getRuntime().exec("java -jar Raumklima.jar"+parameters);
             System.exit(0);
         }
         catch(Exception e){
