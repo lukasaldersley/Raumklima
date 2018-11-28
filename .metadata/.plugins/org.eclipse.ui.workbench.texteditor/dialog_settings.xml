@@ -2,29 +2,30 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="versuchen" key="selection"/>
-		<item value="false" key="casesensitive"/>
+		<item value="\\" key="selection"/>
+		<item value="true" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="\\"/>
+			<item value="selectVisibleGraphsScrollPane"/>
+			<item value="JScrollPane"/>
+			<item value="CopyrightNotes.txt"/>
+			<item value="setSeriesVisible"/>
+			<item value="graphIsVisible"/>
+			<item value="xYSeries"/>
+			<item value="deactivateFullscreen"/>
+			<item value="getYesNoString"/>
+			<item value="version"/>
+			<item value="update"/>
 			<item value="Versuchen"/>
 			<item value="actionP"/>
 			<item value="SerialWorker"/>
 			<item value="enabled(false)"/>
-			<item value="RXDate"/>
-			<item value="RXDte"/>
-			<item value="//TODO HALP"/>
-			<item value="windowCl"/>
-			<item value="addTab"/>
-			<item value="�"/>
-			<item value="check"/>
-			<item value="togg"/>
-			<item value="runtime."/>
-			<item value="&quot;Zeit"/>
-			<item value="copy"/>
 		</list>
 		<list key="replacehistory">
+			<item value="\"/>
 			<item value=""/>
 			<item value=".equals(&quot;&quot;)"/>
 			<item value="public"/>

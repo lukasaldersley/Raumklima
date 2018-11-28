@@ -1,0 +1,7 @@
+*VERSION*
+- Changelog hinzugefügt
+- simple Hilfe in der Befehlszeilenausgabe hinzugefügt
+	(Paramter /h Beispiel: "java -jar Raumklima.jar /h")
+- möglichkeit hinzugefügt eine Datei mit dem Parameter /f direkt zu öffnen. 
+	(Beispiel: "java -jar Raumklima.jar /f Datei.csv")
+- Fehlerkorrekturen (im Detailbereich und der Graphenansicht)
