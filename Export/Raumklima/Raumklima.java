@@ -92,93 +92,95 @@ import com.fazecast.jSerialComm.SerialPort;
  * *JPanel* steht für eine Instanz eines beliebigen JPanel
  * https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/layout/BoxLayoutDemoProject/src/layout/BoxLayoutDemo.java
  */
-public class Raumklima implements ActionListener,WindowListener,WindowStateListener,ChartMouseListener,ComponentListener,KeyListener, MouseListener, FocusListener
-{
-    public static boolean debug=false;
-    public static boolean logging=false;
-    public static boolean log_ready=false;
-    public static String branch="master";
-    public static String projectUri="https://raw.githubusercontent.com/lukasaldersley/Raumklima/";
-    public static String downloadTargetUri="https://github.com/lukasaldersley/Raumklima/raw/";
+public class Raumklima implements ActionListener, WindowListener, WindowStateListener, ChartMouseListener,
+ComponentListener, KeyListener, MouseListener, FocusListener {
+    public static boolean debug = false;
+    public static boolean logging = false;
+    public static boolean log_ready = false;
+    public static String branch = "master";
+    public static String projectUri = "https://raw.githubusercontent.com/lukasaldersley/Raumklima/";
+    public static String downloadTargetUri = "https://github.com/lukasaldersley/Raumklima/raw/";
 
-    public static final String VERSION="2.6.1.4";
+    public static final String VERSION = "3.0.0.0";
 
-    public static boolean CLOSE_WINDOW_ALT_REQUIRED=false;
-    public static boolean OPEN_HELP_WINDOW_ALT_REQUIRED=false;
-    public static boolean OPEN_NEW_PLOT_ALT_REQUIRED=false;
-    public static boolean OPEN_NEW_WINDOW_ALT_REQUIRED=false;
-    public static boolean OPEN_SETTINGS_WINDOW_ALT_REQUIRED=false;
-    public static boolean REFRESH_FRAME_ALT_REQUIRED=false;
-    public static boolean SAVE_GRAPH_IMAGE_ALT_REQUIRED=false;
-    public static boolean TOGGLE_BOTTOM_PANEL_VISIBILITY_ALT_REQUIRED=false;
-    public static boolean TOGGLE_FULLSCREEN_MODE_ALT_REQUIRED=false;
+    //Definitions below are the fallback option, in case the config-file doesn't exist and can't be loaded
+    public static boolean CLOSE_WINDOW_ALT_REQUIRED = false;
+    public static boolean OPEN_HELP_WINDOW_ALT_REQUIRED = false;
+    public static boolean OPEN_NEW_PLOT_ALT_REQUIRED = false;
+    public static boolean OPEN_NEW_WINDOW_ALT_REQUIRED = false;
+    public static boolean OPEN_SETTINGS_WINDOW_ALT_REQUIRED = false;
+    public static boolean REFRESH_FRAME_ALT_REQUIRED = false;
+    public static boolean SAVE_GRAPH_IMAGE_ALT_REQUIRED = false;
+    public static boolean TOGGLE_BOTTOM_PANEL_VISIBILITY_ALT_REQUIRED = false;
+    public static boolean TOGGLE_FULLSCREEN_MODE_ALT_REQUIRED = false;
 
-    public static boolean CLOSE_WINDOW_CTRL_REQUIRED=true;
-    public static boolean OPEN_HELP_WINDOW_CTRL_REQUIRED=false;
-    public static boolean OPEN_NEW_PLOT_CTRL_REQUIRED=true;
-    public static boolean OPEN_NEW_WINDOW_CTRL_REQUIRED=true;
-    public static boolean OPEN_SETTINGS_WINDOW_CTRL_REQUIRED=true;
-    public static boolean REFRESH_FRAME_CTRL_REQUIRED=false;
-    public static boolean SAVE_GRAPH_IMAGE_CTRL_REQUIRED=true;
-    public static boolean TOGGLE_BOTTOM_PANEL_VISIBILITY_CTRL_REQUIRED=true;
-    public static boolean TOGGLE_FULLSCREEN_MODE_CTRL_REQUIRED=false;
+    public static boolean CLOSE_WINDOW_CTRL_REQUIRED = true;
+    public static boolean OPEN_HELP_WINDOW_CTRL_REQUIRED = false;
+    public static boolean OPEN_NEW_PLOT_CTRL_REQUIRED = true;
+    public static boolean OPEN_NEW_WINDOW_CTRL_REQUIRED = true;
+    public static boolean OPEN_SETTINGS_WINDOW_CTRL_REQUIRED = true;
+    public static boolean REFRESH_FRAME_CTRL_REQUIRED = false;
+    public static boolean SAVE_GRAPH_IMAGE_CTRL_REQUIRED = true;
+    public static boolean TOGGLE_BOTTOM_PANEL_VISIBILITY_CTRL_REQUIRED = true;
+    public static boolean TOGGLE_FULLSCREEN_MODE_CTRL_REQUIRED = false;
 
-    public static boolean CLOSE_WINDOW_SHIFT_REQUIRED=false;
-    public static boolean OPEN_HELP_WINDOW_SHIFT_REQUIRED=false;
-    public static boolean OPEN_NEW_PLOT_SHIFT_REQUIRED=false;
-    public static boolean OPEN_NEW_WINDOW_SHIFT_REQUIRED=false;
-    public static boolean OPEN_SETTINGS_WINDOW_SHIFT_REQUIRED=false;
-    public static boolean REFRESH_FRAME_SHIFT_REQUIRED=false;
-    public static boolean SAVE_GRAPH_IMAGE_SHIFT_REQUIRED=false;
-    public static boolean TOGGLE_BOTTOM_PANEL_VISIBILITY_SHIFT_REQUIRED=false;
-    public static boolean TOGGLE_FULLSCREEN_MODE_SHIFT_REQUIRED=false;
+    public static boolean CLOSE_WINDOW_SHIFT_REQUIRED = false;
+    public static boolean OPEN_HELP_WINDOW_SHIFT_REQUIRED = false;
+    public static boolean OPEN_NEW_PLOT_SHIFT_REQUIRED = false;
+    public static boolean OPEN_NEW_WINDOW_SHIFT_REQUIRED = false;
+    public static boolean OPEN_SETTINGS_WINDOW_SHIFT_REQUIRED = false;
+    public static boolean REFRESH_FRAME_SHIFT_REQUIRED = false;
+    public static boolean SAVE_GRAPH_IMAGE_SHIFT_REQUIRED = false;
+    public static boolean TOGGLE_BOTTOM_PANEL_VISIBILITY_SHIFT_REQUIRED = false;
+    public static boolean TOGGLE_FULLSCREEN_MODE_SHIFT_REQUIRED = false;
 
-    public static int CLOSE_WINDOW_KEY_CODE=87;//W
-    public static int OPEN_HELP_WINDOW_KEY_CODE=112;//F1
-    public static int OPEN_NEW_PLOT_KEY_CODE=79;//O
-    public static int OPEN_NEW_WINDOW_KEY_CODE=78;//N
-    public static int OPEN_SETTINGS_WINDOW_KEY_CODE=73;//I
-    public static int REFRESH_FRAME_KEY_CODE=116;//F5
-    public static int SAVE_GRAPH_IMAGE_KEY_CODE=83;//S
-    public static int TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_CODE=69;//E
-    public static int TOGGLE_FULLSCREEN_MODE_KEY_CODE=122;//F11
+    public static int CLOSE_WINDOW_KEY_CODE = 87;// W
+    public static int OPEN_HELP_WINDOW_KEY_CODE = 112;// F1
+    public static int OPEN_NEW_PLOT_KEY_CODE = 79;// O
+    public static int OPEN_NEW_WINDOW_KEY_CODE = 78;// N
+    public static int OPEN_SETTINGS_WINDOW_KEY_CODE = 73;// I
+    public static int REFRESH_FRAME_KEY_CODE = 116;// F5
+    public static int SAVE_GRAPH_IMAGE_KEY_CODE = 83;// S
+    public static int TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_CODE = 69;// E
+    public static int TOGGLE_FULLSCREEN_MODE_KEY_CODE = 122;// F11
 
-    public static String CLOSE_WINDOW_KEY_STRING="W";
-    public static String OPEN_HELP_WINDOW_KEY_STRING="F1";
-    public static String OPEN_NEW_PLOT_KEY_STRING="O";
-    public static String OPEN_NEW_WINDOW_KEY_STRING="N";
-    public static String OPEN_SETTINGS_WINDOW_KEY_STRING="I";
-    public static String REFRESH_FRAME_KEY_STRING="F5";
-    public static String SAVE_GRAPH_IMAGE_KEY_STRING="S";
+    public static String CLOSE_WINDOW_KEY_STRING = "W";
+    public static String OPEN_HELP_WINDOW_KEY_STRING = "F1";
+    public static String OPEN_NEW_PLOT_KEY_STRING = "O";
+    public static String OPEN_NEW_WINDOW_KEY_STRING = "N";
+    public static String OPEN_SETTINGS_WINDOW_KEY_STRING = "I";
+    public static String REFRESH_FRAME_KEY_STRING = "F5";
+    public static String SAVE_GRAPH_IMAGE_KEY_STRING = "S";
     public static String TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_STRING = "E";
-    public static String TOGGLE_FULLSCREEN_MODE_KEY_STRING="F11";
+    public static String TOGGLE_FULLSCREEN_MODE_KEY_STRING = "F11";
 
-    public static int HEIGHT_OF_DATA_BLOCK=25;
-    public static int WIDTH_OF_DATA_BLOCK=370;
-    public static int NUMBER_OF_KEY_COMBOS=9;
-    public static int NUMBER_OF_COPYRIGHT_NOTES=2000;
-    public static int NUMBER_OF_CONFIG_ENTRIES=91;
+    public static int HEIGHT_OF_DATA_BLOCK = 25;
+    public static int WIDTH_OF_DATA_BLOCK = 370;
+    public static int NUMBER_OF_KEY_COMBOS = 9;
+    public static int NUMBER_OF_COPYRIGHT_NOTES = 2000;
+    public static int NUMBER_OF_CONFIG_ENTRIES = 91;
 
-    private boolean allowKeyCombinationChange=false;
-    private boolean bottomPanelExpanded=false;
-    private boolean changeAltDown=false;
-    private boolean changeCtrlDown=false;
-    private boolean changeShiftDown=false;
-    private boolean jFilePickerFailed=false;
-    private boolean fullscreen=false;
-    private boolean saveJpeg=true;
-    private boolean savePng=true;
-    private boolean autoUpdate=true;
-    private boolean fullscreenOk=false;
-    private boolean bottomPanelExpandedOnStartup=false;
-    private boolean fullscreenOnStartup=false;
-    private boolean keyCombinationsEnabled=true;
+    private boolean allowKeyCombinationChange = false;
+    private boolean bottomPanelExpanded = false;
+    private boolean changeAltDown = false;
+    private boolean changeCtrlDown = false;
+    private boolean changeShiftDown = false;
+    private static boolean IP_Stream=false;
+    private boolean jFilePickerFailed = false;
+    private boolean fullscreen = false;
+    private boolean saveJpeg = true;
+    private boolean savePng = true;
+    private boolean autoUpdate = true;
+    private boolean fullscreenOk = false;
+    private boolean bottomPanelExpandedOnStartup = false;
+    private boolean fullscreenOnStartup = false;
+    private boolean keyCombinationsEnabled = true;
     private boolean isCustomInterpolated;
     private boolean getImageSizeAutomatically;
     private boolean geoMode;
-    private boolean replotting=false;
-    private boolean onlyInterpolationChanging=false;
-    private boolean isAlwaysOnTop=false;
+    private boolean replotting = false;
+    private boolean onlyInterpolationChanging = false;
+    private boolean isAlwaysOnTop = false;
     private boolean[] graphIsVisible;
 
     private BufferedReader br;
@@ -210,22 +212,24 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private FileOutputStream fileOutputStream;
 
     private static FileWriter logWriter;
-	private static boolean fileSpecifiedAsParameter;
-	private static String specifiedFile;
+    private static boolean fileSpecifiedAsParameter;
+    private static String specifiedFile;
+    private static boolean fromUpdate;
+	private static String IP;
 
     private GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 
     private int changeKeyCode;
-    private int counter=0;
-    private int dataPanelX=0;
+    private int counter = 0;
+    private int dataPanelX = 0;
     private int dataPanelY;
     private int numberOfGraphs;
-    private int titleNumber=1;
+    private int titleNumber = 1;
     private int width;
     private int height;
     private int currentlyEditedKeyCombinationNumber;
-    private int interpolationOffset=0;
-    private int interpolationFactor=0;
+    private int interpolationOffset = 0;
+    private int interpolationFactor = 0;
     private int imageWidth;
     private int imageHeight;
 
@@ -255,9 +259,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private JFrame helpWindow;
     private JFrame mainWindow;
     private JFrame settingsWindow;
+    private JFrame updateLogWindow;
 
+    private JLabel DeviceSettingsTitle;
+    private JLabel DeviceTimeLabel;
     private JLabel KeyCombinationPanelTitle;
     private JLabel pleaseWaitMessageText;
+    private JLabel SystemTimeLabel;
     private JLabel[] configureKeyCombinationText;
     private JLabel[] copyrightNotes;
     private JLabel[] dataLabels;
@@ -333,7 +341,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private ReadableByteChannel readableByteChannelFromSource;
 
     private String changeKeyChar;
-    private String title="Raumklima-Auswertungssoftware";
+    private String title = "Raumklima-Auswertungssoftware";
     private String[] dataValueDescriptors;
     private String[] configRaw;
     private String[] setNewKeyCombinationTexts;
@@ -344,12 +352,9 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     private XYSeriesCollection xYSeriesCollection;
     private JPanel DeviceSettings;
-    private JLabel DeviceSettingsTitle;
-    JButton SetRTCButton;
-    private JLabel SystemTimeLabel;
-    private JLabel DeviceTimeLabel;
     private JPanel SystemTimePanel;
     private JPanel DeviceTimePanel;
+    JButton SetRTCButton;
     private JTextField SystemTimeField;
     private Timer SystemTimeFieldTimer;
     private SimpleDateFormat SystemTimeFormatter;
@@ -373,334 +378,664 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     String RXDate;
     JPanel TimePanel;
     private boolean SerialForbidden;
+    private String UPDATE_WINDOW_TITLE = "Changelog";
+    private String UPDATE_WINDOW_CLOSE_BUTTON = "OK";
 
-    public static void main(String[] args){//Startet das Programm (ggf mnit debug/logging)
-        for(int i=0;i<args.length;i++){
-            if(args[i].equalsIgnoreCase("log")||args[i].equalsIgnoreCase("l")||args[i].equalsIgnoreCase("/log")||args[i].equalsIgnoreCase("/l")||args[i].equalsIgnoreCase("-log")||args[i].equalsIgnoreCase("-l")){
-                logging=true;
-                log("");
-                System.out.println("Dateiname für die Aufzeichnung: "+logFile.getName());
-            }
-            if(args[i].equalsIgnoreCase("debug")||args[i].equalsIgnoreCase("d")||args[i].equalsIgnoreCase("/debug")||args[i].equalsIgnoreCase("/d")||args[i].equalsIgnoreCase("-debug")||args[i].equalsIgnoreCase("-d")){
-                debug=true;
-                logln("Debugmodus aktiviert");
-            }
-            if(args[i].equalsIgnoreCase("f")||args[i].equalsIgnoreCase("file")||args[i].equalsIgnoreCase("-f")||args[i].equalsIgnoreCase("-file")||args[i].equalsIgnoreCase("/f")||args[i].equalsIgnoreCase("/file")) {
-            	logln("Datei wird direkt gelesen");
-            	fileSpecifiedAsParameter=true;
-            	specifiedFile=args[i+1];
-            	i++;
-            }
-            if(args[i].equalsIgnoreCase("dlf")||args[i].equalsIgnoreCase("-dlf")||args[i].equalsIgnoreCase("/dlf")||
-            		args[i].equalsIgnoreCase("dfl")||args[i].equalsIgnoreCase("-dfl")||args[i].equalsIgnoreCase("/dfl")||
-            		args[i].equalsIgnoreCase("fdl")||args[i].equalsIgnoreCase("-fdl")||args[i].equalsIgnoreCase("/fdl")||
-            		args[i].equalsIgnoreCase("fld")||args[i].equalsIgnoreCase("-fld")||args[i].equalsIgnoreCase("/fld")||
-            		args[i].equalsIgnoreCase("lfd")||args[i].equalsIgnoreCase("-lfd")||args[i].equalsIgnoreCase("/lfd")||
-            		args[i].equalsIgnoreCase("ldf")||args[i].equalsIgnoreCase("-ldf")||args[i].equalsIgnoreCase("/ldf")
-            		) {
-                debug=true;
-                logln("Debugmodus aktiviert");
-            	logging=true;
-                log("");
-                System.out.println("Dateiname für die Aufzeichnung: "+logFile.getName());
-                logln("Datei wird direkt gelesen");
-            	fileSpecifiedAsParameter=true;
-            	specifiedFile=args[i+1];
-            	i++;
-            }
-            if(args[i].equalsIgnoreCase("dl")||args[i].equalsIgnoreCase("-dl")||args[i].equalsIgnoreCase("/dl")||args[i].equalsIgnoreCase("ld")||args[i].equalsIgnoreCase("-ld")||args[i].equalsIgnoreCase("/ld")) {
-                debug=true;
-                logln("Debugmodus aktiviert");
-            	logging=true;
-                log("");
-                System.out.println("Dateiname für die Aufzeichnung: "+logFile.getName());
-            }
-            if(args[i].equalsIgnoreCase("lf")||args[i].equalsIgnoreCase("-lf")||args[i].equalsIgnoreCase("/lf")||args[i].equalsIgnoreCase("fl")||args[i].equalsIgnoreCase("-fl")||args[i].equalsIgnoreCase("/fl")) {
-            	logging=true;
-                log("");
-                System.out.println("Dateiname für die Aufzeichnung: "+logFile.getName());
-                logln("Datei wird direkt gelesen");
-            	fileSpecifiedAsParameter=true;
-            	specifiedFile=args[i+1];
-            	i++;
-            }
-            if(args[i].equalsIgnoreCase("df")||args[i].equalsIgnoreCase("-df")||args[i].equalsIgnoreCase("/df")||args[i].equalsIgnoreCase("fd")||args[i].equalsIgnoreCase("-fd")||args[i].equalsIgnoreCase("/fd")) {
-            	debug=true;
-                logln("Debugmodus aktiviert");
-                logln("Datei wird direkt gelesen");
-            	fileSpecifiedAsParameter=true;
-            	specifiedFile=args[i+1];
-            	i++;
-            }
-            else if(args[i].equalsIgnoreCase("?")||args[i].equalsIgnoreCase("help")||args[i].equalsIgnoreCase("h")||args[i].equalsIgnoreCase("/?")||args[i].equalsIgnoreCase("/help")||args[i].equalsIgnoreCase("/h")||args[i].equalsIgnoreCase("-?")||args[i].equalsIgnoreCase("-help")||args[i].equalsIgnoreCase("-h")){
-                System.out.println("\nBefehlszeilenparameter\n\n\"d\" oder \"debug\"\t\tDebugmodus\n\"l\" oder \"log\"\t\t\tAusgabe in Datei abspeichern\n\"f\" oder \"file\"\t\t\tWenn Sie diesen Parameter angeben, MÜSSEN Sie als NÄCHSTEN Parameter den Pfad zur einer Datei angeben.\n\t\t\t\tDiese wird beim Start des "
-                		+ "Programms dann automatisch geöffnet\n\"h\", \"?\" oder \"help\"\t\tdiese Hilfe anzeigen\n\n\nBEISPIELE:\n\n\tDebugmodus und aufzeichnen der Ausgabe:\n\t\tjava -jar Raumklima.jar -dl\n\t\t oder\n\t\tjava -jar Raumklima.jar -d -l\n\n\tDebugmodus und Öffnen der Datei BEISPIEL.csv.\n\t"
-                		+ "Die Datei befindet sich auf dem Desktop des Benutzers \"benutzer\". Passen Sie bitte den Pfad und den Dateinamen an eigene Bedürfnisse an.\n\tSie dürden anstatt -df natürlich auch -d -f schreiben.\n\t\tWindows:\n\t\t\tjava -jar Raumklima.jar -df C:\\Users\\benutzer\\Desktop\\BEISPIEL.csv\n\t\tLinux:\n\t\t\tjava -jar Raumklima.jar -df /home/benutzer/Desktop/BEISPIEL.csv\n\n");
-                System.exit(0);
-            }
+    private static int factorial(int in){
+        int res=1;
+        for(int i=in;i>0;i--){
+            res*=i;
         }
-        if(fileSpecifiedAsParameter) {
-        	new Raumklima(specifiedFile);
+        return res;
+    }
+
+    public static String permutation(String str) { 
+        String x= permutation("", str,"");
+        return x.substring(0,x.length()-1);
+    }
+
+    private static String permutation(String prefix, String str,String returnValue) {
+        int n = str.length();
+        if (n == 0) {
+            System.out.println(prefix);
+            returnValue+=prefix+"|";
         }
         else {
-        	new Raumklima();
+            for (int i = 0; i < n; i++)
+                returnValue=permutation(prefix + str.charAt(i), str.substring(0, i) + str.substring(i+1, n),returnValue);
         }
+        return returnValue;
     }
 
-    public static void log(Object msg){//anstatt von System.out.print() wird log() verwendet; folgende methoden analog
-        if(debug){
-            System.out.print(msg);
-        }
-        try{
-            if(logging){
-                if(log_ready){//falls logdatei schon vorhanden => reinschreiben
-                    logWriter.write(String.valueOf(msg));
-                    logWriter.flush();
-                }
-                else{//sonst erst ertellen und dann reinschreiben
-                    logFile=new File("RaumklimaLog_"+new SimpleDateFormat("dd.MM.yyyy_HH,mm").format(new Date())+".txt");
-                    logWriter=new FileWriter(logFile);
-                    log_ready=true;
-                    logWriter.write(String.valueOf(msg));
-                    logWriter.flush();
-                }
+    public static boolean testPerm(String testAgainst,String permutator) {
+        System.out.println(factorial(permutator.length()));
+        String[] testCases=permutation(permutator).split("|");
+        for(String T:testCases){
+            if(testAgainst.equalsIgnoreCase(T)||testAgainst.equalsIgnoreCase("/"+T)||testAgainst.equalsIgnoreCase("-"+T)){
+                return true;
             }
         }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    public static void logln(Object msg){
-        if(debug){
-            System.out.println(msg);
-        }
-        try{
-            if(logging){
-                if(log_ready){
-                    logWriter.write(String.valueOf(msg)+System.lineSeparator());
-                    logWriter.flush();
-                }
-                else{
-                    logFile=new File("RaumklimaLog_"+new SimpleDateFormat("dd.MM.yyyy_HH,mm").format(new Date())+".txt");
-                    logWriter=new FileWriter(logFile);
-                    log_ready=true;
-                    logWriter.write(String.valueOf(msg)+System.lineSeparator());
-                    logWriter.flush();
-                }
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    public static void logln(){
-        if(debug){
-            System.out.println();
-        }
-        try{
-            if(logging){
-                if(log_ready){
-                    logWriter.write(System.lineSeparator());
-                    logWriter.flush();
-                }
-                else{
-                    logFile=new File("RaumklimaLog_"+new SimpleDateFormat("dd.MM.yyyy_HH,mm").format(new Date())+".txt");
-                    logWriter=new FileWriter(logFile);
-                    log_ready=true;
-                    logWriter.write(System.lineSeparator());
-                    logWriter.flush();
-                }
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * the standard constructor
-     * This Constructor just calls the {@code setup()} Method.
-     */
-    public Raumklima(){
-        setup(true,"");
-    }
-
-    /**
-     * the Secondary Constructor, which includes the "advanced" features (for the numbering scheme). This Constructor just calls the setup Method.
-     * @param newTitleNumber the number that should be displayed in the Titlebar on the MainWindow
-     * @param newPrevious the preceding instance of Raumklima (only used to update the numbering scheme if a window is closed or opened)
-     * @param newNext the following instance of Raumklima (only used to update the numbering scheme if a window is closed or opened)
-     */
-    public Raumklima(int newTitleNumber, Raumklima newPrevious, Raumklima newNext) {
-        SerialForbidden=true;
-        titleNumber=newTitleNumber;
-        previous=newPrevious;
-        next=newNext;
-        setup(true,"");
+        return false;
     }
     
-    /**
-     * The tertiary Constructor
-     * This Constructor is used if a file is specified that should automatically be opened
-     * @param fileToOpen the filename that is to be opened
-     */
-    public Raumklima(String fileToOpen) {
-    	logln("File to open: "+fileToOpen);
-    	setup(false,fileToOpen);
+    public static boolean tp(String args,String t){
+        return (t.length()==1)?eq(args,t):testPerm(args,t);
+    }
+    
+    public static boolean eq(String a,String b){
+        return (a.equalsIgnoreCase(b)||a.equalsIgnoreCase("-"+b)||a.equalsIgnoreCase("/"+b)||a.equalsIgnoreCase("--"+b));
+    }
+
+    // TODO add log for UpdateProcedure
+    public static void main(String[] args) {// Startet das Programm (ggf mnit debug/logging)
+        for (int i = 0; i < args.length; i++) {
+            if (eq(args[i],"log") || tp(args[i],"l")) {
+                logging = true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: " + logFile.getName());
+            }
+            else if (eq(args[i],"debug") || tp(args[i],"d")) {
+                debug = true;
+                logln("Debugmodus aktiviert");
+            }
+            else if (tp(args[i],"i")||eq(args[i],"IP")||eq(args[i],"NETWORK")){
+                logln("Versuche Direkt aus IP-Stream zu lesen.");
+                i++;
+                logln("IP: "+args[i]);
+                IP=args[i];
+                IP_Stream=true;
+            }
+            else if (tp(args[i],"f") || eq(args[i],"file")) {
+                logln("Datei wird direkt gelesen");
+                fileSpecifiedAsParameter = true;
+                specifiedFile = args[i + 1];
+                i++;
+            }
+            else if (tp(args[i],"u")) {
+                fromUpdate = true;
+            }
+            else if (tp(args[i],"du")) {
+                fromUpdate = true;
+                debug = true;
+                logln("Debugmodus aktiviert");
+            }
+            else if (tp(args[i],"lu")) {
+                fromUpdate = true;
+                logging = true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: " + logFile.getName());
+            }
+            else if (tp(args[i],"idu")) {
+                fromUpdate = true;
+                debug = true;
+                logln("Debugmodus aktiviert");
+                logln("Versuche Direkt aus IP-Stream zu lesen.");
+                i++;
+                logln("IP: "+args[i]);
+                IP=args[i];
+                IP_Stream=true;
+            }
+            else if (tp(args[i],"ilu")) {
+                fromUpdate = true;
+                logging = true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: " + logFile.getName());
+                logln("Versuche Direkt aus IP-Stream zu lesen.");
+                i++;
+                logln("IP: "+args[i]);
+                IP=args[i];
+                IP_Stream=true;
+            }
+            else if (tp(args[i],"fu")) {
+                fromUpdate = true;
+                logln("Datei wird direkt gelesen");
+                fileSpecifiedAsParameter = true;
+                specifiedFile = args[i + 1];
+                i++;
+            }
+            else if (tp(args[i],"dlu")) {
+                debug = true;
+                logln("Debugmodus aktiviert");
+                logging = true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: " + logFile.getName());
+            }
+            else if (tp(args[i],"idlu")) {
+                debug = true;
+                logln("Debugmodus aktiviert");
+                logging = true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: " + logFile.getName());
+                logln("Versuche Direkt aus IP-Stream zu lesen.");
+                i++;
+                logln("IP: "+args[i]);
+                IP=args[i];
+                IP_Stream=true;
+            }
+            else if (tp(args[i],"lfu")) {
+                logging = true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: " + logFile.getName());
+                logln("Datei wird direkt gelesen");
+                fileSpecifiedAsParameter = true;
+                specifiedFile = args[i + 1];
+                i++;
+            }
+            else if (tp(args[i],"dfu")) {
+                debug = true;
+                logln("Debugmodus aktiviert");
+                logln("Datei wird direkt gelesen");
+                fileSpecifiedAsParameter = true;
+                specifiedFile = args[i + 1];
+                i++;
+            }
+            else if (tp(args[i],"dlfu")) {
+                fromUpdate = true;
+
+                debug = true;
+                logln("Debugmodus aktiviert");
+                logging = true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: " + logFile.getName());
+                logln("Datei wird direkt gelesen");
+                fileSpecifiedAsParameter = true;
+                specifiedFile = args[i + 1];
+                i++;
+            }
+            else if (tp(args[i],"dlf")) {
+                debug = true;
+                logln("Debugmodus aktiviert");
+                logging = true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: " + logFile.getName());
+                logln("Datei wird direkt gelesen");
+                fileSpecifiedAsParameter = true;
+                specifiedFile = args[i + 1];
+                i++;
+            }
+            else if (tp(args[i],"dl")) {
+                debug = true;
+                logln("Debugmodus aktiviert");
+                logging = true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: " + logFile.getName());
+            }
+            else if (tp(args[i],"idl")) {
+                debug = true;
+                logln("Debugmodus aktiviert");
+                logging = true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: " + logFile.getName());
+                logln("Versuche Direkt aus IP-Stream zu lesen.");
+                i++;
+                logln("IP: "+args[i]);
+                IP=args[i];
+                IP_Stream=true;
+            }
+            else if (tp(args[i],"lf")) {
+                logging = true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: " + logFile.getName());
+                logln("Datei wird direkt gelesen");
+                fileSpecifiedAsParameter = true;
+                specifiedFile = args[i + 1];
+                i++;
+            }
+            else if (tp(args[i],"df")) {
+                debug = true;
+                logln("Debugmodus aktiviert");
+                logln("Datei wird direkt gelesen");
+                fileSpecifiedAsParameter = true;
+                specifiedFile = args[i + 1];
+                i++;
+            }
+            else if (tp(args[i],"?") || eq(args[i],"help") || tp(args[i],"h")) {
+                System.out.println(
+                		"\nBefehlszeilenparameter\n\n\"d\" oder \"debug\"\t\tDebugmodus\n\"l\" oder \"log\"\t\t\tAusgabe in Datei abspeichern\n"
+                		+ "\"i\" oder \"ip\"\t\t\tWenn Sie diesen Parameter angeben, MÜSSEN Sie als NÄCHSTEN Parameter eine IPv4-Addresse (z.B. 127.0.0.1) angeben.\n"
+                		+ "\t\t\t\tStandardmäßig wird der Port 80 angenommen, falls Sie einen andern Port als Quelle auswählen möchten, scheiben Sie z.B.\n"
+                		+ "\t\t\t\t\t127.0.0.1:1234\n\t\t\t\tDabei ist 127.0.0.1 die IPv4-Addresse und 1234 der Port. (Doppelpunkt nicht vergessen)\n"
+                		+ "\t\t\t\tDas Programm wird dann kontinuierlich versuchen neue Daten von der angegebenen IP-Addresse zu lesen und zum Plot hinzuzufügen\n"
+                		+ "\t\t\t\tACHTUNG: Die Parameter \"i\" (bzw. \"ip\") und \"f\" (bzw. \"file\") können NICHT gleichzeitig verwendet werden!!!\n"
+                		+ "\"f\" oder \"file\"\t\t\tWenn Sie diesen Parameter angeben, MÜSSEN Sie als NÄCHSTEN Parameter den Pfad zur einer Datei angeben.\n"
+                		+ "\t\t\t\tDiese wird beim Start des Programms dann automatisch geöffnet\n"
+                		+ "\t\t\t\tACHTUNG: Die Parameter \"i\" (bzw. \"ip\") und \"f\" (bzw. \"file\") können NICHT gleichzeitig verwendet werden!!!\n"
+                		+ "\"h\", \"?\" oder \"help\"\t\tdiese Hilfe anzeigen\n\n\nBEISPIELE:\n\n"
+                		+ "\tDebugmodus und aufzeichnen der Ausgabe:\n\t\tjava -jar Raumklima.jar -dl\n\t\t oder\n"
+                		+ "\t\tjava -jar Raumklima.jar -d -l\n\n\tDebugmodus und Öffnen der Datei BEISPIEL.csv.\n"
+                		+ "\tDie Datei befindet sich auf dem Desktop des Benutzers \"benutzer\". Passen Sie bitte den Pfad und den Dateinamen an eigene Bedürfnisse an.\n"
+                		+ "\tSie dürden anstatt -df natürlich auch -d -f schreiben.\n"
+                		+ "\t\tWindows:\n\t\t\tjava -jar Raumklima.jar -df C:\\Users\\benutzer\\Desktop\\BEISPIEL.csv\n"
+                		+ "\t\tLinux:\n\t\t\tjava -jar Raumklima.jar -df /home/benutzer/Desktop/BEISPIEL.csv\n\n");
+                System.exit(0);
+            }
+            /*BACKUP BEFORE USING PARAMETRIC PERMUTATIONS
+             * 
+             * if (args[i].equalsIgnoreCase("log") || args[i].equalsIgnoreCase("l") || args[i].equalsIgnoreCase("/log")
+            || args[i].equalsIgnoreCase("/l") || args[i].equalsIgnoreCase("-log")
+            || args[i].equalsIgnoreCase("-l")) {
+                logging = true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: " + logFile.getName());
+            }
+            if (args[i].equalsIgnoreCase("debug") || args[i].equalsIgnoreCase("d") || args[i].equalsIgnoreCase("/debug")
+            || args[i].equalsIgnoreCase("/d") || args[i].equalsIgnoreCase("-debug")
+            || args[i].equalsIgnoreCase("-d")) {
+                debug = true;
+                logln("Debugmodus aktiviert");
+            }
+            if (args[i].equalsIgnoreCase("f") || args[i].equalsIgnoreCase("file") || args[i].equalsIgnoreCase("-f")
+            || args[i].equalsIgnoreCase("-file") || args[i].equalsIgnoreCase("/f")
+            || args[i].equalsIgnoreCase("/file")) {
+                logln("Datei wird direkt gelesen");
+                fileSpecifiedAsParameter = true;
+                specifiedFile = args[i + 1];
+                i++;
+            }
+            if (args[i].equalsIgnoreCase("u") || args[i].equalsIgnoreCase("/u") || args[i].equalsIgnoreCase("-u")) {
+                fromUpdate = true;
+            }
+            if (args[i].equalsIgnoreCase("du") || args[i].equalsIgnoreCase("/du") || args[i].equalsIgnoreCase("-du")) {
+                fromUpdate = true;
+                debug = true;
+                logln("Debugmodus aktiviert");
+            }
+            if (args[i].equalsIgnoreCase("lu") || args[i].equalsIgnoreCase("/lu") || args[i].equalsIgnoreCase("-lu")) {
+                fromUpdate = true;
+                logging = true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: " + logFile.getName());
+            }
+            if (args[i].equalsIgnoreCase("fu") || args[i].equalsIgnoreCase("/fu") || args[i].equalsIgnoreCase("-fu")) {
+                fromUpdate = true;
+                logln("Datei wird direkt gelesen");
+                fileSpecifiedAsParameter = true;
+                specifiedFile = args[i + 1];
+                i++;
+            }
+
+            if (args[i].equalsIgnoreCase("dlu") || args[i].equalsIgnoreCase("-dlu")
+            || args[i].equalsIgnoreCase("/dlu")) {
+                debug = true;
+                logln("Debugmodus aktiviert");
+                logging = true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: " + logFile.getName());
+            }
+            if (args[i].equalsIgnoreCase("lfu") || args[i].equalsIgnoreCase("-lfu")
+            || args[i].equalsIgnoreCase("/lfu")) {
+                logging = true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: " + logFile.getName());
+                logln("Datei wird direkt gelesen");
+                fileSpecifiedAsParameter = true;
+                specifiedFile = args[i + 1];
+                i++;
+            }
+            if (args[i].equalsIgnoreCase("dfu") || args[i].equalsIgnoreCase("-dfu")
+            || args[i].equalsIgnoreCase("/dfu")) {
+                debug = true;
+                logln("Debugmodus aktiviert");
+                logln("Datei wird direkt gelesen");
+                fileSpecifiedAsParameter = true;
+                specifiedFile = args[i + 1];
+                i++;
+            }
+
+            if (args[i].equalsIgnoreCase("dlfu") || args[i].equalsIgnoreCase("/dlfu")
+            || args[i].equalsIgnoreCase("-dlfu")) {
+                fromUpdate = true;
+
+                debug = true;
+                logln("Debugmodus aktiviert");
+                logging = true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: " + logFile.getName());
+                logln("Datei wird direkt gelesen");
+                fileSpecifiedAsParameter = true;
+                specifiedFile = args[i + 1];
+                i++;
+            }
+            if (args[i].equalsIgnoreCase("dlf") || args[i].equalsIgnoreCase("-dlf") || args[i].equalsIgnoreCase("/dlf")
+            || args[i].equalsIgnoreCase("dfl") || args[i].equalsIgnoreCase("-dfl")
+            || args[i].equalsIgnoreCase("/dfl") || args[i].equalsIgnoreCase("fdl")
+            || args[i].equalsIgnoreCase("-fdl") || args[i].equalsIgnoreCase("/fdl")
+            || args[i].equalsIgnoreCase("fld") || args[i].equalsIgnoreCase("-fld")
+            || args[i].equalsIgnoreCase("/fld") || args[i].equalsIgnoreCase("lfd")
+            || args[i].equalsIgnoreCase("-lfd") || args[i].equalsIgnoreCase("/lfd")
+            || args[i].equalsIgnoreCase("ldf") || args[i].equalsIgnoreCase("-ldf")
+            || args[i].equalsIgnoreCase("/ldf")) {
+                debug = true;
+                logln("Debugmodus aktiviert");
+                logging = true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: " + logFile.getName());
+                logln("Datei wird direkt gelesen");
+                fileSpecifiedAsParameter = true;
+                specifiedFile = args[i + 1];
+                i++;
+            }
+            if (args[i].equalsIgnoreCase("dl") || args[i].equalsIgnoreCase("-dl") || args[i].equalsIgnoreCase("/dl")
+            || args[i].equalsIgnoreCase("ld") || args[i].equalsIgnoreCase("-ld")
+            || args[i].equalsIgnoreCase("/ld")) {
+                debug = true;
+                logln("Debugmodus aktiviert");
+                logging = true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: " + logFile.getName());
+            }
+            if (args[i].equalsIgnoreCase("lf") || args[i].equalsIgnoreCase("-lf") || args[i].equalsIgnoreCase("/lf")
+            || args[i].equalsIgnoreCase("fl") || args[i].equalsIgnoreCase("-fl")
+            || args[i].equalsIgnoreCase("/fl")) {
+                logging = true;
+                log("");
+                System.out.println("Dateiname für die Aufzeichnung: " + logFile.getName());
+                logln("Datei wird direkt gelesen");
+                fileSpecifiedAsParameter = true;
+                specifiedFile = args[i + 1];
+                i++;
+            }
+            if (args[i].equalsIgnoreCase("df") || args[i].equalsIgnoreCase("-df") || args[i].equalsIgnoreCase("/df")
+            || args[i].equalsIgnoreCase("fd") || args[i].equalsIgnoreCase("-fd")
+            || args[i].equalsIgnoreCase("/fd")) {
+                debug = true;
+                logln("Debugmodus aktiviert");
+                logln("Datei wird direkt gelesen");
+                fileSpecifiedAsParameter = true;
+                specifiedFile = args[i + 1];
+                i++;
+            } else if (args[i].equalsIgnoreCase("?") || args[i].equalsIgnoreCase("help")
+            || args[i].equalsIgnoreCase("h") || args[i].equalsIgnoreCase("/?")
+            || args[i].equalsIgnoreCase("/help") || args[i].equalsIgnoreCase("/h")
+            || args[i].equalsIgnoreCase("-?") || args[i].equalsIgnoreCase("-help")
+            || args[i].equalsIgnoreCase("-h")) {
+                System.out.println(
+                    "\nBefehlszeilenparameter\n\n\"d\" oder \"debug\"\t\tDebugmodus\n\"l\" oder \"log\"\t\t\tAusgabe in Datei abspeichern\n\"f\" oder \"file\"\t\t\tWenn Sie diesen Parameter angeben, MÜSSEN Sie als NÄCHSTEN Parameter den Pfad zur einer Datei angeben.\n\t\t\t\tDiese wird beim Start des "
+                    + "Programms dann automatisch geöffnet\n\"h\", \"?\" oder \"help\"\t\tdiese Hilfe anzeigen\n\n\nBEISPIELE:\n\n\tDebugmodus und aufzeichnen der Ausgabe:\n\t\tjava -jar Raumklima.jar -dl\n\t\t oder\n\t\tjava -jar Raumklima.jar -d -l\n\n\tDebugmodus und Öffnen der Datei BEISPIEL.csv.\n\t"
+                    + "Die Datei befindet sich auf dem Desktop des Benutzers \"benutzer\". Passen Sie bitte den Pfad und den Dateinamen an eigene Bedürfnisse an.\n\tSie dürden anstatt -df natürlich auch -d -f schreiben.\n\t\tWindows:\n\t\t\tjava -jar Raumklima.jar -df C:\\Users\\benutzer\\Desktop\\BEISPIEL.csv\n\t\tLinux:\n\t\t\tjava -jar Raumklima.jar -df /home/benutzer/Desktop/BEISPIEL.csv\n\n");
+                System.exit(0);
+            }*/
+        }
+        if (fileSpecifiedAsParameter) {
+            new Raumklima(specifiedFile);
+        } else {
+            new Raumklima();
+        }
+    }
+
+    public static void log(Object msg) {// anstatt von System.out.print() wird log() verwendet; folgende methoden analog
+        if (debug) {
+            System.out.print(msg);
+        }
+        try {
+            if (logging) {
+                if (log_ready) {// falls logdatei schon vorhanden => reinschreiben
+                    logWriter.write(String.valueOf(msg));
+                    logWriter.flush();
+                } else {// sonst erst ertellen und dann reinschreiben
+                    logFile = new File(
+                        "RaumklimaLog_" + new SimpleDateFormat("dd.MM.yyyy_HH,mm").format(new Date()) + ".txt");
+                    logWriter = new FileWriter(logFile);
+                    log_ready = true;
+                    logWriter.write(String.valueOf(msg));
+                    logWriter.flush();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void logln(Object msg) {
+        if (debug) {
+            System.out.println(msg);
+        }
+        try {
+            if (logging) {
+                if (log_ready) {
+                    logWriter.write(String.valueOf(msg) + System.lineSeparator());
+                    logWriter.flush();
+                } else {
+                    logFile = new File(
+                        "RaumklimaLog_" + new SimpleDateFormat("dd.MM.yyyy_HH,mm").format(new Date()) + ".txt");
+                    logWriter = new FileWriter(logFile);
+                    log_ready = true;
+                    logWriter.write(String.valueOf(msg) + System.lineSeparator());
+                    logWriter.flush();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void logln() {
+        if (debug) {
+            System.out.println();
+        }
+        try {
+            if (logging) {
+                if (log_ready) {
+                    logWriter.write(System.lineSeparator());
+                    logWriter.flush();
+                } else {
+                    logFile = new File(
+                        "RaumklimaLog_" + new SimpleDateFormat("dd.MM.yyyy_HH,mm").format(new Date()) + ".txt");
+                    logWriter = new FileWriter(logFile);
+                    log_ready = true;
+                    logWriter.write(System.lineSeparator());
+                    logWriter.flush();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
-     * This Method does basically all the initialisation. It is called by all Constructors.
-     * @param settingsWindowUpperLeftPanel 
+     * the standard constructor This Constructor just calls the {@code setup()}
+     * Method.
      */
-    private void setup(boolean usingFileChooser, String fileName){
+    public Raumklima() {
+        setup(true, "");
+    }
+
+    /**
+     * the Secondary Constructor, which includes the "advanced" features (for the
+     * numbering scheme). This Constructor just calls the setup Method.
+     * 
+     * @param newTitleNumber
+     *            the number that should be displayed in the Titlebar on the
+     *            MainWindow
+     * @param newPrevious
+     *            the preceding instance of Raumklima (only used to update the
+     *            numbering scheme if a window is closed or opened)
+     * @param newNext
+     *            the following instance of Raumklima (only used to update the
+     *            numbering scheme if a window is closed or opened)
+     */
+    public Raumklima(int newTitleNumber, Raumklima newPrevious, Raumklima newNext) {
+        SerialForbidden = true;
+        titleNumber = newTitleNumber;
+        previous = newPrevious;
+        next = newNext;
+        setup(true, "");
+    }
+
+    /**
+     * The tertiary Constructor This Constructor is used if a file is specified that
+     * should automatically be opened
+     * 
+     * @param fileToOpen
+     *            the filename that is to be opened
+     */
+    public Raumklima(String fileToOpen) {
+        logln("File to open: " + fileToOpen);
+        setup(false, fileToOpen);
+    }
+
+    /**
+     * This Method does basically all the initialisation. It is called by all
+     * Constructors.
+     * 
+     * @param settingsWindowUpperLeftPanel
+     */
+    private void setup(boolean usingFileChooser, String fileName) {
 
         logln(Charset.defaultCharset());
-        //check if the Configurationfile exists, if not download it
-        configFile=new File("RaumklimaConfig.txt");
-        if(!configFile.exists()){//falls keine config datei vorhanden => standadddatei herunterladen
-            //https://stackoverflow.com/questions/921262/how-to-download-and-save-a-file-from-internet-using-java
-            //(antwort von dfa und Attila)
-            //how-to-download-and-save-a-file-from-internet-using-java.htm
-            //1.9.17 20:58
-            try{
-                source = new URL(projectUri+branch+"/PublicVersion/RaumklimaConfig.txt");
+        // check if the Configurationfile exists, if not download it
+        configFile = new File("RaumklimaConfig.txt");
+        if (!configFile.exists()) {// falls keine config datei vorhanden => standadddatei herunterladen
+            // https://stackoverflow.com/questions/921262/how-to-download-and-save-a-file-from-internet-using-java
+            // (antwort von dfa und Attila)
+            // how-to-download-and-save-a-file-from-internet-using-java.htm
+            // 1.9.17 20:58
+            try {
+                source = new URL(projectUri + branch + "/PublicVersion/RaumklimaConfig.txt");
                 readableByteChannelFromSource = Channels.newChannel(source.openStream());
                 fileOutputStream = new FileOutputStream("RaumklimaConfig.txt");
                 fileOutputStream.getChannel().transferFrom(readableByteChannelFromSource, 0, Long.MAX_VALUE);
                 fileOutputStream.close();
-                configFile=new File("RaumklimaConfig.txt");
-            }
-            catch(Exception e){
+                configFile = new File("RaumklimaConfig.txt");
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        //Check for Software updates
-        if(autoUpdate){
-            if(checkIfUpdateAvailable()){
-                updateJar();
+        // Check for Software updates
+        if (!fromUpdate) {
+            if (autoUpdate) {
+                if (checkIfUpdateAvailable()) {
+                    updateJar();
+                }
+            }
+            if (true) {// NOW
+                // show Changelog from Github in own JFrame
             }
         }
 
-        if(!SerialForbidden) {
-            ports=SerialPort.getCommPorts();
+        if (!SerialForbidden) {
+            ports = SerialPort.getCommPorts();
             SerialPort P;
-            for(int i=0;i<ports.length;i++) {
-                P=ports[i];
-                logln(P.getDescriptivePortName()+"|"+P.getSystemPortName());
-                if(P.getDescriptivePortName().startsWith("Arduino Mega 2560")) {//"Arduino Leonardo")){
-                    port=P;
+            for (int i = 0; i < ports.length; i++) {
+                P = ports[i];
+                logln(P.getDescriptivePortName() + "|" + P.getSystemPortName());
+                if (P.getDescriptivePortName().startsWith("Arduino Mega 2560")) {// "Arduino Leonardo")){
+                    port = P;
                     port.setBaudRate(115200);
-                    SerialAvailable=port.openPort();
+                    SerialAvailable = port.openPort();
                     logln(port.isOpen());
-                    SerialAvailable=port.isOpen();
-                    selectedPort=i;
+                    SerialAvailable = port.isOpen();
+                    selectedPort = i;
                 }
             }
             logln(SerialAvailable);
-            if(port==null) {
+            if (port == null) {
                 logln("NO APROPRIATE SERIAL PORT");
-                SerialAvailable=false;
-            }
-            else {
-                if(SerialAvailable) {
+                SerialAvailable = false;
+            } else {
+                if (SerialAvailable) {
                     logln(port);
-                    serialScanner=new Scanner(new InputStreamReader(port.getInputStream()));
-                    serialWriter=new BufferedWriter(new OutputStreamWriter(port.getOutputStream()));
-                    SerialAvailable=true;
+                    serialScanner = new Scanner(new InputStreamReader(port.getInputStream()));
+                    serialWriter = new BufferedWriter(new OutputStreamWriter(port.getOutputStream()));
+                    SerialAvailable = true;
                 }
             }
-        }
-        else {
-            SerialAvailable=false;
+        } else {
+            SerialAvailable = false;
         }
 
-        //intialise JFrames
-        fileChooserWindow=new JFrame();
-        settingsWindow=new JFrame();
-        helpWindow=new JFrame();
-        mainWindow=new JFrame();
-        setNewKeyCombinationWindow=new JFrame();
+        // intialise JFrames
+        fileChooserWindow = new JFrame();
+        settingsWindow = new JFrame();
+        helpWindow = new JFrame();
+        mainWindow = new JFrame();
+        setNewKeyCombinationWindow = new JFrame();
 
-        //Set a Different Cursor to indicate The program is working
-        try{
+        // Set a Different Cursor to indicate The program is working
+        try {
             mainWindow.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        //Initialise and fill the pleaseWaitMessagePanel
-        pleaseWaitMessagePanel=new JPanel(new BorderLayout());
-        pleaseWaitMessageText=new JLabel("Bitte Warten...");
+        // Initialise and fill the pleaseWaitMessagePanel
+        pleaseWaitMessagePanel = new JPanel(new BorderLayout());
+        pleaseWaitMessageText = new JLabel("Bitte Warten...");
         pleaseWaitMessageText.setHorizontalAlignment(SwingConstants.CENTER);
-        pleaseWaitMessagePanel.add(pleaseWaitMessageText,BorderLayout.CENTER);
+        pleaseWaitMessagePanel.add(pleaseWaitMessageText, BorderLayout.CENTER);
 
-        //Add the temporary pleaseWaitMessagePanel to The Window
+        // Add the temporary pleaseWaitMessagePanel to The Window
         mainWindow.add(pleaseWaitMessagePanel);
 
-        //make the plain empty JFrame visible, so the User knows that something's happening
+        // make the plain empty JFrame visible, so the User knows that something's
+        // happening
         mainWindow.setSize(800, 480);
         mainWindow.setLocationRelativeTo(null);
         mainWindow.setVisible(true);
 
-        //setup some very basic stuff
+        // setup some very basic stuff
 
-        //setup some basic sizes
-        fullscreenDimension=new Dimension(graphicsDevice.getDisplayMode().getWidth(),graphicsDevice.getDisplayMode().getHeight());
+        // setup some basic sizes
+        fullscreenDimension = new Dimension(graphicsDevice.getDisplayMode().getWidth(),
+            graphicsDevice.getDisplayMode().getHeight());
 
-        //setup the logo
+        // setup the logo
 
-        URL url=getClass().getResource("Resources/Weather.png");
+        URL url = getClass().getResource("Resources/Weather.png");
 
         logln(url);
         mainWindow.setIconImage(new ImageIcon(url).getImage());
-        //https://stackoverflow.com/questions/9864267/loading-image-resource/9866659#9866659 antwort von icza
+        // https://stackoverflow.com/questions/9864267/loading-image-resource/9866659#9866659
+        // antwort von icza
 
-        //read the ConfigurationFile
+        // read the ConfigurationFile
         loadConfigurationFile();
 
-        //Initialise and setup FileChooser
-        fileChooser=new JFileChooser();
+        // Initialise and setup FileChooser
+        fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Bitte CSV-Datei auswählen");
         fileChooser.setMultiSelectionEnabled(false);
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Aufgezeichnete Klimadaten (.csv/.CSV)","csv","CSV","Csv"));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Dateien (.csv/.CSV)", "csv", "CSV", "Csv"));
 
-        //setup the MainWindow
+        // setup the MainWindow
         mainWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        mainWindow.setMinimumSize(new Dimension(WIDTH_OF_DATA_BLOCK,400));//mindestens 1 block der Textfelder MUSS draufpassen (370px)
+        mainWindow.setMinimumSize(new Dimension(WIDTH_OF_DATA_BLOCK, 400));// mindestens 1 block der Textfelder MUSS
+        // draufpassen (370px)
         setTitle();
 
-        //Validiere das hauptfenster nochmals
+        // Validiere das hauptfenster nochmals
         mainWindow.validate();
 
-        //get the data and draw the graph
-        //proceed only if successful otherwise exit
-        pickCsvFile(usingFileChooser,fileName);
-        if(jFilePickerFailed==false){
+        // get the data and draw the graph
+        // proceed only if successful otherwise exit
+        pickCsvFile(usingFileChooser, fileName);
+        if (jFilePickerFailed == false) {
+        	System.out.println("HEY, I've picked a file");
             jFreeChart = createDataset();
+            System.out.println("Created Dataset");
             setupCrosshairOverlays();
 
+            System.out.println("crosshairs done");
             setupDataPanel();
 
+            System.out.println("dataPanelSetup");
             mainWindow.setJMenuBar(createMainWindowMenuBar());
             setupChangeKeyCombinationHelperWindow();
             setupHelpWindow();
             setupSettingsWindow();
             settingsWindow.validate();
-            //validiere das hilfefenster nochmals 
+            // validiere das hilfefenster nochmals
             helpWindow.validate();
 
-            //Remove the temporary pleaseWaitMessagePanel
-            //WTF Why does it have worked even with this NOT beeing commented out? mainWindow.remove(pleaseWaitMessagePanel);
+            // Remove the temporary pleaseWaitMessagePanel
+            // WTF Why does it have worked even with this NOT beeing commented out?
+            // mainWindow.remove(pleaseWaitMessagePanel);
 
-            mainWindow.add(chartPanel,BorderLayout.NORTH);
-            mainWindow.add(dataPanel,BorderLayout.SOUTH);
+            mainWindow.add(chartPanel, BorderLayout.NORTH);
+            mainWindow.add(dataPanel, BorderLayout.SOUTH);
 
-            //make the program able to react by adding the ActionListeners
+            // make the program able to react by adding the ActionListeners
             keyComboAusgabe.addKeyListener(this);
             mainWindow.addKeyListener(this);
             mainWindow.addComponentListener(this);
@@ -709,24 +1044,69 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
             chartPanel.addChartMouseListener(this);
             mainWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-            //if the fullscreenMode should be activated on startup, do it now
-            if(fullscreenOnStartup){
-                fullscreen=false;
+            // if the fullscreenMode should be activated on startup, do it now
+            if (fullscreenOnStartup) {
+                fullscreen = false;
                 toggleFullscreen();
             }
-            //if the mottomPanel should be made invisible on startup, do it here
-            if(bottomPanelExpandedOnStartup){
+            // if the mottomPanel should be made invisible on startup, do it here
+            if (bottomPanelExpandedOnStartup) {
                 toggleBottomPanel();
             }
-            chartPanel.getPopupMenu().remove(3);//den punkt speichern zum speichern des aktuellen Chartinhalts entfernen, da es sonst probleme mit dem vollbildmodus gibt wenn jemand darauf klickt.
+            chartPanel.getPopupMenu().remove(3);// den punkt speichern zum speichern des aktuellen Chartinhalts
+            // entfernen, da es sonst probleme mit dem vollbildmodus gibt wenn
+            // jemand darauf klickt.
             refreshPage();
-            //revert the Cursor Back To Normal
+            // revert the Cursor Back To Normal
             mainWindow.setCursor(Cursor.getDefaultCursor());
             mainWindow.remove(pleaseWaitMessagePanel);
             mainWindow.setAlwaysOnTop(isAlwaysOnTop);
-        }
-        else{
+        } else {
             exit();
+        }
+        if (fromUpdate) {// ifFromUpdate
+            updateLogWindow = new JFrame(UPDATE_WINDOW_TITLE);
+            JPanel ulp = new JPanel();
+            ulp.setLayout(new BoxLayout(ulp, BoxLayout.Y_AXIS));
+            try {
+                source = new URL(projectUri + branch + "/PublicVersion/CHANGELOG");
+
+                logln(projectUri + branch + "/PublicVersion/CHANGELOG");
+                br = new BufferedReader(new InputStreamReader(source.openStream()));
+                String changelog = br.readLine().trim();
+                /*
+                 * String changelog="lorem ipsum\ndolor\nhallo
+                 * welt\nUjdoijosjofaoüödfo\nEADFSFV\nfwfjnkij\nf\nf\nf\nf\nf\nf\nf\nf\nf\nf\nf\
+                 * nf\nf\nf\nf\nf\nf\nf\nf\nf\nf\nf\nf\nf\nf\nf\nf\nf\nf\nf\nf\nf//TODO PULL
+                 * FROM THE CLOUD changelog=changelog.trim(); for(String s :
+                 * changelog.split("\n")) {
+                 */
+                while (changelog != null && !changelog.equals("")) {
+                    ulp.add(new JLabel(changelog));
+                    changelog = br.readLine();
+                }
+            } catch (Exception e) {
+                logln(e);
+            }
+            JButton clb = new JButton(UPDATE_WINDOW_CLOSE_BUTTON);
+            clb.addActionListener(new ActionListener() {
+
+                    @Override
+                    public void actionPerformed(ActionEvent arg0) {
+                        updateLogWindow.setVisible(false);
+                        updateLogWindow.dispose();
+                    }
+                });
+            JScrollPane jscp = new JScrollPane(ulp);
+            jscp.setAlignmentX(Component.LEFT_ALIGNMENT);
+            updateLogWindow.add(jscp, BorderLayout.CENTER);
+            updateLogWindow.add(clb, BorderLayout.SOUTH);
+            updateLogWindow.setPreferredSize(new Dimension(500, 450));
+            updateLogWindow.setMinimumSize(new Dimension(500, 450));
+            updateLogWindow.setMaximumSize(new Dimension(500, 450));
+            updateLogWindow.setLocationRelativeTo(null);
+            updateLogWindow.setVisible(true);
+            updateLogWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         }
     }
 
@@ -734,29 +1114,31 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      * initialisiert den datenbereich/detailbereich (unten die textfelder)
      */
     private void setupDataPanel() {
-        //Initialise the DataPanel
-        dataPanelX=floor(fullscreenDimension.width/370);
-        dataPanelY=roof((double)((double)numberOfGraphs/(double)dataPanelX));
+        // Initialise the DataPanel
+        dataPanelX = floor(fullscreenDimension.width / 370);
+        dataPanelY = roof((double) ((double) numberOfGraphs / (double) dataPanelX));
 
-        if(dataPanelX*dataPanelY<numberOfGraphs){
-            //Something went TERRIBLY WRONG!!!!
-            //HASN'T BEEN OBSERVED FOR A LONG TIME (a lot of options have been tested)
-            //Probably will never occur again
-            System.err.println("HELP: SPACIAL COLLISION OF numberOfGraphs and panelX/Y: "+numberOfGraphs+"|"+dataPanelX+"x"+dataPanelY);
-            logln("HELP: SPACIAL COLLISION OF numberOfGraphs and panelX/Y: "+numberOfGraphs+"|"+dataPanelX+"x"+dataPanelY);
+        if (dataPanelX * dataPanelY < numberOfGraphs) {
+            // Something went TERRIBLY WRONG!!!!
+            // HASN'T BEEN OBSERVED FOR A LONG TIME (a lot of options have been tested)
+            // Probably will never occur again
+            System.err.println("HELP: SPACIAL COLLISION OF numberOfGraphs and panelX/Y: " + numberOfGraphs + "|"
+                + dataPanelX + "x" + dataPanelY);
+            logln("HELP: SPACIAL COLLISION OF numberOfGraphs and panelX/Y: " + numberOfGraphs + "|" + dataPanelX + "x"
+                + dataPanelY);
         }
 
-        dataPanel=new JPanel(new GridLayout(dataPanelY,dataPanelX*2));
+        dataPanel = new JPanel(new GridLayout(dataPanelY, dataPanelX * 2));
 
-        dataLabels=new JLabel[numberOfGraphs];
-        dataBoxes=new JTextField[numberOfGraphs];
-        dataPanels=new JPanel[numberOfGraphs];
+        dataLabels = new JLabel[numberOfGraphs];
+        dataBoxes = new JTextField[numberOfGraphs];
+        dataPanels = new JPanel[numberOfGraphs];
 
-        for(int i=0;i<numberOfGraphs;i++){
-            dataPanels[i]=new JPanel(new GridLayout(1,2));
-            dataPanels[i].setPreferredSize(new Dimension(WIDTH_OF_DATA_BLOCK,HEIGHT_OF_DATA_BLOCK));
-            dataLabels[i]=new JLabel(dataValueDescriptors[i]);
-            dataBoxes[i]=new JTextField();
+        for (int i = 0; i < numberOfGraphs; i++) {
+            dataPanels[i] = new JPanel(new GridLayout(1, 2));
+            dataPanels[i].setPreferredSize(new Dimension(WIDTH_OF_DATA_BLOCK, HEIGHT_OF_DATA_BLOCK));
+            dataLabels[i] = new JLabel(dataValueDescriptors[i]);
+            dataBoxes[i] = new JTextField();
             dataPanels[i].add(dataLabels[i]);
             dataPanels[i].add(dataBoxes[i]);
             dataPanel.add(dataPanels[i]);
@@ -769,53 +1151,53 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private void setupCrosshairOverlays() {
         chartPanel = new ChartPanel(jFreeChart);
         crosshairOverlay = new CrosshairOverlay();
-        xCrosshair = new Crosshair(Double.NaN, (Paint)Color.GRAY, (Stroke)new BasicStroke(0.0f));
+        xCrosshair = new Crosshair(Double.NaN, (Paint) Color.GRAY, (Stroke) new BasicStroke(0.0f));
         xCrosshair.setLabelVisible(true);
         crosshairOverlay.addDomainCrosshair(xCrosshair);
         yCrosshairs = new Crosshair[numberOfGraphs];
         for (int i = 0; i < numberOfGraphs; ++i) {
-            yCrosshairs[i] = new Crosshair(Double.NaN, (Paint)Color.GRAY, (Stroke)new BasicStroke(0.0f));
+            yCrosshairs[i] = new Crosshair(Double.NaN, (Paint) Color.GRAY, (Stroke) new BasicStroke(0.0f));
             yCrosshairs[i].setLabelVisible(true);
             if (i % 2 != 0) {
                 yCrosshairs[i].setLabelAnchor(RectangleAnchor.TOP_RIGHT);
             }
             crosshairOverlay.addRangeCrosshair(yCrosshairs[i]);
         }
-        chartPanel.addOverlay((Overlay)crosshairOverlay);
+        chartPanel.addOverlay((Overlay) crosshairOverlay);
     }
 
     /*
      * Fenster mit anweisungen für das ändern der tastenkombis
      */
     private void setupChangeKeyCombinationHelperWindow() {
-        try{
-            setNewKeyCombinationTexts=new String[NUMBER_OF_KEY_COMBOS];
-            JPanel auxiliaryPanel=new JPanel();
-            auxiliaryPanel.setLayout(new BoxLayout(auxiliaryPanel,BoxLayout.Y_AXIS));
+        try {
+            setNewKeyCombinationTexts = new String[NUMBER_OF_KEY_COMBOS];
+            JPanel auxiliaryPanel = new JPanel();
+            auxiliaryPanel.setLayout(new BoxLayout(auxiliaryPanel, BoxLayout.Y_AXIS));
             setNewKeyCombinationWindow.setTitle("Tastenkombination ändern");
-            setNewKeyCombinationWindow.setSize(new Dimension(540,470));
+            setNewKeyCombinationWindow.setSize(new Dimension(540, 470));
             setNewKeyCombinationWindow.setLocationRelativeTo(null);
-            br = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("configureKeyComboText.txt")));
-            int anz=12;
-            configureKeyCombinationText=new JLabel[anz];
-            for(int i=0;i<anz;i++){
-                configureKeyCombinationText[i]=new JLabel(br.readLine());
+            br = new BufferedReader(
+                new InputStreamReader(this.getClass().getResourceAsStream("configureKeyComboText.txt")));
+            int anz = 12;
+            configureKeyCombinationText = new JLabel[anz];
+            for (int i = 0; i < anz; i++) {
+                configureKeyCombinationText[i] = new JLabel(br.readLine());
                 auxiliaryPanel.add(configureKeyCombinationText[i]);
             }
-            keyComboAusgabe=new JTextField();
+            keyComboAusgabe = new JTextField();
             keyComboAusgabe.setEditable(false);
-            //keyComboAusgabe.setFocusable(false);
+            // keyComboAusgabe.setFocusable(false);
             auxiliaryPanel.add(keyComboAusgabe);
-            changeKeyCombinationButton=new JButton("Ändern");
+            changeKeyCombinationButton = new JButton("Ändern");
             changeKeyCombinationButton.addActionListener(this);
             auxiliaryPanel.add(changeKeyCombinationButton);
-            saveKeyCombinationButton=new JButton("Schließen");
+            saveKeyCombinationButton = new JButton("Schließen");
             saveKeyCombinationButton.addActionListener(this);
             auxiliaryPanel.add(saveKeyCombinationButton);
             setNewKeyCombinationWindow.add(auxiliaryPanel);
             setNewKeyCombinationWindow.validate();
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -823,89 +1205,91 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     /*
      * Einstellungsfenst6er und alle inhalte initialisieren
      */
-    private void setupSettingsWindow(){
-        settingsWindowText=new JLabel[NUMBER_OF_KEY_COMBOS];
-        KeyCombinationChangeButton=new JButton[NUMBER_OF_KEY_COMBOS];
-        KeyCombinationSettingsEntryPanel=new JPanel[NUMBER_OF_KEY_COMBOS];
+    private void setupSettingsWindow() {
+        settingsWindowText = new JLabel[NUMBER_OF_KEY_COMBOS];
+        KeyCombinationChangeButton = new JButton[NUMBER_OF_KEY_COMBOS];
+        KeyCombinationSettingsEntryPanel = new JPanel[NUMBER_OF_KEY_COMBOS];
 
-        //SettingsWindow
-        settingsWindow.setSize(800,480);
+        // SettingsWindow
+        settingsWindow.setSize(800, 480);
         settingsWindow.setTitle("Einstellungen");
         settingsWindow.setLocationRelativeTo(null);
-        KeyCombinationSettingsFramePanel=new JPanel();
+        KeyCombinationSettingsFramePanel = new JPanel();
 
-        SettingsPageTabbedPane=new JTabbedPane();
-        GeneralSettings=new JPanel(); //F11, Updates prüfen, Update policy, Dateitypen 
-        GraphSettings=new JPanel();  //sichtbarkeit, interplolation
-        KeyCombinationSettings=new JPanel();  //keys ändern
-        DeviceSettings=new JPanel();
+        SettingsPageTabbedPane = new JTabbedPane();
+        GeneralSettings = new JPanel(); // F11, Updates prüfen, Update policy, Dateitypen
+        GraphSettings = new JPanel(); // sichtbarkeit, interplolation
+        KeyCombinationSettings = new JPanel(); // keys ändern
+        DeviceSettings = new JPanel();
 
         GeneralSettings.setLayout(new BoxLayout(GeneralSettings, BoxLayout.Y_AXIS));
 
-        FileTypePanel=new JPanel();
+        FileTypePanel = new JPanel();
         FileTypePanel.setLayout(new BoxLayout(FileTypePanel, BoxLayout.Y_AXIS));
         FileTypePanel.add(new JLabel("Optionen für das Abspeichern des momentanen Bildes"));
-        FiletypePngCheckBox=new JCheckBox("PNG");
+        FiletypePngCheckBox = new JCheckBox("PNG");
         FiletypePngCheckBox.setSelected(savePng);
         FiletypePngCheckBox.addActionListener(this);
-        FiletypeJpgCheckBox=new JCheckBox("JPG");
+        FiletypeJpgCheckBox = new JCheckBox("JPG");
         FiletypeJpgCheckBox.setSelected(saveJpeg);
         FiletypeJpgCheckBox.addActionListener(this);
         FileTypePanel.add(FiletypePngCheckBox);
         FileTypePanel.add(FiletypeJpgCheckBox);
-        FileSizePanel=new JPanel();
-        FileSizePanel.setLayout(new BoxLayout(FileSizePanel,BoxLayout.X_AXIS));
-        imageWidthBox=new JTextField();
+        FileSizePanel = new JPanel();
+        FileSizePanel.setLayout(new BoxLayout(FileSizePanel, BoxLayout.X_AXIS));
+        imageWidthBox = new JTextField();
         imageWidthBox.setText(String.valueOf(imageWidth));
-        imageWidthBox.setMinimumSize(new Dimension(50,23));
-        imageWidthBox.setMaximumSize(new Dimension(50,23));
-        imageWidthBox.getDocument().addDocumentListener(new DocumentListener(){
+        imageWidthBox.setMinimumSize(new Dimension(50, 23));
+        imageWidthBox.setMaximumSize(new Dimension(50, 23));
+        imageWidthBox.getDocument().addDocumentListener(new DocumentListener() {
 
                 @Override
-                public void changedUpdate(DocumentEvent e) {}
+                public void changedUpdate(DocumentEvent e) {
+                }
 
                 @Override
                 public void insertUpdate(DocumentEvent e) {
 
                     logln("A");
-                    imageWidth=Integer.parseInt(imageWidthBox.getText());
+                    imageWidth = Integer.parseInt(imageWidthBox.getText());
                     reloadBackend();
                 }
 
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(!imageWidthBox.getText().equals("")){
+                    if (!imageWidthBox.getText().equals("")) {
 
                         logln("B");
-                        imageWidth=Integer.parseInt(imageWidthBox.getText());
+                        imageWidth = Integer.parseInt(imageWidthBox.getText());
                         reloadBackend();
                     }
                 }
 
             });
-        imageHeightBox=new JTextField();
+        imageHeightBox = new JTextField();
         imageHeightBox.setText(String.valueOf(imageHeight));
-        imageHeightBox.setMinimumSize(new Dimension(50,23));
-        imageHeightBox.setMaximumSize(new Dimension(50,23));
-        imageHeightBox.getDocument().addDocumentListener(new DocumentListener(){
+        imageHeightBox.setMinimumSize(new Dimension(50, 23));
+        imageHeightBox.setMaximumSize(new Dimension(50, 23));
+        imageHeightBox.getDocument().addDocumentListener(new DocumentListener() {
 
                 @Override
-                public void changedUpdate(DocumentEvent e) {}
+                public void changedUpdate(DocumentEvent e) {
+                }
 
                 @Override
                 public void insertUpdate(DocumentEvent e) {
 
                     logln("A");
-                    imageHeight=Integer.parseInt(imageHeightBox.getText());
+                    imageHeight = Integer.parseInt(imageHeightBox.getText());
                     reloadBackend();
                 }
 
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(!imageHeightBox.getText().equals("")){
+                    if (!imageHeightBox.getText().equals("")) {
 
                         logln("B");
-                        imageHeight=Integer.parseInt(imageHeightBox.getText());
+                        imageHeight = Integer.parseInt(imageHeightBox.getText());
                         reloadBackend();
                     }
                 }
@@ -915,10 +1299,10 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         FileSizePanel.add(new JLabel("x"));
         FileSizePanel.add(imageHeightBox);
         FileSizePanel.add(new JLabel("    "));
-        imageSizeAutoCheckBox=new JCheckBox("Automatisch festlegen");
+        imageSizeAutoCheckBox = new JCheckBox("Automatisch festlegen");
         FileSizePanel.add(imageSizeAutoCheckBox);
         imageSizeAutoCheckBox.addActionListener(this);
-        if(getImageSizeAutomatically){
+        if (getImageSizeAutomatically) {
             imageHeightBox.setEnabled(false);
             imageWidthBox.setEnabled(false);
             imageSizeAutoCheckBox.setSelected(true);
@@ -929,11 +1313,12 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         FileTypePanel.add(new JLabel(" "));
         FileTypePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        FullscreenOptionsPanel=new JPanel();
+        FullscreenOptionsPanel = new JPanel();
         FullscreenOptionsPanel.setLayout(new BoxLayout(FullscreenOptionsPanel, BoxLayout.Y_AXIS));
-        FullscreenOptionsButtonGroup=new ButtonGroup();
-        MaximizeWindowRadioButton=new JRadioButton("Fenster Maximieren");
-        FullscreenExclusiveRadioButton=new JRadioButton("Vollbildmodus (Nicht verfügbar auf Computern mit Intel-Grafik)");
+        FullscreenOptionsButtonGroup = new ButtonGroup();
+        MaximizeWindowRadioButton = new JRadioButton("Fenster Maximieren");
+        FullscreenExclusiveRadioButton = new JRadioButton(
+            "Vollbildmodus (Nicht verfügbar auf Computern mit Intel-Grafik)");
         FullscreenOptionsButtonGroup.add(MaximizeWindowRadioButton);
         FullscreenOptionsButtonGroup.add(FullscreenExclusiveRadioButton);
         MaximizeWindowRadioButton.setSelected(!fullscreenOk);
@@ -941,7 +1326,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         MaximizeWindowRadioButton.addActionListener(this);
         FullscreenExclusiveRadioButton.addActionListener(this);
         FullscreenOptionsPanel.add(new JLabel("Vollbildmodus"));
-        FullscreenOptionsButtonGroupPanel=new JPanel();
+        FullscreenOptionsButtonGroupPanel = new JPanel();
         FullscreenOptionsButtonGroupPanel.setLayout(new BoxLayout(FullscreenOptionsButtonGroupPanel, BoxLayout.Y_AXIS));
         FullscreenOptionsButtonGroupPanel.add(MaximizeWindowRadioButton);
         FullscreenOptionsButtonGroupPanel.add(FullscreenExclusiveRadioButton);
@@ -951,37 +1336,37 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         FullscreenOptionsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         CheckFullscreenAvailability();
 
-        GeoModePanel=new JPanel();
-        GeoModePanel.setLayout(new BoxLayout(GeoModePanel,BoxLayout.Y_AXIS));
+        GeoModePanel = new JPanel();
+        GeoModePanel.setLayout(new BoxLayout(GeoModePanel, BoxLayout.Y_AXIS));
         GeoModePanel.add(new JLabel("Anzeigemodus:"));
-        GeoModeButtonGroup=new ButtonGroup();
-        RegularModeButton=new JRadioButton("Standardmodus");
-        GeoModeButton=new JRadioButton("Geographie-modus (NUR Tagestemperaturdurchschnitt und Tagesniederschlag)");
+        GeoModeButtonGroup = new ButtonGroup();
+        RegularModeButton = new JRadioButton("Standardmodus");
+        GeoModeButton = new JRadioButton("Geographie-modus (NUR Tagestemperaturdurchschnitt und Tagesniederschlag)");
         GeoModeButtonGroup.add(GeoModeButton);
         GeoModeButtonGroup.add(RegularModeButton);
         GeoModePanel.add(RegularModeButton);
         GeoModePanel.add(GeoModeButton);
-        GeoModeOkButton=new JButton("Übernehmen");
+        GeoModeOkButton = new JButton("Übernehmen");
         GeoModeOkButton.addActionListener(this);
         GeoModePanel.add(GeoModeOkButton);
         GeoModePanel.add(new JLabel(" "));
         GeoModeButton.setSelected(geoMode);
         RegularModeButton.setSelected(!geoMode);
 
-        UpdateOptionsPanel=new JPanel();
+        UpdateOptionsPanel = new JPanel();
         UpdateOptionsPanel.setLayout(new BoxLayout(UpdateOptionsPanel, BoxLayout.Y_AXIS));
-        UpdateOptionsButtonGroup=new ButtonGroup();
-        AutoUpdateRadioButton=new JRadioButton("Automatisch beim Start prüfen");
-        ManualUpdateRadioButton=new JRadioButton("Nur Manuell");
+        UpdateOptionsButtonGroup = new ButtonGroup();
+        AutoUpdateRadioButton = new JRadioButton("Automatisch beim Start prüfen");
+        ManualUpdateRadioButton = new JRadioButton("Nur Manuell");
         UpdateOptionsButtonGroup.add(AutoUpdateRadioButton);
         UpdateOptionsButtonGroup.add(ManualUpdateRadioButton);
         AutoUpdateRadioButton.setSelected(autoUpdate);
         ManualUpdateRadioButton.setSelected(!autoUpdate);
-        UpdateNow=new JButton("Jetzt auf Updates prüfen");
+        UpdateNow = new JButton("Jetzt auf Updates prüfen");
         UpdateNow.addActionListener(this);
         AutoUpdateRadioButton.addActionListener(this);
         ManualUpdateRadioButton.addActionListener(this);
-        UpdateOptionsButtonGroupPanel=new JPanel();
+        UpdateOptionsButtonGroupPanel = new JPanel();
         UpdateOptionsButtonGroupPanel.setLayout(new BoxLayout(UpdateOptionsButtonGroupPanel, BoxLayout.Y_AXIS));
         UpdateOptionsButtonGroupPanel.add(AutoUpdateRadioButton);
         UpdateOptionsButtonGroupPanel.add(ManualUpdateRadioButton);
@@ -999,58 +1384,60 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
         setupGraphSettings();
 
-        KeyCombinationPanelTitle=new JLabel("Tastenkürzel:");
-        KeyCombinationPanelTitle.setFont(new Font(Font.SERIF,Font.BOLD, 16));
-        KeyCombinationSettingsFramePanel.setLayout(new GridLayout(0,1));
+        KeyCombinationPanelTitle = new JLabel("Tastenkürzel:");
+        KeyCombinationPanelTitle.setFont(new Font(Font.SERIF, Font.BOLD, 16));
+        KeyCombinationSettingsFramePanel.setLayout(new GridLayout(0, 1));
         KeyCombinationSettingsFramePanel.add(KeyCombinationPanelTitle);
-        for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
-            KeyCombinationSettingsEntryPanel[i]=new JPanel(new BorderLayout());
-            settingsWindowText[i]=new JLabel();
+        for (int i = 0; i < NUMBER_OF_KEY_COMBOS; i++) {
+            KeyCombinationSettingsEntryPanel[i] = new JPanel(new BorderLayout());
+            settingsWindowText[i] = new JLabel();
             settingsWindowText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
-            KeyCombinationSettingsEntryPanel[i].add(settingsWindowText[i],BorderLayout.WEST);
-            KeyCombinationChangeButton[i]=new JButton("Ändern");
-            KeyCombinationChangeButton[i].setPreferredSize(new Dimension(100,25));
+            KeyCombinationSettingsEntryPanel[i].add(settingsWindowText[i], BorderLayout.WEST);
+            KeyCombinationChangeButton[i] = new JButton("Ändern");
+            KeyCombinationChangeButton[i].setPreferredSize(new Dimension(100, 25));
             KeyCombinationChangeButton[i].addActionListener(this);
-            KeyCombinationSettingsEntryPanel[i].add(KeyCombinationChangeButton[i],BorderLayout.EAST);
+            KeyCombinationSettingsEntryPanel[i].add(KeyCombinationChangeButton[i], BorderLayout.EAST);
             KeyCombinationSettingsFramePanel.add(KeyCombinationSettingsEntryPanel[i]);
         }
         loadTextForHelpWindowAndKeyCombinations();
         KeyCombinationSettings.add(KeyCombinationSettingsFramePanel);
 
-        DeviceSettings.setLayout(new BoxLayout(DeviceSettings,BoxLayout.Y_AXIS));
+        DeviceSettings.setLayout(new BoxLayout(DeviceSettings, BoxLayout.Y_AXIS));
 
-        DeviceSettingsTitle=new JLabel("Geräte-Einstellungen");
+        DeviceSettingsTitle = new JLabel("Geräte-Einstellungen");
         DeviceSettingsTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
         DeviceSettings.add(DeviceSettingsTitle);
 
-        TimePanel=new JPanel(new BorderLayout());
-        TimePanel.setPreferredSize(new Dimension(550,75));
-        TimePanel.setMaximumSize(new Dimension(550,75));
-        TimePanel.setMinimumSize(new Dimension(550,75));
-        TimePanel.setAlignmentX(Component.LEFT_ALIGNMENT);//|||||||||||||||||||||||||||||||||||||||||||||||||
-        //TimePanel.setBackground(Color.GREEN);
+        TimePanel = new JPanel(new BorderLayout());
+        TimePanel.setPreferredSize(new Dimension(550, 75));
+        TimePanel.setMaximumSize(new Dimension(550, 75));
+        TimePanel.setMinimumSize(new Dimension(550, 75));
+        TimePanel.setAlignmentX(Component.LEFT_ALIGNMENT);// |||||||||||||||||||||||||||||||||||||||||||||||||
+        // TimePanel.setBackground(Color.GREEN);
 
-        DeviceConnPanel=new JPanel();
-        //DeviceConnPanel.setBackground(Color.RED);
-        DeviceConnPanel.setAlignmentX(Component.LEFT_ALIGNMENT);//|||||||||||||||||||||||||||||||||||||||||||||||||
-        DeviceConnPanel.setPreferredSize(new Dimension(600,50));
-        DeviceConnPanel.setMaximumSize(new Dimension(600,50));
-        DeviceConnPanel.setMinimumSize(new Dimension(600,50));
-        DeviceConnComboBox=new JComboBox<String>();
-        DeviceConnRefreshButton=new JButton("Aktualisieren");
-        DeviceConnConnectButton=new JButton("Verbinden");
-        if(!SerialForbidden) {
+        DeviceConnPanel = new JPanel();
+        // DeviceConnPanel.setBackground(Color.RED);
+        DeviceConnPanel.setAlignmentX(Component.LEFT_ALIGNMENT);// |||||||||||||||||||||||||||||||||||||||||||||||||
+        DeviceConnPanel.setPreferredSize(new Dimension(600, 50));
+        DeviceConnPanel.setMaximumSize(new Dimension(600, 50));
+        DeviceConnPanel.setMinimumSize(new Dimension(600, 50));
+        DeviceConnComboBox = new JComboBox<String>();
+        DeviceConnRefreshButton = new JButton("Aktualisieren");
+        DeviceConnConnectButton = new JButton("Verbinden");
+        if (!SerialForbidden) {
             DeviceConnConnectButton.addActionListener(this);
             DeviceConnRefreshButton.addActionListener(this);
-            for(SerialPort P:ports) {
+            for (SerialPort P : ports) {
                 DeviceConnComboBox.addItem(P.getDescriptivePortName());
             }
-            if(SerialAvailable) {
+            if (SerialAvailable) {
                 DeviceConnComboBox.setSelectedIndex(selectedPort);
             }
         }
-        if(SerialForbidden) {
-            DeviceConnPanel.add(new JLabel("KEIN ZUGRIFF AUF SERIELLE SCHNITTSTELLE - Bitte Programm neustarten um Zugriff zu Bekommen"), BorderLayout.NORTH);
+        if (SerialForbidden) {
+            DeviceConnPanel.add(new JLabel(
+                    "KEIN ZUGRIFF AUF SERIELLE SCHNITTSTELLE - Bitte Programm neustarten um Zugriff zu Bekommen"),
+                BorderLayout.NORTH);
         }
         DeviceConnPanel.add(new JLabel("Verbinden mit: "), BorderLayout.NORTH);
         DeviceConnPanel.add(DeviceConnComboBox, BorderLayout.CENTER);
@@ -1058,162 +1445,161 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         DeviceConnPanel.add(DeviceConnRefreshButton, BorderLayout.SOUTH);
 
         DeviceSettings.add(DeviceConnPanel);
-        if(SerialForbidden) {
+        if (SerialForbidden) {
             DeviceConnPanel.setEnabled(false);
             DeviceConnComboBox.setEnabled(false);
             DeviceConnConnectButton.setEnabled(false);
             DeviceConnRefreshButton.setEnabled(false);
         }
 
-        SystemTimePanel=new JPanel();
+        SystemTimePanel = new JPanel();
         SystemTimePanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        //SystemTimePanel.setBackground(Color.YELLOW);
-        SystemTimePanel.setPreferredSize(new Dimension(220,22));
-        SystemTimePanel.setMaximumSize(new Dimension(220,22));
-        SystemTimePanel.setMinimumSize(new Dimension(220,22));
-        SystemTimeLabel=new JLabel("Systemzeit: ");
-        SystemTimeField=new JTextField();
+        // SystemTimePanel.setBackground(Color.YELLOW);
+        SystemTimePanel.setPreferredSize(new Dimension(220, 22));
+        SystemTimePanel.setMaximumSize(new Dimension(220, 22));
+        SystemTimePanel.setMinimumSize(new Dimension(220, 22));
+        SystemTimeLabel = new JLabel("Systemzeit: ");
+        SystemTimeField = new JTextField();
         SystemTimeField.setEditable(false);
-        SystemTimeField.setPreferredSize(new Dimension(120,20));
-        SystemTimeField.setMinimumSize(new Dimension(120,20));
-        SystemTimeField.setMaximumSize(new Dimension(120,20));
-        SystemTimeFormatter=new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        SystemTimeField.setPreferredSize(new Dimension(120, 20));
+        SystemTimeField.setMinimumSize(new Dimension(120, 20));
+        SystemTimeField.setMaximumSize(new Dimension(120, 20));
+        SystemTimeFormatter = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         SystemTimeField.setText(SystemTimeFormatter.format(new Date(System.currentTimeMillis())));
-        SystemTimeFieldTimer=new Timer(1000, new ActionListener()
-            {
-                public void actionPerformed(ActionEvent e)
-                {
+        SystemTimeFieldTimer = new Timer(1000, new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
                     SystemTimeField.setText(SystemTimeFormatter.format(new Date(System.currentTimeMillis())));
                 }
-            }
-        );
+            });
         SystemTimeFieldTimer.start();
 
-        SystemTimePanel.add(SystemTimeLabel,BorderLayout.WEST);
-        SystemTimePanel.add(SystemTimeField,BorderLayout.EAST);
-        SystemTimePanel.setPreferredSize(new Dimension(200,25));
-        //SystemTimePanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        SystemTimePanel.add(SystemTimeLabel, BorderLayout.WEST);
+        SystemTimePanel.add(SystemTimeField, BorderLayout.EAST);
+        SystemTimePanel.setPreferredSize(new Dimension(200, 25));
+        // SystemTimePanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
-        TimePanel.add(SystemTimePanel,BorderLayout.NORTH);
+        TimePanel.add(SystemTimePanel, BorderLayout.NORTH);
 
-        DeviceTimePanel=new JPanel();
+        DeviceTimePanel = new JPanel();
         DeviceTimePanel.setAlignmentX(Component.RIGHT_ALIGNMENT);//////////////////////////////////////////////////////
-        //DeviceTimePanel.setBackground(Color.BLUE);
-        DeviceTimePanel.setPreferredSize(new Dimension(220,22));
-        DeviceTimePanel.setMaximumSize(new Dimension(220,22));
-        DeviceTimePanel.setMinimumSize(new Dimension(220,22));
-        DeviceTimeLabel=new JLabel("Gerätezeit: ");
-        DeviceTimeField=new JTextField("UNBEKANNT");
-        DeviceTimeField.setPreferredSize(new Dimension(120,20));
-        DeviceTimeField.setMinimumSize(new Dimension(120,20));
-        DeviceTimeField.setMaximumSize(new Dimension(120,20));
+        // DeviceTimePanel.setBackground(Color.BLUE);
+        DeviceTimePanel.setPreferredSize(new Dimension(220, 22));
+        DeviceTimePanel.setMaximumSize(new Dimension(220, 22));
+        DeviceTimePanel.setMinimumSize(new Dimension(220, 22));
+        DeviceTimeLabel = new JLabel("Gerätezeit: ");
+        DeviceTimeField = new JTextField("UNBEKANNT");
+        DeviceTimeField.setPreferredSize(new Dimension(120, 20));
+        DeviceTimeField.setMinimumSize(new Dimension(120, 20));
+        DeviceTimeField.setMaximumSize(new Dimension(120, 20));
         DeviceTimeField.setEditable(false);
 
-        DeviceDateFormat=new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-        RXDate="";//"11.11.2011 11:10:11";
-        if((!SerialForbidden)&&SerialAvailable) {
-            SerialListener=new SerialWorker(this);
-            SerialThread=new Thread(SerialListener);
+        DeviceDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        RXDate = "";// "11.11.2011 11:10:11";
+        if ((!SerialForbidden) && SerialAvailable) {
+            SerialListener = new SerialWorker(this);
+            SerialThread = new Thread(SerialListener);
             SerialThread.start();
         }
-        DeviceTimeFieldTimer=new Timer(1000, new ActionListener()
-            {
-                public void actionPerformed(ActionEvent e)
-                {
-                    DeviceMillis+=1000;
+        DeviceTimeFieldTimer = new Timer(1000, new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    DeviceMillis += 1000;
                     DeviceTimeField.setText(SystemTimeFormatter.format(new Date(DeviceMillis)));
                 }
-            }
-        );
-        if((!SerialForbidden)&&SerialAvailable) {
+            });
+        if ((!SerialForbidden) && SerialAvailable) {
             DeviceTimeFieldTimer.start();
         }
 
-        DeviceTimePanel.add(DeviceTimeLabel,BorderLayout.WEST);
-        DeviceTimePanel.add(DeviceTimeField,BorderLayout.EAST);
-        DeviceTimePanel.setPreferredSize(new Dimension(200,25));
+        DeviceTimePanel.add(DeviceTimeLabel, BorderLayout.WEST);
+        DeviceTimePanel.add(DeviceTimeField, BorderLayout.EAST);
+        DeviceTimePanel.setPreferredSize(new Dimension(200, 25));
         DeviceTimePanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
-        TimePanel.add(DeviceTimePanel,BorderLayout.CENTER);
-        TimePanel.add(new JLabel("HINWEIS: Bitte warten Sie etwa 30 Sekunden, bevor Sie versuchen die Uhr zu Stellen."),BorderLayout.SOUTH);
+        TimePanel.add(DeviceTimePanel, BorderLayout.CENTER);
+        TimePanel.add(new JLabel("HINWEIS: Bitte warten Sie etwa 30 Sekunden, bevor Sie versuchen die Uhr zu Stellen."),
+            BorderLayout.SOUTH);
 
         TimePanel.validate();
         DeviceSettings.add(TimePanel);
 
-        SetRTCButton=new JButton("Uhr Stellen");
+        SetRTCButton = new JButton("Uhr Stellen");
         SetRTCButton.addActionListener(this);
         SetRTCButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         DeviceSettings.add(SetRTCButton);
-        if(SerialForbidden||(!SerialAvailable)) {
+        if (SerialForbidden || (!SerialAvailable)) {
             SetRTCButton.setEnabled(false);
         }
 
-        SettingsPageTabbedPane.addTab("Allgemeine Einstellungen",GeneralSettings);
-        SettingsPageTabbedPane.addTab("Graphenbereich",GraphSettings);
-        SettingsPageTabbedPane.addTab("Tastenkombinationen",KeyCombinationSettings);
+        SettingsPageTabbedPane.addTab("Allgemeine Einstellungen", GeneralSettings);
+        SettingsPageTabbedPane.addTab("Graphenbereich", GraphSettings);
+        SettingsPageTabbedPane.addTab("Tastenkombinationen", KeyCombinationSettings);
         SettingsPageTabbedPane.addTab("Gerät", DeviceSettings);
         settingsWindow.add(SettingsPageTabbedPane);
         settingsWindow.setResizable(false);
     }
 
     /*
-     * auskopplung von der obigen methode
-     * initialisiert den tab "Graphenbereich"
+     * auskopplung von der obigen methode initialisiert den tab "Graphenbereich"
      */
-    void setupGraphSettings(){
+    void setupGraphSettings() {
         GraphSettings.removeAll();
-        visibilitySettings=new JPanel();
-        visibilitySettings.setLayout(new BoxLayout(visibilitySettings,BoxLayout.Y_AXIS));
+        visibilitySettings = new JPanel();
+        visibilitySettings.setLayout(new BoxLayout(visibilitySettings, BoxLayout.Y_AXIS));
         visibilitySettings.add(new JLabel("Graphensichtbarkeit"));
         visibilitySettings.add(new JLabel(" "));
-        selectVisibleGraphsPanel=new JPanel();
-        selectVisibleGraphsPanel.setLayout(new BoxLayout(selectVisibleGraphsPanel,BoxLayout.Y_AXIS));
-        selectGraphVisibilityCheckBox=new JCheckBox[numberOfGraphs];
-        for(int i=0;i<numberOfGraphs;i++){
-            selectGraphVisibilityCheckBox[i]=new JCheckBox(dataValueDescriptors[i]);
+        selectVisibleGraphsPanel = new JPanel();
+        selectVisibleGraphsPanel.setLayout(new BoxLayout(selectVisibleGraphsPanel, BoxLayout.Y_AXIS));
+        selectGraphVisibilityCheckBox = new JCheckBox[numberOfGraphs];
+        for (int i = 0; i < numberOfGraphs; i++) {
+            selectGraphVisibilityCheckBox[i] = new JCheckBox(dataValueDescriptors[i]);
             selectGraphVisibilityCheckBox[i].setSelected(graphIsVisible[i]);
             selectGraphVisibilityCheckBox[i].addActionListener(this);
             selectVisibleGraphsPanel.add(selectGraphVisibilityCheckBox[i]);
         }
         selectVisibleGraphsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        selectVisibleGraphsScrollPane=new JScrollPane(selectVisibleGraphsPanel);
+        selectVisibleGraphsScrollPane = new JScrollPane(selectVisibleGraphsPanel);
         selectVisibleGraphsScrollPane.setAlignmentX(Component.LEFT_ALIGNMENT);
         visibilitySettings.add(selectVisibleGraphsScrollPane);
-        GraphSettings.setLayout(new BoxLayout(GraphSettings,BoxLayout.X_AXIS));
+        GraphSettings.setLayout(new BoxLayout(GraphSettings, BoxLayout.X_AXIS));
         GraphSettings.add(visibilitySettings);
 
-        GeneralInterpolationSettings=new JPanel();
-        GeneralInterpolationSettings.setLayout(new BoxLayout(GeneralInterpolationSettings,BoxLayout.Y_AXIS));
-        interpolationSettingsBasePanel=new JPanel();
-        interpolationSettingsBasePanel.setLayout(new BoxLayout(interpolationSettingsBasePanel,BoxLayout.Y_AXIS));
-        interpolationSettings=new JPanel();
+        GeneralInterpolationSettings = new JPanel();
+        GeneralInterpolationSettings.setLayout(new BoxLayout(GeneralInterpolationSettings, BoxLayout.Y_AXIS));
+        interpolationSettingsBasePanel = new JPanel();
+        interpolationSettingsBasePanel.setLayout(new BoxLayout(interpolationSettingsBasePanel, BoxLayout.Y_AXIS));
+        interpolationSettings = new JPanel();
         interpolationSettings.setLayout(new BoxLayout(interpolationSettings, BoxLayout.Y_AXIS));
-        JLabel title=new JLabel("Interpolation");
+        JLabel title = new JLabel("Interpolation");
         interpolationSettings.add(title);
         interpolationSettings.add(new JLabel(" "));
-        interpolateButtonGroup=new ButtonGroup();
-        interpolate1x=new JRadioButton("Alle Werte zeichnen");
-        interpolate4x=new JRadioButton("jeden 4. Wert zeichnen");
-        interpolate10x=new JRadioButton("jeden 10. Wert zeichnen");
-        interpolate100x=new JRadioButton("jeden 100. Wert zeichnen");
-        interpolate1000x=new JRadioButton("jeden 1000. Wert zeichnen");
-        interpolateCustomPanel=new JPanel();
-        interpolateCustomPanel.setLayout(new BoxLayout(interpolateCustomPanel,BoxLayout.X_AXIS));
-        interpolateCustom=new JRadioButton("Benutzerdefiniert");
-        interpolateCustomInputBox=new JTextField();
+        interpolateButtonGroup = new ButtonGroup();
+        interpolate1x = new JRadioButton("Alle Werte zeichnen");
+        interpolate4x = new JRadioButton("jeden 4. Wert zeichnen");
+        interpolate10x = new JRadioButton("jeden 10. Wert zeichnen");
+        interpolate100x = new JRadioButton("jeden 100. Wert zeichnen");
+        interpolate1000x = new JRadioButton("jeden 1000. Wert zeichnen");
+        interpolateCustomPanel = new JPanel();
+        interpolateCustomPanel.setLayout(new BoxLayout(interpolateCustomPanel, BoxLayout.X_AXIS));
+        interpolateCustom = new JRadioButton("Benutzerdefiniert");
+        interpolateCustomInputBox = new JTextField();
         interpolateCustomInputBox.addFocusListener(this);
-        interpolateCustomInputBox.setMinimumSize(new Dimension(60,23));
-        interpolateCustomInputBox.setMaximumSize(new Dimension(60,23));
-        interpolateCustomInputBox.getDocument().addDocumentListener(new DocumentListener(){
+        interpolateCustomInputBox.setMinimumSize(new Dimension(60, 23));
+        interpolateCustomInputBox.setMaximumSize(new Dimension(60, 23));
+        interpolateCustomInputBox.getDocument().addDocumentListener(new DocumentListener() {
 
                 @Override
-                public void changedUpdate(DocumentEvent arg0) {}
+                public void changedUpdate(DocumentEvent arg0) {
+                }
 
                 @Override
-                public void insertUpdate(DocumentEvent arg0) {interpolateCustom.setSelected(true);}
+                public void insertUpdate(DocumentEvent arg0) {
+                    interpolateCustom.setSelected(true);
+                }
 
                 @Override
-                public void removeUpdate(DocumentEvent arg0) {interpolateCustom.setSelected(true);}
+                public void removeUpdate(DocumentEvent arg0) {
+                    interpolateCustom.setSelected(true);
+                }
 
             });
 
@@ -1232,61 +1618,56 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         interpolationSettings.add(interpolate100x);
         interpolationSettings.add(interpolate1000x);
         interpolationSettings.add(interpolateCustom);
-        if(!isCustomInterpolated){
-            if(interpolationFactor==1){
+        if (!isCustomInterpolated) {
+            if (interpolationFactor == 1) {
                 interpolate1x.setSelected(true);
-            }
-            else if(interpolationFactor==4){
+            } else if (interpolationFactor == 4) {
                 interpolate4x.setSelected(true);
-            }
-            else if(interpolationFactor==10){
+            } else if (interpolationFactor == 10) {
                 interpolate10x.setSelected(true);
-            }
-            else if(interpolationFactor==100){
+            } else if (interpolationFactor == 100) {
                 interpolate100x.setSelected(true);
-            }
-            else if(interpolationFactor==1000){
+            } else if (interpolationFactor == 1000) {
                 interpolate1000x.setSelected(true);
-            }
-            else{
+            } else {
                 interpolateCustom.setSelected(true);
                 interpolateCustomInputBox.setText(String.valueOf(interpolationFactor));
-                isCustomInterpolated=true;
+                isCustomInterpolated = true;
                 saveConfigurationFile();
             }
-        }
-        else{
+        } else {
             interpolateCustom.setSelected(true);
             interpolateCustomInputBox.setText(String.valueOf(interpolationFactor));
         }
-        //interpolationSettings.add(interpolateCustomPanel);
+        // interpolationSettings.add(interpolateCustomPanel);
         interpolationSettings.setAlignmentX(Component.RIGHT_ALIGNMENT);
         interpolateCustomPanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        interpolationSettingsBasePanel.setLayout(new BoxLayout(interpolationSettingsBasePanel,BoxLayout.Y_AXIS));
-        interpolationSettingsBasePanel.setMaximumSize(new Dimension(200,480));
-        interpolationSettingsBasePanel.add(interpolationSettings,BorderLayout.NORTH);
-        interpolationSettingsBasePanel.add(interpolateCustomPanel,BorderLayout.CENTER);
-        interpolateOffsetPanel=new JPanel();
-        interpolateOffsetPanel.setLayout(new BoxLayout(interpolateOffsetPanel,BoxLayout.Y_AXIS));
+        interpolationSettingsBasePanel.setLayout(new BoxLayout(interpolationSettingsBasePanel, BoxLayout.Y_AXIS));
+        interpolationSettingsBasePanel.setMaximumSize(new Dimension(200, 480));
+        interpolationSettingsBasePanel.add(interpolationSettings, BorderLayout.NORTH);
+        interpolationSettingsBasePanel.add(interpolateCustomPanel, BorderLayout.CENTER);
+        interpolateOffsetPanel = new JPanel();
+        interpolateOffsetPanel.setLayout(new BoxLayout(interpolateOffsetPanel, BoxLayout.Y_AXIS));
         interpolateOffsetPanel.add(new JLabel(" "));
         interpolateOffsetPanel.add(new JLabel(" "));
-        JLabel x=new JLabel("Startwert:                                      ");/*                                       */
+        JLabel x = new JLabel(
+                "Startwert:                                      ");/*                                       */
         x.setAlignmentX(Component.RIGHT_ALIGNMENT);
         interpolateOffsetPanel.add(x);
         interpolateOffsetPanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        interpolateOffsetPanel.setMinimumSize(new Dimension(200,100));
-        interpolateOffsetValuePanel=new JPanel();
-        interpolateOffsetValuePanel.setLayout(new BoxLayout(interpolateOffsetValuePanel,BoxLayout.X_AXIS));
+        interpolateOffsetPanel.setMinimumSize(new Dimension(200, 100));
+        interpolateOffsetValuePanel = new JPanel();
+        interpolateOffsetValuePanel.setLayout(new BoxLayout(interpolateOffsetValuePanel, BoxLayout.X_AXIS));
         interpolateOffsetValuePanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        interpolationOffsetValueBox=new JTextField();
-        interpolationOffsetValueBox.setMinimumSize(new Dimension(60,23));
-        interpolationOffsetValueBox.setPreferredSize(new Dimension(60,23));
-        interpolationOffsetValueBox.setMaximumSize(new Dimension(60,23));
-        interpolationOffsetValueBox.setText(String.valueOf(interpolationOffset)+1);
+        interpolationOffsetValueBox = new JTextField();
+        interpolationOffsetValueBox.setMinimumSize(new Dimension(60, 23));
+        interpolationOffsetValueBox.setPreferredSize(new Dimension(60, 23));
+        interpolationOffsetValueBox.setMaximumSize(new Dimension(60, 23));
+        interpolationOffsetValueBox.setText(String.valueOf(interpolationOffset) + 1);
         interpolateOffsetValuePanel.add(interpolationOffsetValueBox);
         interpolateOffsetValuePanel.add(new JLabel(". Wert                         "));
         interpolateOffsetPanel.add(interpolateOffsetValuePanel);
-        //interpolateOffsetPanel.setBackground(Color.YELLOW);
+        // interpolateOffsetPanel.setBackground(Color.YELLOW);
         interpolateOffsetPanel.add(new JLabel(" "));
         interpolateOffsetPanel.add(new JLabel(" "));
         interpolateOffsetPanel.add(new JLabel(" "));
@@ -1294,13 +1675,13 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         interpolateOffsetPanel.add(new JLabel(" "));
         interpolateOffsetPanel.add(new JLabel(" "));
         interpolateOffsetPanel.add(new JLabel(" "));
-        changeInterpolationSettings=new JButton("OK (nur Interpolation)");
+        changeInterpolationSettings = new JButton("OK (nur Interpolation)");
         changeInterpolationSettings.setAlignmentX(Component.RIGHT_ALIGNMENT);
         changeInterpolationSettings.setAlignmentY(Component.BOTTOM_ALIGNMENT);
         changeInterpolationSettings.addActionListener(this);
         interpolateOffsetPanel.add(changeInterpolationSettings);
 
-        interpolationSettingsBasePanel.add(interpolateOffsetPanel,BorderLayout.SOUTH);
+        interpolationSettingsBasePanel.add(interpolateOffsetPanel, BorderLayout.SOUTH);
 
         GeneralInterpolationSettings.add(interpolationSettingsBasePanel);
 
@@ -1310,63 +1691,63 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     /*
      * das Fenster, das bei F1 oder "hilfe" erschenint wird hier vorbereitet
      */
-    private void setupHelpWindow(){
-        //Setup the HeplpWindow
-        helpWindowScrollPane=new JScrollPane();
-        helpWindow.setSize(800,480);
+    private void setupHelpWindow() {
+        // Setup the HeplpWindow
+        helpWindowScrollPane = new JScrollPane();
+        helpWindow.setSize(800, 480);
         helpWindow.setLocationRelativeTo(null);
         helpWindow.setTitle("Hilfe");
-        helpPanel=new JPanel();
-        helpPanel.setLayout(new BoxLayout(helpPanel,BoxLayout.Y_AXIS));
+        helpPanel = new JPanel();
+        helpPanel.setLayout(new BoxLayout(helpPanel, BoxLayout.Y_AXIS));
 
         helpWindowScrollPane.setViewportView(helpPanel);
-        helpWindowScrollPane.setPreferredSize(new Dimension(helpWindow.getWidth(), helpWindow.getHeight()-53));
-        helpWindow.add(helpWindowScrollPane,BorderLayout.NORTH);
+        helpWindowScrollPane.setPreferredSize(new Dimension(helpWindow.getWidth(), helpWindow.getHeight() - 53));
+        helpWindow.add(helpWindowScrollPane, BorderLayout.NORTH);
 
-        helpWindowCloseButton=new JButton("Schließen");
+        helpWindowCloseButton = new JButton("Schließen");
         helpWindowCloseButton.addActionListener(this);
-        helpWindowCloseButton.setPreferredSize(new Dimension(helpWindow.getWidth(),25));
-        helpWindow.add(helpWindowCloseButton,BorderLayout.SOUTH);
+        helpWindowCloseButton.setPreferredSize(new Dimension(helpWindow.getWidth(), 25));
+        helpWindow.add(helpWindowCloseButton, BorderLayout.SOUTH);
 
         helpWindow.setResizable(false);
 
-        helpWindowText=new JLabel[NUMBER_OF_KEY_COMBOS];
+        helpWindowText = new JLabel[NUMBER_OF_KEY_COMBOS];
     }
 
     private JMenuBar createMainWindowMenuBar() {
-        //Initialise and fill the MenuBar on the MainWindow
-        mainWindowMenuBar=new JMenuBar();
+        // Initialise and fill the MenuBar on the MainWindow
+        mainWindowMenuBar = new JMenuBar();
 
-        fileMenu=new JMenu("Datei");
-        openDifferentPlotMenuItem=new JMenuItem("Datei öffnen (Strg+"+OPEN_NEW_PLOT_KEY_STRING+")");
+        fileMenu = new JMenu("Datei");
+        openDifferentPlotMenuItem = new JMenuItem("Datei öffnen (Strg+" + OPEN_NEW_PLOT_KEY_STRING + ")");
         openDifferentPlotMenuItem.addActionListener(this);
         fileMenu.add(openDifferentPlotMenuItem);
-        openNewWindowMenuItem=new JMenuItem("neues Fenster öffnen (Strg+"+OPEN_NEW_WINDOW_KEY_STRING+")");
+        openNewWindowMenuItem = new JMenuItem("neues Fenster öffnen (Strg+" + OPEN_NEW_WINDOW_KEY_STRING + ")");
         openNewWindowMenuItem.addActionListener(this);
         fileMenu.add(openNewWindowMenuItem);
-        closeWindowMenuItem=new JMenuItem("Fenster schließen (Strg+"+CLOSE_WINDOW_KEY_STRING+")");
+        closeWindowMenuItem = new JMenuItem("Fenster schließen (Strg+" + CLOSE_WINDOW_KEY_STRING + ")");
         closeWindowMenuItem.addActionListener(this);
         fileMenu.add(closeWindowMenuItem);
 
         mainWindowMenuBar.add(fileMenu);
 
-        openSettingsWindowMenu=new JMenu("Einstellungen (Strg+"+OPEN_SETTINGS_WINDOW_KEY_STRING+")");
+        openSettingsWindowMenu = new JMenu("Einstellungen (Strg+" + OPEN_SETTINGS_WINDOW_KEY_STRING + ")");
         openSettingsWindowMenu.addMouseListener(this);
         mainWindowMenuBar.add(openSettingsWindowMenu);
 
-        toggleFullscreenModeMenu=new JMenu("Vollbildmodus ("+TOGGLE_FULLSCREEN_MODE_KEY_STRING+")");
+        toggleFullscreenModeMenu = new JMenu("Vollbildmodus (" + TOGGLE_FULLSCREEN_MODE_KEY_STRING + ")");
         toggleFullscreenModeMenu.addMouseListener(this);
         mainWindowMenuBar.add(toggleFullscreenModeMenu);
 
-        openHelpWindowMenu=new JMenu("Hilfe ("+OPEN_HELP_WINDOW_KEY_STRING+")");
+        openHelpWindowMenu = new JMenu("Hilfe (" + OPEN_HELP_WINDOW_KEY_STRING + ")");
         openHelpWindowMenu.addMouseListener(this);
         mainWindowMenuBar.add(openHelpWindowMenu);
 
-        saveGraphImagesMenu=new JMenu("Graphen speichern (Strg+"+SAVE_GRAPH_IMAGE_KEY_STRING+")");
+        saveGraphImagesMenu = new JMenu("Graphen speichern (Strg+" + SAVE_GRAPH_IMAGE_KEY_STRING + ")");
         saveGraphImagesMenu.addMouseListener(this);
         mainWindowMenuBar.add(saveGraphImagesMenu);
 
-        toggleDataPanelMenu=new JMenu("Detailansicht (Strg+E)");
+        toggleDataPanelMenu = new JMenu("Detailansicht (Strg+E)");
         toggleDataPanelMenu.addMouseListener(this);
         mainWindowMenuBar.add(toggleDataPanelMenu);
 
@@ -1374,177 +1755,178 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         return mainWindowMenuBar;
     }
 
-    public void loadConfigurationFile(){//read in the RaumklimaConfig.txt file, which holds the configuration
-        configRaw=new String[NUMBER_OF_CONFIG_ENTRIES];
+    public void loadConfigurationFile() {// read in the RaumklimaConfig.txt file, which holds the configuration
+        configRaw = new String[NUMBER_OF_CONFIG_ENTRIES];
         try {
             br = new BufferedReader(new FileReader(configFile));
-            for(int i=0;i<NUMBER_OF_CONFIG_ENTRIES;i++){
-                configRaw[i]=br.readLine();
+            for (int i = 0; i < NUMBER_OF_CONFIG_ENTRIES; i++) {
+                configRaw[i] = br.readLine();
 
-                logln("CFG: "+configRaw[i]);
+                logln("CFG: " + configRaw[i]);
             }
-            //logln(configRaw[9]);
-            //CLOSE_WINDOW_KEY_CODE=Integer.parseInt(new String(configRaw[9].trim().getBytes("UTF-8"),"UTF-8"));
-            CLOSE_WINDOW_KEY_CODE=Integer.parseInt(configRaw[8]);
-            CLOSE_WINDOW_KEY_STRING=configRaw[9];
-            OPEN_HELP_WINDOW_KEY_CODE=Integer.parseInt(configRaw[14].trim());
-            OPEN_HELP_WINDOW_KEY_STRING=configRaw[15];
-            OPEN_NEW_PLOT_KEY_CODE=Integer.parseInt(configRaw[20].trim());
-            OPEN_NEW_PLOT_KEY_STRING=configRaw[21];
-            OPEN_NEW_WINDOW_KEY_CODE=Integer.parseInt(configRaw[26].trim());
-            OPEN_NEW_WINDOW_KEY_STRING=configRaw[27];
-            OPEN_SETTINGS_WINDOW_KEY_CODE=Integer.parseInt(configRaw[32].trim());
-            OPEN_SETTINGS_WINDOW_KEY_STRING=configRaw[33];
-            REFRESH_FRAME_KEY_CODE=Integer.parseInt(configRaw[38].trim());
-            REFRESH_FRAME_KEY_STRING=configRaw[39];
-            SAVE_GRAPH_IMAGE_KEY_CODE=Integer.parseInt(configRaw[44].trim());
-            SAVE_GRAPH_IMAGE_KEY_STRING=configRaw[45];
-            TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_CODE=Integer.parseInt(configRaw[50].trim());
-            TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_STRING=configRaw[51];
-            TOGGLE_FULLSCREEN_MODE_KEY_CODE=Integer.parseInt(configRaw[56].trim());
-            TOGGLE_FULLSCREEN_MODE_KEY_STRING=configRaw[57];
+            // logln(configRaw[9]);
+            // CLOSE_WINDOW_KEY_CODE=Integer.parseInt(new
+            // String(configRaw[9].trim().getBytes("UTF-8"),"UTF-8"));
+            CLOSE_WINDOW_KEY_CODE = Integer.parseInt(configRaw[8]);
+            CLOSE_WINDOW_KEY_STRING = configRaw[9];
+            OPEN_HELP_WINDOW_KEY_CODE = Integer.parseInt(configRaw[14].trim());
+            OPEN_HELP_WINDOW_KEY_STRING = configRaw[15];
+            OPEN_NEW_PLOT_KEY_CODE = Integer.parseInt(configRaw[20].trim());
+            OPEN_NEW_PLOT_KEY_STRING = configRaw[21];
+            OPEN_NEW_WINDOW_KEY_CODE = Integer.parseInt(configRaw[26].trim());
+            OPEN_NEW_WINDOW_KEY_STRING = configRaw[27];
+            OPEN_SETTINGS_WINDOW_KEY_CODE = Integer.parseInt(configRaw[32].trim());
+            OPEN_SETTINGS_WINDOW_KEY_STRING = configRaw[33];
+            REFRESH_FRAME_KEY_CODE = Integer.parseInt(configRaw[38].trim());
+            REFRESH_FRAME_KEY_STRING = configRaw[39];
+            SAVE_GRAPH_IMAGE_KEY_CODE = Integer.parseInt(configRaw[44].trim());
+            SAVE_GRAPH_IMAGE_KEY_STRING = configRaw[45];
+            TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_CODE = Integer.parseInt(configRaw[50].trim());
+            TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_STRING = configRaw[51];
+            TOGGLE_FULLSCREEN_MODE_KEY_CODE = Integer.parseInt(configRaw[56].trim());
+            TOGGLE_FULLSCREEN_MODE_KEY_STRING = configRaw[57];
 
-            CLOSE_WINDOW_ALT_REQUIRED=configRaw[10].equals("YES");
-            CLOSE_WINDOW_CTRL_REQUIRED=configRaw[11].equals("YES");
-            CLOSE_WINDOW_SHIFT_REQUIRED=configRaw[12].equals("YES");
+            CLOSE_WINDOW_ALT_REQUIRED = configRaw[10].equals("YES");
+            CLOSE_WINDOW_CTRL_REQUIRED = configRaw[11].equals("YES");
+            CLOSE_WINDOW_SHIFT_REQUIRED = configRaw[12].equals("YES");
 
-            OPEN_HELP_WINDOW_ALT_REQUIRED=configRaw[16].equals("YES");
-            OPEN_HELP_WINDOW_CTRL_REQUIRED=configRaw[17].equals("YES");
-            OPEN_HELP_WINDOW_SHIFT_REQUIRED=configRaw[18].equals("YES");
+            OPEN_HELP_WINDOW_ALT_REQUIRED = configRaw[16].equals("YES");
+            OPEN_HELP_WINDOW_CTRL_REQUIRED = configRaw[17].equals("YES");
+            OPEN_HELP_WINDOW_SHIFT_REQUIRED = configRaw[18].equals("YES");
 
-            OPEN_NEW_PLOT_ALT_REQUIRED=configRaw[22].equals("YES");
-            OPEN_NEW_PLOT_CTRL_REQUIRED=configRaw[23].equals("YES");
-            OPEN_NEW_PLOT_SHIFT_REQUIRED=configRaw[24].equals("YES");
+            OPEN_NEW_PLOT_ALT_REQUIRED = configRaw[22].equals("YES");
+            OPEN_NEW_PLOT_CTRL_REQUIRED = configRaw[23].equals("YES");
+            OPEN_NEW_PLOT_SHIFT_REQUIRED = configRaw[24].equals("YES");
 
-            OPEN_NEW_WINDOW_ALT_REQUIRED=configRaw[28].equals("YES");
-            OPEN_NEW_WINDOW_CTRL_REQUIRED=configRaw[29].equals("YES");
-            OPEN_NEW_WINDOW_SHIFT_REQUIRED=configRaw[30].equals("YES");
+            OPEN_NEW_WINDOW_ALT_REQUIRED = configRaw[28].equals("YES");
+            OPEN_NEW_WINDOW_CTRL_REQUIRED = configRaw[29].equals("YES");
+            OPEN_NEW_WINDOW_SHIFT_REQUIRED = configRaw[30].equals("YES");
 
-            OPEN_SETTINGS_WINDOW_ALT_REQUIRED=configRaw[34].equals("YES");
-            OPEN_SETTINGS_WINDOW_CTRL_REQUIRED=configRaw[35].equals("YES");
-            OPEN_SETTINGS_WINDOW_SHIFT_REQUIRED=configRaw[36].equals("YES");
+            OPEN_SETTINGS_WINDOW_ALT_REQUIRED = configRaw[34].equals("YES");
+            OPEN_SETTINGS_WINDOW_CTRL_REQUIRED = configRaw[35].equals("YES");
+            OPEN_SETTINGS_WINDOW_SHIFT_REQUIRED = configRaw[36].equals("YES");
 
-            REFRESH_FRAME_ALT_REQUIRED=configRaw[40].equals("YES");
-            REFRESH_FRAME_CTRL_REQUIRED=configRaw[41].equals("YES");
-            REFRESH_FRAME_SHIFT_REQUIRED=configRaw[42].equals("YES");
+            REFRESH_FRAME_ALT_REQUIRED = configRaw[40].equals("YES");
+            REFRESH_FRAME_CTRL_REQUIRED = configRaw[41].equals("YES");
+            REFRESH_FRAME_SHIFT_REQUIRED = configRaw[42].equals("YES");
 
-            SAVE_GRAPH_IMAGE_ALT_REQUIRED=configRaw[46].equals("YES");
-            SAVE_GRAPH_IMAGE_CTRL_REQUIRED=configRaw[47].equals("YES");
-            SAVE_GRAPH_IMAGE_SHIFT_REQUIRED=configRaw[48].equals("YES");
+            SAVE_GRAPH_IMAGE_ALT_REQUIRED = configRaw[46].equals("YES");
+            SAVE_GRAPH_IMAGE_CTRL_REQUIRED = configRaw[47].equals("YES");
+            SAVE_GRAPH_IMAGE_SHIFT_REQUIRED = configRaw[48].equals("YES");
 
-            TOGGLE_BOTTOM_PANEL_VISIBILITY_ALT_REQUIRED=configRaw[52].equals("YES");
-            TOGGLE_BOTTOM_PANEL_VISIBILITY_CTRL_REQUIRED=configRaw[53].equals("YES");
-            TOGGLE_BOTTOM_PANEL_VISIBILITY_SHIFT_REQUIRED=configRaw[54].equals("YES");
+            TOGGLE_BOTTOM_PANEL_VISIBILITY_ALT_REQUIRED = configRaw[52].equals("YES");
+            TOGGLE_BOTTOM_PANEL_VISIBILITY_CTRL_REQUIRED = configRaw[53].equals("YES");
+            TOGGLE_BOTTOM_PANEL_VISIBILITY_SHIFT_REQUIRED = configRaw[54].equals("YES");
 
-            TOGGLE_FULLSCREEN_MODE_ALT_REQUIRED=configRaw[58].equals("YES");
-            TOGGLE_FULLSCREEN_MODE_CTRL_REQUIRED=configRaw[59].equals("YES");
-            TOGGLE_FULLSCREEN_MODE_SHIFT_REQUIRED=configRaw[60].equals("YES");
+            TOGGLE_FULLSCREEN_MODE_ALT_REQUIRED = configRaw[58].equals("YES");
+            TOGGLE_FULLSCREEN_MODE_CTRL_REQUIRED = configRaw[59].equals("YES");
+            TOGGLE_FULLSCREEN_MODE_SHIFT_REQUIRED = configRaw[60].equals("YES");
 
-            savePng=configRaw[64].equals("YES");
-            saveJpeg=configRaw[66].equals("YES");
-            imageWidth=Integer.parseInt(configRaw[68].trim());
-            imageHeight=Integer.parseInt(configRaw[70].trim());
-            getImageSizeAutomatically=configRaw[72].equals("YES");
-            fullscreenOnStartup=configRaw[76].equals("YES");
-            fullscreenOk=configRaw[78].equals("YES");
-            bottomPanelExpandedOnStartup=configRaw[80].equals("YES");
-            autoUpdate=configRaw[82].equals("YES");
-            interpolationFactor=Integer.parseInt(configRaw[84].trim());
-            isCustomInterpolated=configRaw[86].equals("YES");
-            interpolationOffset=Integer.parseInt(configRaw[88].trim());
-            geoMode=configRaw[90].equals("YES");
-            if(getImageSizeAutomatically){
-                imageHeight=fullscreenDimension.height;
-                imageWidth=fullscreenDimension.width;
+            savePng = configRaw[64].equals("YES");
+            saveJpeg = configRaw[66].equals("YES");
+            imageWidth = Integer.parseInt(configRaw[68].trim());
+            imageHeight = Integer.parseInt(configRaw[70].trim());
+            getImageSizeAutomatically = configRaw[72].equals("YES");
+            fullscreenOnStartup = configRaw[76].equals("YES");
+            fullscreenOk = configRaw[78].equals("YES");
+            bottomPanelExpandedOnStartup = configRaw[80].equals("YES");
+            autoUpdate = configRaw[82].equals("YES");
+            interpolationFactor = Integer.parseInt(configRaw[84].trim());
+            isCustomInterpolated = configRaw[86].equals("YES");
+            interpolationOffset = Integer.parseInt(configRaw[88].trim());
+            geoMode = configRaw[90].equals("YES");
+            if (getImageSizeAutomatically) {
+                imageHeight = fullscreenDimension.height;
+                imageWidth = fullscreenDimension.width;
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * Writes the Configuration (which is saved in a {@link String} Array in Memory) to a {@link File} on the local Storage
+     * Writes the Configuration (which is saved in a {@link String} Array in Memory)
+     * to a {@link File} on the local Storage
      */
-    private void saveConfigurationFile(){
+    private void saveConfigurationFile() {
 
         logln("updating config");
-        configRaw[8]=String.valueOf(CLOSE_WINDOW_KEY_CODE);
-        configRaw[9]=CLOSE_WINDOW_KEY_STRING;
-        configRaw[14]=String.valueOf(OPEN_HELP_WINDOW_KEY_CODE);
-        configRaw[15]=OPEN_HELP_WINDOW_KEY_STRING;
-        configRaw[20]=String.valueOf(OPEN_NEW_PLOT_KEY_CODE);
-        configRaw[21]=OPEN_NEW_PLOT_KEY_STRING;
-        configRaw[26]=String.valueOf(OPEN_NEW_WINDOW_KEY_CODE);
-        configRaw[27]=OPEN_NEW_WINDOW_KEY_STRING;
-        configRaw[32]=String.valueOf(OPEN_SETTINGS_WINDOW_KEY_CODE);
-        configRaw[33]=OPEN_SETTINGS_WINDOW_KEY_STRING;
-        configRaw[38]=String.valueOf(REFRESH_FRAME_KEY_CODE);
-        configRaw[39]=REFRESH_FRAME_KEY_STRING;
-        configRaw[44]=String.valueOf(SAVE_GRAPH_IMAGE_KEY_CODE);
-        configRaw[45]=SAVE_GRAPH_IMAGE_KEY_STRING;
-        configRaw[50]=String.valueOf(TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_CODE);
-        configRaw[51]=TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_STRING;
-        configRaw[56]=String.valueOf(TOGGLE_FULLSCREEN_MODE_KEY_CODE);
-        configRaw[57]=TOGGLE_FULLSCREEN_MODE_KEY_STRING;
+        configRaw[8] = String.valueOf(CLOSE_WINDOW_KEY_CODE);
+        configRaw[9] = CLOSE_WINDOW_KEY_STRING;
+        configRaw[14] = String.valueOf(OPEN_HELP_WINDOW_KEY_CODE);
+        configRaw[15] = OPEN_HELP_WINDOW_KEY_STRING;
+        configRaw[20] = String.valueOf(OPEN_NEW_PLOT_KEY_CODE);
+        configRaw[21] = OPEN_NEW_PLOT_KEY_STRING;
+        configRaw[26] = String.valueOf(OPEN_NEW_WINDOW_KEY_CODE);
+        configRaw[27] = OPEN_NEW_WINDOW_KEY_STRING;
+        configRaw[32] = String.valueOf(OPEN_SETTINGS_WINDOW_KEY_CODE);
+        configRaw[33] = OPEN_SETTINGS_WINDOW_KEY_STRING;
+        configRaw[38] = String.valueOf(REFRESH_FRAME_KEY_CODE);
+        configRaw[39] = REFRESH_FRAME_KEY_STRING;
+        configRaw[44] = String.valueOf(SAVE_GRAPH_IMAGE_KEY_CODE);
+        configRaw[45] = SAVE_GRAPH_IMAGE_KEY_STRING;
+        configRaw[50] = String.valueOf(TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_CODE);
+        configRaw[51] = TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_STRING;
+        configRaw[56] = String.valueOf(TOGGLE_FULLSCREEN_MODE_KEY_CODE);
+        configRaw[57] = TOGGLE_FULLSCREEN_MODE_KEY_STRING;
 
-        configRaw[10]=getYesNoString(CLOSE_WINDOW_ALT_REQUIRED);
-        configRaw[11]=getYesNoString(CLOSE_WINDOW_CTRL_REQUIRED);
-        configRaw[12]=getYesNoString(CLOSE_WINDOW_SHIFT_REQUIRED);
+        configRaw[10] = (CLOSE_WINDOW_ALT_REQUIRED) ? "YES" : "NO";
+        configRaw[11] = (CLOSE_WINDOW_CTRL_REQUIRED) ? "YES" : "NO";
+        configRaw[12] = (CLOSE_WINDOW_SHIFT_REQUIRED) ? "YES" : "NO";
 
-        configRaw[16]=getYesNoString(OPEN_HELP_WINDOW_ALT_REQUIRED);
-        configRaw[17]=getYesNoString(OPEN_HELP_WINDOW_CTRL_REQUIRED);
-        configRaw[18]=getYesNoString(OPEN_HELP_WINDOW_SHIFT_REQUIRED);
+        configRaw[16] = (OPEN_HELP_WINDOW_ALT_REQUIRED) ? "YES" : "NO";
+        configRaw[17] = (OPEN_HELP_WINDOW_CTRL_REQUIRED) ? "YES" : "NO";
+        configRaw[18] = (OPEN_HELP_WINDOW_SHIFT_REQUIRED) ? "YES" : "NO";
 
-        configRaw[22]=getYesNoString(OPEN_NEW_PLOT_ALT_REQUIRED);
-        configRaw[23]=getYesNoString(OPEN_NEW_PLOT_CTRL_REQUIRED);
-        configRaw[24]=getYesNoString(OPEN_NEW_PLOT_SHIFT_REQUIRED);
+        configRaw[22] = (OPEN_NEW_PLOT_ALT_REQUIRED) ? "YES" : "NO";
+        configRaw[23] = (OPEN_NEW_PLOT_CTRL_REQUIRED) ? "YES" : "NO";
+        configRaw[24] = (OPEN_NEW_PLOT_SHIFT_REQUIRED) ? "YES" : "NO";
 
-        configRaw[28]=getYesNoString(OPEN_NEW_WINDOW_ALT_REQUIRED);
-        configRaw[29]=getYesNoString(OPEN_NEW_WINDOW_CTRL_REQUIRED);
-        configRaw[30]=getYesNoString(OPEN_NEW_WINDOW_SHIFT_REQUIRED);
+        configRaw[28] = (OPEN_NEW_WINDOW_ALT_REQUIRED) ? "YES" : "NO";
+        configRaw[29] = (OPEN_NEW_WINDOW_CTRL_REQUIRED) ? "YES" : "NO";
+        configRaw[30] = (OPEN_NEW_WINDOW_SHIFT_REQUIRED) ? "YES" : "NO";
 
-        configRaw[34]=getYesNoString(OPEN_SETTINGS_WINDOW_ALT_REQUIRED);
-        configRaw[35]=getYesNoString(OPEN_SETTINGS_WINDOW_CTRL_REQUIRED);
-        configRaw[36]=getYesNoString(OPEN_SETTINGS_WINDOW_SHIFT_REQUIRED);
+        configRaw[34] = (OPEN_SETTINGS_WINDOW_ALT_REQUIRED) ? "YES" : "NO";
+        configRaw[35] = (OPEN_SETTINGS_WINDOW_CTRL_REQUIRED) ? "YES" : "NO";
+        configRaw[36] = (OPEN_SETTINGS_WINDOW_SHIFT_REQUIRED) ? "YES" : "NO";
 
-        configRaw[40]=getYesNoString(REFRESH_FRAME_ALT_REQUIRED);
-        configRaw[41]=getYesNoString(REFRESH_FRAME_CTRL_REQUIRED);
-        configRaw[42]=getYesNoString(REFRESH_FRAME_SHIFT_REQUIRED);
+        configRaw[40] = (REFRESH_FRAME_ALT_REQUIRED) ? "YES" : "NO";
+        configRaw[41] = (REFRESH_FRAME_CTRL_REQUIRED) ? "YES" : "NO";
+        configRaw[42] = (REFRESH_FRAME_SHIFT_REQUIRED) ? "YES" : "NO";
 
-        configRaw[46]=getYesNoString(SAVE_GRAPH_IMAGE_ALT_REQUIRED);
-        configRaw[47]=getYesNoString(SAVE_GRAPH_IMAGE_CTRL_REQUIRED);
-        configRaw[48]=getYesNoString(SAVE_GRAPH_IMAGE_SHIFT_REQUIRED);
+        configRaw[46] = (SAVE_GRAPH_IMAGE_ALT_REQUIRED) ? "YES" : "NO";
+        configRaw[47] = (SAVE_GRAPH_IMAGE_CTRL_REQUIRED) ? "YES" : "NO";
+        configRaw[48] = (SAVE_GRAPH_IMAGE_SHIFT_REQUIRED) ? "YES" : "NO";
 
-        configRaw[52]=getYesNoString(TOGGLE_BOTTOM_PANEL_VISIBILITY_ALT_REQUIRED);
-        configRaw[53]=getYesNoString(TOGGLE_BOTTOM_PANEL_VISIBILITY_CTRL_REQUIRED);
-        configRaw[54]=getYesNoString(TOGGLE_BOTTOM_PANEL_VISIBILITY_SHIFT_REQUIRED);
+        configRaw[52] = (TOGGLE_BOTTOM_PANEL_VISIBILITY_ALT_REQUIRED) ? "YES" : "NO";
+        configRaw[53] = (TOGGLE_BOTTOM_PANEL_VISIBILITY_CTRL_REQUIRED) ? "YES" : "NO";
+        configRaw[54] = (TOGGLE_BOTTOM_PANEL_VISIBILITY_SHIFT_REQUIRED) ? "YES" : "NO";
 
-        configRaw[58]=getYesNoString(TOGGLE_FULLSCREEN_MODE_ALT_REQUIRED);
-        configRaw[59]=getYesNoString(TOGGLE_FULLSCREEN_MODE_CTRL_REQUIRED);
-        configRaw[60]=getYesNoString(TOGGLE_FULLSCREEN_MODE_SHIFT_REQUIRED);
+        configRaw[58] = (TOGGLE_FULLSCREEN_MODE_ALT_REQUIRED) ? "YES" : "NO";
+        configRaw[59] = (TOGGLE_FULLSCREEN_MODE_CTRL_REQUIRED) ? "YES" : "NO";
+        configRaw[60] = (TOGGLE_FULLSCREEN_MODE_SHIFT_REQUIRED) ? "YES" : "NO";
 
-        configRaw[64]=getYesNoString(savePng);
-        configRaw[66]=getYesNoString(saveJpeg);
-        configRaw[68]=String.valueOf(imageWidth);
-        configRaw[70]=String.valueOf(imageHeight);
-        configRaw[72]=getYesNoString(getImageSizeAutomatically);
-        configRaw[76]=getYesNoString(fullscreenOnStartup);
-        configRaw[78]=getYesNoString(fullscreenOk);
-        configRaw[80]=getYesNoString(bottomPanelExpandedOnStartup);
-        configRaw[82]=getYesNoString(autoUpdate);
-        configRaw[84]=String.valueOf(interpolationFactor);
-        configRaw[86]=getYesNoString(isCustomInterpolated);
-        configRaw[88]=String.valueOf(interpolationOffset);
-        configRaw[90]=getYesNoString(geoMode);
+        configRaw[64] = (savePng) ? "YES" : "NO";
+        configRaw[66] = (saveJpeg) ? "YES" : "NO";
+        configRaw[68] = String.valueOf(imageWidth);
+        configRaw[70] = String.valueOf(imageHeight);
+        configRaw[72] = (getImageSizeAutomatically) ? "YES" : "NO";
+        configRaw[76] = (fullscreenOnStartup) ? "YES" : "NO";
+        configRaw[78] = (fullscreenOk) ? "YES" : "NO";
+        configRaw[80] = (bottomPanelExpandedOnStartup) ? "YES" : "NO";
+        configRaw[82] = (autoUpdate) ? "YES" : "NO";
+        configRaw[84] = String.valueOf(interpolationFactor);
+        configRaw[86] = (isCustomInterpolated) ? "YES" : "NO";
+        configRaw[88] = String.valueOf(interpolationOffset);
+        configRaw[90] = (geoMode) ? "YES" : "NO";
 
         logln("writing Config");
         try {
-            configFile=new File("RaumklimaConfig.txt");
+            configFile = new File("RaumklimaConfig.txt");
             configFile.delete();
             configFile.createNewFile();
             bw = new BufferedWriter(new FileWriter(configFile));
-            for(int i=0;i<NUMBER_OF_CONFIG_ENTRIES;i++){
+            for (int i = 0; i < NUMBER_OF_CONFIG_ENTRIES; i++) {
                 bw.write(configRaw[i]);
                 bw.newLine();
             }
@@ -1557,278 +1939,280 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
 
     /**
      * Checks whether an Update is available
+     * 
      * @return true if an update is available, false if no update is available
      */
-    public boolean checkIfUpdateAvailable(){
-        try{
-            source = new URL(projectUri+branch+"/PublicVersion/VERSION");
+    public boolean checkIfUpdateAvailable() {
+        try {
+            source = new URL(projectUri + branch + "/PublicVersion/VERSION");
 
-            logln(projectUri+branch+"/PublicVersion/VERSION");
-            br=new  BufferedReader(new InputStreamReader(source.openStream()));
-            String RemoteVersion=br.readLine().trim();
-            //in String.split muss ein '.' escaped werden
-            //http://www.java-examples.com/java-string-split-example
-            //06.09.2017 3:46 Uhr
-            //(codezeilen 31-41 im beispiel auf der website)
-            String[] remote=RemoteVersion.split("\\.");
-            String[] local=VERSION.split("\\.");
-            for(int i=0;i<4;i++){
+            logln(projectUri + branch + "/PublicVersion/VERSION");
+            br = new BufferedReader(new InputStreamReader(source.openStream()));
+            String RemoteVersion = br.readLine().trim();
+            // in String.split muss ein '.' escaped werden
+            // http://www.java-examples.com/java-string-split-example
+            // 06.09.2017 3:46 Uhr
+            // (codezeilen 31-41 im beispiel auf der website)
+            String[] remote = RemoteVersion.split("\\.");
+            String[] local = VERSION.split("\\.");
+            for (int i = 0; i < 4; i++) {
 
-                logln(local[i]+" | "+remote[i]);
-                if(Integer.parseInt(remote[i])>Integer.parseInt(local[i])){
+                logln(local[i] + " | " + remote[i]);
+                if (Integer.parseInt(remote[i]) > Integer.parseInt(local[i])) {
                     return true;
-                }
-                else if(Integer.parseInt(local[i])==Integer.parseInt(remote[i])) {
+                } else if (Integer.parseInt(local[i]) == Integer.parseInt(remote[i])) {
                     ;
-                }
-                else {
+                } else {
                     return false;
                 }
             }
             return false;
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
 
     /**
-     * After the Programm has checked whether an update from github is available it performs this update
+     * After the Programm has checked whether an update from github is available it
+     * performs this update
      */
-    public void updateJar(){
+    public void updateJar() {
         logln("\n\nUPDATING\n\n");
-        try{
-            //quelle wie oben bei der config datei
-            oldFile=new File("Raumklima.jar");
-            oldFile.delete();
-            //fileUrl: "https://raw.githubusercontent.com/lukasaldersley/Raumklima/master/PublicVersion/VERSION"
-            source = new URL(downloadTargetUri+branch+"/PublicVersion/Raumklima.jar");
+        try {
+            // quelle wie oben bei der config datei
+            oldFile = new File("Raumklima.jar");
+            oldFile.renameTo(new File("Raumklima_old.jar"));
+            // oldFile.delete();
+            // fileUrl:
+            // "https://raw.githubusercontent.com/lukasaldersley/Raumklima/master/PublicVersion/VERSION"
+            source = new URL(downloadTargetUri + branch + "/PublicVersion/Raumklima.jar");
             readableByteChannelFromSource = Channels.newChannel(source.openStream());
             fileOutputStream = new FileOutputStream("Raumklima.jar");
             fileOutputStream.getChannel().transferFrom(readableByteChannelFromSource, 0, Long.MAX_VALUE);
             fileOutputStream.close();
-            String parameters="";
-            if(debug) {
-            	parameters+=" -d";
+            String parameters = "";
+            if (debug) {
+                parameters += " -d";
             }
-            if(logging) {
-            	parameters+=" -l";
+            if (logging) {
+                parameters += " -l";
             }
-            if(fileSpecifiedAsParameter) {
-            	parameters+=" -f "+specifiedFile;
+            if (fileSpecifiedAsParameter) {
+                parameters += " -f " + specifiedFile;
             }
-            Runtime.getRuntime().exec("java -jar Raumklima.jar"+parameters);
+            oldFile = new File("Raumklima_old.jar");
+            oldFile.delete();
+            Runtime.getRuntime().exec("java -jar Raumklima.jar" + parameters);
             System.exit(0);
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
+            logln(e);
+            oldFile = new File("Raumklima.jar");
+            if (!oldFile.exists()) {
+                oldFile = new File("Raumklima_old.jar");
+                oldFile.renameTo(new File("Raumklima.jar"));
+            }
         }
     }
 
     /*
-     * gibt "YES" zurüch falls eingabe true, sonst gibt die methode "NO" zurück
-     * 
-     * hab ich geschrieben weil in der saveConfigFile es sonst viel zu unübersichtlich geworden währe
-     */
-    private String getYesNoString(boolean in){
-        if(in){
-            return "YES";
-        }
-        return "NO";
-    }
-
-    /*
-     * liest textdateien in denen die tastenkombis, die betriebsanweisung und ähnliches stehen
+     * liest textdateien in denen die tastenkombis, die betriebsanweisung und
+     * ähnliches stehen
      */
     private void loadTextForHelpWindowAndKeyCombinations() {
-        try{
-            String line="";
-            for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
-                helpWindowText[i]=new JLabel();
+        try {
+            String line = "";
+            for (int i = 0; i < NUMBER_OF_KEY_COMBOS; i++) {
+                helpWindowText[i] = new JLabel();
                 helpWindowText[i].setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
                 helpPanel.add(helpWindowText[i]);
             }
-            br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("CopyrightNotes.txt"),"UTF-8"));//https://stackoverflow.com/questions/12920039/encoding-in-exported-jar antwort von davmac 
-            try{
-                copyrightNotes=new JLabel[NUMBER_OF_COPYRIGHT_NOTES+3];
-                copyrightNotes[0]=new JLabel(" ");
+            br = new BufferedReader(
+                new InputStreamReader(this.getClass().getResourceAsStream("CopyrightNotes.txt"), "UTF-8"));// https://stackoverflow.com/questions/12920039/encoding-in-exported-jar
+            // antwort
+            // von
+            // davmac
+            try {
+                copyrightNotes = new JLabel[NUMBER_OF_COPYRIGHT_NOTES + 3];
+                copyrightNotes[0] = new JLabel(" ");
                 helpPanel.add(copyrightNotes[0]);
-                copyrightNotes[1]=new JLabel(" ");
+                copyrightNotes[1] = new JLabel(" ");
                 helpPanel.add(copyrightNotes[1]);
-                copyrightNotes[2]=new JLabel("Version: "+VERSION);
+                copyrightNotes[2] = new JLabel("Version: " + VERSION);
                 helpPanel.add(copyrightNotes[2]);
-                for(int i=3;i<NUMBER_OF_COPYRIGHT_NOTES+3;i++){
-                    line=br.readLine();
-                    copyrightNotes[i]=new JLabel(line);
-                    if(line==null){
+                for (int i = 3; i < NUMBER_OF_COPYRIGHT_NOTES + 3; i++) {
+                    line = br.readLine();
+                    copyrightNotes[i] = new JLabel(line);
+                    if (line == null) {
                         break;
                     }
                     logln(line);
                     helpPanel.add(copyrightNotes[i]);
                 }
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
-                JLabel error=new JLabel("Ein Fehler ist aufgetreten und diese Seite konnte nicht geladen werden. Bitte laden Sie das Programm neu.");
+                JLabel error = new JLabel(
+                        "Ein Fehler ist aufgetreten und diese Seite konnte nicht geladen werden. Bitte laden Sie das Programm neu.");
                 helpPanel.add(error);
             }
-            if(CLOSE_WINDOW_ALT_REQUIRED){
-                helpWindowText[0].setText(helpWindowText[0].getText()+"Alt+");
+            if (CLOSE_WINDOW_ALT_REQUIRED) {
+                helpWindowText[0].setText(helpWindowText[0].getText() + "Alt+");
             }
-            if(CLOSE_WINDOW_CTRL_REQUIRED){
-                helpWindowText[0].setText(helpWindowText[0].getText()+"Strg+");
+            if (CLOSE_WINDOW_CTRL_REQUIRED) {
+                helpWindowText[0].setText(helpWindowText[0].getText() + "Strg+");
             }
-            if(CLOSE_WINDOW_SHIFT_REQUIRED){
-                helpWindowText[0].setText(helpWindowText[0].getText()+"Shift+");
+            if (CLOSE_WINDOW_SHIFT_REQUIRED) {
+                helpWindowText[0].setText(helpWindowText[0].getText() + "Shift+");
             }
-            if(OPEN_HELP_WINDOW_ALT_REQUIRED){
-                helpWindowText[1].setText(helpWindowText[1].getText()+"Alt+");
+            if (OPEN_HELP_WINDOW_ALT_REQUIRED) {
+                helpWindowText[1].setText(helpWindowText[1].getText() + "Alt+");
             }
-            if(OPEN_HELP_WINDOW_CTRL_REQUIRED){
-                helpWindowText[1].setText(helpWindowText[1].getText()+"Strg+");
+            if (OPEN_HELP_WINDOW_CTRL_REQUIRED) {
+                helpWindowText[1].setText(helpWindowText[1].getText() + "Strg+");
             }
-            if(OPEN_HELP_WINDOW_SHIFT_REQUIRED){
-                helpWindowText[1].setText(helpWindowText[1].getText()+"Shift+");
+            if (OPEN_HELP_WINDOW_SHIFT_REQUIRED) {
+                helpWindowText[1].setText(helpWindowText[1].getText() + "Shift+");
             }
-            if(OPEN_NEW_PLOT_ALT_REQUIRED){
-                helpWindowText[2].setText(helpWindowText[2].getText()+"Alt+");
+            if (OPEN_NEW_PLOT_ALT_REQUIRED) {
+                helpWindowText[2].setText(helpWindowText[2].getText() + "Alt+");
             }
-            if(OPEN_NEW_PLOT_CTRL_REQUIRED){
-                helpWindowText[2].setText(helpWindowText[2].getText()+"Strg+");
+            if (OPEN_NEW_PLOT_CTRL_REQUIRED) {
+                helpWindowText[2].setText(helpWindowText[2].getText() + "Strg+");
             }
-            if(OPEN_NEW_PLOT_SHIFT_REQUIRED){
-                helpWindowText[2].setText(helpWindowText[2].getText()+"Shift+");
+            if (OPEN_NEW_PLOT_SHIFT_REQUIRED) {
+                helpWindowText[2].setText(helpWindowText[2].getText() + "Shift+");
             }
-            if(OPEN_NEW_WINDOW_ALT_REQUIRED){
-                helpWindowText[3].setText(helpWindowText[3].getText()+"Alt+");
+            if (OPEN_NEW_WINDOW_ALT_REQUIRED) {
+                helpWindowText[3].setText(helpWindowText[3].getText() + "Alt+");
             }
-            if(OPEN_NEW_WINDOW_CTRL_REQUIRED){
-                helpWindowText[3].setText(helpWindowText[3].getText()+"Strg+");
+            if (OPEN_NEW_WINDOW_CTRL_REQUIRED) {
+                helpWindowText[3].setText(helpWindowText[3].getText() + "Strg+");
             }
-            if(OPEN_NEW_WINDOW_SHIFT_REQUIRED){
-                helpWindowText[3].setText(helpWindowText[3].getText()+"Shift+");
+            if (OPEN_NEW_WINDOW_SHIFT_REQUIRED) {
+                helpWindowText[3].setText(helpWindowText[3].getText() + "Shift+");
             }
-            if(OPEN_SETTINGS_WINDOW_ALT_REQUIRED){
-                helpWindowText[4].setText(helpWindowText[4].getText()+"Alt+");
+            if (OPEN_SETTINGS_WINDOW_ALT_REQUIRED) {
+                helpWindowText[4].setText(helpWindowText[4].getText() + "Alt+");
             }
-            if(OPEN_SETTINGS_WINDOW_CTRL_REQUIRED){
-                helpWindowText[4].setText(helpWindowText[4].getText()+"Strg+");
+            if (OPEN_SETTINGS_WINDOW_CTRL_REQUIRED) {
+                helpWindowText[4].setText(helpWindowText[4].getText() + "Strg+");
             }
-            if(OPEN_SETTINGS_WINDOW_SHIFT_REQUIRED){
-                helpWindowText[4].setText(helpWindowText[4].getText()+"Shift+");
+            if (OPEN_SETTINGS_WINDOW_SHIFT_REQUIRED) {
+                helpWindowText[4].setText(helpWindowText[4].getText() + "Shift+");
             }
-            if(REFRESH_FRAME_ALT_REQUIRED){
-                helpWindowText[5].setText(helpWindowText[5].getText()+"Alt+");
+            if (REFRESH_FRAME_ALT_REQUIRED) {
+                helpWindowText[5].setText(helpWindowText[5].getText() + "Alt+");
             }
-            if(REFRESH_FRAME_CTRL_REQUIRED){
-                helpWindowText[5].setText(helpWindowText[5].getText()+"Strg+");
+            if (REFRESH_FRAME_CTRL_REQUIRED) {
+                helpWindowText[5].setText(helpWindowText[5].getText() + "Strg+");
             }
-            if(REFRESH_FRAME_SHIFT_REQUIRED){
-                helpWindowText[5].setText(helpWindowText[5].getText()+"Shift+");
+            if (REFRESH_FRAME_SHIFT_REQUIRED) {
+                helpWindowText[5].setText(helpWindowText[5].getText() + "Shift+");
             }
-            if(SAVE_GRAPH_IMAGE_ALT_REQUIRED){
-                helpWindowText[6].setText(helpWindowText[6].getText()+"Alt+");
+            if (SAVE_GRAPH_IMAGE_ALT_REQUIRED) {
+                helpWindowText[6].setText(helpWindowText[6].getText() + "Alt+");
             }
-            if(SAVE_GRAPH_IMAGE_CTRL_REQUIRED){
-                helpWindowText[6].setText(helpWindowText[6].getText()+"Strg+");
+            if (SAVE_GRAPH_IMAGE_CTRL_REQUIRED) {
+                helpWindowText[6].setText(helpWindowText[6].getText() + "Strg+");
             }
-            if(SAVE_GRAPH_IMAGE_SHIFT_REQUIRED){
-                helpWindowText[6].setText(helpWindowText[6].getText()+"Shift+");
+            if (SAVE_GRAPH_IMAGE_SHIFT_REQUIRED) {
+                helpWindowText[6].setText(helpWindowText[6].getText() + "Shift+");
             }
-            if(TOGGLE_BOTTOM_PANEL_VISIBILITY_ALT_REQUIRED){
-                helpWindowText[7].setText(helpWindowText[7].getText()+"Alt+");
+            if (TOGGLE_BOTTOM_PANEL_VISIBILITY_ALT_REQUIRED) {
+                helpWindowText[7].setText(helpWindowText[7].getText() + "Alt+");
             }
-            if(TOGGLE_BOTTOM_PANEL_VISIBILITY_CTRL_REQUIRED){
-                helpWindowText[7].setText(helpWindowText[7].getText()+"Strg+");
+            if (TOGGLE_BOTTOM_PANEL_VISIBILITY_CTRL_REQUIRED) {
+                helpWindowText[7].setText(helpWindowText[7].getText() + "Strg+");
             }
-            if(TOGGLE_BOTTOM_PANEL_VISIBILITY_SHIFT_REQUIRED){
-                helpWindowText[7].setText(helpWindowText[7].getText()+"Shift+");
+            if (TOGGLE_BOTTOM_PANEL_VISIBILITY_SHIFT_REQUIRED) {
+                helpWindowText[7].setText(helpWindowText[7].getText() + "Shift+");
             }
-            if(TOGGLE_FULLSCREEN_MODE_ALT_REQUIRED){
-                helpWindowText[8].setText(helpWindowText[8].getText()+"Alt+");
+            if (TOGGLE_FULLSCREEN_MODE_ALT_REQUIRED) {
+                helpWindowText[8].setText(helpWindowText[8].getText() + "Alt+");
             }
-            if(TOGGLE_FULLSCREEN_MODE_CTRL_REQUIRED){
-                helpWindowText[8].setText(helpWindowText[8].getText()+"Strg+");
+            if (TOGGLE_FULLSCREEN_MODE_CTRL_REQUIRED) {
+                helpWindowText[8].setText(helpWindowText[8].getText() + "Strg+");
             }
-            if(TOGGLE_FULLSCREEN_MODE_SHIFT_REQUIRED){
-                helpWindowText[8].setText(helpWindowText[8].getText()+"Shift+");
+            if (TOGGLE_FULLSCREEN_MODE_SHIFT_REQUIRED) {
+                helpWindowText[8].setText(helpWindowText[8].getText() + "Shift+");
             }
-            helpWindowText[0].setText(helpWindowText[0].getText()+CLOSE_WINDOW_KEY_STRING);
-            helpWindowText[1].setText(helpWindowText[1].getText()+OPEN_HELP_WINDOW_KEY_STRING);
-            helpWindowText[2].setText(helpWindowText[2].getText()+OPEN_NEW_PLOT_KEY_STRING);
-            helpWindowText[3].setText(helpWindowText[3].getText()+OPEN_NEW_WINDOW_KEY_STRING);
-            helpWindowText[4].setText(helpWindowText[4].getText()+OPEN_SETTINGS_WINDOW_KEY_STRING);
-            helpWindowText[5].setText(helpWindowText[5].getText()+REFRESH_FRAME_KEY_STRING);
-            helpWindowText[6].setText(helpWindowText[6].getText()+SAVE_GRAPH_IMAGE_KEY_STRING);
-            helpWindowText[7].setText(helpWindowText[7].getText()+TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_STRING);
-            helpWindowText[8].setText(helpWindowText[8].getText()+TOGGLE_FULLSCREEN_MODE_KEY_STRING);
+            helpWindowText[0].setText(helpWindowText[0].getText() + CLOSE_WINDOW_KEY_STRING);
+            helpWindowText[1].setText(helpWindowText[1].getText() + OPEN_HELP_WINDOW_KEY_STRING);
+            helpWindowText[2].setText(helpWindowText[2].getText() + OPEN_NEW_PLOT_KEY_STRING);
+            helpWindowText[3].setText(helpWindowText[3].getText() + OPEN_NEW_WINDOW_KEY_STRING);
+            helpWindowText[4].setText(helpWindowText[4].getText() + OPEN_SETTINGS_WINDOW_KEY_STRING);
+            helpWindowText[5].setText(helpWindowText[5].getText() + REFRESH_FRAME_KEY_STRING);
+            helpWindowText[6].setText(helpWindowText[6].getText() + SAVE_GRAPH_IMAGE_KEY_STRING);
+            helpWindowText[7].setText(helpWindowText[7].getText() + TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_STRING);
+            helpWindowText[8].setText(helpWindowText[8].getText() + TOGGLE_FULLSCREEN_MODE_KEY_STRING);
 
-            closeWindowMenuItem.setText("Fenster schließen ("+helpWindowText[0].getText()+")");
-            openHelpWindowMenu.setText("Hilfe ("+helpWindowText[1].getText()+")");
-            openDifferentPlotMenuItem.setText("Datei öffnen ("+helpWindowText[2].getText()+")");
-            openNewWindowMenuItem.setText("neues Fenster öffnen ("+helpWindowText[3].getText()+")");
-            openSettingsWindowMenu.setText("Einstellungen ("+helpWindowText[4].getText()+")");
-            saveGraphImagesMenu.setText("Graphen speichern ("+helpWindowText[6].getText()+")");
-            toggleDataPanelMenu.setText("Detailansicht ("+helpWindowText[7].getText()+")");
-            toggleFullscreenModeMenu.setText("Vollbildmodus ("+helpWindowText[8].getText()+")");
+            closeWindowMenuItem.setText("Fenster schließen (" + helpWindowText[0].getText() + ")");
+            openHelpWindowMenu.setText("Hilfe (" + helpWindowText[1].getText() + ")");
+            openDifferentPlotMenuItem.setText("Datei öffnen (" + helpWindowText[2].getText() + ")");
+            openNewWindowMenuItem.setText("neues Fenster öffnen (" + helpWindowText[3].getText() + ")");
+            openSettingsWindowMenu.setText("Einstellungen (" + helpWindowText[4].getText() + ")");
+            saveGraphImagesMenu.setText("Graphen speichern (" + helpWindowText[6].getText() + ")");
+            toggleDataPanelMenu.setText("Detailansicht (" + helpWindowText[7].getText() + ")");
+            toggleFullscreenModeMenu.setText("Vollbildmodus (" + helpWindowText[8].getText() + ")");
 
-            br=new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("HelpTexts.txt"),"UTF-8"));//https://stackoverflow.com/questions/12920039/encoding-in-exported-jar antwort von davmac 
-            for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
-                line=br.readLine();
-                setNewKeyCombinationTexts[i]=line;
-                line +=": ";
-                helpWindowText[i].setText(line+helpWindowText[i].getText());
-                for(int j=helpWindowText[i].getText().length();j<60;j++){
-                    helpWindowText[i].setText(helpWindowText[i].getText()+" ");
+            br = new BufferedReader(
+                new InputStreamReader(this.getClass().getResourceAsStream("HelpTexts.txt"), "UTF-8"));// https://stackoverflow.com/questions/12920039/encoding-in-exported-jar
+            // antwort
+            // von
+            // davmac
+            for (int i = 0; i < NUMBER_OF_KEY_COMBOS; i++) {
+                line = br.readLine();
+                setNewKeyCombinationTexts[i] = line;
+                line += ": ";
+                helpWindowText[i].setText(line + helpWindowText[i].getText());
+                for (int j = helpWindowText[i].getText().length(); j < 60; j++) {
+                    helpWindowText[i].setText(helpWindowText[i].getText() + " ");
                 }
             }
-            for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){
-                //die Gleichen elmente für die Einstellungsseite Verwenden
+            for (int i = 0; i < NUMBER_OF_KEY_COMBOS; i++) {
+                // die Gleichen elmente für die Einstellungsseite Verwenden
                 settingsWindowText[i].setText(helpWindowText[i].getText());
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            JLabel error=new JLabel("Ein Fehler ist aufgetreten und diese Seite konnte nicht geladen werden. Bitte starten Sie das Programm neu.");
+            JLabel error = new JLabel(
+                    "Ein Fehler ist aufgetreten und diese Seite konnte nicht geladen werden. Bitte starten Sie das Programm neu.");
             helpPanel.add(error);
         }
     }
 
     /*
-     * floor und roof sind die mathematischen funktionen ceil und floor
-     * sind nur für die übersicht in den methoden in denen diese gebraucht werden (zum berechnen der breiten und höhen des detailbereichs
+     * floor und roof sind die mathematischen funktionen ceil und floor sind nur für
+     * die übersicht in den methoden in denen diese gebraucht werden (zum berechnen
+     * der breiten und höhen des detailbereichs
      */
-    private int floor(double in){
-        return (int)in;
+    private int floor(double in) {
+        return (int) in;
     }
 
-    private int roof(double in){
-        if( ((int)(in))-in==0.00){
-            return (int)in;
-        }
-        else{
-            return (int)in+1;
+    private int roof(double in) {
+        if (((int) (in)) - in == 0.00) {
+            return (int) in;
+        } else {
+            return (int) in + 1;
         }
     }
 
     /*
-     * selbsterklärend.
-     * schaltet zwischen vollbild und nicht-vollbild um
+     * selbsterklärend. schaltet zwischen vollbild und nicht-vollbild um
      */
-    private void toggleFullscreen(){
-        //Set a Different Cursor to indicate The program is working
-        try{
+    private void toggleFullscreen() {
+        // Set a Different Cursor to indicate The program is working
+        try {
             mainWindow.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if(fullscreen){//if fullscreenMode is already enabled, disable it
+        if (fullscreen) {// if fullscreenMode is already enabled, disable it
             deactivateFullscreen();
-        }
-        else{//the fullscreenMode is disabled, so enable it
+        } else {// the fullscreenMode is disabled, so enable it
             avtivateFullscreen();
         }
         mainWindow.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -1837,30 +2221,29 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     /*
      * lädt die größenverhältnisse der abteile im programm neu
      */
-    private void refreshPage(){
+    private void refreshPage() {
         logln(mainWindow.getSize());
-        width=mainWindow.getWidth()-15;
-        if(fullscreen&&fullscreenOk){
-            height=mainWindow.getHeight()-(23+8);
-        }
-        else{
-            height=mainWindow.getHeight()-(53+8);
-            windowDimension=new Dimension(width,height);
+        logln("WindowExtendedState: "+mainWindow.getExtendedState());
+        width = mainWindow.getWidth() - 15;
+        if (fullscreen && fullscreenOk) {
+            height = mainWindow.getHeight() - (23 + 8);
+        } else {
+            height = mainWindow.getHeight() - (53 + 8);
+            windowDimension = new Dimension(width, height);
         }
 
         logln(windowDimension);
-        dataPanelX=floor((double)(windowDimension.getWidth()/(double)(WIDTH_OF_DATA_BLOCK)));
-        dataPanelY=roof(numberOfGraphs/(double)(dataPanelX));
-        dataPanel.setLayout(new GridLayout(dataPanelY,dataPanelX));
+        dataPanelX = floor((double) (windowDimension.getWidth() / (double) (WIDTH_OF_DATA_BLOCK)));
+        dataPanelY = roof(numberOfGraphs / (double) (dataPanelX));
+        dataPanel.setLayout(new GridLayout(dataPanelY, dataPanelX));
 
-        logln(numberOfGraphs+" | "+dataPanelX+"x"+dataPanelY);
-        bottomPanelDimension=new Dimension(width,dataPanelY*HEIGHT_OF_DATA_BLOCK);
-        if(bottomPanelExpanded){
-            topPanelDimension=new Dimension(width,height-(dataPanelY*HEIGHT_OF_DATA_BLOCK));
+        logln(numberOfGraphs + " | " + dataPanelX + "x" + dataPanelY);
+        bottomPanelDimension = new Dimension(width, dataPanelY * HEIGHT_OF_DATA_BLOCK);
+        if (bottomPanelExpanded) {
+            topPanelDimension = new Dimension(width, height - (dataPanelY * HEIGHT_OF_DATA_BLOCK));
             dataPanel.setVisible(true);
-        }
-        else{
-            topPanelDimension=new Dimension(width,height);
+        } else {
+            topPanelDimension = new Dimension(width, height);
             dataPanel.setVisible(false);
         }
         dataPanel.setPreferredSize(bottomPanelDimension);
@@ -1870,19 +2253,35 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
         logln(bottomPanelDimension);
         logln();
         mainWindow.validate();
+        logln("WindowExtendedState: "+mainWindow.getExtendedState());
     }
 
     /*
      * verlässt den vollbildmodus
      */
-    private void deactivateFullscreen(){
-        if(fullscreenOk){//GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(new JFrame("HI"));
+    private void deactivateFullscreen() {
+        if (fullscreenOk) {// GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(new
+            // JFrame("HI"));
             graphicsDevice.setFullScreenWindow(null);
-        }
-        else{
+        } else {
             mainWindow.setExtendedState(JFrame.NORMAL);
         }
-        fullscreen=false;
+        fullscreen = false;
+        refreshPage();
+        saveConfigurationFile();
+    }
+
+    /*
+     * verlässt den vollbildmodus, sofern program in FullscreenExclusive ist,
+     * maximieren (windowed) sonst nix
+     */
+    private void deactivateFullscreenExclusive() {
+        if (fullscreenOk) {// GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(new
+            // JFrame("HI"));
+            graphicsDevice.setFullScreenWindow(null);
+            mainWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        }
+        // fullscreen=false;
         refreshPage();
         saveConfigurationFile();
     }
@@ -1890,15 +2289,14 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     /*
      * statet den vollbildmodus
      */
-    private void avtivateFullscreen(){
-        if(fullscreenOk){
-            graphicsDevice=GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    private void avtivateFullscreen() {
+        if (fullscreenOk) {
+            graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
             graphicsDevice.setFullScreenWindow(mainWindow);
-        }
-        else{
+        } else {
             mainWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
         }
-        fullscreen=true;
+        fullscreen = true;
         refreshPage();
         saveConfigurationFile();
     }
@@ -1906,13 +2304,12 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     /*
      * detailbereich sichtbar/unsichtbar machen
      */
-    private void toggleBottomPanel(){
-        if(bottomPanelExpanded){
-            bottomPanelExpanded=false;
+    private void toggleBottomPanel() {
+        if (bottomPanelExpanded) {
+            bottomPanelExpanded = false;
             dataPanel.setVisible(false);
-        }
-        else{
-            bottomPanelExpanded=true;
+        } else {
+            bottomPanelExpanded = true;
             dataPanel.setVisible(true);
         }
         refreshPage();
@@ -1924,233 +2321,263 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      * 
      * warum ich des damals als eigene methode gemacht hab, weiß ich nicht mehr
      */
-    private int showOpenDialog(){
+    private int showOpenDialog() {
         return fileChooser.showOpenDialog(fileChooserWindow);
     }
 
     /*
      * lädt die csv datei; ES WIRD NOCH NICHTS EINGELESEN
      */
-    private void pickCsvFile(boolean doShowOpenDialog,String fileName) {
+    private void pickCsvFile(boolean doShowOpenDialog, String fileName) {
         xYSeriesCollection = new XYSeriesCollection();
-        if(doShowOpenDialog){
+        if (doShowOpenDialog) {
             int returnVal = showOpenDialog();
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                try{
-                    csvFile=fileChooser.getSelectedFile();
-                }
-                catch(Exception ex){
+                try {
+                    csvFile = fileChooser.getSelectedFile();
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
+            } else {
+                jFilePickerFailed = true;
             }
-            else{
-                jFilePickerFailed=true;
-            }
-        }
-        else{
-            csvFile=new File(fileName);
+        } else {
+            csvFile = new File(fileName);
         }
     }
 
     /*
     * erstellt den graphenbereich
     * 
-    * - liest dei datei ein
-    * - abhängig vom modus nur zeichnen oder auch durchschnitte
-    * - interpolation und offset werden ebenfalls berücksichtigt
+    * - liest dei datei ein - abhängig vom modus nur zeichnen oder auch
+    * durchschnitte - interpolation und offset werden ebenfalls berücksichtigt
     */
     @SuppressWarnings("rawtypes")
-    private JFreeChart createDataset(){
+    private JFreeChart createDataset() {
 
-        try{
+        try {
             xYSeriesCollection.removeAllSeries();
-            br=new BufferedReader(new FileReader(csvFile));
-            String line=br.readLine();
-            dataValueDescriptors=line.split(";");
-            numberOfGraphs=dataValueDescriptors.length;
-            if(geoMode){
+            br = new BufferedReader(new FileReader(csvFile));
+            String line = br.readLine();
+            dataValueDescriptors = line.split(";");
+            numberOfGraphs = dataValueDescriptors.length*2;//REMOVE
+            if (geoMode) {
                 int temps = 0;
-                int drops=0;
-                numberOfGraphs=2;
-                for(int i=0;i<dataValueDescriptors.length;i++){
-                    if(dataValueDescriptors[i].substring(0, dataValueDescriptors[i].indexOf('(')).equalsIgnoreCase("Niederschlagsmenge")){
-                        drops=i;
+                int drops = 0;
+                numberOfGraphs = 2;
+                for (int i = 0; i < dataValueDescriptors.length; i++) {
+                    if (dataValueDescriptors[i].substring(0, dataValueDescriptors[i].indexOf('('))
+                    .equalsIgnoreCase("Niederschlagsmenge")) {
+                        drops = i;
                     }
-                    if(dataValueDescriptors[i].substring(0, dataValueDescriptors[i].indexOf('(')).equalsIgnoreCase("Temperatur")){
-                        temps=i;
+                    if (dataValueDescriptors[i].substring(0, dataValueDescriptors[i].indexOf('('))
+                    .equalsIgnoreCase("Temperatur")) {
+                        temps = i;
                     }
                 }
-                if(temps==0&&drops==0){
-                    geoMode=false;
+                if (temps == 0 && drops == 0) {
+                    geoMode = false;
                     GeoModeButton.setSelected(false);
                     RegularModeButton.setSelected(true);
                     reloadBackend();
                     return createDataset();
                 }
-                xYSeries=new XYSeries[numberOfGraphs];
-                if(!onlyInterpolationChanging){
-                    graphIsVisible=new boolean[numberOfGraphs];
+                xYSeries = new XYSeries[numberOfGraphs];
+                if (!onlyInterpolationChanging) {
+                    graphIsVisible = new boolean[numberOfGraphs];
                 }
 
-                xYSeries[0] = new XYSeries((Comparable)((Object)(dataValueDescriptors[temps].substring(0, dataValueDescriptors[temps].indexOf('(')))));
-                xYSeries[1] = new XYSeries((Comparable)((Object)(dataValueDescriptors[drops].substring(0, dataValueDescriptors[drops].indexOf('(')))));
-                if(!onlyInterpolationChanging){
-                    graphIsVisible[0]=true;
-                    graphIsVisible[1]=true;
+                xYSeries[0] = new XYSeries((Comparable) ((Object) (dataValueDescriptors[temps].substring(0,
+                                dataValueDescriptors[temps].indexOf('(')))));
+                xYSeries[1] = new XYSeries((Comparable) ((Object) (dataValueDescriptors[drops].substring(0,
+                                dataValueDescriptors[drops].indexOf('(')))));
+                if (!onlyInterpolationChanging) {
+                    graphIsVisible[0] = true;
+                    graphIsVisible[1] = true;
                 }
 
-                if(interpolationFactor<1){
-                    interpolationFactor=1;
+                if (interpolationFactor < 1) {
+                    interpolationFactor = 1;
                 }
 
-                line=br.readLine();
-                for(int x=0;x<interpolationOffset*4;x++){
-                    line=br.readLine();
+                line = br.readLine();
+                for (int x = 0; x < interpolationOffset * 4; x++) {
+                    line = br.readLine();
                 }
-                counter=0;
-                double ns=0.0;
-                double te=0.0;
-                while(line!=null&&!line.equals("")){
-                    if(line==null||line.equals("")){
+                counter = 0;
+                double ns = 0.0;
+                double te = 0.0;
+                while (line != null && !line.equals("")) {
+                    if (line == null || line.equals("")) {
                         break;
                     }
-                    ns=0;
-                    te=0;
-                    for(int l=0;l<4;l++){
-                        line=line.replace("NAN","0,00");
-                        line=line.replace(',', '.');
-                        String[] zwso=line.split(";");
-                        double[] zwsp=new double[2];
-                        zwsp[0]=Double.parseDouble(zwso[temps]);
-                        zwsp[1]=Double.parseDouble(zwso[drops]);
-                        ns+=zwsp[1];
-                        te+=zwsp[0];
-                        line=br.readLine();
-                        if(line==null||line.equals("")){
+                    ns = 0;
+                    te = 0;
+                    for (int l = 0; l < 4; l++) {
+                        line = line.replace("NAN", "0,00");
+                        line = line.replace("nan", "0,00");
+                        line = line.replace("Nan", "0,00");
+                        line = line.replace("NaN", "0,00");
+                        line = line.replace(',', '.');
+                        String[] zwso = line.split(";");
+                        double[] zwsp = new double[2];
+                        zwsp[0] = Double.parseDouble(zwso[temps]);
+                        zwsp[1] = Double.parseDouble(zwso[drops]);
+                        ns += zwsp[1];
+                        te += zwsp[0];
+                        line = br.readLine();
+                        if (line == null || line.equals("")) {
                             break;
                         }
                     }
-                    if(line==null||line.equals("")){
+                    if (line == null || line.equals("")) {
                         break;
                     }
-                    te/=4;
+                    te /= 4;
                     xYSeries[0].add(counter, te);
-                    xYSeries[1].add(counter,ns);
+                    xYSeries[1].add(counter, ns);
                     counter++;
-                    for(int j=0;j<interpolationFactor*4;j++){
-                        line=br.readLine();
+                    for (int j = 0; j < interpolationFactor * 4; j++) {
+                        line = br.readLine();
                     }
-                    if(line==null||line.equals("")){
+                    if (line == null || line.equals("")) {
                         break;
                     }
                 }
 
-            }
-            else{//physik modus
-                xYSeries=new XYSeries[numberOfGraphs];
-                if(!onlyInterpolationChanging){
-                    graphIsVisible=new boolean[numberOfGraphs];
+            } else {// physik modus///HERE
+            	System.out.println("in physMode");
+            	System.out.println("numOfGraphs: "+numberOfGraphs+"\r\nInterpolationChanging: "+onlyInterpolationChanging);
+                xYSeries = new XYSeries[numberOfGraphs];
+                if (!onlyInterpolationChanging) {
+                    graphIsVisible = new boolean[numberOfGraphs];
                 }
 
-                for (int i = 0; i < numberOfGraphs; ++i) {
-                    try{
-                        xYSeries[i] = new XYSeries(dataValueDescriptors[i].substring(0, dataValueDescriptors[i].indexOf('(')));
+                for (int i = 0; i < numberOfGraphs/2; i++) {//WORRY I'm changing i in the loop
+                	System.out.println("i: "+i+"\ti+1: "+(i+1));
+                    try {
+                        xYSeries[2*i] = new XYSeries(dataValueDescriptors[i].substring(0, dataValueDescriptors[i].indexOf('(')));
+                        xYSeries[2*i+1] = new XYSeries(dataValueDescriptors[i].substring(0, dataValueDescriptors[i].indexOf('('))+"(log)");//REMOVE
+                    } catch (StringIndexOutOfBoundsException e) {
+                        xYSeries[2*i] = new XYSeries(dataValueDescriptors[i]);
+                        xYSeries[2*i+1] = new XYSeries(dataValueDescriptors[i]+"(log)");//REMOVE
                     }
-                    catch(StringIndexOutOfBoundsException e){
-                        xYSeries[i]=new XYSeries(dataValueDescriptors[i]);
-                    }
-                    if(!onlyInterpolationChanging){
-                        graphIsVisible[i]=true;
+                    if (!onlyInterpolationChanging) {
+                        graphIsVisible[2*i] = true;
+                        graphIsVisible[2*i+1]=true;//REMOVE
                     }
                 }
-                if(interpolationFactor<1){
-                    interpolationFactor=1;
+                String[] temp=dataValueDescriptors;
+                dataValueDescriptors=new String[numberOfGraphs];
+                for(int i=0;i<temp.length;i++) {
+                	dataValueDescriptors[2*i]=temp[i];
+                	dataValueDescriptors[2*i+1]=dataValueDescriptors[2*i]+"(log)";
                 }
-                //int numberOfLines=numberOfLinesInFile(csvFile);
+                for(String x:dataValueDescriptors) {
+                	System.out.println(x);
+                }
+                System.out.println("afterLoop");
+                if (interpolationFactor < 1) {
+                    interpolationFactor = 1;
+                }
+                // int numberOfLines=numberOfLinesInFile(csvFile);
 
-                line=br.readLine();
-                for(int x=0;x<interpolationOffset;x++){
-                    line=br.readLine();
+                line = br.readLine();
+                for (int x = 0; x < interpolationOffset; x++) {
+                    line = br.readLine();
                 }
-                counter=0;
-                while(line!=null&&!line.equals("")){
-                    if(line==null||line.equals("")){
+                counter = 0;
+                while (line != null && !line.equals("")) {
+                    if (line == null || line.equals("")) {
                         break;
                     }
-                    //logln(line);
-                    line=line.replace("NAN","0,00");
-                    line=line.replace(',', '.');
-                    //logln(line);
-                    String[] zwso=line.split(";");
-                    double[] zwsp=new double[numberOfGraphs];
-                    for(int i=0;i<numberOfGraphs;i++){
-                        try{
-                            zwsp[i]=Double.parseDouble(zwso[i]);
-                            xYSeries[i].add(counter,zwsp[i]);
-                        }
-                        catch(Exception e){
+                    System.out.println("in while loop");
+                    // logln(line);
+                    line = line.replace("NAN", "0,00");
+                    line = line.replace("nan", "0,00");
+                    line = line.replace("Nan", "0,00");
+                    line = line.replace("NaN", "0,00");
+                    line = line.replace(',', '.');
+                    // logln(line);
+                    String[] zwso = line.split(";");
+                    double[] zwsp = new double[numberOfGraphs];
+                    for (int i = 0; i < numberOfGraphs/2; i++) {//WORRY i'm changing i in the loop
+                    	System.out.println("i: "+i);
+                        try {
+                            zwsp[2*i] = Double.parseDouble(zwso[i]);
+                            if(zwsp[2*i]==0) {
+                            	zwsp[2*i+1]=0;
+                            }
+                            else {
+                            zwsp[2*i+1]=Math.log(zwsp[2*i]);
+                            }
+                            xYSeries[2*i].add(counter, zwsp[2*i]);
+                            xYSeries[2*i+1].add(counter, zwsp[2*i+1]);
+                        } catch (Exception e) {
                             e.printStackTrace();
 
                             logln(i);
                         }
                     }
                     counter++;
-                    for(int j=0;j<interpolationFactor;j++){
-                        line=br.readLine();
+                    for (int j = 0; j < interpolationFactor; j++) {
+                        line = br.readLine();
                     }
-                    if(line==null||line.equals("")){
+                    if (line == null || line.equals("")) {
                         break;
                     }
                 }
             }
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
-        if(replotting){
+        if (replotting) {
             setupGraphSettings();
         }
 
-        if(selectGraphVisibilityCheckBox!=null){
+        if (selectGraphVisibilityCheckBox != null) {
             for (int i = 0; i < numberOfGraphs; ++i) {
-                if(selectGraphVisibilityCheckBox[i].isSelected()){
+                if (selectGraphVisibilityCheckBox[i].isSelected()) {
                     xYSeriesCollection.addSeries(xYSeries[i]);
                 }
             }
-        }
-        else{
+        } else {
             for (int i = 0; i < numberOfGraphs; ++i) {
                 xYSeriesCollection.addSeries(xYSeries[i]);
             }
         }
         JFreeChart chart;
-        if(geoMode){
-            chart = ChartFactory.createXYLineChart(null,"Zeit","Werte",xYSeriesCollection);
+        if (geoMode) {
+            chart = ChartFactory.createXYLineChart(null, "Zeit", "Werte", xYSeriesCollection);
+        } else {
+        	//REWORK
+            /*chart = ChartFactory.createXYLineChart(null,
+                "Zeit (etwa " + 10 * interpolationFactor + " Sekunden zwischen den Messwerten)", "Werte",
+                xYSeriesCollection);*/
+            chart = ChartFactory.createXYLineChart(null,
+                    "Nr der Datenreihe", "Werte",
+                    xYSeriesCollection);
         }
-        else{
-            chart = ChartFactory.createXYLineChart(null,"Zeit (etwa "+10*interpolationFactor+" Sekunden zwischen den Messwerten)","Werte",xYSeriesCollection);
-        }
-        onlyInterpolationChanging=false;
+        onlyInterpolationChanging = false;
         return chart;
     }
 
     /*
-    * für zukünftige funktionen; wird gegenwärtig nicht verwendet 
+    * für zukünftige funktionen; wird gegenwärtig nicht verwendet
     */
     @SuppressWarnings("unused")
     private int numberOfLinesInFile(File inputFile) {
-        //https://stackoverflow.com/questions/453018/number-of-lines-in-a-file-in-java
-        //antwort von Telmo Marques und er.vikas
+        // https://stackoverflow.com/questions/453018/number-of-lines-in-a-file-in-java
+        // antwort von Telmo Marques und er.vikas
         LineNumberReader lnr;
         try {
             lnr = new LineNumberReader(new FileReader(inputFile));
             lnr.skip(Long.MAX_VALUE);
             lnr.close();
-            logln("NumberOfLines: "+lnr.getLineNumber()+1);
-            return lnr.getLineNumber()+1;
-        }
-        catch (Exception e) {
+            logln("NumberOfLines: " + lnr.getLineNumber() + 1);
+            return lnr.getLineNumber() + 1;
+        } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
@@ -2159,23 +2586,23 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     /*
      * schließt das programm ordnungsgemäß
      */
-    private void exit(){
+    private void exit() {
         mainWindow.setVisible(false);
         mainWindow.dispose();
         fileChooserWindow.dispose();
         settingsWindow.dispose();
         helpWindow.dispose();
         setNewKeyCombinationWindow.dispose();
-        try{//die einzige exception, die passieren k�nnte , ist dass die fileChooser Auswahl abgebrochen wird, die timer unitialisiert sind und das Programm deswegen sbschmieren k�nnte
+        try {// die einzige exception, die passieren k�nnte , ist dass die fileChooser
+            // Auswahl abgebrochen wird, die timer unitialisiert sind und das Programm
+            // deswegen sbschmieren k�nnte
             SystemTimeFieldTimer.stop();
-        }
-        catch(NullPointerException e1){
+        } catch (NullPointerException e1) {
             logln(e1);
         }
-        try{
+        try {
             DeviceTimeFieldTimer.stop();
-        }
-        catch(NullPointerException e2){
+        } catch (NullPointerException e2) {
             logln(e2);
         }
     }
@@ -2183,38 +2610,45 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     /*
      * wenn irgendwo auf die zeichenebene geklickt wird, wird das hier verarbeitet
      * 
-     * die genauen werte an dieser position werden ebenfalls hier ermittelt (für den detailbereich)
+     * die genauen werte an dieser position werden ebenfalls hier ermittelt (für den
+     * detailbereich)
      */
     @Override
+    // TODO
+    // CRITICAL
+    // REWRITE
+    // WTF
     public void chartMouseClicked(ChartMouseEvent e) {
 
         Rectangle2D rectangle2D = chartPanel.getScreenDataArea();
-        XYPlot xYPlot = (XYPlot)jFreeChart.getPlot();
+        XYPlot xYPlot = (XYPlot) jFreeChart.getPlot();
         ValueAxis valueAxis = xYPlot.getDomainAxis();
-        double x = valueAxis.java2DToValue((double)e.getTrigger().getX(), rectangle2D, RectangleEdge.BOTTOM);
+        double x = valueAxis.java2DToValue((double) e.getTrigger().getX(), rectangle2D, RectangleEdge.BOTTOM);
         xCrosshair.setValue(x);
 
-        /*int x=e.getTrigger().getX();
-        int maxRAW=chartPanel.getWidth();
-        double minCAL=chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().getX();
-        double maxCAL=chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().getWidth();
-        x=reMap(0,maxRAW,minCAL,maxCAL,x);
-        x=reMap(0,maxCAL,0,counter,x);
-        xCrosshair.setValue(x);*/
-        int correctedIndex=0;
+        /*
+         * int x=e.getTrigger().getX(); int maxRAW=chartPanel.getWidth(); double
+         * minCAL=chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().getX();
+         * double maxCAL=chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().
+         * getWidth(); x=reMap(0,maxRAW,minCAL,maxCAL,x); x=reMap(0,maxCAL,0,counter,x);
+         * xCrosshair.setValue(x);
+         */
+        int correctedIndex = 0;
         for (int i = 0; i < numberOfGraphs; ++i) {
             try {
-                if(graphIsVisible[i]){
-                    dataBoxes[i].setText(String.valueOf(new DecimalFormat("###.#").format(xYSeries[correctedIndex].getY((int)x).doubleValue())));//https://stackoverflow.com/questions/13210491/math-round-java antwort von arshajii
+                if (graphIsVisible[i]) {
+                    dataBoxes[i].setText(String.valueOf(
+                            new DecimalFormat("###.#").format(xYSeries[correctedIndex].getY((int) x).doubleValue())));// https://stackoverflow.com/questions/13210491/math-round-java
+                    // antwort
+                    // von
+                    // arshajii
                     correctedIndex++;
-                }
-                else{
+                } else {
                     dataBoxes[i].setText("N/A (ausgeblendet)");
                 }
-            }
-            catch(IndexOutOfBoundsException ex) {
-            	log("PROBABLY FINE (ChartMouseClicked): ");
-            	logln(ex);
+            } catch (IndexOutOfBoundsException ex) {
+                log("PROBABLY FINE (ChartMouseClicked): ");
+                logln(ex);
                 break;
             }
         }
@@ -2223,47 +2657,46 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     /*
      * versuchsmethode für chartMouseMoved und -clicked
      */
-    public int reMap(double minPre,double maxPre,double minPost,double maxPost,double val){
-        double Fact=val/(maxPre-minPre);
-        System.out.println(Fact);
-        double zws=Fact*(maxPost-minPost);
-        zws+=minPost;
-        if(zws>maxPost){
-            zws=maxPost;
+    public int reMap(double minPre, double maxPre, double minPost, double maxPost, double val) {
+        double Fact = val / (maxPre - minPre);
+        logln(Fact);
+        double zws = Fact * (maxPost - minPost);
+        zws += minPost;
+        if (zws > maxPost) {
+            zws = maxPost;
         }
-        if(zws<minPost){
-            zws=minPost;
+        if (zws < minPost) {
+            zws = minPost;
         }
-        return (int)zws;
+        return (int) zws;
     }
 
     /*
      * wenn die maus über die zeichenebene bewegt wird wird das hier verarbeitet
      */
     @Override
-    public void chartMouseMoved(ChartMouseEvent e){
+    public void chartMouseMoved(ChartMouseEvent e) {
         Rectangle2D rectangle2D = chartPanel.getScreenDataArea();
-        XYPlot xYPlot = (XYPlot)jFreeChart.getPlot();
+        XYPlot xYPlot = (XYPlot) jFreeChart.getPlot();
         ValueAxis valueAxis = xYPlot.getDomainAxis();
-        double x = valueAxis.java2DToValue((double)e.getTrigger().getX(), rectangle2D, RectangleEdge.BOTTOM);
+        double x = valueAxis.java2DToValue((double) e.getTrigger().getX(), rectangle2D, RectangleEdge.BOTTOM);
         xCrosshair.setValue(x);
 
-        /*int x=e.getTrigger().getX();
-        int maxRAW=chartPanel.getWidth();
-        double minCAL=chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().getX();
-        double maxCAL=chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().getWidth();
-        x=reMap(0,maxRAW,minCAL,maxCAL,x);
-        x=reMap(minCAL,maxCAL,0,counter,x);
-        xCrosshair.setValue(x);*/
-        int correctedIndex=0;
+        /*
+         * int x=e.getTrigger().getX(); int maxRAW=chartPanel.getWidth(); double
+         * minCAL=chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().getX();
+         * double maxCAL=chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea().
+         * getWidth(); x=reMap(0,maxRAW,minCAL,maxCAL,x);
+         * x=reMap(minCAL,maxCAL,0,counter,x); xCrosshair.setValue(x);
+         */
+        int correctedIndex = 0;
         for (int i = 0; i < numberOfGraphs; ++i) {
             try {
-                if(graphIsVisible[i]){
-                    yCrosshairs[i].setValue(xYSeries[correctedIndex].getY((int)x).doubleValue());
+                if (graphIsVisible[i]) {
+                    yCrosshairs[i].setValue(xYSeries[correctedIndex].getY((int) x).doubleValue());
                     correctedIndex++;
                 }
-            }
-            catch(IndexOutOfBoundsException ex) {
+            } catch (IndexOutOfBoundsException ex) {
                 log("PROBABLY FINE (ChartMouseMoved): ");
                 logln(ex);
                 break;
@@ -2274,15 +2707,14 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     /*
      * macht das fenster "Hilfe" sichtbar
      */
-    private void makeHelpWindowVisible(){
-        helpWindow.setSize(helpWindow.getWidth()-10, helpWindow.getHeight());
+    private void makeHelpWindowVisible() {
+        helpWindow.setSize(helpWindow.getWidth() - 10, helpWindow.getHeight());
         helpWindow.setVisible(true);
-        helpWindow.setSize(helpWindow.getWidth()+10, helpWindow.getHeight());
+        helpWindow.setSize(helpWindow.getWidth() + 10, helpWindow.getHeight());
         helpWindow.validate();
-        if(helpWindow.isVisible()){
+        if (helpWindow.isVisible()) {
             mainWindow.setAlwaysOnTop(false);
-        }
-        else{
+        } else {
             mainWindow.setAlwaysOnTop(isAlwaysOnTop);
         }
     }
@@ -2290,18 +2722,18 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     /*
      * macht das einstellungsfenster sichtbar/unsichtbar
      */
-    private void toggleSettingsWindow(){
+    private void toggleSettingsWindow() {
         settingsWindow.setVisible(!settingsWindow.isVisible());
-        if(settingsWindow.isVisible()){
+        if (settingsWindow.isVisible()) {
             mainWindow.setAlwaysOnTop(false);
-        }
-        else{
+        } else {
             mainWindow.setAlwaysOnTop(isAlwaysOnTop);
         }
     }
 
     /*
-     * wenn irgendwas seine größe ändert, alle größen sicherheitshalber neu berechnen
+     * wenn irgendwas seine größe ändert, alle größen sicherheitshalber neu
+     * berechnen
      */
     @Override
     public void componentResized(ComponentEvent event) {
@@ -2309,7 +2741,8 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     }
 
     /*
-     * falls das fenster maximiert oder sonst irgenwie verändert wird, alle größen sicherheitshalber neu berechnen
+     * falls das fenster maximiert oder sonst irgenwie verändert wird, alle größen
+     * sicherheitshalber neu berechnen
      */
     @Override
     public void windowStateChanged(WindowEvent event) {
@@ -2331,296 +2764,253 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     @Override
     public void actionPerformed(ActionEvent event) {
         logln("EVENT FIRED");
-        if(event.getSource()==imageSizeAutoCheckBox){//in den winstellungen bildgröße automatisch festlegen
-            if(imageSizeAutoCheckBox.isSelected()){
+        if (event.getSource() == imageSizeAutoCheckBox) {// in den winstellungen bildgröße automatisch festlegen
+            if (imageSizeAutoCheckBox.isSelected()) {
                 imageWidthBox.setText(String.valueOf(fullscreenDimension.width));
-                imageWidth=Integer.parseInt(imageWidthBox.getText());
+                imageWidth = Integer.parseInt(imageWidthBox.getText());
                 imageWidthBox.setEnabled(false);
                 imageHeightBox.setText(String.valueOf(fullscreenDimension.height));
-                imageHeight=Integer.parseInt(imageHeightBox.getText());
+                imageHeight = Integer.parseInt(imageHeightBox.getText());
                 imageHeightBox.setEnabled(false);
-                getImageSizeAutomatically=true;
-            }
-            else{
+                getImageSizeAutomatically = true;
+            } else {
                 imageWidthBox.setEnabled(true);
                 imageHeightBox.setEnabled(true);
-                getImageSizeAutomatically=false;
+                getImageSizeAutomatically = false;
             }
-        }
-        else if(event.getSource()==changeKeyCombinationButton){//im tastenkombi ändern fesnter knopf
+        } else if (event.getSource() == changeKeyCombinationButton) {// im tastenkombi ändern fesnter knopf
             mainWindow.removeKeyListener(this);
-            allowKeyCombinationChange=true;
+            allowKeyCombinationChange = true;
             keyComboAusgabe.setText("Bereit");
             keyComboAusgabe.requestFocus();
             keyComboAusgabe.requestFocusInWindow();
             keyComboAusgabe.grabFocus();
-        }
-        else if(event.getSource()==saveKeyCombinationButton){//speichern im tastenkombi ändern fenster
+        } else if (event.getSource() == saveKeyCombinationButton) {// speichern im tastenkombi ändern fenster
             mainWindow.addKeyListener(this);
             setNewKeyCombinationWindow.setVisible(false);
-            //des was hier danach kommt ist bloß die fallunterscheidung welche konfigurationswerte angepasst werden müssen
-            //genauer kommentier ich des nicht
-            if(currentlyEditedKeyCombinationNumber==0){
-                CLOSE_WINDOW_ALT_REQUIRED=changeAltDown;
-                CLOSE_WINDOW_CTRL_REQUIRED=changeCtrlDown;
-                CLOSE_WINDOW_SHIFT_REQUIRED=changeShiftDown;
-                CLOSE_WINDOW_KEY_STRING=changeKeyChar;
-                CLOSE_WINDOW_KEY_CODE=changeKeyCode;
+            // des was hier danach kommt ist bloß die fallunterscheidung welche
+            // konfigurationswerte angepasst werden müssen
+            // genauer kommentier ich des nicht
+            if (currentlyEditedKeyCombinationNumber == 0) {
+                CLOSE_WINDOW_ALT_REQUIRED = changeAltDown;
+                CLOSE_WINDOW_CTRL_REQUIRED = changeCtrlDown;
+                CLOSE_WINDOW_SHIFT_REQUIRED = changeShiftDown;
+                CLOSE_WINDOW_KEY_STRING = changeKeyChar;
+                CLOSE_WINDOW_KEY_CODE = changeKeyCode;
+            } else if (currentlyEditedKeyCombinationNumber == 1) {
+                OPEN_HELP_WINDOW_ALT_REQUIRED = changeAltDown;
+                OPEN_HELP_WINDOW_CTRL_REQUIRED = changeCtrlDown;
+                OPEN_HELP_WINDOW_SHIFT_REQUIRED = changeShiftDown;
+                OPEN_HELP_WINDOW_KEY_STRING = changeKeyChar;
+                OPEN_HELP_WINDOW_KEY_CODE = changeKeyCode;
+            } else if (currentlyEditedKeyCombinationNumber == 2) {
+                OPEN_NEW_PLOT_ALT_REQUIRED = changeAltDown;
+                OPEN_NEW_PLOT_CTRL_REQUIRED = changeCtrlDown;
+                OPEN_NEW_PLOT_SHIFT_REQUIRED = changeShiftDown;
+                OPEN_NEW_PLOT_KEY_STRING = changeKeyChar;
+                OPEN_NEW_PLOT_KEY_CODE = changeKeyCode;
+            } else if (currentlyEditedKeyCombinationNumber == 3) {
+                OPEN_NEW_WINDOW_ALT_REQUIRED = changeAltDown;
+                OPEN_NEW_WINDOW_CTRL_REQUIRED = changeCtrlDown;
+                OPEN_NEW_WINDOW_SHIFT_REQUIRED = changeShiftDown;
+                OPEN_NEW_WINDOW_KEY_STRING = changeKeyChar;
+                OPEN_NEW_WINDOW_KEY_CODE = changeKeyCode;
+            } else if (currentlyEditedKeyCombinationNumber == 4) {
+                OPEN_SETTINGS_WINDOW_ALT_REQUIRED = changeAltDown;
+                OPEN_SETTINGS_WINDOW_CTRL_REQUIRED = changeCtrlDown;
+                OPEN_SETTINGS_WINDOW_SHIFT_REQUIRED = changeShiftDown;
+                OPEN_SETTINGS_WINDOW_KEY_STRING = changeKeyChar;
+                OPEN_SETTINGS_WINDOW_KEY_CODE = changeKeyCode;
+            } else if (currentlyEditedKeyCombinationNumber == 5) {
+                REFRESH_FRAME_ALT_REQUIRED = changeAltDown;
+                REFRESH_FRAME_CTRL_REQUIRED = changeCtrlDown;
+                REFRESH_FRAME_SHIFT_REQUIRED = changeShiftDown;
+                REFRESH_FRAME_KEY_STRING = changeKeyChar;
+                REFRESH_FRAME_KEY_CODE = changeKeyCode;
+            } else if (currentlyEditedKeyCombinationNumber == 6) {
+                SAVE_GRAPH_IMAGE_ALT_REQUIRED = changeAltDown;
+                SAVE_GRAPH_IMAGE_CTRL_REQUIRED = changeCtrlDown;
+                SAVE_GRAPH_IMAGE_SHIFT_REQUIRED = changeShiftDown;
+                SAVE_GRAPH_IMAGE_KEY_STRING = changeKeyChar;
+                SAVE_GRAPH_IMAGE_KEY_CODE = changeKeyCode;
+            } else if (currentlyEditedKeyCombinationNumber == 7) {
+                TOGGLE_BOTTOM_PANEL_VISIBILITY_ALT_REQUIRED = changeAltDown;
+                TOGGLE_BOTTOM_PANEL_VISIBILITY_CTRL_REQUIRED = changeCtrlDown;
+                TOGGLE_BOTTOM_PANEL_VISIBILITY_SHIFT_REQUIRED = changeShiftDown;
+                TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_STRING = changeKeyChar;
+                TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_CODE = changeKeyCode;
+            } else if (currentlyEditedKeyCombinationNumber == 8) {
+                TOGGLE_FULLSCREEN_MODE_ALT_REQUIRED = changeAltDown;
+                TOGGLE_FULLSCREEN_MODE_CTRL_REQUIRED = changeCtrlDown;
+                TOGGLE_FULLSCREEN_MODE_SHIFT_REQUIRED = changeShiftDown;
+                TOGGLE_FULLSCREEN_MODE_KEY_STRING = changeKeyChar;
+                TOGGLE_FULLSCREEN_MODE_KEY_CODE = changeKeyCode;
             }
-            else if(currentlyEditedKeyCombinationNumber==1){
-                OPEN_HELP_WINDOW_ALT_REQUIRED=changeAltDown;
-                OPEN_HELP_WINDOW_CTRL_REQUIRED=changeCtrlDown;
-                OPEN_HELP_WINDOW_SHIFT_REQUIRED=changeShiftDown;
-                OPEN_HELP_WINDOW_KEY_STRING=changeKeyChar;
-                OPEN_HELP_WINDOW_KEY_CODE=changeKeyCode;
-            }
-            else if(currentlyEditedKeyCombinationNumber==2){
-                OPEN_NEW_PLOT_ALT_REQUIRED=changeAltDown;
-                OPEN_NEW_PLOT_CTRL_REQUIRED=changeCtrlDown;
-                OPEN_NEW_PLOT_SHIFT_REQUIRED=changeShiftDown;
-                OPEN_NEW_PLOT_KEY_STRING=changeKeyChar;
-                OPEN_NEW_PLOT_KEY_CODE=changeKeyCode;
-            }
-            else if(currentlyEditedKeyCombinationNumber==3){
-                OPEN_NEW_WINDOW_ALT_REQUIRED=changeAltDown;
-                OPEN_NEW_WINDOW_CTRL_REQUIRED=changeCtrlDown;
-                OPEN_NEW_WINDOW_SHIFT_REQUIRED=changeShiftDown;
-                OPEN_NEW_WINDOW_KEY_STRING=changeKeyChar;
-                OPEN_NEW_WINDOW_KEY_CODE=changeKeyCode;
-            }
-            else if(currentlyEditedKeyCombinationNumber==4){
-                OPEN_SETTINGS_WINDOW_ALT_REQUIRED=changeAltDown;
-                OPEN_SETTINGS_WINDOW_CTRL_REQUIRED=changeCtrlDown;
-                OPEN_SETTINGS_WINDOW_SHIFT_REQUIRED=changeShiftDown;
-                OPEN_SETTINGS_WINDOW_KEY_STRING=changeKeyChar;
-                OPEN_SETTINGS_WINDOW_KEY_CODE=changeKeyCode;
-            }
-            else if(currentlyEditedKeyCombinationNumber==5){
-                REFRESH_FRAME_ALT_REQUIRED=changeAltDown;
-                REFRESH_FRAME_CTRL_REQUIRED=changeCtrlDown;
-                REFRESH_FRAME_SHIFT_REQUIRED=changeShiftDown;
-                REFRESH_FRAME_KEY_STRING=changeKeyChar;
-                REFRESH_FRAME_KEY_CODE=changeKeyCode;
-            }
-            else if(currentlyEditedKeyCombinationNumber==6){
-                SAVE_GRAPH_IMAGE_ALT_REQUIRED=changeAltDown;
-                SAVE_GRAPH_IMAGE_CTRL_REQUIRED=changeCtrlDown;
-                SAVE_GRAPH_IMAGE_SHIFT_REQUIRED=changeShiftDown;
-                SAVE_GRAPH_IMAGE_KEY_STRING=changeKeyChar;
-                SAVE_GRAPH_IMAGE_KEY_CODE=changeKeyCode;
-            }
-            else if(currentlyEditedKeyCombinationNumber==7){
-                TOGGLE_BOTTOM_PANEL_VISIBILITY_ALT_REQUIRED=changeAltDown;
-                TOGGLE_BOTTOM_PANEL_VISIBILITY_CTRL_REQUIRED=changeCtrlDown;
-                TOGGLE_BOTTOM_PANEL_VISIBILITY_SHIFT_REQUIRED=changeShiftDown;
-                TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_STRING=changeKeyChar;
-                TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_CODE=changeKeyCode;
-            }
-            else if(currentlyEditedKeyCombinationNumber==8){
-                TOGGLE_FULLSCREEN_MODE_ALT_REQUIRED=changeAltDown;
-                TOGGLE_FULLSCREEN_MODE_CTRL_REQUIRED=changeCtrlDown;
-                TOGGLE_FULLSCREEN_MODE_SHIFT_REQUIRED=changeShiftDown;
-                TOGGLE_FULLSCREEN_MODE_KEY_STRING=changeKeyChar;
-                TOGGLE_FULLSCREEN_MODE_KEY_CODE=changeKeyCode;
-            }
-            keyCombinationsEnabled=true;
-        }
-        else if(event.getSource()==openDifferentPlotMenuItem){//datei -> Datei öffnen
+            keyCombinationsEnabled = true;
+        } else if (event.getSource() == openDifferentPlotMenuItem) {// datei -> Datei öffnen
             openNewPlot();
-        }
-        else if(event.getSource()==openNewWindowMenuItem){//Datei -> Neues Fenster öffnen
+        } else if (event.getSource() == openNewWindowMenuItem) {// Datei -> Neues Fenster öffnen
             openNewWindow();
-        }
-        else if(event.getSource()==closeWindowMenuItem){//Datei -> Fenster schließen
+        } else if (event.getSource() == closeWindowMenuItem) {// Datei -> Fenster schließen
             closeWindow();
-        }
-        else if(event.getSource()==helpWindowCloseButton){//hilfefenster schließen
+        } else if (event.getSource() == helpWindowCloseButton) {// hilfefenster schließen
             helpWindow.setVisible(false);
-        }
-        else if(event.getSource()==pngCheckBox){//einstellungen  -> png speichern
-            if(pngCheckBox.isSelected()){
-                savePng=true;
+        } else if (event.getSource() == pngCheckBox) {// einstellungen -> png speichern
+            if (pngCheckBox.isSelected()) {
+                savePng = true;
+            } else {
+                savePng = false;
             }
-            else{
-                savePng=false;
-            }
-        }
-        else if(event.getSource()==jpegCheckBox){//einstellungen  -> jpg speichern
-            if(jpegCheckBox.isSelected()){
-                saveJpeg=true;
-            }
-            else{
-                saveJpeg=false;
+        } else if (event.getSource() == jpegCheckBox) {// einstellungen -> jpg speichern
+            if (jpegCheckBox.isSelected()) {
+                saveJpeg = true;
+            } else {
+                saveJpeg = false;
             }
             saveConfigurationFile();
-        }
-        else if(event.getSource()==fullscreenOnStartupComboBox){//einstellungen im vollbild starten
-            if(fullscreenOnStartupComboBox.isSelected()){
-                fullscreenOnStartup=true;
-            }
-            else{
-                fullscreenOnStartup=true;
+        } else if (event.getSource() == fullscreenOnStartupComboBox) {// einstellungen im vollbild starten
+            if (fullscreenOnStartupComboBox.isSelected()) {
+                fullscreenOnStartup = true;
+            } else {
+                fullscreenOnStartup = true;
             }
             saveConfigurationFile();
-        }
-        else if(event.getSource()==dataPanelOnStartup){//einstellungen detailbereich beim starten
-            if(dataPanelOnStartup.isSelected()){
-                bottomPanelExpandedOnStartup=true;
-            }
-            else{
-                bottomPanelExpandedOnStartup=true;
+        } else if (event.getSource() == dataPanelOnStartup) {// einstellungen detailbereich beim starten
+            if (dataPanelOnStartup.isSelected()) {
+                bottomPanelExpandedOnStartup = true;
+            } else {
+                bottomPanelExpandedOnStartup = true;
             }
             saveConfigurationFile();
-        }
-        else if(event.getSource()==AutoUpdateRadioButton){//einstellungen auto-update
-            autoUpdate=AutoUpdateRadioButton.isSelected();
-        }
-        else if(event.getSource()==ManualUpdateRadioButton){//einstellungen nur manuell updaten
-            autoUpdate=AutoUpdateRadioButton.isSelected();
-        }
-        else if(event.getSource()==FullscreenExclusiveRadioButton){//einstellungen Vollbild Vollbild
-            fullscreenOk=FullscreenExclusiveRadioButton.isSelected();
-        }
-        else if(event.getSource()==MaximizeWindowRadioButton){//einstellungen Vollbild Maximiert
-            fullscreenOk=FullscreenExclusiveRadioButton.isSelected();
-        }
-        else if(event.getSource()==changeInterpolationSettings){//einstrellungen "OK (nur Interpolation)"
-            if(interpolateCustom.isSelected()){
-                isCustomInterpolated=true;
-                try{
-                    interpolationFactor=Integer.parseInt(interpolateCustomInputBox.getText());
+        } else if (event.getSource() == AutoUpdateRadioButton) {// einstellungen auto-update
+            autoUpdate = AutoUpdateRadioButton.isSelected();
+        } else if (event.getSource() == ManualUpdateRadioButton) {// einstellungen nur manuell updaten
+            autoUpdate = AutoUpdateRadioButton.isSelected();
+        } else if (event.getSource() == FullscreenExclusiveRadioButton) {// einstellungen Vollbild Vollbild
+            fullscreenOk = FullscreenExclusiveRadioButton.isSelected();
+        } else if (event.getSource() == MaximizeWindowRadioButton) {// einstellungen Vollbild Maximiert
+            fullscreenOk = FullscreenExclusiveRadioButton.isSelected();
+        } else if (event.getSource() == changeInterpolationSettings) {// einstrellungen "OK (nur Interpolation)"
+            if (interpolateCustom.isSelected()) {
+                isCustomInterpolated = true;
+                try {
+                    interpolationFactor = Integer.parseInt(interpolateCustomInputBox.getText());
+                } catch (NumberFormatException e) {
+                    interpolationFactor = 1;
                 }
-                catch(NumberFormatException e){
-                    interpolationFactor=1;
-                }
-            }
-            else{
-                isCustomInterpolated=false;
-                if(interpolate1x.isSelected()){
-                    interpolationFactor=1;
-                }
-                else if(interpolate4x.isSelected()){
-                    interpolationFactor=4;
-                }
-                else if(interpolate10x.isSelected()){
-                    interpolationFactor=10;
-                }
-                else if(interpolate100x.isSelected()){
-                    interpolationFactor=100;
-                }
-                else if(interpolate1000x.isSelected()){
-                    interpolationFactor=1000;
-                }
-                else{
-                    interpolationFactor=1;
+            } else {
+                isCustomInterpolated = false;
+                if (interpolate1x.isSelected()) {
+                    interpolationFactor = 1;
+                } else if (interpolate4x.isSelected()) {
+                    interpolationFactor = 4;
+                } else if (interpolate10x.isSelected()) {
+                    interpolationFactor = 10;
+                } else if (interpolate100x.isSelected()) {
+                    interpolationFactor = 100;
+                } else if (interpolate1000x.isSelected()) {
+                    interpolationFactor = 1000;
+                } else {
+                    interpolationFactor = 1;
                 }
             }
-            try{
-                interpolationOffset=Integer.parseInt(interpolationOffsetValueBox.getText())-1;
+            try {
+                interpolationOffset = Integer.parseInt(interpolationOffsetValueBox.getText()) - 1;
+            } catch (NumberFormatException e) {
+                interpolationOffset = 0;
             }
-            catch(NumberFormatException e){
-                interpolationOffset=0;
+            if (interpolationOffset < 0) {
+                interpolationOffset = 0;
             }
-            if(interpolationOffset<0){
-                interpolationOffset=0;
+            if (interpolationFactor < 1) {
+                interpolationFactor = 1;
             }
-            if(interpolationFactor<1){
-                interpolationFactor=1;
-            }
-            onlyInterpolationChanging=true;
+            onlyInterpolationChanging = true;
             replot();
-        }
-        else if(event.getSource()==SetRTCButton){
-            try{
-                serialWriter.write("SETTIME "+SystemTimeField.getText());
+        } else if (event.getSource() == SetRTCButton) {
+            try {
+                serialWriter.write("SETTIME " + SystemTimeField.getText());
                 serialWriter.flush();
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 logln(e);
             }
             return;
-        }
-        else if(event.getSource()==DeviceConnRefreshButton) {
+        } else if (event.getSource() == DeviceConnRefreshButton) {
             DeviceConnComboBox.removeAllItems();
-            ports=SerialPort.getCommPorts();
+            ports = SerialPort.getCommPorts();
             SerialPort P;
-            for(int i=0;i<ports.length;i++) {
-                P=ports[i];
-                logln(P.getDescriptivePortName()+"|"+P.getSystemPortName());
-                if(P.getDescriptivePortName().startsWith("Arduino Mega 2560")) {//"Arduino Leonardo")){
-                    /*port=P;
-                    port.setBaudRate(115200);
-                    SerialAvailable=port.openPort();
-                    logln(port.isOpen());
-                    SerialAvailable=port.isOpen();*/
-                    selectedPort=i;
+            for (int i = 0; i < ports.length; i++) {
+                P = ports[i];
+                logln(P.getDescriptivePortName() + "|" + P.getSystemPortName());
+                if (P.getDescriptivePortName().startsWith("Arduino Mega 2560")) {// "Arduino Leonardo")){
+                    /*
+                     * port=P; port.setBaudRate(115200); SerialAvailable=port.openPort();
+                     * logln(port.isOpen()); SerialAvailable=port.isOpen();
+                     */
+                    selectedPort = i;
                 }
             }
             logln(SerialAvailable);
-            for(SerialPort PT:ports) {
+            for (SerialPort PT : ports) {
                 DeviceConnComboBox.addItem(PT.getDescriptivePortName());
             }
-            if(SerialAvailable) {
+            if (SerialAvailable) {
                 DeviceConnComboBox.setSelectedIndex(selectedPort);
             }
             return;
-        }
-        else if(event.getSource()==DeviceConnConnectButton) {
+        } else if (event.getSource() == DeviceConnConnectButton) {
             DeviceTimeField.setText("BITTE WARTEN");
             try {
                 port.closePort();
                 try {
                     SerialThread.stop();
-                    SerialThread.destroy();
-                }
-                catch(NoSuchMethodError er) {
+                    //SerialThread.destroy();
+                    //SerialThread.kill();
+                    //REWORK
+                } catch (NoSuchMethodError er) {
                     log("SOMEWHAT EXPECTED: ");
                     logln(er);
                 }
-            }
-            catch(NullPointerException exc) {
+            } catch (NullPointerException exc) {
                 log("EXPECTED: ");
                 logln(exc);
-            }
-            catch(Exception exy) {
+            } catch (Exception exy) {
                 log("CRITICAL: ");
                 logln(exy);
             }
-            SerialThread=null;
-            SerialListener=null;
+            SerialThread = null;
+            SerialListener = null;
             System.gc();
-            port=ports[DeviceConnComboBox.getSelectedIndex()];
-            if(port==null) {
+            port = ports[DeviceConnComboBox.getSelectedIndex()];
+            if (port == null) {
                 logln("NO APROPRIATE SERIAL PORT");
-                SerialAvailable=false;
-            }
-            else {
+                SerialAvailable = false;
+            } else {
                 logln(port);
                 port.setBaudRate(115200);
-                SerialAvailable=port.openPort();
+                SerialAvailable = port.openPort();
                 logln(port.isOpen());
-                SerialAvailable=port.isOpen();
-                serialScanner=new Scanner(new InputStreamReader(port.getInputStream()));
-                serialWriter=new BufferedWriter(new OutputStreamWriter(port.getOutputStream()));
-                SerialAvailable=true;
+                SerialAvailable = port.isOpen();
+                serialScanner = new Scanner(new InputStreamReader(port.getInputStream()));
+                serialWriter = new BufferedWriter(new OutputStreamWriter(port.getOutputStream()));
+                SerialAvailable = true;
             }
-            SerialListener=new SerialWorker(this);
-            SerialThread=new Thread(SerialListener);
+            SerialListener = new SerialWorker(this);
+            SerialThread = new Thread(SerialListener);
             SerialThread.start();
             return;
-        }
-        else if(event.getSource()==GeoModeOkButton){//Geo-Modus/Physik-modus
-            geoMode=GeoModeButton.isSelected();
+        } else if (event.getSource() == GeoModeOkButton) {// Geo-Modus/Physik-modus
+            geoMode = GeoModeButton.isSelected();
             replot();
         }
-        for(int i=0;i<NUMBER_OF_KEY_COMBOS;i++){//tastenkombis ändern
-            if(event.getSource()==KeyCombinationChangeButton[i]){
+        for (int i = 0; i < NUMBER_OF_KEY_COMBOS; i++) {// tastenkombis ändern
+            if (event.getSource() == KeyCombinationChangeButton[i]) {
                 openSetNewKeyCombinationWindow(i);
             }
         }
-        for(int i=0;i<numberOfGraphs;i++){//graphen ausblenden
-            if(event.getSource()==selectGraphVisibilityCheckBox[i]){
-                setSeriesVisible(i,selectGraphVisibilityCheckBox[i].isSelected());
+        for (int i = 0; i < numberOfGraphs; i++) {// graphen ausblenden
+            if (event.getSource() == selectGraphVisibilityCheckBox[i]) {
+                setSeriesVisible(i, selectGraphVisibilityCheckBox[i].isSelected());
             }
         }
         reloadBackend();
@@ -2629,43 +3019,46 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     /*
      * graphen neu zeichnen
      */
-    private void replot(){
-        replotting=true;
+    private void replot() {
+        replotting = true;
         mainWindow.remove(chartPanel);
-        jFreeChart=createDataset();
+        jFreeChart = createDataset();
         setupCrosshairOverlays();
-        mainWindow.add(chartPanel,BorderLayout.NORTH);
+        mainWindow.add(chartPanel, BorderLayout.NORTH);
         chartPanel.addChartMouseListener(this);
         mainWindow.validate();
-        replotting=false;
+        replotting = false;
     }
 
     /*
      * datenreihe sichtbar/unsichtbar machen
      */
-    private void setSeriesVisible(int number,boolean selected) {
-        if(graphIsVisible[number]==selected){//ist bereits im gewünschten status
+    // FIXME
+    // WTF
+    private void setSeriesVisible(int number, boolean selected) {
+        int cInd = 0;
+        if (graphIsVisible[number] == selected) {// ist bereits im gewünschten status
             return;
         }
-        graphIsVisible[number]=selected;
-        if(selected){//hinzufügen
+        graphIsVisible[number] = selected;
+        if (selected) {// hinzufügen
             xYSeriesCollection.removeAllSeries();
 
-            for(int i=0;i<numberOfGraphs;i++){
+            for (int i = 0; i < numberOfGraphs; i++) {// anm 16.8. brauche ich nicht einen correctedindex?
 
                 yCrosshairs[i].setVisible(false);
 
-                if(graphIsVisible[i]){
+                if (graphIsVisible[i]) {
+                    cInd++;
 
                     xYSeriesCollection.addSeries(xYSeries[i]);
 
-                    yCrosshairs[i].setVisible(true);
+                    yCrosshairs[cInd].setVisible(true);
 
                 }
 
             }
-        }
-        else{//entfernen
+        } else {// entfernen
             yCrosshairs[number].setVisible(false);
             xYSeriesCollection.removeSeries(xYSeries[number]);
         }
@@ -2674,7 +3067,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     /*
      * konfigutration etc neu laden
      */
-    private void reloadBackend(){
+    private void reloadBackend() {
         saveConfigurationFile();
         loadConfigurationFile();
         loadTextForHelpWindowAndKeyCombinations();
@@ -2684,37 +3077,38 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      * fesnter zum tastenkombis ändern öffnen
      */
     private void openSetNewKeyCombinationWindow(int input) {
-        keyCombinationsEnabled=false;
-        configureKeyCombinationText[5].setText(configureKeyCombinationText[5].getText()+setNewKeyCombinationTexts[input]);
+        keyCombinationsEnabled = false;
+        configureKeyCombinationText[5]
+        .setText(configureKeyCombinationText[5].getText() + setNewKeyCombinationTexts[input]);
         setNewKeyCombinationWindow.setVisible(true);
-        currentlyEditedKeyCombinationNumber=input;
+        currentlyEditedKeyCombinationNumber = input;
     }
 
     /*
      * "elternfenster" setzen
      */
     private void setPrevious(Raumklima newPrevious) {
-        previous=newPrevious;
+        previous = newPrevious;
     }
 
     /*
      * "kindfenster setzen
      */
     private void setNext(Raumklima newNext) {
-        next=newNext;
+        next = newNext;
     }
 
     /*
-     * andere datei öffnen
-     * eigene eigenschaften (eltern/kindfenster/nummer) an neues Fenster weitergeben und sich selber schließen
+     * andere datei öffnen eigene eigenschaften (eltern/kindfenster/nummer) an neues
+     * Fenster weitergeben und sich selber schließen
      */
-    private void openNewPlot(){
+    private void openNewPlot() {
         mainWindow.setVisible(false);
-        Raumklima neu=new Raumklima(titleNumber,previous,next);
-        if(next!=null){
+        Raumklima neu = new Raumklima(titleNumber, previous, next);
+        if (next != null) {
             next.setPrevious(neu);
         }
-        if(previous!=null){
+        if (previous != null) {
             previous.setNext(neu);
         }
         exit();
@@ -2723,19 +3117,19 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     /*
      * neues fenster
      */
-    private void openNewWindow(){
-        next=new Raumklima(titleNumber+1,this,next);
+    private void openNewWindow() {
+        next = new Raumklima(titleNumber + 1, this, next);
     }
 
     /*
      * Fenster zumachen
      */
-    private void closeWindow(){
-        if(next!=null){
+    private void closeWindow() {
+        if (next != null) {
             next.decrementTitleNumber();
             next.setPrevious(previous);
         }
-        if(previous!=null){
+        if (previous != null) {
             previous.setNext(next);
         }
         exit();
@@ -2747,7 +3141,7 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     private void decrementTitleNumber() {
         titleNumber--;
         setTitle();
-        if(next!=null){
+        if (next != null) {
             next.decrementTitleNumber();
         }
     }
@@ -2755,12 +3149,11 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     /*
      * Hapzfenster Titel setzen
      */
-    private void setTitle(){
-        if(titleNumber==1){
+    private void setTitle() {
+        if (titleNumber == 1) {
             mainWindow.setTitle(title);
-        }
-        else{
-            mainWindow.setTitle(title+" ("+titleNumber+")");
+        } else {
+            mainWindow.setTitle(title + " (" + titleNumber + ")");
         }
     }
 
@@ -2769,21 +3162,19 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      */
     @Override
     public void mouseClicked(MouseEvent event) {
-        if(event.getSource()==openSettingsWindowMenu){
-            deactivateFullscreen();
+        if (event.getSource() == openSettingsWindowMenu) {
+            deactivateFullscreenExclusive();
             toggleSettingsWindow();
         }
-        if(event.getSource()==openHelpWindowMenu){
-            deactivateFullscreen();
+        if (event.getSource() == openHelpWindowMenu) {
+            deactivateFullscreenExclusive();
             makeHelpWindowVisible();
         }
-        if(event.getSource()==toggleFullscreenModeMenu){
+        if (event.getSource() == toggleFullscreenModeMenu) {
             toggleFullscreen();
-        }
-        else if(event.getSource()==saveGraphImagesMenu){
+        } else if (event.getSource() == saveGraphImagesMenu) {
             saveImages();
-        }
-        else if(event.getSource()==toggleDataPanelMenu){
+        } else if (event.getSource() == toggleDataPanelMenu) {
             toggleBottomPanel();
         }
     }
@@ -2793,138 +3184,239 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
      */
     @Override
     public void keyReleased(KeyEvent event) {
-        if(allowKeyCombinationChange){
-            allowKeyCombinationChange=false;
-            //logln("KeyReleased");
+        if (allowKeyCombinationChange) {
+            allowKeyCombinationChange = false;
+            // logln("KeyReleased");
             keyComboAusgabe.setText("");
-            if(event.isAltDown()){
+            if (event.isAltDown()) {
                 keyComboAusgabe.setText("Alt+");
-                changeAltDown=true;
+                changeAltDown = true;
             }
-            if(event.isControlDown()){
-                keyComboAusgabe.setText(keyComboAusgabe.getText()+"Strg+");
-                changeCtrlDown=true;
+            if (event.isControlDown()) {
+                keyComboAusgabe.setText(keyComboAusgabe.getText() + "Strg+");
+                changeCtrlDown = true;
             }
-            if(event.isShiftDown()){
-                keyComboAusgabe.setText(keyComboAusgabe.getText()+"Shift+");
-                changeShiftDown=true;
+            if (event.isShiftDown()) {
+                keyComboAusgabe.setText(keyComboAusgabe.getText() + "Shift+");
+                changeShiftDown = true;
             }
-            //keyComboAusgabe.setText(keyComboAusgabe.getText()+String.valueOf(event.getKeyChar()));
-            keyComboAusgabe.setText(keyComboAusgabe.getText()+getKeyStringFromKeyCode(event.getExtendedKeyCode()));
-            changeKeyChar=getKeyStringFromKeyCode(event.getExtendedKeyCode());
-            changeKeyCode=event.getExtendedKeyCode();
+            // keyComboAusgabe.setText(keyComboAusgabe.getText()+String.valueOf(event.getKeyChar()));
+            keyComboAusgabe.setText(keyComboAusgabe.getText() + getKeyStringFromKeyCode(event.getExtendedKeyCode()));
+            changeKeyChar = getKeyStringFromKeyCode(event.getExtendedKeyCode());
+            changeKeyCode = event.getExtendedKeyCode();
 
             log(event.getKeyChar());
 
-            logln(":"+event.getExtendedKeyCode()+":"+getKeyStringFromKeyCode(event.getExtendedKeyCode()));
-            changeKeyCode=event.getExtendedKeyCode();
+            logln(":" + event.getExtendedKeyCode() + ":" + getKeyStringFromKeyCode(event.getExtendedKeyCode()));
+            changeKeyCode = event.getExtendedKeyCode();
         }
     }
 
     /*
-     * einen String, mit dem namen des Keycodes organisieren, dass bim ändern der Tastenkombis statt "17+18+127" "STRG+ALT+ENTF" steht
+     * einen String, mit dem namen des Keycodes organisieren, dass bim ändern der
+     * Tastenkombis statt "17+18+127" "STRG+ALT+ENTF" steht
      */
-    private String getKeyStringFromKeyCode(int code){
-        //mir ist bekannt, dass die Methode KeyEvent.getKeyText(int) existiert, jedoch sind ausgaben wie "Zirkumflex (Dead)" meiner meinung nach unverständlicher als "^"
-        switch(code){
-            case 8: return"BACKSPACE";
-            case 10: return"ENTER";
-            case 16:return "SHIFT";
-            case 17: return"STRG";
-            case 18:return"ALT";
-            case 20:return"CAPS_LOCK";
-            case 27: return"ESC";
-            case 32: return"SPACE";
-            case 33: return"BILD_AUF";
-            case 34: return"BILD_AB";
-            case 35: return"ENDE";
-            case 36: return"POS1";
-            case 37: return"PFEILTASTE_LINKS";
-            case 38: return"PFEILTASTE_OBEN";
-            case 39: return"PFEILTASTE_RECHTS";
-            case 40: return"PFEILTASTE_UNTEN";
-            case 44: return",";
-            case 45: return"-";
-            case 46: return".";
-            case 48: return"0";
-            case 49: return"1";
-            case 50: return"2";
-            case 51: return"3";
-            case 52: return"4";
-            case 53: return"5";
-            case 54: return"6";
-            case 55: return"7";
-            case 56: return"8";
-            case 57: return"9";
-            case 65: return"A";
-            case 66: return"B";
-            case 67: return"C";
-            case 68: return"D";
-            case 69: return"E";
-            case 70: return"F";
-            case 71: return"G";
-            case 72: return"H";
-            case 73: return"I";
-            case 74: return"J";
-            case 75: return"K";
-            case 76: return"L";
-            case 77: return"M";
-            case 78: return"N";
-            case 79: return"O";
-            case 80: return"P";
-            case 81: return"Q";
-            case 82: return"R";
-            case 83: return"S";
-            case 84: return"T";
-            case 85: return"U";
-            case 86: return"V";
-            case 87: return"W";
-            case 88: return"X";
-            case 89: return"Y";
-            case 90: return"Z";
-            case 96: return"NUM_0";
-            case 97: return"NUM_1";
-            case 98: return"NUM_2";
-            case 99: return"NUM_3";
-            case 100: return"NUM_4";
-            case 101: return"NUM_5";
-            case 102: return"NUM_6";
-            case 103: return"NUM_7";
-            case 104: return"NUM_8";
-            case 105: return"NUM_9";
-            case 106: return"NUM_*";
-            case 107: return"NUM_+";
-            case 109: return"NUM_-";
-            case 110: return"NUM_,";
-            case 111: return"NUM_/";
-            case 112: return"F1";
-            case 113: return"F2";
-            case 114: return"F3";
-            case 115: return"F4";
-            case 116: return"F5";
-            case 117: return"F6";
-            case 118: return"F7";
-            case 119: return"F8";
-            case 120: return"F9";
-            case 121: return"F10";
-            case 122: return"F11";
-            case 123: return"F12";
-            case 127: return"ENTF";
-            case 129: return"´";//appostroph
-            case 130: return"^";
-            case 144: return"NUM";
-            case 145: return"ROLLEN";
-            case 153: return"<";
-            case 154: return"DRUCK";
-            case 155: return"EINFG";
-            case 520: return"#";
-            case 521: return"+";
-            case 524:return"WINDOWS";
-            case 16777412: return"Ä"; //AE
-            case 16777430: return"Ö"; //OE
-            case 16777439: return"ß"; //'SS'
-            case 16777468: return"Ü"; //UE
-            default:return "ERROR:"+String.valueOf(code)+"("+String.valueOf((char)(code))+")";
+    private String getKeyStringFromKeyCode(int code) {
+        // mir ist bekannt, dass die Methode KeyEvent.getKeyText(int) existiert, jedoch
+        // sind ausgaben wie "Zirkumflex (Dead)" meiner meinung nach unverständlicher
+        // als "^"
+        switch (code) {
+            case 8:
+            return "BACKSPACE";
+            case 10:
+            return "ENTER";
+            case 16:
+            return "SHIFT";
+            case 17:
+            return "STRG";
+            case 18:
+            return "ALT";
+            case 20:
+            return "CAPS_LOCK";
+            case 27:
+            return "ESC";
+            case 32:
+            return "SPACE";
+            case 33:
+            return "BILD_AUF";
+            case 34:
+            return "BILD_AB";
+            case 35:
+            return "ENDE";
+            case 36:
+            return "POS1";
+            case 37:
+            return "PFEILTASTE_LINKS";
+            case 38:
+            return "PFEILTASTE_OBEN";
+            case 39:
+            return "PFEILTASTE_RECHTS";
+            case 40:
+            return "PFEILTASTE_UNTEN";
+            case 44:
+            return ",";
+            case 45:
+            return "-";
+            case 46:
+            return ".";
+            case 48:
+            return "0";
+            case 49:
+            return "1";
+            case 50:
+            return "2";
+            case 51:
+            return "3";
+            case 52:
+            return "4";
+            case 53:
+            return "5";
+            case 54:
+            return "6";
+            case 55:
+            return "7";
+            case 56:
+            return "8";
+            case 57:
+            return "9";
+            case 65:
+            return "A";
+            case 66:
+            return "B";
+            case 67:
+            return "C";
+            case 68:
+            return "D";
+            case 69:
+            return "E";
+            case 70:
+            return "F";
+            case 71:
+            return "G";
+            case 72:
+            return "H";
+            case 73:
+            return "I";
+            case 74:
+            return "J";
+            case 75:
+            return "K";
+            case 76:
+            return "L";
+            case 77:
+            return "M";
+            case 78:
+            return "N";
+            case 79:
+            return "O";
+            case 80:
+            return "P";
+            case 81:
+            return "Q";
+            case 82:
+            return "R";
+            case 83:
+            return "S";
+            case 84:
+            return "T";
+            case 85:
+            return "U";
+            case 86:
+            return "V";
+            case 87:
+            return "W";
+            case 88:
+            return "X";
+            case 89:
+            return "Y";
+            case 90:
+            return "Z";
+            case 96:
+            return "NUM_0";
+            case 97:
+            return "NUM_1";
+            case 98:
+            return "NUM_2";
+            case 99:
+            return "NUM_3";
+            case 100:
+            return "NUM_4";
+            case 101:
+            return "NUM_5";
+            case 102:
+            return "NUM_6";
+            case 103:
+            return "NUM_7";
+            case 104:
+            return "NUM_8";
+            case 105:
+            return "NUM_9";
+            case 106:
+            return "NUM_*";
+            case 107:
+            return "NUM_+";
+            case 109:
+            return "NUM_-";
+            case 110:
+            return "NUM_,";
+            case 111:
+            return "NUM_/";
+            case 112:
+            return "F1";
+            case 113:
+            return "F2";
+            case 114:
+            return "F3";
+            case 115:
+            return "F4";
+            case 116:
+            return "F5";
+            case 117:
+            return "F6";
+            case 118:
+            return "F7";
+            case 119:
+            return "F8";
+            case 120:
+            return "F9";
+            case 121:
+            return "F10";
+            case 122:
+            return "F11";
+            case 123:
+            return "F12";
+            case 127:
+            return "ENTF";
+            case 129:
+            return "´";// appostroph
+            case 130:
+            return "^";
+            case 144:
+            return "NUM";
+            case 145:
+            return "ROLLEN";
+            case 153:
+            return "<";
+            case 154:
+            return "DRUCK";
+            case 155:
+            return "EINFG";
+            case 520:
+            return "#";
+            case 521:
+            return "+";
+            case 524:
+            return "WINDOWS";
+            case 16777412:
+            return "Ä"; // AE
+            case 16777430:
+            return "Ö"; // OE
+            case 16777439:
+            return "ß"; // 'SS'
+            case 16777468:
+            return "Ü"; // UE
+            default:
+            return "ERROR:" + String.valueOf(code) + "(" + String.valueOf((char) (code)) + ")";
         }
     }
 
@@ -2934,63 +3426,92 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     @Override
     public void keyPressed(KeyEvent event) {
 
-        logln("KeyText (extended): "+KeyEvent.getKeyText(event.getExtendedKeyCode())+"    KeyText: "+KeyEvent.getKeyText(event.getKeyCode())+"    KeyString (eigenbau&&extended): "+getKeyStringFromKeyCode(event.getExtendedKeyCode())+"    KeyString(eigenbau): "+getKeyStringFromKeyCode(event.getKeyCode()));
-        if(keyCombinationsEnabled){
-            if(event.getExtendedKeyCode()==TOGGLE_FULLSCREEN_MODE_KEY_CODE&&event.isAltDown()==TOGGLE_FULLSCREEN_MODE_ALT_REQUIRED&&event.isControlDown()==TOGGLE_FULLSCREEN_MODE_CTRL_REQUIRED&&event.isShiftDown()==TOGGLE_FULLSCREEN_MODE_SHIFT_REQUIRED){
+        logln("KeyText (extended): " + KeyEvent.getKeyText(event.getExtendedKeyCode()) + "    KeyText: "
+            + KeyEvent.getKeyText(event.getKeyCode()) + "    KeyString (eigenbau&&extended): "
+            + getKeyStringFromKeyCode(event.getExtendedKeyCode()) + "    KeyString(eigenbau): "
+            + getKeyStringFromKeyCode(event.getKeyCode()));
+        if (keyCombinationsEnabled) {
+            if (event.getExtendedKeyCode() == TOGGLE_FULLSCREEN_MODE_KEY_CODE
+            && event.isAltDown() == TOGGLE_FULLSCREEN_MODE_ALT_REQUIRED
+            && event.isControlDown() == TOGGLE_FULLSCREEN_MODE_CTRL_REQUIRED
+            && event.isShiftDown() == TOGGLE_FULLSCREEN_MODE_SHIFT_REQUIRED) {
                 toggleFullscreen();
             }
-            if(event.getExtendedKeyCode()==REFRESH_FRAME_KEY_CODE&&event.isAltDown()==REFRESH_FRAME_ALT_REQUIRED&&event.isControlDown()==REFRESH_FRAME_CTRL_REQUIRED&&event.isShiftDown()==REFRESH_FRAME_SHIFT_REQUIRED){
+            if (event.getExtendedKeyCode() == REFRESH_FRAME_KEY_CODE && event.isAltDown() == REFRESH_FRAME_ALT_REQUIRED
+            && event.isControlDown() == REFRESH_FRAME_CTRL_REQUIRED
+            && event.isShiftDown() == REFRESH_FRAME_SHIFT_REQUIRED) {
                 refreshPage();
             }
-            if(event.getExtendedKeyCode()==OPEN_HELP_WINDOW_KEY_CODE&&event.isAltDown()==OPEN_HELP_WINDOW_ALT_REQUIRED&&event.isControlDown()==OPEN_HELP_WINDOW_CTRL_REQUIRED&&event.isShiftDown()==OPEN_HELP_WINDOW_SHIFT_REQUIRED){
-                deactivateFullscreen();
+            if (event.getExtendedKeyCode() == OPEN_HELP_WINDOW_KEY_CODE
+            && event.isAltDown() == OPEN_HELP_WINDOW_ALT_REQUIRED
+            && event.isControlDown() == OPEN_HELP_WINDOW_CTRL_REQUIRED
+            && event.isShiftDown() == OPEN_HELP_WINDOW_SHIFT_REQUIRED) {
+                deactivateFullscreenExclusive();
                 makeHelpWindowVisible();
             }
-            if(event.getExtendedKeyCode()==OPEN_NEW_PLOT_KEY_CODE&&event.isAltDown()==OPEN_NEW_PLOT_ALT_REQUIRED&&event.isControlDown()==OPEN_NEW_PLOT_CTRL_REQUIRED&&event.isShiftDown()==OPEN_NEW_PLOT_SHIFT_REQUIRED){
+            if (event.getExtendedKeyCode() == OPEN_NEW_PLOT_KEY_CODE && event.isAltDown() == OPEN_NEW_PLOT_ALT_REQUIRED
+            && event.isControlDown() == OPEN_NEW_PLOT_CTRL_REQUIRED
+            && event.isShiftDown() == OPEN_NEW_PLOT_SHIFT_REQUIRED) {
                 deactivateFullscreen();
                 openNewPlot();
             }
-            if(event.getExtendedKeyCode()==OPEN_NEW_WINDOW_KEY_CODE&&event.isAltDown()==OPEN_NEW_WINDOW_ALT_REQUIRED&&event.isControlDown()==OPEN_NEW_WINDOW_CTRL_REQUIRED&&event.isShiftDown()==OPEN_NEW_WINDOW_SHIFT_REQUIRED){
+            if (event.getExtendedKeyCode() == OPEN_NEW_WINDOW_KEY_CODE
+            && event.isAltDown() == OPEN_NEW_WINDOW_ALT_REQUIRED
+            && event.isControlDown() == OPEN_NEW_WINDOW_CTRL_REQUIRED
+            && event.isShiftDown() == OPEN_NEW_WINDOW_SHIFT_REQUIRED) {
                 deactivateFullscreen();
                 openNewWindow();
             }
-            if(event.getExtendedKeyCode()==CLOSE_WINDOW_KEY_CODE&&event.isAltDown()==CLOSE_WINDOW_ALT_REQUIRED&&event.isControlDown()==CLOSE_WINDOW_CTRL_REQUIRED&&event.isShiftDown()==CLOSE_WINDOW_SHIFT_REQUIRED){
+            if (event.getExtendedKeyCode() == CLOSE_WINDOW_KEY_CODE && event.isAltDown() == CLOSE_WINDOW_ALT_REQUIRED
+            && event.isControlDown() == CLOSE_WINDOW_CTRL_REQUIRED
+            && event.isShiftDown() == CLOSE_WINDOW_SHIFT_REQUIRED) {
                 deactivateFullscreen();
                 closeWindow();
             }
-            if(event.getExtendedKeyCode()==TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_CODE&&event.isAltDown()==TOGGLE_BOTTOM_PANEL_VISIBILITY_ALT_REQUIRED&&event.isControlDown()==TOGGLE_BOTTOM_PANEL_VISIBILITY_CTRL_REQUIRED&&event.isShiftDown()==TOGGLE_BOTTOM_PANEL_VISIBILITY_SHIFT_REQUIRED){
+            if (event.getExtendedKeyCode() == TOGGLE_BOTTOM_PANEL_VISIBILITY_KEY_CODE
+            && event.isAltDown() == TOGGLE_BOTTOM_PANEL_VISIBILITY_ALT_REQUIRED
+            && event.isControlDown() == TOGGLE_BOTTOM_PANEL_VISIBILITY_CTRL_REQUIRED
+            && event.isShiftDown() == TOGGLE_BOTTOM_PANEL_VISIBILITY_SHIFT_REQUIRED) {
                 toggleBottomPanel();
             }
-            if(event.getExtendedKeyCode()==OPEN_SETTINGS_WINDOW_KEY_CODE&&event.isAltDown()==OPEN_SETTINGS_WINDOW_ALT_REQUIRED&&event.isControlDown()==OPEN_SETTINGS_WINDOW_CTRL_REQUIRED&&event.isShiftDown()==OPEN_SETTINGS_WINDOW_SHIFT_REQUIRED){
-                deactivateFullscreen();
+            if (event.getExtendedKeyCode() == OPEN_SETTINGS_WINDOW_KEY_CODE
+            && event.isAltDown() == OPEN_SETTINGS_WINDOW_ALT_REQUIRED
+            && event.isControlDown() == OPEN_SETTINGS_WINDOW_CTRL_REQUIRED
+            && event.isShiftDown() == OPEN_SETTINGS_WINDOW_SHIFT_REQUIRED) {
+                deactivateFullscreenExclusive();
                 toggleSettingsWindow();
             }
-            if(event.getExtendedKeyCode()==SAVE_GRAPH_IMAGE_KEY_CODE&&event.isAltDown()==SAVE_GRAPH_IMAGE_ALT_REQUIRED&&event.isControlDown()==SAVE_GRAPH_IMAGE_CTRL_REQUIRED&&event.isShiftDown()==SAVE_GRAPH_IMAGE_SHIFT_REQUIRED){
+            if (event.getExtendedKeyCode() == SAVE_GRAPH_IMAGE_KEY_CODE
+            && event.isAltDown() == SAVE_GRAPH_IMAGE_ALT_REQUIRED
+            && event.isControlDown() == SAVE_GRAPH_IMAGE_CTRL_REQUIRED
+            && event.isShiftDown() == SAVE_GRAPH_IMAGE_SHIFT_REQUIRED) {
                 saveImages();
             }
         }
     }
 
-    /* 
+    /*
      * bilder speichern
      */
     private void saveImages() {
 
         logln("SAVING");
-        if(saveJpeg){
+        if (saveJpeg) {
 
             logln("JPG");
             try {
-                ChartUtilities.saveChartAsJPEG(new File(csvFile.getName()+".jpeg"), jFreeChart, imageWidth, imageHeight);
+                ChartUtilities.saveChartAsJPEG(new File(csvFile.getName() + ".jpeg"), jFreeChart, imageWidth,
+                    imageHeight);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        if(savePng){
+        if (savePng) {
 
             logln("PNG");
             try {
-                ChartUtilities.saveChartAsPNG(new File(csvFile.getName()+".png"), jFreeChart, imageWidth, imageHeight);
+                ChartUtilities.saveChartAsPNG(new File(csvFile.getName() + ".png"), jFreeChart, imageWidth,
+                    imageHeight);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -3008,85 +3529,106 @@ public class Raumklima implements ActionListener,WindowListener,WindowStateListe
     /*
      * überprüft ob vollbild erlaubt ist (INTEL => NOPE; kein intel => YES)
      */
-    private void CheckFullscreenAvailability(){
-        try{
-            if(System.getProperty("os.name").contains("Win")||System.getProperty("os.name").contains("WIN")||System.getProperty("os.name").contains("win")){//System ist irgend eine Windows Version
+    private void CheckFullscreenAvailability() {
+        try {
+            if (System.getProperty("os.name").contains("Win") || System.getProperty("os.name").contains("WIN")
+            || System.getProperty("os.name").contains("win")) {// System ist irgend eine Windows Version
 
                 logln("WINDOWS");
-                br=new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("wmic path win32_VideoController get name").getInputStream()));//cmd parameter von https://superuser.com/questions/723506/get-the-video-card-model-via-command-line-in-windows
-            }
-            else{//System ist irgendwas (Linux/UNIX/Mac OS)... Jedenfalls was mit bash
+                br = new BufferedReader(new InputStreamReader(
+                        Runtime.getRuntime().exec("wmic path win32_VideoController get name").getInputStream()));// cmd
+                // parameter
+                // von
+                // https://superuser.com/questions/723506/get-the-video-card-model-via-command-line-in-windows
+            } else {// System ist irgendwas (Linux/UNIX/Mac OS)... Jedenfalls was mit bash
 
                 logln("LINUX");
-                br=new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("lspci -vnn | grep VGA -A 12").getInputStream()));//cmd parameter von http://www.binarytides.com/linux-get-gpu-information/
+                br = new BufferedReader(new InputStreamReader(
+                        Runtime.getRuntime().exec("lspci -vnn | grep VGA -A 12").getInputStream()));// cmd parameter von
+                // http://www.binarytides.com/linux-get-gpu-information/
             }
-            String zeile=br.readLine();
-            String alles="";
-            while(true){
+            String zeile = br.readLine();
+            String alles = "";
+            while (true) {
 
-                logln("\t\""+zeile+"\"");
-                if(zeile==null/*||zeile.equals("")*/){
+                logln("\t\"" + zeile + "\"");
+                if (zeile == null/* ||zeile.equals("") */) {
                     break;
                 }
-                alles+=zeile;
-                zeile=br.readLine();
+                alles += zeile;
+                zeile = br.readLine();
             }
-            if(alles.contains("Intel")||alles.contains("Intel")||alles.contains("intel")){
+            if (alles.contains("Intel") || alles.contains("Intel") || alles.contains("intel")) {
                 FullscreenExclusiveRadioButton.setEnabled(false);
                 MaximizeWindowRadioButton.setSelected(true);
-                fullscreenOk=false;
+                fullscreenOk = false;
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    //alles was jetzt noch folgt sind eventhandler, die implementiert werden müssen, aber vollkommen wurscht sind
+    // alles was jetzt noch folgt sind eventhandler, die implementiert werden
+    // müssen, aber vollkommen wurscht sind
     @Override
-    public void keyTyped(KeyEvent event) {}
+    public void keyTyped(KeyEvent event) {
+    }
 
     @Override
-    public void mouseEntered(MouseEvent event) {}
+    public void mouseEntered(MouseEvent event) {
+    }
 
     @Override
-    public void mouseExited(MouseEvent event) {}
+    public void mouseExited(MouseEvent event) {
+    }
 
     @Override
-    public void mousePressed(MouseEvent event) {}
+    public void mousePressed(MouseEvent event) {
+    }
 
     @Override
-    public void mouseReleased(MouseEvent event) {}
+    public void mouseReleased(MouseEvent event) {
+    }
 
     @Override
-    public void componentHidden(ComponentEvent event) {}
+    public void componentHidden(ComponentEvent event) {
+    }
 
     @Override
-    public void componentMoved(ComponentEvent event) {}
+    public void componentMoved(ComponentEvent event) {
+    }
 
     @Override
-    public void componentShown(ComponentEvent event) {}
+    public void componentShown(ComponentEvent event) {
+    }
 
     @Override
-    public void windowActivated(WindowEvent event) {}
+    public void windowActivated(WindowEvent event) {
+    }
 
     @Override
-    public void windowClosed(WindowEvent event) {}
+    public void windowClosed(WindowEvent event) {
+    }
 
     @Override
-    public void windowDeactivated(WindowEvent event) {}
+    public void windowDeactivated(WindowEvent event) {
+    }
 
     @Override
-    public void windowDeiconified(WindowEvent event) {}
+    public void windowDeiconified(WindowEvent event) {
+    }
 
     @Override
-    public void windowIconified(WindowEvent event) {}
+    public void windowIconified(WindowEvent event) {
+    }
 
     @Override
-    public void windowOpened(WindowEvent event) {}
+    public void windowOpened(WindowEvent event) {
+    }
 
     @Override
-    public void focusLost(FocusEvent arg0) {}
+    public void focusLost(FocusEvent arg0) {
+    }
 
     public void initDeviceTimer() {
     }

@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item value="false" key="isRegEx"/>
-		<item value="\\" key="selection"/>
-		<item value="true" key="casesensitive"/>
-		<item value="false" key="incremental"/>
-		<item value="true" key="wrap"/>
-		<item value="false" key="wholeword"/>
+		<item key="isRegEx" value="false"/>
+		<item key="selection" value="Frame"/>
+		<item key="casesensitive" value="false"/>
+		<item key="incremental" value="false"/>
+		<item key="wrap" value="true"/>
+		<item key="wholeword" value="false"/>
 		<list key="findhistory">
+			<item value="frame"/>
+			<item value="update"/>
+			<item value="graphIsVisible"/>
+			<item value="loadConfigurationFile"/>
+			<item value="CFG"/>
+			<item value="main("/>
+			<item value="main"/>
+			<item value="Zeit"/>
+			<item value="toggle"/>
+			<item value="setting"/>
 			<item value="\\"/>
 			<item value="selectVisibleGraphsScrollPane"/>
 			<item value="JScrollPane"/>
 			<item value="CopyrightNotes.txt"/>
 			<item value="setSeriesVisible"/>
-			<item value="graphIsVisible"/>
-			<item value="xYSeries"/>
-			<item value="deactivateFullscreen"/>
-			<item value="getYesNoString"/>
-			<item value="version"/>
-			<item value="update"/>
-			<item value="Versuchen"/>
-			<item value="actionP"/>
-			<item value="SerialWorker"/>
-			<item value="enabled(false)"/>
 		</list>
 		<list key="replacehistory">
 			<item value="\"/>
@@ -37,10 +37,10 @@
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item value="284" key="DIALOG_WIDTH"/>
-		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
-		<item value="391" key="DIALOG_HEIGHT"/>
-		<item value="1581" key="DIALOG_X_ORIGIN"/>
-		<item value="315" key="DIALOG_Y_ORIGIN"/>
+		<item key="DIALOG_WIDTH" value="284"/>
+		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+		<item key="DIALOG_HEIGHT" value="391"/>
+		<item key="DIALOG_X_ORIGIN" value="1581"/>
+		<item key="DIALOG_Y_ORIGIN" value="315"/>
 	</section>
 </section>

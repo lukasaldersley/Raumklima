@@ -1,17 +1,22 @@
 #BlueJ package file
 objectbench.height=100
-objectbench.width=367
-package.editor.height=450
-package.editor.width=574
-package.editor.x=152
-package.editor.y=152
+objectbench.width=1595
+package.editor.height=859
+package.editor.width=1802
+package.editor.x=-8
+package.editor.y=-8
 package.numDependencies=0
 package.numTargets=6
 package.showExtends=true
 package.showUses=true
 project.charset=windows-1252
+target1.editor.height=700
+target1.editor.width=900
+target1.editor.x=32
+target1.editor.y=12
 target1.height=50
 target1.name=mapTst
+target1.naviview.expanded=true
 target1.showInterface=false
 target1.type=ClassTarget
 target1.typeParameters=
