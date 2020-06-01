@@ -1,2 +1,5 @@
 /.metadata/
 /.recommenders/
+*.ctxt
+*.class
+*.java~

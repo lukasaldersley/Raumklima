@@ -17,7 +17,7 @@ public class MATRIX implements MouseListener, ActionListener
     private JPanel basePanel,ctrPanel;
     private RECHTECK[][][] rechteck;
     private int panelX=5;
-    private int panelY=8;
+    private int panelY=7;
     private int anzahl=1;
     private JButton button;
     private JButton[] buttons;
@@ -90,9 +90,9 @@ public class MATRIX implements MouseListener, ActionListener
     }
 
     public MATRIX(){
-        int nr=4;
+        int nr=1;
         int hor=5;
-        int ver=8;
+        int ver=7;
 
         anzahl=nr;
         panelX=hor;
@@ -324,24 +324,23 @@ public class MATRIX implements MouseListener, ActionListener
     }
 
     public void printBinaryForArduino(int panelNumber,String name){
-        String res="byte "+name+"[8] = {\n  0b";
-        for(int y=0;y<panelY;y++){
-            for(int x=0;x<panelX;x++){
+        String res="byte "+name+"[5] = {";
+        for(int x=0;x<panelX;x++){
+            byte b=0;
+            for(int y=0;y<panelY;y++){
                 if(rechteck[panelNumber][x][y].farbig()){
-                    res+="1";
-                }
-                else{
-                    res+="0";
+                    b|=(1<<y);
                 }
             }
-            if(y<panelY-1){
-                res+=",\n  0b";
+            res+=String.valueOf(b);
+            if(x<panelX-1){
+                res+=",  ";
             }
             else{
-                res+="\n};";
+                res+="};";
             }
         }
-        log(res,"../"+name+".txt");
+        log(res,"../../"+"logiLCD"+".txt");
     }
 
     public void load(int panel){
@@ -354,7 +353,7 @@ public class MATRIX implements MouseListener, ActionListener
     }
 
     @SuppressWarnings("resource")
-	public void loadArduino(int panel){
+    public void loadArduino(int panel){
         reset(panel);
         String content="";
         try{
@@ -400,6 +399,6 @@ public class MATRIX implements MouseListener, ActionListener
     }
 
     public static void main(String[] args){
-        new MATRIX(4,5,8);
+        new MATRIX(1,5,7);
     }
 }
