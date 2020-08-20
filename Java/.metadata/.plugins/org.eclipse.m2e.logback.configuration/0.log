@@ -1,0 +1,2 @@
+2020-06-11 22:33:44,382 [main] WARN  org.eclipse.jgit.util.FS - Cannot run program "git" (in directory "\usr\bin"): CreateProcess error=2, Das System kann die angegebene Datei nicht finden
+2020-06-11 22:33:51,567 [Worker-4: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is not available. Remote download required.

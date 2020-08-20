@@ -16,8 +16,8 @@ public class MATRIX implements MouseListener, ActionListener
     private JPanel[] buttonPanel;
     private JPanel basePanel,ctrPanel;
     private RECHTECK[][][] rechteck;
-    private int panelX=5;
-    private int panelY=7;
+    private int panelX=8;
+    private int panelY=8;
     private int anzahl=1;
     private JButton button;
     private JButton[] buttons;
@@ -42,7 +42,7 @@ public class MATRIX implements MouseListener, ActionListener
         basePanel=new JPanel();
         basePanel.setSize((55*hor)*nr+50*(nr-1),(58*ver));//nicht unbedingt notwendig
         basePanel.setPreferredSize(new Dimension((55*hor)*nr+50*(nr-1),(58*ver)));
-        basePanel.setLayout(new GridLayout(1,nr,50,0));//1 bedeutet nur 1 in y richtung,nr bedeutet nr in x richtung, 50 bedeutet 50 px abstand zwischen blöcken
+        basePanel.setLayout(new GridLayout(1,nr,50,0));//1 bedeutet nur 1 in y richtung,nr bedeutet nr in x richtung, 50 bedeutet 50 px abstand zwischen blï¿½cken
 
         buttonPanel=new JPanel[nr];
         ctrPanel=new JPanel();
@@ -104,7 +104,7 @@ public class MATRIX implements MouseListener, ActionListener
         basePanel=new JPanel();
         basePanel.setSize((55*hor)*nr+50*(nr-1),(58*ver));//nicht unbedingt notwendig
         basePanel.setPreferredSize(new Dimension((55*hor)*nr+50*(nr-1),(58*ver)));
-        basePanel.setLayout(new GridLayout(1,nr,50,0));//1 bedeutet nur 1 in y richtung,nr bedeutet nr in x richtung, 50 bedeutet 50 px abstand zwischen blöcken
+        basePanel.setLayout(new GridLayout(1,nr,50,0));//1 bedeutet nur 1 in y richtung,nr bedeutet nr in x richtung, 50 bedeutet 50 px abstand zwischen blï¿½cken
 
         buttonPanel=new JPanel[nr];
         ctrPanel=new JPanel();
@@ -159,7 +159,7 @@ public class MATRIX implements MouseListener, ActionListener
                 for(int y=0;y<panelY;y++){
                     if(e.getSource()==rechteck[z][x][y]){
                         farbWechsel(z,x,y);
-                        window.setSize(0,0);//das hier, zusammen mit window.pack sorgt dafür dass keine der button fragmente zu sehen sind
+                        window.setSize(0,0);//das hier, zusammen mit window.pack sorgt dafï¿½r dass keine der button fragmente zu sehen sind
                         window.pack();
                         window.setBounds(rect);
                         log("PANEL: "+z+";            X: "+x+";            Y: "+y,"LEDMatrixKeyStrokes.txt");
@@ -174,7 +174,7 @@ public class MATRIX implements MouseListener, ActionListener
         Rectangle rect=window.getBounds();
         if(e.getSource()==button){
             farbenUmdrehenOhneDelay();
-            window.setSize(0,0);//das hier, zusammen mit window.pack sorgt dafür dass keine der button fragmente zu sehen sind
+            window.setSize(0,0);//das hier, zusammen mit window.pack sorgt dafï¿½r dass keine der button fragmente zu sehen sind
             window.pack();
             window.setBounds(rect);
         }
@@ -187,14 +187,14 @@ public class MATRIX implements MouseListener, ActionListener
 
             if(e.getSource()==dreher[i]){
                 farbenUmdrehenPanelOhneDelay(i);
-                window.setSize(0,0);//das hier, zusammen mit window.pack sorgt dafür dass keine der button fragmente zu sehen sind
+                window.setSize(0,0);//das hier, zusammen mit window.pack sorgt dafï¿½r dass keine der button fragmente zu sehen sind
                 window.pack();
                 window.setBounds(rect);
             }
 
             if(e.getSource()==reset[i]){
                 reset(i);
-                window.setSize(0,0);//das hier, zusammen mit window.pack sorgt dafür dass keine der button fragmente zu sehen sind
+                window.setSize(0,0);//das hier, zusammen mit window.pack sorgt dafï¿½r dass keine der button fragmente zu sehen sind
                 window.pack();
                 window.setBounds(rect);
             }
@@ -301,7 +301,7 @@ public class MATRIX implements MouseListener, ActionListener
     public void log(String inhalt,String fileName) {
         file = new File(fileName);
         try {
-            writer = new FileWriter(file,true);//true damit an die bestehende datei angegängt wird, sonst würde Sie überschrieben
+            writer = new FileWriter(file,true);//true damit an die bestehende datei angegï¿½ngt wird, sonst wï¿½rde Sie ï¿½berschrieben
             writer.write(inhalt);
             writer.flush();
             writer.close();
@@ -314,7 +314,7 @@ public class MATRIX implements MouseListener, ActionListener
     public void ln(String fileName) {
         file = new File(fileName);
         try {
-            writer = new FileWriter(file,true);//true damit an die bestehende datei angegängt wird, sonst würde Sie überschrieben
+            writer = new FileWriter(file,true);//true damit an die bestehende datei angegï¿½ngt wird, sonst wï¿½rde Sie ï¿½berschrieben
             writer.write(System.getProperty("line.separator"));
             writer.flush();
             writer.close();

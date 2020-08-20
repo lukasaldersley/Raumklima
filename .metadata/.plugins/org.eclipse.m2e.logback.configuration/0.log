@@ -891,3 +891,4 @@ Caused by: org.eclipse.aether.transfer.ArtifactTransferException: Failure to tra
 2019-11-19 00:04:30,131 [Worker-6: Building workspace] WARN  org.eclipse.jgit.util.FS - Cannot run program "git" (in directory "\usr\bin"): CreateProcess error=2, Das System kann die angegebene Datei nicht finden
 2019-11-19 00:04:36,811 [ForkJoinPool.commonPool-worker-3] WARN  org.eclipse.jgit.util.FS - locking FileBasedConfig[C:\Users\alder\.gitconfig] failed after 5 retries
 2019-11-19 00:29:09,830 [Worker-20: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is not available. Remote download required.
+2020-06-11 22:34:36,691 [main] WARN  org.eclipse.jgit.util.FS - Cannot run program "git" (in directory "\usr\bin"): CreateProcess error=2, Das System kann die angegebene Datei nicht finden

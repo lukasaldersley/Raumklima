@@ -66,9 +66,9 @@ YES
 #JPEG
 YES
 #IMAGE WIDTH
-1920
+3840
 #IMAGE HEIGHT
-1080
+2160
 #AUTOMATICALLY DETERMINE IMAGE SIZE
 YES
 #
@@ -76,7 +76,7 @@ YES
 #FullscreenOnStartup
 NO
 #FullscreenPossible
-NO
+YES
 #BottomPanelExpandedOnStartup
 NO
 #AutoUpdate

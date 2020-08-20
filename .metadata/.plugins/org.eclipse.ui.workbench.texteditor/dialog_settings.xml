@@ -2,12 +2,17 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="Frame"/>
+		<item key="selection" value="actionPerformed"/>
 		<item key="casesensitive" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="wrap" value="true"/>
 		<item key="wholeword" value="false"/>
 		<list key="findhistory">
+			<item value="actionPerformed"/>
+			<item value="actionPerf"/>
+			<item value="actionList"/>
+			<item value="chartPanel"/>
+			<item value="xYSeriesCollection"/>
 			<item value="frame"/>
 			<item value="update"/>
 			<item value="graphIsVisible"/>
@@ -18,11 +23,6 @@
 			<item value="Zeit"/>
 			<item value="toggle"/>
 			<item value="setting"/>
-			<item value="\\"/>
-			<item value="selectVisibleGraphsScrollPane"/>
-			<item value="JScrollPane"/>
-			<item value="CopyrightNotes.txt"/>
-			<item value="setSeriesVisible"/>
 		</list>
 		<list key="replacehistory">
 			<item value="\"/>
